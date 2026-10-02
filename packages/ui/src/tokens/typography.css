@@ -1,0 +1,67 @@
+/* 공통 타이포그래피 토큰 */
+
+:root {
+  /* Primitive / Font Family */
+  --eli-font-family-family:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+
+  /* Primitive / Size */
+  --eli-size-12: 0.75rem;
+  --eli-size-14: 0.875rem;
+  --eli-size-16: 1rem;
+  --eli-size-20: 1.25rem;
+  --eli-size-24: 1.5rem;
+  --eli-size-32: 2rem;
+  --eli-size-40: 2.5rem;
+  --eli-size-48: 3rem;
+  --eli-size-56: 3.5rem;
+  --eli-size-64: 4rem;
+  --eli-size-72: 4.5rem;
+
+  /* Primitive / Weight */
+  --eli-font-weight-leets-bold: 762;
+  --eli-font-weight-bold: 700;
+  --eli-font-weight-semibold: 600;
+  --eli-font-weight-medium: 500;
+  --eli-font-weight-regular: 400;
+
+  /* Typography / Heading
+   * 데스크탑을 기본값으로 사용해요.
+   * Tablet은 별도 값이 없어 데스크탑 값을 함께 사용해요.
+   */
+  --eli-font-size-heading-h1: var(--eli-size-56);
+  --eli-font-size-heading-h2: var(--eli-size-40);
+  --eli-font-size-heading-h3: var(--eli-size-32);
+  --eli-font-size-heading-h4: var(--eli-size-24);
+
+  /* Typography / Body */
+  --eli-font-size-body-01: var(--eli-size-16);
+  --eli-font-size-body-02: var(--eli-size-14);
+
+  /* Typography / Label */
+  --eli-font-size-label-01: var(--eli-size-16);
+  --eli-font-size-label-02: var(--eli-size-14);
+  --eli-font-size-label-03: var(--eli-size-12);
+}
+
+/* Typography / Label / Large */
+.eli-typo-label-large {
+  font-family: var(--eli-font-family-family, "Pretendard Variable");
+  font-size: var(--eli-font-size-label-01, 16px);
+  font-style: normal;
+  font-weight: var(--eli-font-weight-semibold, 600);
+  line-height: 120%;
+}
+
+/* Mobile에서는 같은 Heading 토큰에 모바일 값을 덮어써요. */
+@media (max-width: 767px) {
+  :root {
+    --eli-font-size-heading-h1: var(--eli-size-40);
+    --eli-font-size-heading-h2: var(--eli-size-32);
+    --eli-font-size-heading-h3: var(--eli-size-24);
+    --eli-font-size-heading-h4: var(--eli-size-20);
+  }
+}
