@@ -1,0 +1,55 @@
+/* Primitive 색상에 의미와 상태를 연결해요. */
+
+:root {
+  /* Foreground / Brand */
+  --eli-foreground-brand-primary: var(--eli-color-blue-500);
+  --eli-foreground-brand-primary-alpha: rgb(from var(--eli-color-blue-500) r g b / 30%);
+  --eli-foreground-brand-secondary: var(--eli-color-blue-100);
+  --eli-foreground-brand-tertiary: var(--eli-color-blue-50);
+  --eli-foreground-brand-inverse: var(--eli-color-white);
+  --eli-foreground-brand-inverse-alpha: rgb(from var(--eli-color-white) r g b / 80%);
+
+  /* Foreground / Neutral */
+  --eli-foreground-neutral-primary: var(--eli-color-neutral-900);
+  --eli-foreground-neutral-secondary: var(--eli-color-neutral-700);
+  --eli-foreground-neutral-secondary-alpha: rgb(from var(--eli-color-neutral-700) r g b / 30%);
+  --eli-foreground-neutral-tertiary: var(--eli-color-neutral-500);
+  --eli-foreground-neutral-inverse: var(--eli-color-white);
+
+  /* Foreground / Feedback */
+  --eli-foreground-feedback-error: var(--eli-color-red-500);
+  --eli-foreground-feedback-success: var(--eli-color-green-500);
+  --eli-foreground-feedback-caution: var(--eli-color-yellow-500);
+
+  /* Background / Brand */
+  --eli-background-brand-primary: var(--eli-color-blue-500);
+  --eli-background-brand-secondary: var(--eli-color-blue-100);
+  --eli-background-brand-tertiary: var(--eli-color-blue-50);
+
+  /* Background / Brand / States / Primary */
+  --eli-background-brand-primary-hover: var(--eli-color-blue-400);
+  --eli-background-brand-primary-pressed: var(--eli-color-blue-600);
+  --eli-background-brand-primary-disabled: rgb(from var(--eli-color-blue-500) r g b / 30%);
+
+  /* Background / Neutral */
+  --eli-background-neutral-primary: var(--eli-color-white);
+  --eli-background-neutral-secondary: var(--eli-color-neutral-100);
+  --eli-background-neutral-tertiary: var(--eli-color-neutral-300);
+  --eli-background-neutral-dim: rgb(from var(--eli-color-neutral-900) r g b / 40%);
+  --eli-background-neutral-shadow: rgb(from var(--eli-color-neutral-300) r g b / 60%);
+
+  /* Background / Neutral / States / Secondary */
+  --eli-background-neutral-secondary-hover: var(--eli-color-neutral-50);
+  --eli-background-neutral-secondary-pressed: var(--eli-color-neutral-200);
+  --eli-background-neutral-secondary-disabled: rgb(from var(--eli-color-neutral-100) r g b / 70%);
+
+  /* Background / Feedback */
+  --eli-background-feedback-error: var(--eli-color-red-500);
+  --eli-background-feedback-success: var(--eli-color-green-500);
+  --eli-background-feedback-caution: var(--eli-color-yellow-500);
+
+  /* Background / Feedback / States / Error */
+  --eli-background-feedback-error-hover: var(--eli-color-red-400);
+  --eli-background-feedback-error-pressed: var(--eli-color-red-600);
+  --eli-background-feedback-error-disabled: rgb(from var(--eli-color-red-500) r g b / 30%);
+}

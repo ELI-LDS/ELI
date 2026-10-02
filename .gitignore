@@ -1,0 +1,12 @@
+node_modules/
+dist/
+storybook-static/
+.cache/
+.artifacts/
+*.tgz
+*.tsbuildinfo
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example

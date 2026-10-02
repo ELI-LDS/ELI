@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": { "@/*": ["./*"] }
+  },
+  "include": ["packages/ui/src", "apps/storybook"],
+  "files": ["apps/storybook/.storybook/main.ts", "apps/storybook/.storybook/preview.ts"]
+}
