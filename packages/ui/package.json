@@ -8,7 +8,8 @@
   "exports": {
     "./button": { "types": "./dist/button/index.d.ts", "import": "./dist/button/index.js" },
     "./modal": { "types": "./dist/modal/index.d.ts", "import": "./dist/modal/index.js" },
-    "./snackbar": { "types": "./dist/snackbar/index.d.ts", "import": "./dist/snackbar/index.js" }
+    "./snackbar": { "types": "./dist/snackbar/index.d.ts", "import": "./dist/snackbar/index.js" },
+    "./toggle": { "types": "./dist/toggle/index.d.ts", "import": "./dist/toggle/index.js" }
   },
   "sideEffects": ["**/*.css"],
   "peerDependencies": { "react": "^19.3.0" },

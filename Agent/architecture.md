@@ -10,6 +10,8 @@
 
 `packages/ui/src/modal/index.ts`는 Modal과 관련 타입을 `@eli/ui/modal`로 공개해요. 제목, 본문, 좌우 버튼명과 콘텐츠 크기는 하나의 Modal props로 관리해요. Modal의 최종 최대 너비와 기본 본문 문구는 디자인 확정 전까지 TODO로 구분해요.
 
+`packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
+
 `packages/ui/src/dim`은 Modal 같은 오버레이 컴포넌트가 내부에서 공유해요. 공개 사용 사례가 확정되기 전까지 별도의 패키지 진입점을 만들지 않아요.
 
 `packages/ui/src/icon`은 컴포넌트 내부에서 재사용하는 아이콘을 관리해요. 아이콘 자체를 공개하기 전까지 별도의 패키지 진입점을 만들지 않아요.
@@ -36,4 +38,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Button·SnackBar, Modal의 기본 구조는 구현되어 있어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비와 기본 본문 문구는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Toggle, Modal의 기본 구조는 구현되어 있어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비와 기본 본문 문구는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
