@@ -6,6 +6,8 @@
 
 `packages/ui/src/button/index.ts`는 Button과 관련 타입을 `@eli/ui/button`으로 공개해요. 크기·형태·색상 조합은 별도 컴포넌트가 아니라 하나의 Button props로 관리해요.
 
+`packages/ui/src/snackbar/index.ts`는 SnackBar와 관련 타입을 `@eli/ui/snackbar`로 공개해요. 메시지, 액션 버튼명과 액션 버튼 색상은 하나의 SnackBar props로 관리해요.
+
 `packages/ui/src/icon`은 컴포넌트 내부에서 재사용하는 아이콘을 관리해요. 아이콘 자체를 공개하기 전까지 별도의 패키지 진입점을 만들지 않아요.
 
 컴포넌트 Storybook 예제는 `apps/storybook/stories`에서 관리하고 개발용 `@/` 경로로 UI 소스를 연결해요. 이를 통해 `packages/ui`에 Storybook 의존성을 추가하지 않아요.
@@ -30,4 +32,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Button은 구현되어 있어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Button·SnackBar는 구현되어 있어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
