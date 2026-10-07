@@ -1,0 +1,24 @@
+@import '../../tokens/index.css';
+
+/* 트랙 / Off */
+.eli-toggle {
+  box-sizing: border-box;
+  display: inline-flex;
+  width: 44px;
+  height: 24px;
+  padding: var(--eli-layout-scale-1, 4px);
+  align-items: center;
+  border: 0;
+  border-radius: var(--eli-layout-scale-999, 999px);
+  background-color: var(--eli-background-neutral-tertiary, #c4cedc);
+}
+
+/* Switch */
+.eli-toggle__switch {
+  width: var(--eli-layout-scale-4, 16px);
+  height: 16px;
+  flex: 0 0 auto;
+  border-radius: var(--eli-layout-scale-999, 999px);
+  aspect-ratio: 1 / 1;
+  background: var(--eli-foreground-neutral-inverse, #fff);
+}
