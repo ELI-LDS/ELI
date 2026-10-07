@@ -12,7 +12,7 @@ export type ButtonColor = 'primary' | 'tertiary';
 /* Props */
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'color'> {
-  /** 버튼에 표시할 내용이에요. 생략하면 `Button`을 표시해요. */
+  /** 버튼에 표시할 내용이에요. 생략하면 `버튼`을 표시해요. */
   children?: ReactNode;
 
   /** 버튼 왼쪽에 표시할 아이콘이에요. 생략하면 Plus 아이콘을 표시하고, `null`이면 숨겨요. */
@@ -31,7 +31,7 @@ export interface ButtonProps
   /** 버튼 색상 조합이에요. 기본값은 `primary`예요. */
   color?: ButtonColor;
 
-  /** 버튼 크기예요. 기본값은 `medium`이에요. */
+  /** 버튼 크기예요. 기본값은 `large`예요. */
   size?: ButtonSize;
 
   /** 버튼 형태예요. 기본값은 `solid`예요. */

@@ -6,14 +6,14 @@ import type { ButtonProps } from './Button.types.js';
 /* Button */
 export function Button({
   /* Content */
-  children = 'Button',
+  children = '버튼',
   icon = <PlusIcon />,
 
   /* Style Options */
   backgroundColor,
   color = 'primary',
   height,
-  size = 'medium',
+  size = 'large',
   variant = 'solid',
   width,
 

@@ -12,6 +12,6 @@ Button은 아래 경로에서 가져와요.
 import { Button } from '@eli/ui/button';
 
 export function Example() {
-  return <Button>Button</Button>;
+  return <Button>버튼</Button>;
 }
 ```
