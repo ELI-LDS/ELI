@@ -24,7 +24,7 @@ execFileSync('npm', ['install', '--offline', '--ignore-scripts', '--legacy-peer-
 await writeFile(join(consumer, 'index.html'), '<html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
 await writeFile(join(consumer, 'main.tsx'), `import { createRoot } from 'react-dom/client';
 import { Button } from '@eli/ui/button';
-createRoot(document.getElementById('root')!).render(<><Button size="large">Button</Button><Button backgroundColor="#153464" icon={null} width="100%">커스텀 버튼</Button></>);
+createRoot(document.getElementById('root')!).render(<><Button size="large">버튼</Button><Button backgroundColor="#153464" icon={null} width="100%">커스텀 버튼</Button></>);
 `);
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });

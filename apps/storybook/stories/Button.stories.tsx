@@ -1,116 +1,166 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@/packages/ui/src/button/Button/Button.js';
 
+const colors = ['primary', 'tertiary'] as const;
+const sizes = ['large', 'medium'] as const;
+const variants = ['solid', 'outline', 'ghost'] as const;
+
+const colorNames = {
+  primary: 'Primary',
+  tertiary: 'Tertiary',
+} as const;
+
+const sizeNames = {
+  large: 'Large',
+  medium: 'Medium',
+} as const;
+
+const variantNames = {
+  solid: 'Solid',
+  outline: 'Outline',
+  ghost: 'Ghost',
+} as const;
+
+interface ButtonGalleryProps {
+  description: string;
+  disabled?: boolean;
+}
+
+function ButtonGallery({ description, disabled = false }: ButtonGalleryProps) {
+  return (
+    <div
+      style={{
+        display: 'grid',
+        fontFamily: 'var(--eli-font-family-family, "Pretendard Variable")',
+        gap: 32,
+        minWidth: 560,
+      }}
+    >
+      <p style={{ color: '#4b5668', margin: 0 }}>{description}</p>
+
+      {colors.map(color => (
+        <section key={color} style={{ display: 'grid', gap: 20 }}>
+          <h2 style={{ fontSize: 20, margin: 0 }}>{colorNames[color]}</h2>
+
+          {sizes.map(size => (
+            <div key={size} style={{ display: 'grid', gap: 12 }}>
+              <h3 style={{ color: '#4b5668', fontSize: 14, margin: 0 }}>{sizeNames[size]}</h3>
+
+              <div
+                style={{
+                  alignItems: 'start',
+                  display: 'grid',
+                  gap: 20,
+                  gridTemplateColumns: 'repeat(3, minmax(140px, max-content))',
+                }}
+              >
+                {variants.map(variant => (
+                  <div key={variant} style={{ display: 'grid', gap: 8 }}>
+                    <span style={{ color: '#6c788a', fontSize: 12 }}>{variantNames[variant]}</span>
+                    <Button color={color} disabled={disabled} size={size} variant={variant}>
+                      버튼
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      ))}
+    </div>
+  );
+}
+
 const meta = {
-  title: 'Components/Button',
+  title: '컴포넌트/버튼',
   component: Button,
   parameters: { layout: 'centered' },
   args: {
-    children: 'Button',
+    children: '버튼',
     color: 'primary',
-    size: 'medium',
+    disabled: false,
+    icon: true,
+    size: 'large',
+    type: 'button',
     variant: 'solid',
   },
   argTypes: {
     children: {
+      name: '텍스트',
       control: 'text',
       description: '버튼에 표시할 내용이에요.',
     },
     icon: {
-      control: false,
-      description: '버튼 왼쪽 아이콘이에요. 기본값은 Plus 아이콘이에요.',
+      name: '아이콘 표시',
+      control: 'boolean',
+      description: '버튼 왼쪽에 기본 Plus 아이콘을 표시해요.',
     },
     backgroundColor: {
+      name: '배경색 직접 지정',
       control: 'color',
       description: '기본 스타일보다 우선해 적용할 배경색이에요.',
     },
     width: {
+      name: '가로 크기',
       control: 'text',
       description: '버튼의 가로 크기예요. px, %, rem 같은 CSS 값을 사용할 수 있어요.',
     },
     height: {
+      name: '세로 크기',
       control: 'text',
       description: '버튼의 세로 크기예요. 크기별 기본 높이보다 우선해요.',
     },
     color: {
+      name: '색상',
       control: 'inline-radio',
-      options: ['primary', 'tertiary'],
+      options: colors,
       description: '버튼의 색상 조합이에요.',
     },
     size: {
+      name: '크기',
       control: 'inline-radio',
-      options: ['large', 'medium'],
+      options: sizes,
       description: '버튼의 기본 크기예요.',
     },
     variant: {
+      name: '형태',
       control: 'inline-radio',
-      options: ['solid', 'outline', 'ghost'],
+      options: variants,
       description: '버튼의 형태예요.',
     },
+    disabled: {
+      name: '비활성화',
+      control: 'boolean',
+      description: '버튼을 비활성 상태로 표시해요.',
+    },
+    type: {
+      name: '버튼 타입',
+      control: 'select',
+      options: ['button', 'submit', 'reset'],
+      description: 'HTML button 요소의 동작 타입이에요.',
+    },
   },
+  render: ({ icon, ...args }) => <Button {...args} icon={icon ? undefined : null} />,
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* Controls에서 공개 props를 바꿔 확인해요. */
-export const Playground: Story = {};
-
-/* 아이콘이 필요 없는 버튼을 확인해요. */
-export const WithoutIcon: Story = {
-  args: { icon: null },
-};
-
-/* 사용자가 지정한 배경색과 크기를 확인해요. */
-export const CustomSizeAndBackground: Story = {
-  args: {
-    backgroundColor: '#153464',
-    children: '커스텀 버튼',
-    height: 56,
-    width: 240,
-  },
-};
-
-/* 색상과 형태의 전체 조합을 확인해요. */
+/* 주요 디자인 조합과 실제 Hover, Pressed 상호작용을 한눈에 확인해요. */
 export const Variants: Story = {
-  render: () => {
-    const colors = ['primary', 'tertiary'] as const;
-    const variants = ['solid', 'outline', 'ghost'] as const;
-
-    return (
-      <div style={{ display: 'grid', gap: 16 }}>
-        {colors.map(color => (
-          <div key={color} style={{ display: 'flex', gap: 12 }}>
-            {variants.map(variant => (
-              <Button color={color} key={variant} variant={variant}>
-                Button
-              </Button>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  },
+  name: '한눈에 보기',
+  render: () => (
+    <ButtonGallery description="버튼 위에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요." />
+  ),
 };
 
-/* 비활성화된 전체 조합을 확인해요. */
+/* 전체 디자인 조합의 Disabled 상태를 확인해요. */
 export const Disabled: Story = {
-  render: () => {
-    const colors = ['primary', 'tertiary'] as const;
-    const variants = ['solid', 'outline', 'ghost'] as const;
+  name: '상태별 보기',
+  render: () => <ButtonGallery description="전체 디자인 조합의 비활성화 상태예요." disabled />,
+};
 
-    return (
-      <div style={{ display: 'grid', gap: 16 }}>
-        {colors.map(color => (
-          <div key={color} style={{ display: 'flex', gap: 12 }}>
-            {variants.map(variant => (
-              <Button color={color} disabled key={variant} variant={variant}>
-                Button
-              </Button>
-            ))}
-          </div>
-        ))}
-      </div>
-    );
-  },
+/* 공개 props를 바꿔 버튼 하나를 직접 확인해요. */
+export const Playground: Story = {
+  name: '직접 바꿔보기',
 };
