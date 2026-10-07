@@ -31,7 +31,7 @@ ELI의 개발자와 AI 에이전트는 브랜치 생성, 커밋, PR 작성 전�
 1. 작업 전 현재 브랜치와 변경 사항을 확인해요. 기존 작업을 임의로 덮어쓰거나 다른 작업에 포함하지 않아요.
 2. 새 작업은 최신 `main`에서 목적에 맞는 브랜치를 만들어요. 이미 해당 작업 브랜치에 있다면 이어서 사용해요.
 3. 한 브랜치와 PR은 하나의 목적을 다루고, 커밋은 검토 가능한 변경 단위로 나눠요.
-4. 변경에 필요한 검증을 수행한 뒤 `main`을 대상으로 PR을 작성해요. `main`에 직접 커밋하거나 푸시하지 않아요.
+4. 커밋 전 지침 동기화 절차를 수행하고 변경에 필요한 검증을 마친 뒤 `main`을 대상으로 PR을 작성해요. `main`에 직접 커밋하거나 푸시하지 않아요.
 5. 리뷰와 설정된 필수 검사를 통과한 뒤 병합해요. 기본 병합 방식은 Squash merge로 하고, 최종 커밋에도 아래 규칙을 적용해요.
 
 ### 초기 브랜치 전략
@@ -179,6 +179,17 @@ Closes #이슈번호
 이 규칙은 토스의 [es-toolkit PR 규칙](https://github.com/toss/es-toolkit/blob/main/.github/CONTRIBUTING.md#4-pull-requests)과 [PR 템플릿](https://github.com/toss/es-toolkit/blob/main/.github/PULL_REQUEST_TEMPLATE.md), Vercel의 [Next.js PR 템플릿](https://github.com/vercel/next.js/blob/canary/.github/pull_request_template.md), Google의 [작은 변경 원칙](https://google.github.io/eng-practices/review/developer/small-cls.html)을 참고해 ELI 규모에 맞게 정리했어요.
 
 ## 5. 에이전트 확인 사항
+
+### 커밋 전 지침 동기화
+
+커밋하기 전에 아래 항목을 순서대로 확인해요. 동기화할 내용이 없더라도 확인을 생략하지 않아요.
+
+1. `git status`와 전체 diff로 실제 변경 범위와 새 파일을 확인해요.
+2. 공개 import 경로, props, CSS 변수, 기본 동작, 폴더 구조, 지원 컴포넌트와 검증 범위가 달라졌는지 확인해요.
+3. 달라진 내용이 있으면 README와 관련 `Agent/` 문서를 같은 커밋에 갱신해요. 한 규칙은 한 문서를 기준으로 두고 다른 문서에서는 링크해요.
+4. 구현하지 않은 기능을 완료된 기능처럼 적지 않았는지, 남은 임시 값과 TODO가 코드와 문서에서 구분되는지 확인해요.
+5. 관련 Storybook 예제와 패키징 검사가 공개 API를 사용하고 있는지 확인해요.
+6. 최종 diff를 다시 확인하고 `pnpm check`를 실행한 뒤 해당 작업 파일만 스테이징해요.
 
 - Codex PR 리뷰 기준은 루트의 [AGENTS.md](../AGENTS.md), 구현 검증은 [testing.md](testing.md)를 따라요. 자동 리뷰 연결은 아직 설정하지 않았어요.
 - 브랜치 생성·커밋·PR 작성 시 이 문서의 규칙을 따라요.

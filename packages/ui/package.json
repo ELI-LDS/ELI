@@ -7,6 +7,7 @@
   "files": ["dist", "README.md"],
   "exports": {
     "./button": { "types": "./dist/button/index.d.ts", "import": "./dist/button/index.js" },
+    "./modal": { "types": "./dist/modal/index.d.ts", "import": "./dist/modal/index.js" },
     "./snackbar": { "types": "./dist/snackbar/index.d.ts", "import": "./dist/snackbar/index.js" }
   },
   "sideEffects": ["**/*.css"],

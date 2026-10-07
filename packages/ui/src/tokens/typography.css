@@ -47,6 +47,16 @@
   --eli-font-size-label-03: var(--eli-size-12);
 }
 
+/* Typography / Heading / H4 */
+.eli-typo-heading-h4 {
+  font-family: var(--eli-font-family-family, "Pretendard Variable");
+  font-size: var(--eli-font-size-heading-h4, 20px);
+  font-style: normal;
+  font-weight: var(--eli-font-weight-bold, 700);
+  line-height: 120%;
+  letter-spacing: -0.2px;
+}
+
 /* Typography / Body / Medium */
 .eli-typo-body-medium {
   font-family: var(--eli-font-family-family, "Pretendard Variable");
