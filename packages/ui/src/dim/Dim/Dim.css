@@ -1,0 +1,10 @@
+@import '../../tokens/index.css';
+
+/* Dim */
+.eli-dim {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--eli-background-neutral-dim, rgba(2, 8, 18, 0.4));
+}
