@@ -1,0 +1,99 @@
+@import "../../tokens/index.css";
+
+/* 전체 영역 */
+.eli-text-field {
+  box-sizing: border-box;
+  display: flex;
+  width: 323px;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--eli-layout-scale-2, 8px);
+}
+
+/* 라벨 */
+.eli-text-field__label {
+  display: flex;
+  flex: 1 0 0;
+  align-self: stretch;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  color: var(--eli-foreground-neutral-primary, #020812);
+}
+
+/* 입력 영역 */
+.eli-text-field__container {
+  box-sizing: border-box;
+  display: flex;
+  height: 54px;
+  padding: var(--eli-layout-scale-4, 16px) var(--eli-layout-scale-5, 20px);
+  align-self: stretch;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid
+    var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: var(--eli-background-neutral-primary, #fff);
+}
+
+/* 입력 텍스트 */
+.eli-text-field__input {
+  box-sizing: border-box;
+  display: flex;
+  min-width: 0;
+  padding: 0;
+  flex: 1 0 0;
+  align-items: flex-start;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--eli-foreground-neutral-secondary, #4b5668);
+}
+
+/* Placeholder */
+.eli-text-field__input::placeholder {
+  color: var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+  opacity: 1;
+}
+
+/* 오른쪽 X 아이콘 */
+.eli-text-field__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+}
+
+/* Hover */
+.eli-text-field__container:hover {
+  border-color: var(--eli-foreground-neutral-secondary, #4b5668);
+}
+
+/* Focus */
+.eli-text-field__container:focus-within .eli-text-field__input::placeholder {
+  color: var(--eli-foreground-neutral-primary, #020812);
+}
+
+/* Error */
+.eli-text-field[data-state="error"] .eli-text-field__container {
+  border-color: var(--eli-foreground-feedback-error, #cf1111);
+}
+
+/* Success */
+.eli-text-field[data-state="success"] .eli-text-field__container {
+  border-color: var(--eli-foreground-feedback-success, #27be22);
+}
+
+/* Disabled */
+.eli-text-field[data-state="disabled"] .eli-text-field__input,
+.eli-text-field[data-state="disabled"] .eli-text-field__input::placeholder {
+  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  opacity: 1;
+}
+
+.eli-text-field[data-state="disabled"] .eli-text-field__container {
+  border-color: var(--eli-foreground-neutral-tertiary-alpha, rgba(139, 152, 170, 0.3));
+  background: var(--eli-background-neutral-secondary-disabled, rgba(234, 240, 249, 0.7));
+}

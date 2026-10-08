@@ -14,6 +14,7 @@
   --eli-foreground-neutral-secondary: var(--eli-color-neutral-700);
   --eli-foreground-neutral-secondary-alpha: rgb(from var(--eli-color-neutral-700) r g b / 30%);
   --eli-foreground-neutral-tertiary: var(--eli-color-neutral-500);
+  --eli-foreground-neutral-tertiary-alpha: rgb(from var(--eli-color-neutral-500) r g b / 30%);
   --eli-foreground-neutral-inverse: var(--eli-color-white);
 
   /* Foreground / Feedback */
