@@ -31,7 +31,7 @@
 
 역할별 글자 크기는 `--eli-font-size-{종류}-{단계}` 형식으로 기본 크기 토큰을 참조해요. 데스크탑 값을 기본으로 선언하고 모바일 구간에서 같은 토큰을 덮어써요. 별도의 `-mobile`, `-desktop` 토큰을 중복으로 공개하지 않아요.
 
-여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. `Body/Medium`은 `.eli-typo-body-medium`, `Label/Large`는 `.eli-typo-label-large`를 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
+여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. `Body/Medium`은 `.eli-typo-body-medium`, `Label/Large`는 `.eli-typo-label-large`, `Label/Medium`은 `.eli-typo-label-medium`을 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
 
 ## 레이아웃 기준을 재사용해요
 

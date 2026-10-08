@@ -75,6 +75,15 @@
   line-height: 120%;
 }
 
+/* Typography / Label / Medium */
+.eli-typo-label-medium {
+  font-family: var(--eli-font-family-family, "Pretendard Variable");
+  font-size: var(--eli-font-size-label-02, 14px);
+  font-style: normal;
+  font-weight: var(--eli-font-weight-medium, 500);
+  line-height: 120%;
+}
+
 /* Mobile에서는 같은 Heading 토큰에 모바일 값을 덮어써요. */
 @media (max-width: 767px) {
   :root {
