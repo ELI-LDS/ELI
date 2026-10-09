@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Toggle } from '@/packages/ui/src/toggle/Toggle/Toggle.js';
 
 const meta = {
-  title: '컴포넌트/토글',
+  title: '컴포넌트/Toggle',
   component: Toggle,
   parameters: { layout: 'centered' },
   args: {

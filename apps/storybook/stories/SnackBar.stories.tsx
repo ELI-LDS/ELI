@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SnackBar } from '@/packages/ui/src/snackbar/SnackBar/SnackBar.js';
 
 const meta = {
-  title: '컴포넌트/스낵바',
+  title: '컴포넌트/SnackBar',
   component: SnackBar,
   parameters: { layout: 'centered' },
   args: {

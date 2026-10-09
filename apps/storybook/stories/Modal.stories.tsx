@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Modal } from '@/packages/ui/src/modal/Modal/Modal.js';
 
 const meta = {
-  title: '컴포넌트/모달',
+  title: '컴포넌트/Modal',
   component: Modal,
   parameters: { layout: 'fullscreen' },
   args: {

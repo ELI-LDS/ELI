@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TextField } from '@/packages/ui/src/text/TextField/TextField.js';
 
 const meta = {
-  title: '컴포넌트/텍스트 필드',
+  title: '컴포넌트/TextField',
   component: TextField,
   parameters: { layout: 'centered' },
   args: {
