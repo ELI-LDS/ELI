@@ -5,8 +5,11 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   /** Modal의 제목이에요. 생략하면 `제목`을 표시해요. */
   title?: ReactNode;
 
-  /** Modal 제목 아래에 표시할 내용이에요. 생략하면 기본 안내 문구를 두 줄로 표시해요. */
-  children?: ReactNode;
+  /** Modal 제목 아래 첫 번째 문장이에요. 생략하면 `내용을 작성합니다`를 표시해요. */
+  message?: ReactNode;
+
+  /** Modal 제목 아래 두 번째 문장이에요. 생략하면 `내용을 작성합니다`를 표시하고, `null`이면 숨겨요. */
+  subMessage?: ReactNode;
 
   /** Modal 콘텐츠의 가로 크기예요. 숫자는 px로 처리하며 `100%` 같은 CSS 값도 사용할 수 있어요. */
   width?: CSSProperties['width'];

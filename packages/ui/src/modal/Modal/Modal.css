@@ -47,12 +47,20 @@
   text-align: center;
 }
 
-/* Text / Description */
-.eli-modal__description {
+/* Text / Descriptions */
+.eli-modal__descriptions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   align-self: stretch;
   color: var(--eli-foreground-neutral-secondary, #4b5668);
   text-align: center;
-  white-space: pre-line;
+}
+
+/* Text / Description */
+.eli-modal__description {
+  width: 100%;
+  overflow-wrap: break-word;
 }
 
 /* Actions */

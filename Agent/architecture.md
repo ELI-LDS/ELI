@@ -8,7 +8,7 @@
 
 `packages/ui/src/snackbar/index.ts`는 SnackBar와 관련 타입을 `@eli/ui/snackbar`로 공개해요. 메시지, 액션 버튼명과 액션 버튼 색상은 하나의 SnackBar props로 관리해요.
 
-`packages/ui/src/modal/index.ts`는 Modal과 관련 타입을 `@eli/ui/modal`로 공개해요. 제목, 본문, 좌우 버튼명과 콘텐츠 크기는 하나의 Modal props로 관리해요. Modal의 최종 최대 너비와 기본 본문 문구는 디자인 확정 전까지 TODO로 구분해요.
+`packages/ui/src/modal/index.ts`는 Modal과 관련 타입을 `@eli/ui/modal`로 공개해요. 제목, 최대 두 개의 본문 문장, 좌우 버튼명과 콘텐츠 크기는 하나의 Modal props로 관리해요. 본문은 `message`와 `subMessage`로 각각 받고 임의 줄바꿈으로 나누지 않아요. Modal의 최종 최대 너비는 디자인 확정 전까지 TODO로 구분해요.
 
 `packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
 
@@ -40,4 +40,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Toggle, Modal, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비와 기본 본문 문구는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Toggle, Modal, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
