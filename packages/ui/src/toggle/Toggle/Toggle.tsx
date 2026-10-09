@@ -2,9 +2,8 @@
 
 import './Toggle.css';
 import './Toggle.interaction.css';
-import { useState } from 'react';
-import type { MouseEventHandler } from 'react';
 import type { ToggleProps } from './Toggle.types.js';
+import { useToggle } from './useToggle.js';
 
 /* Toggle */
 export function Toggle({
@@ -16,22 +15,16 @@ export function Toggle({
   type = 'button',
   ...props
 }: ToggleProps) {
-  /* State */
-  const [internalChecked, setInternalChecked] = useState(defaultChecked);
-  const isChecked = checked ?? internalChecked;
+  /* Toggle의 상태와 클릭 상호작용은 전용 Hook에서 관리해요. */
+  const { handleClick, isChecked } = useToggle({
+    checked,
+    defaultChecked,
+    onCheckedChange,
+    onClick,
+  });
 
   /* Class Name */
   const toggleClassName = ['eli-toggle', className].filter(Boolean).join(' ');
-
-  /* Interaction */
-  const handleClick: MouseEventHandler<HTMLButtonElement> = event => {
-    onClick?.(event);
-    if (event.defaultPrevented) return;
-
-    const nextChecked = !isChecked;
-    if (checked === undefined) setInternalChecked(nextChecked);
-    onCheckedChange?.(nextChecked);
-  };
 
   /* Accessible Name */
   const ariaLabel = props['aria-label'] ?? (props['aria-labelledby'] ? undefined : '토글');
