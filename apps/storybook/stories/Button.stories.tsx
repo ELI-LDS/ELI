@@ -72,7 +72,7 @@ function ButtonGallery({ description, disabled = false }: ButtonGalleryProps) {
 }
 
 const meta = {
-  title: '컴포넌트/버튼',
+  title: '컴포넌트/Button',
   component: Button,
   parameters: { layout: 'centered' },
   args: {

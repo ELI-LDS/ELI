@@ -78,12 +78,12 @@
 
 /* Error */
 .eli-text-field[data-state="error"] .eli-text-field__container {
-  border-color: var(--eli-foreground-feedback-error, #cf1111);
+  border-color: var(--eli-border-interaction-error, #cf1111);
 }
 
 /* Success */
 .eli-text-field[data-state="success"] .eli-text-field__container {
-  border-color: var(--eli-foreground-feedback-success, #27be22);
+  border-color: var(--eli-border-interaction-success, #27be22);
 }
 
 /* Disabled */

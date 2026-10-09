@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Modal·Toggle·TextField를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Modal·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -23,6 +23,16 @@ import { TextField } from '@eli/ui/text';
 
 export function SignUpField() {
   return <TextField label="이메일" placeholder="이메일을 입력하세요" state="default" />;
+}
+```
+
+TextArea도 같은 그룹 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
+
+```tsx
+import { TextArea } from '@eli/ui/text';
+
+export function IntroductionField() {
+  return <TextArea label="소개" placeholder="소개를 입력하세요" />;
 }
 ```
 

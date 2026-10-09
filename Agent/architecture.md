@@ -12,7 +12,7 @@
 
 `packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
 
-`packages/ui/src/text/index.ts`는 TextField와 이후 추가할 TextArea 같은 텍스트 입력 컴포넌트를 `@eli/ui/text`로 공개해요. TextField의 `default`, `error`, `success`, `disabled` 상태는 하나의 `state` prop으로 관리해 서로 겹치지 않게 해요. 각 컴포넌트의 구현과 스타일은 `text` 아래의 PascalCase 폴더에서 따로 관리해요.
+`packages/ui/src/text/index.ts`는 TextField와 TextArea를 `@eli/ui/text`로 공개해요. TextField의 `default`, `error`, `success`, `disabled` 상태는 하나의 `state` prop으로 관리해 서로 겹치지 않게 해요. TextArea의 Hover·Focus·입력 완료·Disabled 상태는 네이티브 `textarea`의 상호작용과 속성으로 표현해요. 각 컴포넌트의 구현과 스타일은 `text` 아래의 PascalCase 폴더에서 따로 관리해요.
 
 `packages/ui/src/dim`은 Modal 같은 오버레이 컴포넌트가 내부에서 공유해요. 공개 사용 사례가 확정되기 전까지 별도의 패키지 진입점을 만들지 않아요.
 
@@ -40,4 +40,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Toggle, Modal, TextField의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비와 기본 본문 문구는 아직 확정되지 않았어요. TextArea를 포함한 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Button·SnackBar·Toggle, Modal, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비와 기본 본문 문구는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.

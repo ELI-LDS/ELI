@@ -22,6 +22,13 @@
   --eli-foreground-feedback-success: var(--eli-color-green-500);
   --eli-foreground-feedback-caution: var(--eli-color-yellow-500);
 
+  /* Border / Interaction */
+  --eli-border-interaction-default: var(--eli-color-neutral-400);
+  --eli-border-interaction-focused: var(--eli-color-neutral-700);
+  --eli-border-interaction-disabled: var(--eli-color-neutral-300);
+  --eli-border-interaction-error: var(--eli-color-red-500);
+  --eli-border-interaction-success: var(--eli-color-green-500);
+
   /* Background / Brand */
   --eli-background-brand-primary: var(--eli-color-blue-500);
   --eli-background-brand-secondary: var(--eli-color-blue-100);
