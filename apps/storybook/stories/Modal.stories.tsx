@@ -7,7 +7,8 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   args: {
     title: '제목',
-    children: '내용을 작성합니다\n내용을 작성합니다',
+    message: '내용을 작성합니다',
+    subMessage: '내용을 작성합니다',
     positiveAction: '버튼',
     secondaryAction: '버튼',
     width: '343px',
@@ -18,10 +19,15 @@ const meta = {
       control: 'text',
       description: '모달 상단에 표시할 제목이에요.',
     },
-    children: {
-      name: '텍스트',
+    message: {
+      name: '첫 번째 내용',
       control: 'text',
-      description: '제목 아래에 표시할 내용이에요. 줄바꿈을 입력해 여러 줄로 표시할 수 있어요.',
+      description: '제목 아래 첫 번째 문장으로 표시할 내용이에요.',
+    },
+    subMessage: {
+      name: '두 번째 내용',
+      control: 'text',
+      description: '제목 아래 두 번째 문장으로 표시할 내용이에요.',
     },
     positiveAction: {
       name: 'Positive 버튼명',

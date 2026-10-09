@@ -16,6 +16,24 @@ export function Example() {
 }
 ```
 
+Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요.
+
+```tsx
+import { Modal } from '@eli/ui/modal';
+
+export function ConfirmModal() {
+  return (
+    <Modal
+      title="제목"
+      message="첫 번째 내용을 작성합니다"
+      subMessage="두 번째 내용을 작성합니다"
+      secondaryAction="취소"
+      positiveAction="확인"
+    />
+  );
+}
+```
+
 TextField는 아래 경로에서 가져와요. 라벨과 Placeholder 문구를 바꾸고 하나의 상태를 선택할 수 있어요.
 
 ```tsx
