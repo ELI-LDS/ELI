@@ -12,7 +12,7 @@
 
 `packages/ui/src/select/index.ts`는 Select와 관련 타입을 `@eli/ui/select`로 공개해요. 라벨, Placeholder 문구, 옵션 배열과 제어·비제어 선택 값은 하나의 Select props로 관리해요. 반복되는 옵션 행은 내부 `SelectOption` 컴포넌트로 분리하고, 선택 상태·키보드·포커스 동작은 `Select/useSelect.ts`에서 관리해요. 내부 컴포넌트와 Hook에는 별도 공개 경로를 제공하지 않아요.
 
-`packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
+`packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리하고, 상태와 클릭 동작은 `Toggle/useToggle.ts`에서 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
 
 `packages/ui/src/text/index.ts`는 TextField와 TextArea를 `@eli/ui/text`로 공개해요. TextField의 `default`, `error`, `success`, `disabled` 상태는 하나의 `state` prop으로 관리해 서로 겹치지 않게 해요. TextArea의 Hover·Focus·입력 완료·Disabled 상태는 네이티브 `textarea`의 상호작용과 속성으로 표현해요. 각 컴포넌트의 구현과 스타일은 `text` 아래의 PascalCase 폴더에서 따로 관리해요.
 
