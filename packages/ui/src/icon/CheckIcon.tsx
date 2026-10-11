@@ -1,0 +1,18 @@
+/* Check Icon */
+export function CheckIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      height="14"
+      viewBox="0 0 18 14"
+      width="18"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5.59 10.58L1.42 6.41L0 7.82L5.59 13.41L17.59 1.41L16.18 0L5.59 10.58Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
