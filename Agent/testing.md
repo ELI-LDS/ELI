@@ -37,4 +37,12 @@
 
 React·추가 의존성까지 합친 다운로드 크기나 브라우저 번들 크기로 표현하지 않아요. 최초 빈 패키지 크기를 완성된 라이브러리 크기로 안내하지 않아요. 임의의 상한은 두지 않고 증가 이유를 검토해요. 이전 릴리스 자동 비교와 Storybook 용량 표시는 후속 작업이에요.
 
-실제 배포 전에는 `pnpm test:packaging`으로 생성한 원본 tarball도 확인해요. 게시 작업과 배포 자동화는 현재 설정하지 않아요.
+실제 npm 배포 전에는 `pnpm test:packaging`으로 생성한 원본 tarball도 확인해요. npm 게시와 배포 자동화는 현재 설정하지 않아요.
+
+## Storybook 배포를 확인해요
+
+`.github/workflows/storybook-pages.yml`은 PR이 `main`에 병합된 경우에만 실행해요. 병합하지 않고 닫은 PR과 작업 브랜치의 푸시는 Storybook 빌드를 시작하지 않아요. 최신 `main`을 체크아웃해 고정된 Node.js·pnpm 버전으로 설치하고 `pnpm build:storybook`을 실행한 뒤 Cloudflare Pages에 정적 파일을 올려요. 같은 시점에 여러 PR이 병합되면 이전 배포 작업을 취소해요.
+
+처음 사용하기 전에 Cloudflare Pages에서 **Direct Upload** 프로젝트 `eli-lds-storybook`을 만들고 프로덕션 브랜치를 `main`으로 지정해요. Git 연동 프로젝트를 만들면 Cloudflare 자체 빌드가 중복될 수 있으므로 Direct Upload를 선택해요. Cloudflare API 토큰에는 해당 계정의 **Account → Cloudflare Pages → Edit** 권한을 줘요. GitHub 저장소의 Actions secrets에 `CLOUDFLARE_ACCOUNT_ID`와 `CLOUDFLARE_API_TOKEN`을 등록해요. 토큰 값은 파일이나 PR에 넣지 않아요.
+
+설정을 마친 뒤 PR 하나를 `main`에 병합해 GitHub Actions의 `Deploy Storybook` 실행 결과와 `https://eli-lds-storybook.pages.dev`의 실제 Storybook 화면을 확인해요. 현재 워크플로는 npm 패키지를 게시하지 않아요.
