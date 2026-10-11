@@ -2,7 +2,8 @@
 
 import './Select.css';
 import { ArrowDownIcon } from '../../icon/ArrowDownIcon.js';
-import { SelectOption as SelectOptionItem } from '../SelectOption/SelectOption.js';
+import { ChevronForwardIcon } from '../../icon/ChevronForwardIcon.js';
+import { MenuItem } from '../../menu/MenuItem/MenuItem.js';
 import type { SelectProps } from './Select.types.js';
 import { useSelect } from './useSelect.js';
 
@@ -88,13 +89,16 @@ export function Select({
             role="listbox"
           >
             {options.map((option, index) => (
-              <SelectOptionItem
+              <MenuItem
+                aria-selected={option.value === selectedValue}
                 id={`${listboxId}-option-${index}`}
-                isSelected={option.value === selectedValue}
                 key={option.value}
-                label={option.label}
                 onClick={() => handleOptionClick(option.value)}
-              />
+                rightIcon={<ChevronForwardIcon />}
+                role="option"
+              >
+                {option.label}
+              </MenuItem>
             ))}
           </div>
         ) : null}

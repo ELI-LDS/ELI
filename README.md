@@ -2,7 +2,7 @@
 
 동아리 개발자를 위한 React 디자인 컴포넌트 라이브러리예요. `@eli/ui`를 한 번 설치하고 그룹별 경로에서 컴포넌트를 가져오는 사용 경험을 만들어요. 기본 CSS와 디자인 토큰은 컴포넌트가 내부에서 연결해요.
 
-현재는 개발 환경과 패키징 검증을 준비하고 색상·타이포그래피·레이아웃 토큰 구현을 완료한 단계예요. Button·Divider·SnackBar·Toggle·Modal·Select·TextField·TextArea의 기본 구조와 디자인 상태를 구현했어요. Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 문서 사이트와 MCP는 아직 구현하지 않았어요. npm에도 게시하지 않았어요.
+현재는 개발 환경과 패키징 검증을 준비하고 색상·타이포그래피·레이아웃 토큰 구현을 완료한 단계예요. Button·Divider·MenuItem·SnackBar·Toggle·Modal·Select·TextField·TextArea의 기본 구조와 디자인 상태를 구현했어요. Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 문서 사이트와 MCP는 아직 구현하지 않았어요. npm에도 게시하지 않았어요.
 
 `@eli/ui`는 폰트 패밀리 토큰만 제공하고 Pretendard 파일이나 폰트 패키지를 포함하지 않아요. 추후 초기 설정 도구가 소비 프로젝트에 폰트를 한 번 설치하고 연결할 예정이에요. 현재는 소비 프로젝트가 Pretendard를 직접 불러와야 해요.
 
@@ -62,6 +62,7 @@ ELI/
 │           ├── divider/    # Divider 컴포넌트 그룹
 │           ├── dim/        # 오버레이 컴포넌트가 공유하는 내부 Dim
 │           ├── icon/       # 컴포넌트에서 재사용하는 내부 아이콘
+│           ├── menu/       # MenuItem 컴포넌트 그룹
 │           ├── modal/      # Modal 컴포넌트 그룹
 │           ├── select/     # Select 컴포넌트 그룹
 │           ├── snackbar/   # SnackBar 컴포넌트 그룹
@@ -73,7 +74,7 @@ ELI/
     └── packaging/          # 패키지 설치·타입·CSS 연결 검증
 ```
 
-새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 현재 `button/Button/`, `divider/Divider/`, `snackbar/SnackBar/`, `modal/Modal/`, `select/Select/`, `select/SelectOption/`, `text/TextField/`, `text/TextArea/`, `toggle/Toggle/`에는 각 컴포넌트의 타입·구조·스타일이 있어요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고, 별도 공개 경로를 제공하지 않아요. `tokens/`에는 완성된 색상·타이포그래피·레이아웃 토큰이 있어요.
+새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 현재 `button/Button/`, `divider/Divider/`, `menu/MenuItem/`, `snackbar/SnackBar/`, `modal/Modal/`, `select/Select/`, `text/TextField/`, `text/TextArea/`, `toggle/Toggle/`에는 각 컴포넌트의 타입·구조·스타일이 있어요. Select의 옵션 행은 공개 MenuItem을 재사용해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고, 별도 공개 경로를 제공하지 않아요. `tokens/`에는 완성된 색상·타이포그래피·레이아웃 토큰이 있어요.
 
 공통 작업 규칙은 루트 `AGENTS.md`에서 안내하고, 상세 지침은 `Agent/`에서 관리해요. `node_modules/`, `dist/`, `storybook-static/`, `.artifacts/`는 자동 생성 폴더라 직접 수정하거나 Git에 올리지 않아요.
 

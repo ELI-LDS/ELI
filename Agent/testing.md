@@ -12,7 +12,7 @@
 
 검증용 소비 앱은 저장소의 개발용 React·Vite를 사용해요. React 버전별 독립 설치나 Next.js 호환 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
 
-`pnpm dev`로 Storybook의 Button·SnackBar·Modal·Select·TextField·TextArea·Toggle 예제를 열어 기본 스타일·상태·커스터마이징을 확인해요. 상호작용·키보드·접근성 자동 검사는 아직 없어요.
+`pnpm dev`로 Storybook의 Button·Divider·MenuItem·Modal·Select·SnackBar·TextArea·TextField·Toggle 예제를 열어 기본 스타일·상태·커스터마이징을 확인해요. 상호작용·키보드·접근성 자동 검사는 아직 없어요.
 
 현재 `pnpm check`는 컴포넌트 단위 테스트를 실행하지 않아요. 실제 컴포넌트와 `.test.tsx`를 추가할 때 테스트 실행 도구와 명령도 함께 구성해요. `.storybook`의 설정 파일은 통합 타입 검사에 포함해요.
 
