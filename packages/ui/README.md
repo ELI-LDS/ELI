@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -13,6 +13,16 @@ import { Badge } from '@eli/ui/badge';
 
 export function Label() {
   return <Badge size="medium">ELI 라이브러리</Badge>;
+}
+```
+
+Alert는 `status`에 맞는 색상과 아이콘으로 제목과 본문을 표시해요. 화면에 띄우는 Toast 동작은 포함하지 않아요.
+
+```tsx
+import { Alert } from '@eli/ui/alert';
+
+export function DeleteResult() {
+  return <Alert message="삭제된 파일은 30일 동안 휴지통에 보관돼요." status="success" title="파일을 삭제했어요." />;
 }
 ```
 

@@ -4,6 +4,8 @@
 
 `packages/ui`만 `@eli/ui`로 배포해요. 공통 토큰도 이 패키지에 포함해요. `apps/storybook`은 비공개 개발 앱이에요.
 
+`packages/ui/src/alert/index.ts`는 Alert와 관련 타입을 `@eli/ui/alert`로 공개해요. Alert는 `error`, `success`, `caution`, `info` 상태에 맞는 색상과 아이콘으로 제목과 선택적인 본문을 표시하는 표시용 컴포넌트예요. 화면에 띄우고 자동으로 사라지게 하는 Toast 동작과 라이브 리전은 포함하지 않아요.
+
 `packages/ui/src/badge/index.ts`는 Badge와 관련 타입을 `@eli/ui/badge`로 공개해요. Badge는 상호작용이 없는 표시용 요소이고, `large`·`medium` 크기는 각각 Label/Large·Label/Medium 타이포그래피만 다르게 적용해요.
 
 `packages/ui/src/button/index.ts`는 Button과 관련 타입을 `@eli/ui/button`으로 공개해요. 크기·형태·색상 조합은 별도 컴포넌트가 아니라 하나의 Button props로 관리해요. `color`는 디자인 속성과 같은 `brand`, `neutral`을 사용해요. 아이콘만 표시하는 IconButton도 같은 경로로 공개해요. IconButton은 `solid`, `outline` 형태와 `large`(48px), `medium`(40px) 크기를 지원하고, 텍스트가 없으므로 `aria-label`을 필수로 받아요.
@@ -52,4 +54,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
