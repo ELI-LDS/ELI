@@ -41,8 +41,8 @@ React·추가 의존성까지 합친 다운로드 크기나 브라우저 번들 
 
 ## Storybook 배포를 확인해요
 
-`.github/workflows/storybook-pages.yml`은 PR이 `main`에 병합된 경우에만 실행해요. 병합하지 않고 닫은 PR과 작업 브랜치의 푸시는 Storybook 빌드를 시작하지 않아요. 최신 `main`을 체크아웃해 고정된 Node.js·pnpm 버전으로 설치하고 `pnpm build:storybook`을 실행한 뒤 Cloudflare Pages에 정적 파일을 올려요. 같은 시점에 여러 PR이 병합되면 이전 배포 작업을 취소해요.
+Cloudflare Workers Builds는 연결된 Git 저장소의 `main` 푸시마다 Storybook을 빌드하고 `wrangler.jsonc`에 지정된 정적 파일을 기존 Worker `eli-lds-storybook`에 배포해요. 작업 브랜치의 빌드를 막으려면 Cloudflare의 Preview Builds를 꺼요. 프로젝트 규칙대로 PR을 병합하면 `main`에 푸시되지만, `main`에 직접 푸시해도 빌드가 실행돼요.
 
-처음 사용하기 전에 Cloudflare Pages에서 **Direct Upload** 프로젝트 `eli-lds-storybook`을 만들고 프로덕션 브랜치를 `main`으로 지정해요. Git 연동 프로젝트를 만들면 Cloudflare 자체 빌드가 중복될 수 있으므로 Direct Upload를 선택해요. Cloudflare API 토큰에는 해당 계정의 **Account → Cloudflare Pages → Edit** 권한을 줘요. GitHub 저장소의 Actions secrets에 `CLOUDFLARE_ACCOUNT_ID`와 `CLOUDFLARE_API_TOKEN`을 등록해요. 토큰 값은 파일이나 PR에 넣지 않아요.
+Cloudflare 대시보드에서 **Workers & Pages → eli-lds-storybook → Settings → Build**를 열어 Git 저장소가 `ELI-LDS/ELI`, 프로덕션 브랜치가 `main`, 루트 디렉터리가 저장소 루트인지 확인해요. **Build command**는 `pnpm build:storybook`, **Deploy command**는 `npx wrangler deploy`로 지정하고 **Enable Preview Builds**를 꺼요. **Build Variables and Secrets**에 일반 변수 `PNPM_VERSION=12.8.1`을 추가해요. Node.js는 저장소 루트의 `.node-version`을 따라요. GitHub Actions 비밀 값은 필요 없어요.
 
-설정을 마친 뒤 PR 하나를 `main`에 병합해 GitHub Actions의 `Deploy Storybook` 실행 결과와 `https://eli-lds-storybook.pages.dev`의 실제 Storybook 화면을 확인해요. 현재 워크플로는 npm 패키지를 게시하지 않아요.
+설정을 마친 뒤 PR을 `main`에 병합해 Cloudflare **Deployments**에서 빌드 성공과 `https://eli-storybook.jihong.dev`의 실제 Storybook 화면을 확인해요. 실패한 빌드는 설정을 수정한 후 **Retry**로 다시 실행할 수 있어요. 이 설정은 npm 패키지를 게시하지 않아요.

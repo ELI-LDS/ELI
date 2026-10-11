@@ -84,7 +84,7 @@ ELI/
 
 ## Storybook을 배포해요
 
-[Storybook 배포 설정](Agent/testing.md#storybook-배포를-확인해요)을 마치면 PR이 `main`에 병합될 때 정적 페이지를 빌드해 Cloudflare Pages에 올려요. npm 패키지 배포는 아직 자동화하지 않았어요.
+[Storybook 배포 설정](Agent/testing.md#storybook-배포를-확인해요)을 마치면 `main`에 변경 사항이 반영될 때 정적 페이지를 빌드해 Cloudflare Worker에 올려요. npm 패키지 배포는 아직 자동화하지 않았어요.
 
 ## 함께 작업해요
 
