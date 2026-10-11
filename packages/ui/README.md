@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·Divider·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -23,6 +23,16 @@ import { Divider } from '@eli/ui/divider';
 
 export function SectionDivider() {
   return <Divider />;
+}
+```
+
+MenuItem은 텍스트와 선택적인 좌우 아이콘·단축키를 받아요.
+
+```tsx
+import { MenuItem } from '@eli/ui/menu';
+
+export function Menu() {
+  return <MenuItem shortcut="⇧⌘P">선택</MenuItem>;
 }
 ```
 

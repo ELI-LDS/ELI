@@ -1,0 +1,107 @@
+/* Mouse Down / Text */
+.eli-menu-item[data-interaction='down'] .eli-menu-item__text {
+  animation: eli-menu-item-text-down 0.2s linear both;
+}
+
+/* Mouse Down / Label */
+.eli-menu-item[data-interaction='down'] .eli-menu-item__label {
+  animation: eli-menu-item-label-size-down 0.2s linear both;
+}
+
+/* Mouse Down / Icon */
+.eli-menu-item[data-interaction='down']
+  :is(.eli-menu-item__left-icon, .eli-menu-item__right-icon) {
+  animation: eli-menu-item-icon-down 0.2s linear both;
+}
+
+/* Mouse Up / Text */
+.eli-menu-item[data-interaction='up'] .eli-menu-item__text {
+  animation: eli-menu-item-text-up 0.3s linear both;
+}
+
+/* Mouse Up / Label */
+.eli-menu-item[data-interaction='up'] .eli-menu-item__label {
+  animation: eli-menu-item-label-size-up 0.3s linear both;
+}
+
+/* Mouse Up / Icon */
+.eli-menu-item[data-interaction='up']
+  :is(.eli-menu-item__left-icon, .eli-menu-item__right-icon) {
+  animation: eli-menu-item-icon-up 0.3s linear both;
+}
+
+@keyframes eli-menu-item-label-size-down {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    font-size: 16px;
+  }
+
+  100% {
+    font-size: 15.2px;
+  }
+}
+
+@keyframes eli-menu-item-icon-down {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    transform: scale(1);
+  }
+
+  100% {
+    transform: scale(0.95);
+  }
+}
+
+@keyframes eli-menu-item-text-down {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    border-width: 1px;
+  }
+
+  100% {
+    border-width: 0.95px;
+  }
+}
+
+@keyframes eli-menu-item-label-size-up {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    font-size: 15.2px;
+  }
+
+  100% {
+    font-size: 16px;
+  }
+}
+
+@keyframes eli-menu-item-icon-up {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    transform: scale(0.95);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes eli-menu-item-text-up {
+  0% {
+    animation-timing-function: cubic-bezier(0.45, 1.45, 0.8, 1);
+    border-width: 0.95px;
+  }
+
+  100% {
+    border-width: 1px;
+  }
+}
+
+/* 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  .eli-menu-item[data-interaction] .eli-menu-item__text,
+  .eli-menu-item[data-interaction] .eli-menu-item__label,
+  .eli-menu-item[data-interaction]
+    :is(.eli-menu-item__left-icon, .eli-menu-item__right-icon) {
+    animation-duration: 0.01ms;
+  }
+}

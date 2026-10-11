@@ -8,11 +8,13 @@
 
 `packages/ui/src/divider/index.ts`는 Divider와 관련 타입을 `@eli/ui/divider`로 공개해요. Divider는 부모 영역의 너비를 따르고 `Border/Divider` 의미 토큰으로 구분선을 표시해요.
 
+`packages/ui/src/menu/index.ts`는 MenuItem과 관련 타입을 `@eli/ui/menu`로 공개해요. MenuItem은 기본 텍스트와 선택적인 좌우 아이콘·단축키를 하나의 컴포넌트로 관리하고, Hover·Pressed는 실제 사용자 상호작용으로 표현해요. Pointer 상태는 `MenuItem/useMenuItem.ts`, 기본 모양은 `MenuItem.css`, Mouse Down·Up 애니메이션은 `MenuItem.interaction.css`에서 관리해요.
+
 `packages/ui/src/snackbar/index.ts`는 SnackBar와 관련 타입을 `@eli/ui/snackbar`로 공개해요. 메시지, 액션 버튼명과 액션 버튼 색상은 하나의 SnackBar props로 관리해요.
 
 `packages/ui/src/modal/index.ts`는 Modal과 관련 타입을 `@eli/ui/modal`로 공개해요. 제목, 최대 두 개의 본문 문장, 좌우 버튼명과 콘텐츠 크기는 하나의 Modal props로 관리해요. 본문은 `message`와 `subMessage`로 각각 받고 임의 줄바꿈으로 나누지 않아요. Modal의 최종 최대 너비는 디자인 확정 전까지 TODO로 구분해요.
 
-`packages/ui/src/select/index.ts`는 Select와 관련 타입을 `@eli/ui/select`로 공개해요. 라벨, Placeholder 문구, 옵션 배열과 제어·비제어 선택 값은 하나의 Select props로 관리해요. 반복되는 옵션 행은 내부 `SelectOption` 컴포넌트로 분리하고, 선택 상태·키보드·포커스 동작은 `Select/useSelect.ts`에서 관리해요. 내부 컴포넌트와 Hook에는 별도 공개 경로를 제공하지 않아요.
+`packages/ui/src/select/index.ts`는 Select와 관련 타입을 `@eli/ui/select`로 공개해요. 라벨, Placeholder 문구, 옵션 배열과 제어·비제어 선택 값은 하나의 Select props로 관리해요. 반복되는 옵션 행은 공개 MenuItem을 재사용하고, 선택 상태·키보드·포커스 동작은 `Select/useSelect.ts`에서 관리해요.
 
 `packages/ui/src/toggle/index.ts`는 Toggle과 관련 타입을 `@eli/ui/toggle`로 공개해요. 제어·비제어 상태와 상태 변경 함수는 하나의 Toggle props로 관리하고, 상태와 클릭 동작은 `Toggle/useToggle.ts`에서 관리해요. 기본 모양은 `Toggle.css`, 상태 전환과 모션 감소 처리는 `Toggle.interaction.css`에서 관리해요.
 
@@ -44,4 +46,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Button·Divider·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Button·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
