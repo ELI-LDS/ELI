@@ -7,7 +7,7 @@ export type ButtonSize = 'large' | 'medium';
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 
 /* Color */
-export type ButtonColor = 'primary' | 'tertiary';
+export type ButtonColor = 'brand' | 'neutral';
 
 /* Props */
 export interface ButtonProps
@@ -28,7 +28,7 @@ export interface ButtonProps
   height?: CSSProperties['height'];
 
   /* Style Options */
-  /** 버튼 색상 조합이에요. 기본값은 `primary`예요. */
+  /** 버튼 색상 조합이에요. 기본값은 `brand`예요. */
   color?: ButtonColor;
 
   /** 버튼 크기예요. 기본값은 `large`예요. */
