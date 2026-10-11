@@ -82,8 +82,12 @@ ELI/
 
 공통 작업 규칙은 루트 `AGENTS.md`에서 안내하고, 상세 지침은 `Agent/`에서 관리해요. `node_modules/`, `dist/`, `storybook-static/`, `.artifacts/`는 자동 생성 폴더라 직접 수정하거나 Git에 올리지 않아요.
 
+## Storybook을 배포해요
+
+[Storybook 배포 설정](Agent/testing.md#storybook-배포를-확인해요)을 마치면 `main`에 변경 사항이 반영될 때 정적 페이지를 빌드해 Cloudflare Worker에 올려요. npm 패키지 배포는 아직 자동화하지 않았어요.
+
 ## 함께 작업해요
 
 [AGENTS.md](AGENTS.md)에서 작업별 지침을 확인해요. [Git 규칙](Agent/branch.md)을 따르고 [검증 기준](Agent/testing.md)에 따라 PR에 실제 검사 결과와 용량을 기록해요. [버전 규칙](Agent/versioning.md)에 따라 예상 변경 유형도 적어요.
 
-현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. Next.js 소비 검증과 자동 배포는 후속 작업이에요.
+현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. Next.js 소비 검증과 npm 자동 배포는 후속 작업이에요.
