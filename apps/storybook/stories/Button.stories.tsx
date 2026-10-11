@@ -31,7 +31,7 @@ function ButtonGallery({ description, disabled = false }: ButtonGalleryProps) {
     <div
       style={{
         display: 'grid',
-        fontFamily: 'var(--eli-font-family-family, "Pretendard Variable")',
+        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
         gap: 32,
         minWidth: 560,
       }}

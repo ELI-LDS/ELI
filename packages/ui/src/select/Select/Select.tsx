@@ -67,7 +67,7 @@ export function Select({
           type="button"
         >
           <span
-            className={`eli-select__value eli-typo-body-medium${selectedOption ? '' : ' eli-select__placeholder'}`}
+            className={`eli-select__value eli-typo-body-large${selectedOption ? '' : ' eli-select__placeholder'}`}
             id={valueId}
           >
             {selectedOption?.label ?? placeholder}

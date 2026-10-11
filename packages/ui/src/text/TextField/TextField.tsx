@@ -15,6 +15,10 @@ export function TextField({
 }: TextFieldProps) {
   /* Class Name */
   const textFieldClassName = ['eli-text-field', className].filter(Boolean).join(' ');
+  const inputClassName = [
+    'eli-text-field__input',
+    state === 'disabled' ? 'eli-typo-label-medium' : 'eli-typo-body-large',
+  ].join(' ');
 
   return (
     /* Root */
@@ -32,7 +36,7 @@ export function TextField({
         <input
           {...props}
           aria-invalid={ariaInvalid ?? (state === 'error' || undefined)}
-          className="eli-text-field__input eli-typo-body-medium"
+          className={inputClassName}
           disabled={state === 'disabled'}
           placeholder={placeholder}
           type={type}

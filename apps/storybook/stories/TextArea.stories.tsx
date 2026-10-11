@@ -40,7 +40,7 @@ export const States: Story = {
     <div
       style={{
         display: 'grid',
-        fontFamily: 'var(--eli-font-family-family, "Pretendard Variable")',
+        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
         gap: 24,
       }}
     >

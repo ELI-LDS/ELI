@@ -17,7 +17,7 @@ export function SnackBar({
     /* Root */
     <div {...props} className={snackBarClassName}>
       {/* Message */}
-      <span className="eli-snackbar__message eli-typo-body-medium">{children}</span>
+      <span className="eli-snackbar__message eli-typo-body-large">{children}</span>
 
       {/* Action */}
       {action !== undefined && action !== null ? (
