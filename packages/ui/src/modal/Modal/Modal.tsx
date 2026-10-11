@@ -50,11 +50,11 @@ export function Modal({
 
         {/* Actions */}
         <div className="eli-modal__actions">
-          <Button color="tertiary" icon={null} onClick={onSecondaryAction} variant="solid" width="100%">
+          <Button color="neutral" icon={null} onClick={onSecondaryAction} variant="solid" width="100%">
             {secondaryAction}
           </Button>
           <Button
-            color="primary"
+            color="brand"
             icon={null}
             onClick={onPositiveAction}
             variant="solid"

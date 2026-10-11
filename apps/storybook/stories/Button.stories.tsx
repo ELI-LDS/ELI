@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@/packages/ui/src/button/Button/Button.js';
 
-const colors = ['primary', 'tertiary'] as const;
+const colors = ['brand', 'neutral'] as const;
 const sizes = ['large', 'medium'] as const;
 const variants = ['solid', 'outline', 'ghost'] as const;
 
 const colorNames = {
-  primary: 'Primary',
-  tertiary: 'Tertiary',
+  brand: 'Brand',
+  neutral: 'Neutral',
 } as const;
 
 const sizeNames = {
@@ -57,7 +57,13 @@ function ButtonGallery({ description, disabled = false }: ButtonGalleryProps) {
                 {variants.map(variant => (
                   <div key={variant} style={{ display: 'grid', gap: 8 }}>
                     <span style={{ color: '#6c788a', fontSize: 12 }}>{variantNames[variant]}</span>
-                    <Button color={color} disabled={disabled} size={size} variant={variant}>
+                    <Button
+                      color={color}
+                      disabled={disabled}
+                      size={size}
+                      style={{ justifySelf: 'start' }}
+                      variant={variant}
+                    >
                       버튼
                     </Button>
                   </div>
@@ -77,7 +83,7 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     children: '버튼',
-    color: 'primary',
+    color: 'brand',
     disabled: false,
     icon: true,
     size: 'large',

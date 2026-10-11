@@ -4,7 +4,7 @@
 
 `packages/ui`만 `@eli/ui`로 배포해요. 공통 토큰도 이 패키지에 포함해요. `apps/storybook`은 비공개 개발 앱이에요.
 
-`packages/ui/src/button/index.ts`는 Button과 관련 타입을 `@eli/ui/button`으로 공개해요. 크기·형태·색상 조합은 별도 컴포넌트가 아니라 하나의 Button props로 관리해요.
+`packages/ui/src/button/index.ts`는 Button과 관련 타입을 `@eli/ui/button`으로 공개해요. 크기·형태·색상 조합은 별도 컴포넌트가 아니라 하나의 Button props로 관리해요. `color`는 디자인 속성과 같은 `brand`, `neutral`을 사용해요.
 
 `packages/ui/src/snackbar/index.ts`는 SnackBar와 관련 타입을 `@eli/ui/snackbar`로 공개해요. 메시지, 액션 버튼명과 액션 버튼 색상은 하나의 SnackBar props로 관리해요.
 

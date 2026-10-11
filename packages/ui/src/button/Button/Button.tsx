@@ -11,7 +11,7 @@ export function Button({
 
   /* Style Options */
   backgroundColor,
-  color = 'primary',
+  color = 'brand',
   height,
   size = 'large',
   variant = 'solid',
