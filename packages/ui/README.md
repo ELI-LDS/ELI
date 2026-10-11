@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Badge·Button·IconButton·Chip·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -43,6 +43,16 @@ import { Chip } from '@eli/ui/chip';
 
 export function Tag() {
   return <Chip onRemove={() => {}} selected>ELI 라이브러리</Chip>;
+}
+```
+
+Checkbox는 네이티브 체크박스예요. 라벨 텍스트가 없으므로 `aria-label`이나 연결된 `label`로 이름을 전달해요.
+
+```tsx
+import { Checkbox } from '@eli/ui/checkbox';
+
+export function Agreement() {
+  return <Checkbox aria-label="약관 동의" defaultChecked />;
 }
 ```
 

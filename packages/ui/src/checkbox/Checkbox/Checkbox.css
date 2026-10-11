@@ -1,0 +1,45 @@
+@import '../../tokens/index.css';
+
+/* Base Layout */
+.eli-checkbox {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: var(--eli-layout-scale-6, 24px);
+  height: 24px;
+}
+
+/* Native Checkbox / Off */
+.eli-checkbox__input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 2px solid var(--eli-border-interaction-default, #a9b5c5);
+  border-radius: var(--eli-layout-scale-1, 4px);
+  appearance: none;
+  background: var(--eli-background-neutral-primary, #fff);
+  cursor: pointer;
+}
+
+/* Native Checkbox / On */
+.eli-checkbox__input:checked {
+  border-color: var(--eli-foreground-brand-primary, #3584fb);
+  background: var(--eli-background-brand-primary, #3584fb);
+}
+
+/* Check Icon */
+.eli-checkbox__icon {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--eli-foreground-brand-inverse, #fff);
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.eli-checkbox__input:checked + .eli-checkbox__icon {
+  visibility: visible;
+}
