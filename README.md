@@ -84,7 +84,7 @@ ELI/
 
 ## Storybook을 배포해요
 
-[Storybook 배포 설정](Agent/testing.md#storybook-배포를-확인해요)을 마치면 `main`에 변경 사항이 반영될 때 정적 페이지를 빌드해 Cloudflare Worker에 올려요. npm 패키지 배포는 아직 자동화하지 않았어요.
+[Storybook](https://eli-storybook.jihong.dev)은 `main`에 변경 사항이 반영될 때 Cloudflare Worker에서 새로 빌드해요. 설정과 확인 방법은 [Storybook 배포 설정](Agent/testing.md#storybook-배포를-확인해요)을 참고해요. npm 패키지 배포는 아직 자동화하지 않았어요.
 
 ## 함께 작업해요
 
