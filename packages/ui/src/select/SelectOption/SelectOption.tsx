@@ -14,7 +14,7 @@ export function SelectOption({ id, isSelected, label, onClick }: SelectOptionPro
       type="button"
     >
       {/* Text */}
-      <span className="eli-select-option__text eli-typo-body-medium">{label}</span>
+      <span className="eli-select-option__text eli-typo-body-large">{label}</span>
 
       {/* Right Icon */}
       <span className="eli-select-option__icon">

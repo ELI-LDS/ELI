@@ -17,7 +17,7 @@
 
 ## 타이포그래피 기준을 지켜요
 
-기본 글꼴은 `Pretendard Variable`이에요. 컴포넌트에서는 `--eli-font-family-family`를 사용하고 소비 앱 전체의 `font-family`를 강제로 바꾸지 않아요. 시스템에 Variable 글꼴이 없으면 `Pretendard`와 시스템 글꼴 순서로 대체해요.
+기본 글꼴은 `Pretendard Variable`이에요. 컴포넌트에서는 `--eli-font-family-sans`를 사용하고 소비 앱 전체의 `font-family`를 강제로 바꾸지 않아요. 시스템에 Variable 글꼴이 없으면 `Pretendard`와 시스템 글꼴 순서로 대체해요.
 
 `@eli/ui`에는 폰트 파일, 원격 CDN import, 폰트 패키지 의존성을 포함하지 않아요. 초기 설정 도구가 소비 프로젝트에 Pretendard를 한 번 설치하고 로딩 설정을 추가해요. 소비 프로젝트가 이미 Pretendard를 불러오고 있다면 같은 설정을 중복으로 추가하지 않아요.
 
@@ -29,9 +29,9 @@
 
 기본 굵기도 `tokens/typography.css`에서 `--eli-font-weight-{이름}` 형식으로 관리해요. 모바일과 데스크탑 값이 같으면 하나의 토큰을 함께 사용해요. Pretendard Variable에서 제공하는 연속적인 굵기 값은 정수 그대로 유지해요.
 
-역할별 글자 크기는 `--eli-font-size-{종류}-{단계}` 형식으로 기본 크기 토큰을 참조해요. 데스크탑 값을 기본으로 선언하고 모바일 구간에서 같은 토큰을 덮어써요. 별도의 `-mobile`, `-desktop` 토큰을 중복으로 공개하지 않아요.
+역할별 글자 크기는 `--eli-font-size-{종류}-{단계}` 형식으로 기본 크기 토큰을 참조해요. 데스크탑 값을 기본으로 선언하고 모바일 구간에서 같은 토큰을 덮어써요. Heading의 모바일 재정의는 관련 H1~H4 클래스 바로 다음에 배치해 두 값을 한 번에 확인할 수 있게 해요. 별도의 `-mobile`, `-desktop` 토큰을 중복으로 공개하지 않아요.
 
-여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. `Body/Medium`은 `.eli-typo-body-medium`, `Label/Large`는 `.eli-typo-label-large`, `Label/Medium`은 `.eli-typo-label-medium`을 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
+여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. Heading은 `.eli-typo-heading-h1`부터 `.eli-typo-heading-h4`, Body는 `.eli-typo-body-large`와 `.eli-typo-body-medium`, Label은 `.eli-typo-label-large`·`.eli-typo-label-medium`·`.eli-typo-label-small`을 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
 
 ## 레이아웃 기준을 재사용해요
 

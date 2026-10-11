@@ -2,7 +2,7 @@
 
 :root {
   /* Primitive / Font Family */
-  --eli-font-family-family:
+  --eli-font-family-sans:
     "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
     "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
@@ -47,44 +47,7 @@
   --eli-font-size-label-03: var(--eli-size-12);
 }
 
-/* Typography / Heading / H4 */
-.eli-typo-heading-h4 {
-  font-family: var(--eli-font-family-family, "Pretendard Variable");
-  font-size: var(--eli-font-size-heading-h4, 20px);
-  font-style: normal;
-  font-weight: var(--eli-font-weight-bold, 700);
-  line-height: 120%;
-  letter-spacing: -0.2px;
-}
-
-/* Typography / Body / Medium */
-.eli-typo-body-medium {
-  font-family: var(--eli-font-family-family, "Pretendard Variable");
-  font-size: var(--eli-font-size-body-01, 16px);
-  font-style: normal;
-  font-weight: var(--eli-font-weight-regular, 400);
-  line-height: 150%;
-}
-
-/* Typography / Label / Large */
-.eli-typo-label-large {
-  font-family: var(--eli-font-family-family, "Pretendard Variable");
-  font-size: var(--eli-font-size-label-01, 16px);
-  font-style: normal;
-  font-weight: var(--eli-font-weight-semibold, 600);
-  line-height: 120%;
-}
-
-/* Typography / Label / Medium */
-.eli-typo-label-medium {
-  font-family: var(--eli-font-family-family, "Pretendard Variable");
-  font-size: var(--eli-font-size-label-02, 14px);
-  font-style: normal;
-  font-weight: var(--eli-font-weight-medium, 500);
-  line-height: 120%;
-}
-
-/* Mobile에서는 같은 Heading 토큰에 모바일 값을 덮어써요. */
+/* Typography / Heading / Mobile */
 @media (max-width: 767px) {
   :root {
     --eli-font-size-heading-h1: var(--eli-size-40);
@@ -92,4 +55,75 @@
     --eli-font-size-heading-h3: var(--eli-size-24);
     --eli-font-size-heading-h4: var(--eli-size-20);
   }
+}
+
+/* Typography / Heading */
+.eli-typo-heading-h1,
+.eli-typo-heading-h2,
+.eli-typo-heading-h3,
+.eli-typo-heading-h4 {
+  font-family: var(--eli-font-family-sans, "Pretendard Variable");
+  font-style: normal;
+  font-weight: var(--eli-font-weight-bold, 700);
+  line-height: 120%;
+  letter-spacing: -0.02em;
+}
+
+.eli-typo-heading-h1 {
+  font-size: var(--eli-font-size-heading-h1, 56px);
+}
+
+.eli-typo-heading-h2 {
+  font-size: var(--eli-font-size-heading-h2, 40px);
+}
+
+.eli-typo-heading-h3 {
+  font-size: var(--eli-font-size-heading-h3, 32px);
+}
+
+.eli-typo-heading-h4 {
+  font-size: var(--eli-font-size-heading-h4, 24px);
+}
+
+/* Typography / Body */
+.eli-typo-body-large,
+.eli-typo-body-medium {
+  font-family: var(--eli-font-family-sans, "Pretendard Variable");
+  font-style: normal;
+  font-weight: var(--eli-font-weight-regular, 400);
+  line-height: 150%;
+  letter-spacing: 0;
+}
+
+.eli-typo-body-large {
+  font-size: var(--eli-font-size-body-01, 16px);
+}
+
+.eli-typo-body-medium {
+  font-size: var(--eli-font-size-body-02, 14px);
+}
+
+/* Typography / Label */
+.eli-typo-label-large,
+.eli-typo-label-medium,
+.eli-typo-label-small {
+  font-family: var(--eli-font-family-sans, "Pretendard Variable");
+  font-style: normal;
+  line-height: 120%;
+  letter-spacing: 0;
+}
+
+.eli-typo-label-large {
+  font-size: var(--eli-font-size-label-01, 16px);
+  font-weight: var(--eli-font-weight-semibold, 600);
+}
+
+.eli-typo-label-medium {
+  font-size: var(--eli-font-size-label-02, 14px);
+  font-weight: var(--eli-font-weight-medium, 500);
+}
+
+.eli-typo-label-small {
+  font-size: var(--eli-font-size-label-03, 12px);
+  font-weight: var(--eli-font-weight-medium, 500);
 }

@@ -38,7 +38,7 @@ export function Modal({
         {/* Text */}
         <div className="eli-modal__text">
           <div className="eli-modal__title eli-typo-heading-h4">{title}</div>
-          <div className="eli-modal__descriptions eli-typo-body-medium">
+          <div className="eli-modal__descriptions eli-typo-body-large">
             {message !== null ? (
               <div className="eli-modal__description">{message}</div>
             ) : null}
