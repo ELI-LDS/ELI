@@ -5,3 +5,10 @@ export type {
   ButtonSize,
   ButtonVariant,
 } from './Button/Button.types.js';
+export { IconButton } from './IconButton/IconButton.js';
+export type {
+  IconButtonColor,
+  IconButtonProps,
+  IconButtonSize,
+  IconButtonVariant,
+} from './IconButton/IconButton.types.js';
