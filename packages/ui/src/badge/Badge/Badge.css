@@ -1,0 +1,13 @@
+@import '../../tokens/index.css';
+
+/* Base Layout */
+.eli-badge {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--eli-layout-scale-2, 8px) var(--eli-layout-scale-3, 12px);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
+  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+}
