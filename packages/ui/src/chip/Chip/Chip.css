@@ -1,0 +1,53 @@
+@import '../../tokens/index.css';
+
+/* Base Layout */
+.eli-chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--eli-layout-scale-2, 8px);
+  height: 48px;
+  padding: var(--eli-layout-scale-3, 12px) var(--eli-layout-scale-4, 16px);
+  border: 1px solid;
+  border-radius: var(--eli-layout-scale-2, 8px);
+}
+
+/* Content / Text */
+.eli-chip__text {
+  display: inline-flex;
+}
+
+/* Content / Remove Button */
+.eli-chip__remove {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* State / Off */
+.eli-chip[data-selected='false'] {
+  border-color: var(--eli-border-interaction-default, #a9b5c5);
+  background: var(--eli-background-neutral-primary, #fff);
+  color: var(--eli-foreground-neutral-secondary, #4b5668);
+}
+
+.eli-chip[data-selected='false'] .eli-chip__remove {
+  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+}
+
+/* State / On */
+.eli-chip[data-selected='true'] {
+  border-color: var(--eli-foreground-brand-primary, #3584fb);
+  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
+  color: var(--eli-foreground-brand-primary, #3584fb);
+}

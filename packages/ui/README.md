@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·IconButton·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Button·IconButton·Chip·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -23,6 +23,16 @@ import { IconButton } from '@eli/ui/button';
 
 export function AddButton() {
   return <IconButton aria-label="추가" variant="outline" />;
+}
+```
+
+Chip은 `selected`로 선택 상태를 표시하고, 닫기 버튼을 누르면 `onRemove`를 호출해요.
+
+```tsx
+import { Chip } from '@eli/ui/chip';
+
+export function Tag() {
+  return <Chip onRemove={() => {}} selected>ELI 라이브러리</Chip>;
 }
 ```
 
