@@ -20,8 +20,8 @@
 
   /* Foreground / Feedback */
   --eli-foreground-feedback-error: var(--eli-color-red-500);
-  --eli-foreground-feedback-success: var(--eli-color-green-500);
-  --eli-foreground-feedback-caution: var(--eli-color-yellow-500);
+  --eli-foreground-feedback-success: var(--eli-color-green-700);
+  --eli-foreground-feedback-caution: var(--eli-color-yellow-600);
 
   /* Border / Interaction */
   --eli-border-interaction-default: var(--eli-color-neutral-400);
@@ -59,6 +59,11 @@
   --eli-background-feedback-error: var(--eli-color-red-500);
   --eli-background-feedback-success: var(--eli-color-green-500);
   --eli-background-feedback-caution: var(--eli-color-yellow-500);
+
+  /* Background / Feedback / Subtle */
+  --eli-background-feedback-error-subtle: var(--eli-color-red-50);
+  --eli-background-feedback-success-subtle: var(--eli-color-green-50);
+  --eli-background-feedback-caution-subtle: var(--eli-color-yellow-50);
 
   /* Background / Feedback / States / Error */
   --eli-background-feedback-error-hover: var(--eli-color-red-400);
