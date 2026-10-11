@@ -30,6 +30,9 @@
   --eli-border-interaction-error: var(--eli-color-red-500);
   --eli-border-interaction-success: var(--eli-color-green-500);
 
+  /* Border / Divider */
+  --eli-border-divider: var(--eli-color-neutral-100);
+
   /* Background / Brand */
   --eli-background-brand-primary: var(--eli-color-blue-500);
   --eli-background-brand-secondary: var(--eli-color-blue-100);
