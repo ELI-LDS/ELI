@@ -1,0 +1,166 @@
+@import '../../tokens/index.css';
+
+/* Base Layout */
+.eli-icon-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: var(--eli-layout-scale-2, 8px);
+}
+
+/* Size / Large */
+.eli-icon-button[data-size='large'] {
+  width: 48px;
+  height: 48px;
+}
+
+/* Size / Medium */
+.eli-icon-button[data-size='medium'] {
+  width: 40px;
+  height: 40px;
+}
+
+/* Content / Icon */
+.eli-icon-button__icon {
+  display: inline-flex;
+}
+
+.eli-icon-button[data-size='large'] .eli-icon-button__icon {
+  width: 24px;
+  height: 24px;
+}
+
+.eli-icon-button[data-size='medium'] .eli-icon-button__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.eli-icon-button__icon > svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Color / Brand / Solid */
+.eli-icon-button[data-variant='solid'][data-color='brand'] {
+  color: var(--eli-foreground-brand-inverse, #fff);
+}
+
+/* Color / Brand / Outline */
+.eli-icon-button[data-variant='outline'][data-color='brand'] {
+  color: var(--eli-foreground-brand-primary, #3584fb);
+}
+
+/* Color / Neutral / Solid, Outline */
+.eli-icon-button[data-color='neutral'] {
+  color: var(--eli-foreground-neutral-secondary, #4b5668);
+}
+
+/* Color / Disabled / Brand / Solid */
+.eli-icon-button[data-variant='solid'][data-color='brand']:disabled {
+  color: var(--eli-foreground-brand-inverse-alpha, rgba(255, 255, 255, 0.8));
+}
+
+/* Color / Disabled / Brand / Outline */
+.eli-icon-button[data-variant='outline'][data-color='brand']:disabled {
+  color: var(--eli-foreground-brand-primary-alpha, rgba(53, 132, 251, 0.3));
+}
+
+/* Color / Disabled / Neutral / Solid, Outline */
+.eli-icon-button[data-color='neutral']:disabled {
+  color: var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+}
+
+/* Variant / Solid / Brand */
+.eli-icon-button[data-variant='solid'][data-color='brand'] {
+  background: var(--eli-background-brand-primary, #3584fb);
+}
+
+/* Variant / Solid / Neutral */
+.eli-icon-button[data-variant='solid'][data-color='neutral'] {
+  background: var(--eli-background-neutral-secondary, #eaf0f9);
+}
+
+/* Variant / Outline / Common */
+.eli-icon-button[data-variant='outline'] {
+  border: 1px solid;
+  background: var(--eli-background-neutral-primary, #fff);
+}
+
+/* Variant / Outline / Brand */
+.eli-icon-button[data-variant='outline'][data-color='brand'] {
+  border-color: var(--eli-foreground-brand-primary, #3584fb);
+}
+
+/* Variant / Outline / Neutral */
+.eli-icon-button[data-variant='outline'][data-color='neutral'] {
+  border-color: var(--eli-border-interaction-default, #a9b5c5);
+}
+
+/* State / Brand / Solid / Hover */
+.eli-icon-button[data-variant='solid'][data-color='brand']:hover:not(:disabled) {
+  background: var(--eli-background-brand-primary-hover, #5b9bfb);
+}
+
+/* State / Brand / Solid / Pressed */
+.eli-icon-button[data-variant='solid'][data-color='brand']:active:not(:disabled) {
+  background: var(--eli-background-brand-primary-pressed, #2a69c8);
+}
+
+/* State / Brand / Solid / Disabled */
+.eli-icon-button[data-variant='solid'][data-color='brand']:disabled {
+  background: var(--eli-background-brand-primary-disabled, rgba(53, 132, 251, 0.3));
+}
+
+/* State / Brand / Outline / Hover */
+/* 디자인의 Brand HoverAlpha(10%)에 맞는 의미 토큰이 없어 원시 색상에서 투명도를 계산해요. */
+.eli-icon-button[data-variant='outline'][data-color='brand']:hover:not(:disabled) {
+  background: rgb(from var(--eli-color-blue-500) r g b / 10%);
+}
+
+/* State / Brand / Outline / Pressed */
+/* 디자인의 Brand PressedAlpha(20%)에 맞는 의미 토큰이 없어 원시 색상에서 투명도를 계산해요. */
+.eli-icon-button[data-variant='outline'][data-color='brand']:active:not(:disabled) {
+  background: rgb(from var(--eli-color-blue-500) r g b / 20%);
+}
+
+/* State / Brand / Outline / Disabled */
+.eli-icon-button[data-variant='outline'][data-color='brand']:disabled {
+  border-color: var(--eli-foreground-brand-primary-alpha, rgba(53, 132, 251, 0.3));
+  background: var(--eli-background-neutral-primary, #fff);
+}
+
+/* State / Neutral / Solid / Hover */
+.eli-icon-button[data-variant='solid'][data-color='neutral']:hover:not(:disabled) {
+  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
+}
+
+/* State / Neutral / Solid / Pressed */
+.eli-icon-button[data-variant='solid'][data-color='neutral']:active:not(:disabled) {
+  background: var(--eli-background-neutral-secondary-pressed, #d9e1ec);
+}
+
+/* State / Neutral / Solid / Disabled */
+.eli-icon-button[data-variant='solid'][data-color='neutral']:disabled {
+  background: var(--eli-background-neutral-secondary-disabled, rgba(234, 240, 249, 0.7));
+}
+
+/* State / Neutral / Outline / Hover */
+.eli-icon-button[data-variant='outline'][data-color='neutral']:hover:not(:disabled) {
+  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
+}
+
+/* State / Neutral / Outline / Pressed */
+.eli-icon-button[data-variant='outline'][data-color='neutral']:active:not(:disabled) {
+  border-color: var(--eli-border-interaction-focused, #4b5668);
+  background: var(--eli-background-neutral-secondary-pressed, #d9e1ec);
+}
+
+/* State / Neutral / Outline / Disabled */
+.eli-icon-button[data-variant='outline'][data-color='neutral']:disabled {
+  border-color: var(--eli-border-interaction-disabled, #c4cedc);
+  background: var(--eli-background-neutral-primary, #fff);
+}
