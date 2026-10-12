@@ -49,7 +49,7 @@ export function MenuItem({
 
       {/* Text */}
       <span className="eli-menu-item__text">
-        <span className="eli-menu-item__label eli-typo-body-large">{children}</span>
+        <span className="eli-menu-item__label eli-typo-body-medium">{children}</span>
       </span>
 
       {/* Shortcut */}

@@ -17,7 +17,7 @@ export function TextField({
   const textFieldClassName = ['eli-text-field', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-field__input',
-    state === 'disabled' ? 'eli-typo-label-medium' : 'eli-typo-body-large',
+    state === 'disabled' ? 'eli-typo-label-medium' : 'eli-typo-body-medium',
   ].join(' ');
 
   return (

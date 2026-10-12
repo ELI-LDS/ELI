@@ -41,7 +41,7 @@ export function Alert({
       <div className="eli-alert__content">
         <p className="eli-alert__title eli-typo-label-large">{title}</p>
         {message !== undefined && message !== null ? (
-          <p className="eli-alert__message eli-typo-body-large">{message}</p>
+          <p className="eli-alert__message eli-typo-body-medium">{message}</p>
         ) : null}
       </div>
     </div>

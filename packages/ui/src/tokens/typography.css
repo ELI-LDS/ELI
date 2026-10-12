@@ -66,28 +66,31 @@
   font-style: normal;
   font-weight: var(--eli-font-weight-bold, 700);
   line-height: 120%;
-  letter-spacing: -0.02em;
 }
 
 .eli-typo-heading-h1 {
   font-size: var(--eli-font-size-heading-h1, 56px);
+  letter-spacing: -0.02em;
 }
 
 .eli-typo-heading-h2 {
   font-size: var(--eli-font-size-heading-h2, 40px);
+  letter-spacing: -0.01em;
 }
 
 .eli-typo-heading-h3 {
   font-size: var(--eli-font-size-heading-h3, 32px);
+  letter-spacing: -0.01em;
 }
 
 .eli-typo-heading-h4 {
   font-size: var(--eli-font-size-heading-h4, 24px);
+  letter-spacing: -0.01em;
 }
 
 /* Typography / Body */
-.eli-typo-body-large,
-.eli-typo-body-medium {
+.eli-typo-body-medium,
+.eli-typo-body-small {
   font-family: var(--eli-font-family-sans, "Pretendard Variable");
   font-style: normal;
   font-weight: var(--eli-font-weight-regular, 400);
@@ -95,11 +98,11 @@
   letter-spacing: 0;
 }
 
-.eli-typo-body-large {
+.eli-typo-body-medium {
   font-size: var(--eli-font-size-body-01, 16px);
 }
 
-.eli-typo-body-medium {
+.eli-typo-body-small {
   font-size: var(--eli-font-size-body-02, 14px);
 }
 
