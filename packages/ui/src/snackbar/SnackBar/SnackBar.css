@@ -10,8 +10,8 @@
   align-items: center;
   gap: var(--eli-layout-scale-4, 16px);
   border-radius: var(--eli-layout-scale-2, 8px);
-  background: var(--eli-background-neutral-primary, #fff);
-  box-shadow: 0 2px 8px 0 var(--eli-background-neutral-shadow, rgba(196, 206, 220, 0.6));
+  background: var(--eli-background-subtle, #f4f8fe);
+  box-shadow: 0 2px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
 }
 
 /* Content / Message */
@@ -21,7 +21,7 @@
   min-width: 0;
   overflow: hidden;
   overflow-wrap: anywhere;
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  color: var(--eli-foreground-default, #4b5668);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
@@ -34,5 +34,5 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--eli-foreground-brand-primary, #3584fb);
+  color: var(--eli-foreground-brand, #3584fb);
 }

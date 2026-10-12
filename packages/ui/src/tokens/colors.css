@@ -2,8 +2,8 @@
 
 :root {
   /* Static */
-  --eli-color-white: #ffffff;
-  --eli-color-black: #000000;
+  --eli-color-static-white: #ffffff;
+  --eli-color-static-black: #000000;
 
   /* Blue */
   --eli-color-blue-50: #e6f0ff;

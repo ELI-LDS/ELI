@@ -16,7 +16,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* 입력 영역 */
@@ -29,14 +29,14 @@
   border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
   border-radius: var(--eli-layout-scale-2, 8px);
   outline: 0;
-  background: var(--eli-background-neutral-primary, #fff);
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
   resize: none;
 }
 
 /* Placeholder */
 .eli-text-area__input::placeholder {
-  color: var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+  color: var(--eli-foreground-disabled, rgba(75, 86, 104, 0.3));
   opacity: 1;
 }
 
@@ -51,18 +51,18 @@
 }
 
 .eli-text-area__input:focus::placeholder {
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* Disabled */
 .eli-text-area__input:disabled {
   border-color: var(--eli-border-interaction-disabled, #c4cedc);
-  background: var(--eli-background-neutral-secondary, #eaf0f9);
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  background: var(--eli-background-interaction-neutral-disabled, rgba(234, 240, 249, 0.7));
+  color: var(--eli-foreground-subtle, #8b98aa);
   opacity: 1;
 }
 
 .eli-text-area__input:disabled::placeholder {
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
   opacity: 1;
 }

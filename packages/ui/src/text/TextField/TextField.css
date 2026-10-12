@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 10px;
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* 입력 영역 */
@@ -31,10 +31,9 @@
   align-self: stretch;
   align-items: center;
   gap: 10px;
-  border: 1px solid
-    var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+  border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
   border-radius: var(--eli-layout-scale-2, 8px);
-  background: var(--eli-background-neutral-primary, #fff);
+  background: var(--eli-background-default, #fff);
 }
 
 /* 입력 텍스트 */
@@ -48,12 +47,12 @@
   border: 0;
   outline: 0;
   background: transparent;
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  color: var(--eli-foreground-default, #4b5668);
 }
 
 /* Placeholder */
 .eli-text-field__input::placeholder {
-  color: var(--eli-foreground-neutral-secondary-alpha, rgba(75, 86, 104, 0.3));
+  color: var(--eli-foreground-disabled, rgba(75, 86, 104, 0.3));
   opacity: 1;
 }
 
@@ -63,17 +62,17 @@
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
 }
 
 /* Hover */
 .eli-text-field__container:hover {
-  border-color: var(--eli-foreground-neutral-secondary, #4b5668);
+  border-color: var(--eli-border-interaction-focused, #4b5668);
 }
 
 /* Focus */
 .eli-text-field__container:focus-within .eli-text-field__input::placeholder {
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* Error */
@@ -89,11 +88,11 @@
 /* Disabled */
 .eli-text-field[data-state="disabled"] .eli-text-field__input,
 .eli-text-field[data-state="disabled"] .eli-text-field__input::placeholder {
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
   opacity: 1;
 }
 
 .eli-text-field[data-state="disabled"] .eli-text-field__container {
-  border-color: var(--eli-foreground-neutral-tertiary-alpha, rgba(139, 152, 170, 0.3));
-  background: var(--eli-background-neutral-secondary-disabled, rgba(234, 240, 249, 0.7));
+  border-color: var(--eli-border-interaction-disabled, #c4cedc);
+  background: var(--eli-background-interaction-neutral-disabled, rgba(234, 240, 249, 0.7));
 }
