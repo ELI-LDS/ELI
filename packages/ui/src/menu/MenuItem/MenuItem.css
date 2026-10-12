@@ -10,8 +10,8 @@
   align-items: center;
   gap: var(--eli-layout-scale-2, 8px);
   border: 0;
-  background: var(--eli-background-neutral-primary, #fff);
-  color: var(--eli-foreground-neutral-primary, #020812);
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-strong, #020812);
   cursor: pointer;
   text-align: left;
 }
@@ -41,14 +41,14 @@
   flex: 0 0 var(--eli-layout-scale-5, 20px);
   align-items: center;
   justify-content: center;
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  color: var(--eli-foreground-default, #4b5668);
   transform-origin: center;
 }
 
 /* Shortcut */
 .eli-menu-item__shortcut {
   flex: 0 0 auto;
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
   overflow-wrap: break-word;
   white-space: nowrap;
 }
@@ -61,16 +61,16 @@
   flex: 0 0 var(--eli-layout-scale-6, 24px);
   align-items: center;
   justify-content: center;
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
   transform-origin: center;
 }
 
 /* State / Hover */
 .eli-menu-item:hover:not(:disabled) {
-  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
 }
 
 /* State / Pressed */
 .eli-menu-item:active:not(:disabled) {
-  background: var(--eli-background-neutral-secondary-pressed, #d9e1ec);
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
 }

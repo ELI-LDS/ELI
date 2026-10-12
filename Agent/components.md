@@ -6,10 +6,13 @@
 
 ## 색상 토큰의 역할을 구분해요
 
-디자이너가 전달한 색상 토큰은 모두 구현되어 있어요. 원시 색상은 `tokens/colors.css`, 사용 목적과 상태를 나타내는 의미 색상은 `tokens/semantic-colors.css`에서 관리해요. `tokens/index.css`는 두 파일을 연결해요.
+디자이너가 전달한 Color Variables 91개를 구현해요. 원시 색상 52개는 `tokens/colors.css`, 사용 목적과 상태를 나타내는 의미 색상과 효과 39개는 `tokens/semantic-colors.css`에서 관리해요. `tokens/index.css`는 두 파일을 연결해요.
 
-- 원시 색상은 `--eli-color-{색상}-{단계}` 형식으로 작성해요.
-- 의미 색상은 `--eli-{영역}-{종류}-{역할}[-{상태}]` 형식으로 작성해요.
+- 단계가 있는 원시 색상은 `--eli-color-{색상}-{단계}` 형식으로 작성하고, 고정된 흰색과 검은색은 `--eli-color-static-{색상}` 형식으로 작성해요.
+- 의미 색상은 Figma의 `{Category}/{Group?}/{Role 또는 강도}/{State?}` 계층을 순서대로 kebab-case로 바꾸고 `--eli-` 접두사를 붙여요.
+- Category는 `foreground`, `background`, `border`, `effect`를 사용해요. `interaction` Group은 Hover·Pressed 같은 상태가 있는 Background와 Border에만 사용해요.
+- 강조 강도는 `strong`, `default`, `subtle` 순서로 구분해요. 상호작용 상태는 Figma에 정의된 `default`, `hover`, `pressed`, `disabled`, `focused`를 사용해요.
+- 반투명 변형은 이름 끝에 `-alpha`를 붙여요. 화면을 덮는 Dim과 그림자는 각각 `--eli-effect-dim`, `--eli-effect-shadow`를 사용해요.
 - 컴포넌트에서는 원시 색상보다 의미 색상 토큰을 우선 사용해요. 원시 색상은 의미 색상을 연결할 때 사용해요.
 - 투명도는 `rgb(from var(--eli-color-...) r g b / 30%)` 형식으로 한 줄에 작성해요.
 - 같은 의미 토큰을 중복 선언하지 않아요. 같은 원시 색상을 참조하더라도 Foreground와 Background처럼 역할이 다르면 의미 토큰을 각각 유지해요.

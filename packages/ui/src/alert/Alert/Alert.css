@@ -10,8 +10,7 @@
   align-items: flex-start;
   gap: var(--eli-layout-scale-3, 12px);
   border-radius: var(--eli-layout-scale-2, 8px);
-  /* 디자인의 Background/Shadow(neutral-700 20%)가 기존 shadow 토큰과 달라 원시 색상에서 투명도를 계산해요. */
-  box-shadow: 0 2px 8px 0 rgb(from var(--eli-color-neutral-700) r g b / 20%);
+  box-shadow: 0 2px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
 }
 
 /* Content / Icon */
@@ -47,24 +46,24 @@
 
 /* Status / Error */
 .eli-alert[data-status='error'] {
-  background: var(--eli-background-feedback-error-subtle, #faeded);
-  color: var(--eli-foreground-feedback-error, #cf1111);
+  background: var(--eli-background-error, #faeded);
+  color: var(--eli-foreground-error, #cf1111);
 }
 
 /* Status / Success */
 .eli-alert[data-status='success'] {
-  background: var(--eli-background-feedback-success-subtle, #e8f6e8);
-  color: var(--eli-foreground-feedback-success, #177214);
+  background: var(--eli-background-success, #e8f6e8);
+  color: var(--eli-foreground-success, #177214);
 }
 
 /* Status / Caution */
 .eli-alert[data-status='caution'] {
-  background: var(--eli-background-feedback-caution-subtle, #fffae0);
-  color: var(--eli-foreground-feedback-caution, #c27700);
+  background: var(--eli-background-caution, #fffae0);
+  color: var(--eli-foreground-caution, #c27700);
 }
 
 /* Status / Info */
 .eli-alert[data-status='info'] {
-  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  background: var(--eli-background-subtle, #f4f8fe);
+  color: var(--eli-foreground-subtle, #8b98aa);
 }

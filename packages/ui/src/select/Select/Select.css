@@ -16,7 +16,7 @@
   display: flex;
   width: 100%;
   align-items: center;
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* 선택 영역과 옵션 목록 */
@@ -38,8 +38,8 @@
   gap: 10px;
   border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
   border-radius: var(--eli-layout-scale-2, 8px);
-  background: var(--eli-background-neutral-primary, #fff);
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
   text-align: left;
 }
 
@@ -58,11 +58,11 @@
 }
 
 .eli-select__placeholder {
-  color: var(--eli-foreground-neutral-disabled, #c4cedc);
+  color: var(--eli-foreground-disabled, rgba(75, 86, 104, 0.3));
 }
 
 .eli-select[data-open='true'] .eli-select__value {
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
 }
 
 /* 펼침 아이콘 */
@@ -73,7 +73,7 @@
   flex: 0 0 var(--eli-layout-scale-6, 24px);
   align-items: center;
   justify-content: center;
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
 }
 
 .eli-select[data-open='true'] .eli-select__arrow {
@@ -89,6 +89,6 @@
   align-items: flex-start;
   overflow: hidden;
   border-radius: var(--eli-layout-scale-2, 8px);
-  background: var(--eli-background-neutral-primary, #fff);
-  box-shadow: 0 3px 8px 0 var(--eli-background-neutral-shadow, rgba(196, 206, 220, 0.6));
+  background: var(--eli-background-default, #fff);
+  box-shadow: 0 3px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
 }

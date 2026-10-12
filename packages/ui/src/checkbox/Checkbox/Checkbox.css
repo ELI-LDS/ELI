@@ -18,14 +18,14 @@
   border: 2px solid var(--eli-border-interaction-default, #a9b5c5);
   border-radius: var(--eli-layout-scale-1, 4px);
   appearance: none;
-  background: var(--eli-background-neutral-primary, #fff);
+  background: var(--eli-background-default, #fff);
   cursor: pointer;
 }
 
 /* Native Checkbox / On */
 .eli-checkbox__input:checked {
-  border-color: var(--eli-foreground-brand-primary, #3584fb);
-  background: var(--eli-background-brand-primary, #3584fb);
+  border-color: var(--eli-border-brand, #3584fb);
+  background: var(--eli-background-interaction-brand-default, #3584fb);
 }
 
 /* Check Icon */
@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--eli-foreground-brand-inverse, #fff);
+  color: var(--eli-foreground-inverse, #fff);
   pointer-events: none;
   visibility: hidden;
 }

@@ -70,7 +70,7 @@
 
 /* On 상태 */
 .eli-toggle[data-state='on'] {
-  background-color: var(--eli-background-brand-primary, #3584fb);
+  background-color: var(--eli-background-interaction-brand-default, #3584fb);
 }
 
 .eli-toggle[data-state='on'] .eli-toggle__switch {

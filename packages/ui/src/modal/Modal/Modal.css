@@ -27,7 +27,7 @@
   align-items: center;
   gap: var(--eli-layout-scale-5, 20px);
   border-radius: var(--eli-layout-scale-4, 16px);
-  background: var(--eli-background-neutral-primary, #fff);
+  background: var(--eli-background-default, #fff);
 }
 
 /* Text */
@@ -43,7 +43,7 @@
 /* Text / Title */
 .eli-modal__title {
   align-self: stretch;
-  color: var(--eli-foreground-neutral-primary, #020812);
+  color: var(--eli-foreground-strong, #020812);
   text-align: center;
 }
 
@@ -53,7 +53,7 @@
   flex-direction: column;
   align-items: flex-start;
   align-self: stretch;
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  color: var(--eli-foreground-default, #4b5668);
   text-align: center;
 }
 

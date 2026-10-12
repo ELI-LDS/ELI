@@ -37,17 +37,17 @@
 /* State / Off */
 .eli-chip[data-selected='false'] {
   border-color: var(--eli-border-interaction-default, #a9b5c5);
-  background: var(--eli-background-neutral-primary, #fff);
-  color: var(--eli-foreground-neutral-secondary, #4b5668);
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
 }
 
 .eli-chip[data-selected='false'] .eli-chip__remove {
-  color: var(--eli-foreground-neutral-tertiary, #8b98aa);
+  color: var(--eli-foreground-subtle, #8b98aa);
 }
 
 /* State / On */
 .eli-chip[data-selected='true'] {
-  border-color: var(--eli-foreground-brand-primary, #3584fb);
-  background: var(--eli-background-neutral-secondary-hover, #f4f8fe);
-  color: var(--eli-foreground-brand-primary, #3584fb);
+  border-color: var(--eli-border-brand, #3584fb);
+  background: var(--eli-background-subtle, #f4f8fe);
+  color: var(--eli-foreground-brand, #3584fb);
 }
