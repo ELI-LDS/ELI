@@ -34,7 +34,7 @@
 
 역할별 글자 크기는 `--eli-font-size-{종류}-{단계}` 형식으로 기본 크기 토큰을 참조해요. 데스크탑 값을 기본으로 선언하고 모바일 구간에서 같은 토큰을 덮어써요. Heading의 모바일 재정의는 관련 H1~H4 클래스 바로 다음에 배치해 두 값을 한 번에 확인할 수 있게 해요. 별도의 `-mobile`, `-desktop` 토큰을 중복으로 공개하지 않아요.
 
-여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. Heading은 `.eli-typo-heading-h1`부터 `.eli-typo-heading-h4`, Body는 `.eli-typo-body-large`와 `.eli-typo-body-medium`, Label은 `.eli-typo-label-large`·`.eli-typo-label-medium`·`.eli-typo-label-small`을 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
+여러 컴포넌트가 같은 타이포그래피 조합을 사용하면 `tokens/typography.css`에 `.eli-typo-{이름}` 공통 클래스로 관리해요. Heading은 `.eli-typo-heading-h1`부터 `.eli-typo-heading-h4`, Body는 `.eli-typo-body-medium`과 `.eli-typo-body-small`, Label은 `.eli-typo-label-large`·`.eli-typo-label-medium`·`.eli-typo-label-small`을 사용해요. 별도 토큰이 필요하지 않은 고정 속성은 클래스에 값을 직접 작성해요.
 
 ## 레이아웃 기준을 재사용해요
 

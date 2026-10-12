@@ -14,7 +14,7 @@ export function TextArea({
   const textAreaClassName = ['eli-text-area', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-area__input',
-    disabled ? 'eli-typo-label-medium' : 'eli-typo-body-large',
+    disabled ? 'eli-typo-label-medium' : 'eli-typo-body-medium',
   ].join(' ');
 
   return (
