@@ -6,6 +6,59 @@ ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 
 
 React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스와 npm scope 소유권을 확정하기 전에는 공개 게시하지 않아요.
 
+## 컴포넌트 스타일을 바꿔요
+
+ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 덮어쓸 수 있어요. 일반 CSS, CSS Modules, Tailwind CSS, Emotion과 vanilla-extract처럼 최종적으로 클래스 이름을 만드는 방식이라면 같은 API를 사용해요. 별도 ELI 플러그인이나 스타일 도구 의존성은 필요하지 않아요.
+
+`className`이 적용되는 요소는 컴포넌트마다 달라요. Button은 루트 `button`에, TextField와 TextArea는 바깥 `label`에 적용돼요. 에디터에서 컴포넌트나 해당 prop에 커서를 올리면 빠른 사용법, 허용 값, 기본값과 정확한 적용 대상을 확인할 수 있어요.
+
+Tailwind CSS에서는 평소 사용하는 utility class를 그대로 입력해요. 배경처럼 상태가 있는 스타일을 바꿀 때는 Hover·Pressed·Disabled도 함께 지정해요.
+
+```tsx
+import { Button } from '@eli/ui/button';
+
+export function PurpleButton() {
+  return (
+    <Button className="w-full rounded-xl bg-violet-600 text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-violet-300">
+      저장하기
+    </Button>
+  );
+}
+```
+
+Emotion과 vanilla-extract도 생성한 클래스 이름을 같은 방식으로 전달해요.
+
+```tsx
+// Emotion
+import { css } from '@emotion/css';
+
+const customButton = css`
+  width: 100%;
+  background: #7c3aed;
+
+  &:hover {
+    background: #6d28d9;
+  }
+`;
+
+<Button className={customButton}>저장하기</Button>;
+```
+
+```ts
+// vanilla-extract
+import { style } from '@vanilla-extract/css';
+
+export const customButton = style({
+  width: '100%',
+  background: '#7c3aed',
+  selectors: {
+    '&:hover': { background: '#6d28d9' },
+  },
+});
+```
+
+`style`과 Button의 `backgroundColor`, `width`, `height`도 계속 사용할 수 있어요. `className`은 반응형이나 상태별 스타일처럼 클래스 기반 커스터마이즈가 필요할 때 사용해요. 복합 컴포넌트의 내부 요소는 현재 공개된 prop으로 바꿀 수 있는 범위만 지원해요.
+
 Badge는 텍스트를 표시하고 `size`로 크기를 정해요.
 
 ```tsx

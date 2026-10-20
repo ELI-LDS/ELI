@@ -40,11 +40,73 @@ createRoot(document.getElementById('root')!).render(<><Button color="brand" size
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
 await build({ root: consumer, configFile: false, logLevel: 'warn', build: { minify: true } });
+
 const assets = join(consumer, 'dist/assets');
 const files = await readdir(assets);
 const css = (await Promise.all(files.filter(x => x.endsWith('.css')).map(x => readFile(join(assets, x), 'utf8')))).join('\n');
 const js = (await Promise.all(files.filter(x => x.endsWith('.js')).map(x => readFile(join(assets, x), 'utf8')))).join('\n');
+const installedPackage = join(consumer, 'node_modules/@eli/ui');
+const documentedComponents = [
+  'dist/alert/Alert/Alert.d.ts',
+  'dist/badge/Badge/Badge.d.ts',
+  'dist/button/Button/Button.d.ts',
+  'dist/button/IconButton/IconButton.d.ts',
+  'dist/checkbox/Checkbox/Checkbox.d.ts',
+  'dist/chip/Chip/Chip.d.ts',
+  'dist/divider/Divider/Divider.d.ts',
+  'dist/menu/MenuItem/MenuItem.d.ts',
+  'dist/modal/Modal/Modal.d.ts',
+  'dist/select/Select/Select.d.ts',
+  'dist/snackbar/SnackBar/SnackBar.d.ts',
+  'dist/text/TextArea/TextArea.d.ts',
+  'dist/text/TextField/TextField.d.ts',
+  'dist/toggle/Toggle/Toggle.d.ts',
+];
+for (const componentPath of documentedComponents) {
+  const declaration = await readFile(join(installedPackage, componentPath), 'utf8');
+  assert.match(declaration, /@example 빠른 사용/);
+  assert.match(declaration, /### 스타일 변경/);
+}
+
+const layeredStyleSheets = [
+  'dist/alert/Alert/Alert.css',
+  'dist/badge/Badge/Badge.css',
+  'dist/button/Button/Button.css',
+  'dist/button/IconButton/IconButton.css',
+  'dist/checkbox/Checkbox/Checkbox.css',
+  'dist/chip/Chip/Chip.css',
+  'dist/dim/Dim/Dim.css',
+  'dist/divider/Divider/Divider.css',
+  'dist/menu/MenuItem/MenuItem.css',
+  'dist/menu/MenuItem/MenuItem.interaction.css',
+  'dist/modal/Modal/Modal.css',
+  'dist/select/Select/Select.css',
+  'dist/snackbar/SnackBar/SnackBar.css',
+  'dist/text/TextArea/TextArea.css',
+  'dist/text/TextField/TextField.css',
+  'dist/toggle/Toggle/Toggle.css',
+  'dist/toggle/Toggle/Toggle.interaction.css',
+  'dist/tokens/typography.css',
+];
+for (const styleSheetPath of layeredStyleSheets) {
+  assert.match(await readFile(join(installedPackage, styleSheetPath), 'utf8'), /@layer components/);
+}
+
+assert.match(
+  await readFile(join(installedPackage, 'dist/button/Button/Button.types.d.ts'), 'utf8'),
+  /Tailwind CSS/,
+);
+assert.match(
+  await readFile(join(installedPackage, 'dist/button/Button/Button.d.ts'), 'utf8'),
+  /@example 빠른 사용/,
+);
+assert.match(
+  await readFile(join(installedPackage, 'dist/button/Button/Button.d.ts'), 'utf8'),
+  /### 주요 설정/,
+);
+assert.match(await readFile(join(installedPackage, 'README.md'), 'utf8'), /컴포넌트 스타일을 바꿔요/);
 assert.match(css, /\.eli-button/);
+assert.match(css, /@layer components/);
 assert.match(css, /data-color=['"]?brand/);
 assert.match(css, /data-color=['"]?neutral/);
 assert.match(css, /\.eli-icon-button/);

@@ -1,3 +1,4 @@
+@layer components {
 /* 상태 전환 값 */
 .eli-toggle,
 .eli-toggle__switch {
@@ -83,4 +84,5 @@
   .eli-toggle__switch {
     transition-duration: 0.01ms;
   }
+}
 }

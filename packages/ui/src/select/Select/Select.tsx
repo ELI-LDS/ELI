@@ -7,19 +7,39 @@ import { MenuItem } from '../../menu/MenuItem/MenuItem.js';
 import type { SelectProps } from './Select.types.js';
 import { useSelect } from './useSelect.js';
 
-/* Select */
-export function Select({
-  className,
-  defaultValue,
-  label = '라벨',
-  onBlur,
-  onKeyDown,
-  onValueChange,
-  options,
-  placeholder = '선택해주세요.',
-  value,
-  ...props
-}: SelectProps) {
+/**
+ * 옵션 목록을 열어 하나의 값을 선택해요.
+ *
+ * @example 빠른 사용
+ * `<Select label="분류" options={[{ value: 'web', label: '웹' }]} onValueChange={setValue} />`
+ *
+ * ### 주요 설정
+ * - `label`: 입력 영역 이름, 기본값은 `라벨`
+ * - `placeholder`: 선택 전 안내 문구, 기본값은 `선택해주세요.`
+ * - `options`: `{ value, label }` 목록
+ *
+ * ### 내용과 동작
+ * - `value`: 외부에서 제어하는 선택 값
+ * - `defaultValue`: 처음 선택할 값
+ * - `onValueChange`: 선택한 `value`를 받는 함수
+ *
+ * ### 스타일 변경
+ * - `className`: 가장 바깥 `div`에 외부 클래스를 전달해요.
+ * - `style`: 가장 바깥 `div`의 인라인 스타일을 바꿔요.
+ */
+export function Select(props: SelectProps) {
+  const {
+    className,
+    defaultValue,
+    label = '라벨',
+    onBlur,
+    onKeyDown,
+    onValueChange,
+    options,
+    placeholder = '선택해주세요.',
+    value,
+    ...selectProps
+    } = props;
   /* Select의 상태와 상호작용은 전용 Hook에서 관리해요. */
   const {
     handleBlur,
@@ -42,7 +62,7 @@ export function Select({
   return (
     /* Root */
     <div
-      {...props}
+      {...selectProps}
       className={selectClassName}
       data-open={isOpen}
       onBlur={handleBlur}

@@ -13,4 +13,7 @@ export interface ChipProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'childr
 
   /** 화면 낭독기에 전달할 닫기 버튼 이름이에요. 기본값은 `삭제`예요. */
   removeLabel?: string;
+
+  /** Chip의 루트 `span`에 전달할 클래스 이름이에요. */
+  className?: string;
 }

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '@/packages/ui/src/button/Button/Button.js';
+import './Button.stories.css';
 
 const colors = ['brand', 'neutral'] as const;
 const sizes = ['large', 'medium'] as const;
@@ -137,7 +138,7 @@ const meta = {
     disabled: {
       name: '비활성화',
       control: 'boolean',
-      description: '버튼을 비활성 상태로 표시해요.',
+      description: '`true`면 버튼을 비활성화해요. 기본값은 `false`예요.',
     },
     type: {
       name: '버튼 타입',
@@ -169,4 +170,17 @@ export const Disabled: Story = {
 /* 공개 props를 바꿔 버튼 하나를 직접 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
+};
+
+/* 외부에서 만든 클래스가 Button의 기본·상태 스타일을 덮는지 확인해요. */
+export const CustomStyle: Story = {
+  name: '스타일 바꿔보기',
+  render: () => (
+    <div className="eli-story-button-custom-wrapper">
+      <Button className="eli-story-button-custom">커스텀 버튼</Button>
+      <Button className="eli-story-button-custom" disabled>
+        비활성화 버튼
+      </Button>
+    </div>
+  ),
 };

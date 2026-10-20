@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Overlay */
 .eli-modal {
   box-sizing: border-box;
@@ -69,4 +70,5 @@
   align-items: center;
   gap: var(--eli-layout-scale-2, 8px);
   align-self: stretch;
+}
 }

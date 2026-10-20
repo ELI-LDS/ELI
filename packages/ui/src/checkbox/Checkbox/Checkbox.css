@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-checkbox {
   position: relative;
@@ -42,4 +43,5 @@
 
 .eli-checkbox__input:checked + .eli-checkbox__icon {
   visibility: visible;
+}
 }

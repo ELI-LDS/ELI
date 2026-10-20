@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-chip {
   box-sizing: border-box;
@@ -50,4 +51,5 @@
   border-color: var(--eli-border-brand, #3584fb);
   background: var(--eli-background-subtle, #f4f8fe);
   color: var(--eli-foreground-brand, #3584fb);
+}
 }

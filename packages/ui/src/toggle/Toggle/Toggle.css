@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* 트랙 / Off */
 .eli-toggle {
   box-sizing: border-box;
@@ -21,4 +22,5 @@
   border-radius: var(--eli-layout-scale-999, 999px);
   aspect-ratio: 1 / 1;
   background: var(--eli-foreground-inverse, #fff);
+}
 }

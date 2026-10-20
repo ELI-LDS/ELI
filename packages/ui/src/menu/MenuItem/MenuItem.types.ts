@@ -14,4 +14,10 @@ export interface MenuItemProps
 
   /** 단축키 다음에 표시할 오른쪽 아이콘이에요. */
   rightIcon?: ReactNode;
+
+  /** 메뉴 항목을 비활성화할지 정해요. `true`이면 선택할 수 없어요. 기본값은 `false`예요. */
+  disabled?: boolean;
+
+  /** MenuItem의 루트 `button`에 전달할 클래스 이름이에요. */
+  className?: string;
 }
