@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-divider {
   box-sizing: border-box;
@@ -8,4 +9,5 @@
   margin: 0;
   border: 0;
   background: var(--eli-border-divider, #eaf0f9);
+}
 }

@@ -28,4 +28,7 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
 
   /** Secondary 버튼을 선택했을 때 실행할 함수예요. */
   onSecondaryAction?: MouseEventHandler<HTMLButtonElement>;
+
+  /** 화면 전체를 덮는 Modal 루트에 전달할 클래스 이름이에요. 내부 콘텐츠에는 적용되지 않아요. */
+  className?: string;
 }

@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-alert {
   box-sizing: border-box;
@@ -66,4 +67,5 @@
 .eli-alert[data-status='info'] {
   background: var(--eli-background-subtle, #f4f8fe);
   color: var(--eli-foreground-subtle, #8b98aa);
+}
 }

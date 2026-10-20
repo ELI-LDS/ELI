@@ -1,5 +1,10 @@
 @import '../../tokens/index.css';
 
+/*
+ * 외부 스타일 도구가 만든 일반 클래스가 ELI 기본값보다 우선하도록
+ * Button 기본 스타일을 CSS components 레이어에서 관리해요.
+ */
+@layer components {
 /* Base Layout */
 .eli-button {
   box-sizing: border-box;
@@ -203,4 +208,5 @@
 /* State / Neutral / Large, Medium / Ghost / Disabled */
 .eli-button[data-variant='ghost'][data-color='neutral']:disabled {
   background: var(--eli-background-default, #fff);
+}
 }

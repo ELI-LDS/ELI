@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-icon-button {
   box-sizing: border-box;
@@ -162,4 +163,5 @@
 .eli-icon-button[data-variant='outline'][data-color='neutral']:disabled {
   border-color: var(--eli-border-interaction-disabled, #c4cedc);
   background: var(--eli-background-default, #fff);
+}
 }

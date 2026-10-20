@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-snackbar {
   box-sizing: border-box;
@@ -35,4 +36,5 @@
   border: 0;
   background: transparent;
   color: var(--eli-foreground-brand, #3584fb);
+}
 }

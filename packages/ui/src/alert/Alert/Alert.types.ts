@@ -13,4 +13,7 @@ export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
 
   /** 알림 상태예요. 상태에 맞는 색상과 아이콘을 표시해요. 기본값은 `info`예요. */
   status?: AlertStatus;
+
+  /** Alert의 루트 `div`에 전달할 클래스 이름이에요. */
+  className?: string;
 }

@@ -13,25 +13,42 @@ const statusIcons = {
   success: <CheckIcon />,
 } as const;
 
-/* Alert */
-export function Alert({
-  /* Content */
-  message,
-  title,
+/**
+ * 상태에 맞는 색상과 아이콘으로 알림을 표시해요.
+ *
+ * @example 빠른 사용
+ * `<Alert status="success" title="저장했어요" message="변경 사항을 반영했어요." />`
+ *
+ * ### 주요 설정
+ * - `status`: `info`(기본값), `success`, `caution`, `error`
+ *
+ * ### 내용과 동작
+ * - `title`: 필수 제목
+ * - `message`: 선택 본문
+ *
+ * ### 스타일 변경
+ * - `className`: 루트 `div`에 외부 클래스를 전달해요.
+ * - `style`: 루트 `div`의 인라인 스타일을 바꿔요.
+ */
+export function Alert(props: AlertProps) {
+  const {
+    /* Content */
+    message,
+    title,
 
-  /* Style Options */
-  status = 'info',
+    /* Style Options */
+    status = 'info',
 
-  /* Native Element */
-  className,
-  ...props
-}: AlertProps) {
+    /* Native Element */
+    className,
+    ...alertProps
+    } = props;
   /* Class Name */
   const alertClassName = ['eli-alert', className].filter(Boolean).join(' ');
 
   return (
     /* Root */
-    <div {...props} className={alertClassName} data-status={status}>
+    <div {...alertProps} className={alertClassName} data-status={status}>
       {/* Status Icon */}
       <span aria-hidden="true" className="eli-alert__icon">
         {statusIcons[status]}

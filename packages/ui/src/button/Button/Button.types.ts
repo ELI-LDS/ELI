@@ -12,6 +12,13 @@ export type ButtonColor = 'brand' | 'neutral';
 /* Props */
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'color'> {
+  /**
+   * 루트 button 요소에 추가할 클래스예요.
+   * 일반 CSS와 CSS Modules뿐 아니라 Tailwind CSS의 `w-full bg-violet-600 hover:bg-violet-700`,
+   * Emotion·vanilla-extract가 만든 클래스도 그대로 전달할 수 있어요.
+   */
+  className?: string;
+
   /** 버튼에 표시할 내용이에요. 생략하면 `버튼`을 표시해요. */
   children?: ReactNode;
 
@@ -26,6 +33,9 @@ export interface ButtonProps
 
   /** 버튼의 세로 크기예요. 숫자는 px로 처리하며 크기별 기본 높이보다 우선해요. */
   height?: CSSProperties['height'];
+
+  /** 버튼을 비활성화해요. `true` 또는 `false`를 사용하며 기본값은 `false`예요. JSX에서는 `disabled`를 `disabled={true}`의 축약형으로 사용할 수 있어요. */
+  disabled?: boolean;
 
   /* Style Options */
   /** 버튼 색상 조합이에요. 기본값은 `brand`예요. */

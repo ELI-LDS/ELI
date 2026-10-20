@@ -27,4 +27,10 @@ export interface IconButtonProps
 
   /** 버튼 형태예요. 기본값은 `solid`예요. */
   variant?: IconButtonVariant;
+
+  /** 버튼을 비활성화할지 정해요. `true`이면 클릭할 수 없어요. 기본값은 `false`예요. */
+  disabled?: boolean;
+
+  /** IconButton의 루트 `button`에 전달할 클래스 이름이에요. */
+  className?: string;
 }

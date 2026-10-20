@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Base Layout */
 .eli-badge {
   box-sizing: border-box;
@@ -10,4 +11,5 @@
   border-radius: var(--eli-layout-scale-2, 8px);
   background: var(--eli-background-subtle, #f4f8fe);
   color: var(--eli-foreground-subtle, #8b98aa);
+}
 }

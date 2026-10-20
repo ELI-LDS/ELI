@@ -57,6 +57,7 @@
   }
 }
 
+@layer components {
 /* Typography / Heading */
 .eli-typo-heading-h1,
 .eli-typo-heading-h2,
@@ -129,4 +130,5 @@
 .eli-typo-label-small {
   font-size: var(--eli-font-size-label-03, 12px);
   font-weight: var(--eli-font-weight-medium, 500);
+}
 }

@@ -17,4 +17,7 @@ export interface TextFieldProps
 
   /** 입력창의 상태예요. 서로 겹치지 않으며 기본값은 `default`예요. */
   state?: TextFieldState;
+
+  /** TextField의 바깥 `label`에 전달할 클래스 이름이에요. 실제 `input`에는 적용되지 않아요. */
+  className?: string;
 }
