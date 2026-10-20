@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { mkdir, readFile, readdir, rm, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { build } from 'vite';
 import { packInfo, validatePackage } from '../../scripts/check-package.mjs';
 
@@ -40,6 +40,56 @@ createRoot(document.getElementById('root')!).render(<><Button color="brand" size
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
 await build({ root: consumer, configFile: false, logLevel: 'warn', build: { minify: true } });
+
+// 실제 배포 패키지를 서버용으로 번들하고 브라우저 전역 없이 렌더링해요.
+await writeFile(join(consumer, 'server.tsx'), `import { renderToString } from 'react-dom/server';
+import { Alert } from '@eli/ui/alert';
+import { Badge } from '@eli/ui/badge';
+import { Button, IconButton } from '@eli/ui/button';
+import { Checkbox } from '@eli/ui/checkbox';
+import { Chip } from '@eli/ui/chip';
+import { Divider } from '@eli/ui/divider';
+import { MenuItem } from '@eli/ui/menu';
+import { Modal } from '@eli/ui/modal';
+import { Select } from '@eli/ui/select';
+import { SnackBar } from '@eli/ui/snackbar';
+import { TextArea, TextField } from '@eli/ui/text';
+import { Toggle } from '@eli/ui/toggle';
+
+const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 칩</Chip><Divider /><MenuItem>서버 메뉴</MenuItem><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SnackBar>서버 메시지</SnackBar><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /></main>);
+export default markup;
+`);
+await build({
+  root: consumer,
+  configFile: false,
+  logLevel: 'warn',
+  ssr: { noExternal: ['@eli/ui'] },
+  build: { emptyOutDir: true, minify: true, outDir: 'dist-ssr', ssr: 'server.tsx' },
+});
+const serverBundle = await import(pathToFileURL(join(consumer, 'dist-ssr/server.js')).href);
+assert.match(serverBundle.default, /서버 알림/);
+assert.match(serverBundle.default, /서버 옵션/);
+assert.match(serverBundle.default, /role="switch"/);
+
+const clientComponents = [
+  'dist/button/Button/Button.js',
+  'dist/button/IconButton/IconButton.js',
+  'dist/checkbox/Checkbox/Checkbox.js',
+  'dist/chip/Chip/Chip.js',
+  'dist/menu/MenuItem/MenuItem.js',
+  'dist/modal/Modal/Modal.js',
+  'dist/select/Select/Select.js',
+  'dist/snackbar/SnackBar/SnackBar.js',
+  'dist/text/TextArea/TextArea.js',
+  'dist/text/TextField/TextField.js',
+  'dist/toggle/Toggle/Toggle.js',
+];
+for (const componentPath of clientComponents) {
+  assert.match(
+    await readFile(join(consumer, 'node_modules/@eli/ui', componentPath), 'utf8'),
+    /^['"]use client['"];?/,
+  );
+}
 
 const assets = join(consumer, 'dist/assets');
 const files = await readdir(assets);
@@ -161,5 +211,5 @@ assert.match(js, /소개를 입력하세요/);
 assert.match(await readFile(join(consumer, 'dist/index.html'), 'utf8'), /rel="stylesheet"/);
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
-console.log('패키지 파일·실제 tarball·소비자 타입·Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·Modal·Select·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
+console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·Modal·Select·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
 console.log('브라우저 확인 대상: .artifacts/packaging/consumer');

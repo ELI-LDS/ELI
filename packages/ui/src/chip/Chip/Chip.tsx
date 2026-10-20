@@ -1,3 +1,5 @@
+'use client';
+
 import './Chip.css';
 import { XIcon } from '../../icon/XIcon.js';
 import type { ChipProps } from './Chip.types.js';

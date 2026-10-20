@@ -1,3 +1,5 @@
+'use client';
+
 import './Checkbox.css';
 import { CheckIcon } from '../../icon/CheckIcon.js';
 import type { CheckboxProps } from './Checkbox.types.js';
