@@ -1,5 +1,6 @@
 @import "../../tokens/index.css";
 
+@layer components {
 /* 전체 영역 */
 .eli-text-area {
   box-sizing: border-box;
@@ -65,4 +66,5 @@
 .eli-text-area__input:disabled::placeholder {
   color: var(--eli-foreground-subtle, #8b98aa);
   opacity: 1;
+}
 }

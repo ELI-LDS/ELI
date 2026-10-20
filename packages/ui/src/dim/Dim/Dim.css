@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* Dim */
 .eli-dim {
   position: fixed;
@@ -7,4 +8,5 @@
   width: 100%;
   height: 100%;
   background: var(--eli-effect-dim, rgba(2, 8, 18, 0.4));
+}
 }

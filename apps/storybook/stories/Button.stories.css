@@ -1,0 +1,28 @@
+/* Tailwind CSS의 utilities 레이어와 같은 우선순위 구조로 검증해요. */
+@layer utilities {
+  .eli-story-button-custom-wrapper {
+    display: grid;
+    width: min(320px, calc(100vw - 48px));
+    gap: 12px;
+  }
+
+  .eli-story-button-custom {
+    width: 100%;
+    border-radius: 12px;
+    color: #fff;
+    background: #7c3aed;
+  }
+
+  .eli-story-button-custom:hover:not(:disabled) {
+    background: #6d28d9;
+  }
+
+  .eli-story-button-custom:active:not(:disabled) {
+    background: #5b21b6;
+  }
+
+  .eli-story-button-custom:disabled {
+    color: #fff;
+    background: #c4b5fd;
+  }
+}

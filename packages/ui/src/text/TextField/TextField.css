@@ -1,5 +1,6 @@
 @import "../../tokens/index.css";
 
+@layer components {
 /* 전체 영역 */
 .eli-text-field {
   box-sizing: border-box;
@@ -95,4 +96,5 @@
 .eli-text-field[data-state="disabled"] .eli-text-field__container {
   border-color: var(--eli-border-interaction-disabled, #c4cedc);
   background: var(--eli-background-interaction-neutral-disabled, rgba(234, 240, 249, 0.7));
+}
 }

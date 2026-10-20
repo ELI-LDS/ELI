@@ -1,5 +1,6 @@
 @import '../../tokens/index.css';
 
+@layer components {
 /* 전체 영역 */
 .eli-select {
   box-sizing: border-box;
@@ -91,4 +92,5 @@
   border-radius: var(--eli-layout-scale-2, 8px);
   background: var(--eli-background-default, #fff);
   box-shadow: 0 3px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
+}
 }

@@ -13,4 +13,7 @@ export interface SnackBarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chi
 
   /** 오른쪽 버튼을 선택했을 때 실행할 함수예요. */
   onAction?: MouseEventHandler<HTMLButtonElement>;
+
+  /** SnackBar의 루트 `div`에 전달할 클래스 이름이에요. */
+  className?: string;
 }

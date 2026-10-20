@@ -1,3 +1,4 @@
+@layer components {
 /* Mouse Down / Text */
 .eli-menu-item[data-interaction='down'] .eli-menu-item__text {
   animation: eli-menu-item-text-down 0.2s linear both;
@@ -104,4 +105,5 @@
     :is(.eli-menu-item__left-icon, .eli-menu-item__right-icon) {
     animation-duration: 0.01ms;
   }
+}
 }
