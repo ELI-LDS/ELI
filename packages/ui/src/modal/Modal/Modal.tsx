@@ -1,3 +1,5 @@
+'use client';
+
 import './Modal.css';
 import { Button } from '../../button/Button/Button.js';
 import { Dim } from '../../dim/Dim/Dim.js';

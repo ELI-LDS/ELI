@@ -1,3 +1,5 @@
+'use client';
+
 import './Button.css';
 import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { CSSProperties } from 'react';

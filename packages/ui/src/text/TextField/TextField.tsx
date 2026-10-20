@@ -1,3 +1,5 @@
+'use client';
+
 import './TextField.css';
 import { XIcon } from '../../icon/XIcon.js';
 import type { TextFieldProps } from './TextField.types.js';

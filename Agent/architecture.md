@@ -48,10 +48,10 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 실행 의존성을 검토해요
 
-현재 배포 패키지에는 `dependencies`가 없어요. React 19.3 계열을 개발·검증 기준으로 삼고 peer 범위는 `^19.3.0`이에요. React DOM은 포털 같은 기능을 구현할 때 필요성을 검토해요. 지원 범위를 넓힐 때 해당 버전의 소비 테스트를 추가해요.
+현재 배포 패키지에는 `dependencies`가 없어요. React 19.3 계열을 개발·검증 기준으로 삼고 peer 범위는 `^19.3.0`이에요. React DOM은 SSR 검증용 개발 의존성으로만 사용하며 배포 패키지에는 포함하지 않아요. 포털 같은 런타임 기능을 구현할 때 peer dependency 필요성을 별도로 검토해요. 지원 범위를 넓힐 때 해당 버전의 소비 테스트를 추가해요.
 
 새 실행 의존성을 추가하면 목적·직접 구현 비용·용량·라이선스를 검토하고 패키징 검사의 기준을 함께 갱신해요. 개발 도구와 실행 의존성을 구분해요.
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인했어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, npm 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 초기 셋업의 Vite 검증만으로 Next.js 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인했어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, npm 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 공통 SSR 검증만으로 Next.js 고유의 RSC·라우팅·hydration 호환성을 보장하지 않아요.

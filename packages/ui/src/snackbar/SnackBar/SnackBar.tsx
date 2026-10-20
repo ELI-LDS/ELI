@@ -1,3 +1,5 @@
+'use client';
+
 import './SnackBar.css';
 import type { SnackBarProps } from './SnackBar.types.js';
 

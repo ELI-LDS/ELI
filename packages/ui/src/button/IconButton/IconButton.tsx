@@ -1,3 +1,5 @@
+'use client';
+
 import './IconButton.css';
 import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { IconButtonProps } from './IconButton.types.js';

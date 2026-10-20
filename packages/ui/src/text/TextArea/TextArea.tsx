@@ -1,3 +1,5 @@
+'use client';
+
 import './TextArea.css';
 import type { TextAreaProps } from './TextArea.types.js';
 
