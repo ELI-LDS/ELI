@@ -10,7 +10,7 @@
 
 `packages/ui/src/button/index.ts`는 Button과 관련 타입을 `@eli/ui/button`으로 공개해요. 크기·형태·색상 조합은 별도 컴포넌트가 아니라 하나의 Button props로 관리해요. `color`는 디자인 속성과 같은 `brand`, `neutral`을 사용해요. 아이콘만 표시하는 IconButton도 같은 경로로 공개해요. IconButton은 `solid`, `outline` 형태와 `large`(48px), `medium`(40px) 크기를 지원하고, 텍스트가 없으므로 `aria-label`을 필수로 받아요.
 
-`packages/ui/src/chip/index.ts`는 Chip과 관련 타입을 `@eli/ui/chip`으로 공개해요. Chip은 `selected` 값에 따라 Off·On 상태를 표시만 하고 상태를 직접 바꾸지 않아요. 닫기 버튼을 누르면 `onRemove`를 호출하고, 닫기 버튼의 접근성 이름은 `removeLabel`로 바꿀 수 있어요.
+`packages/ui/src/chip/index.ts`는 Chip·RemovableChip·FilterChip과 관련 타입을 `@eli/ui/chip`으로 공개해요. 기본 Chip은 부모가 전달한 선택 상태를 표시하고 다음 상태를 알려줘요. RemovableChip은 라벨 영역과 X 버튼을 별도 동작으로 제공해요. FilterChip은 옵션 배열 순서를 기준으로 적용된 필터 라벨과 `외 N`을 계산하며, 바텀시트나 모달을 여는 트리거로 사용해요.
 
 `packages/ui/src/checkbox/index.ts`는 Checkbox와 관련 타입을 `@eli/ui/checkbox`로 공개해요. Checkbox는 네이티브 `input type="checkbox"`를 사용해 클릭·스페이스바·폼 제출과 `checked`·`defaultChecked`·`onChange`를 브라우저와 React 기본 동작으로 처리해요. 라벨 텍스트가 없으므로 사용처에서 `aria-label` 또는 연결된 `label`로 접근성 이름을 제공해요.
 
@@ -54,4 +54,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인했어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, npm 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 공통 SSR 검증만으로 Next.js 고유의 RSC·라우팅·hydration 호환성을 보장하지 않아요.
+색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·SnackBar·Toggle, Modal, Select, TextField, TextArea의 기본 구조와 디자인 상태를 구현했어요. 색상은 원시 색상과 의미 색상으로 나누고, 타이포그래피에는 폰트 패밀리·크기·굵기 토큰을 포함해요. 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Modal의 최종 최대 너비는 아직 확정되지 않았어요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인했어요. 다른 컴포넌트와 폰트 초기 설정 도구, Next.js 소비 검증, 문서 사이트, MCP, npm 배포 자동화는 아직 없어요. 필요할 때 `apps/docs`, `packages/docs-mcp`를 추가해요. 공통 SSR 검증만으로 Next.js 고유의 RSC·라우팅·hydration 호환성을 보장하지 않아요.

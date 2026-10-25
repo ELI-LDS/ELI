@@ -1,0 +1,96 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* 공통 레이아웃 */
+.eli-chip {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--eli-layout-scale-2, 8px);
+  width: auto;
+  max-width: 160px;
+  height: 48px;
+  padding: var(--eli-layout-scale-3, 12px) var(--eli-layout-scale-4, 16px);
+  border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
+  font: inherit;
+}
+
+/* 아이콘이 있는 특수 Chip은 더 넓게 표시해요. */
+.eli-chip--removable,
+.eli-chip--filter {
+  max-width: 180px;
+}
+
+button.eli-chip {
+  cursor: pointer;
+}
+
+button.eli-chip:disabled {
+  cursor: default;
+}
+
+/* 라벨은 최대 너비 안에서만 줄여요. */
+.eli-chip__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 선택 상태 */
+.eli-chip[data-selected='true'] {
+  border-color: var(--eli-border-brand, #3584fb);
+  background: var(--eli-background-subtle, #eaf0f9);
+  color: var(--eli-foreground-brand, #3584fb);
+}
+
+/* Removable의 라벨과 X 버튼은 서로 독립적으로 동작해요. */
+.eli-chip__body,
+.eli-chip__icon-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+button.eli-chip__body,
+.eli-chip__icon-button {
+  cursor: pointer;
+}
+
+.eli-chip__body:disabled,
+.eli-chip__icon-button:disabled {
+  cursor: default;
+}
+
+.eli-chip__icon-button,
+.eli-chip__icon {
+  display: inline-flex;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  color: var(--eli-foreground-subtle, #8b98aa);
+}
+
+/* Filter의 개수와 쉐브론은 말줄임표 영역에 포함하지 않아요. */
+.eli-chip__count {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.eli-chip--filter[data-selected='true'] .eli-chip__icon {
+  color: var(--eli-foreground-brand, #3584fb);
+}
+}

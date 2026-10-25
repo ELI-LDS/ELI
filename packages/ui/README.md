@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -101,13 +101,29 @@ export function AddButton() {
 }
 ```
 
-Chip은 `selected`로 선택 상태를 표시하고, 닫기 버튼을 누르면 `onRemove`를 호출해요.
+Chip은 선택, 삭제, 필터 진입 목적에 맞는 독립 컴포넌트를 사용해요. 상태와 목록 데이터는 부모에서 관리해요.
 
 ```tsx
-import { Chip } from '@eli/ui/chip';
+import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
 
-export function Tag() {
-  return <Chip onRemove={() => {}} selected>ELI 라이브러리</Chip>;
+const colorOptions = [
+  { label: '블랙', value: 'black' },
+  { label: '화이트', value: 'white' },
+];
+
+export function Chips() {
+  return (
+    <>
+      <Chip selected onSelectedChange={() => {}}>장르</Chip>
+      <RemovableChip onRemove={() => {}}>프론트엔드</RemovableChip>
+      <FilterChip
+        label="컬러"
+        options={colorOptions}
+        selectedValues={['black', 'white']}
+        onClick={() => {}}
+      />
+    </>
+  );
 }
 ```
 
