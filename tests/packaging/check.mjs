@@ -27,7 +27,7 @@ import { Alert } from '@eli/ui/alert';
 import { Badge } from '@eli/ui/badge';
 import { Button, IconButton } from '@eli/ui/button';
 import { Checkbox } from '@eli/ui/checkbox';
-import { Chip } from '@eli/ui/chip';
+import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
@@ -35,7 +35,8 @@ import { Select } from '@eli/ui/select';
 import { SnackBar } from '@eli/ui/snackbar';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
-createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button backgroundColor="#153464" color="neutral" icon={null} width="100%">커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip removeLabel="태그 삭제" selected>칩 태그</Chip><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem shortcut="⇧⌘P">메뉴</MenuItem><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
+const chipOptions = [{ label: '블랙', value: 'black' }, { label: '화이트', value: 'white' }];
+createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button backgroundColor="#153464" color="neutral" icon={null} width="100%">커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem shortcut="⇧⌘P">메뉴</MenuItem><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
 `);
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
@@ -47,7 +48,7 @@ import { Alert } from '@eli/ui/alert';
 import { Badge } from '@eli/ui/badge';
 import { Button, IconButton } from '@eli/ui/button';
 import { Checkbox } from '@eli/ui/checkbox';
-import { Chip } from '@eli/ui/chip';
+import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
@@ -56,7 +57,7 @@ import { SnackBar } from '@eli/ui/snackbar';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
 
-const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 칩</Chip><Divider /><MenuItem>서버 메뉴</MenuItem><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SnackBar>서버 메시지</SnackBar><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /></main>);
+const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 선택 칩</Chip><RemovableChip onRemove={() => undefined}>서버 삭제 칩</RemovableChip><FilterChip label="서버 필터" options={[{ label: '서버 옵션 1', value: 'server-1' }, { label: '서버 옵션 2', value: 'server-2' }]} selectedValues={['server-1', 'server-2']} /><Divider /><MenuItem>서버 메뉴</MenuItem><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SnackBar>서버 메시지</SnackBar><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /></main>);
 export default markup;
 `);
 await build({
@@ -69,12 +70,15 @@ await build({
 const serverBundle = await import(pathToFileURL(join(consumer, 'dist-ssr/server.js')).href);
 assert.match(serverBundle.default, /서버 알림/);
 assert.match(serverBundle.default, /서버 옵션/);
+assert.match(serverBundle.default, /외 (?:<!-- -->)?1/);
 assert.match(serverBundle.default, /role="switch"/);
 
 const clientComponents = [
   'dist/button/Button/Button.js',
   'dist/button/IconButton/IconButton.js',
   'dist/checkbox/Checkbox/Checkbox.js',
+  'dist/chip/FilterChip/FilterChip.js',
+  'dist/chip/RemovableChip/RemovableChip.js',
   'dist/chip/Chip/Chip.js',
   'dist/menu/MenuItem/MenuItem.js',
   'dist/modal/Modal/Modal.js',
@@ -102,6 +106,8 @@ const documentedComponents = [
   'dist/button/Button/Button.d.ts',
   'dist/button/IconButton/IconButton.d.ts',
   'dist/checkbox/Checkbox/Checkbox.d.ts',
+  'dist/chip/FilterChip/FilterChip.d.ts',
+  'dist/chip/RemovableChip/RemovableChip.d.ts',
   'dist/chip/Chip/Chip.d.ts',
   'dist/divider/Divider/Divider.d.ts',
   'dist/menu/MenuItem/MenuItem.d.ts',
@@ -124,7 +130,7 @@ const layeredStyleSheets = [
   'dist/button/Button/Button.css',
   'dist/button/IconButton/IconButton.css',
   'dist/checkbox/Checkbox/Checkbox.css',
-  'dist/chip/Chip/Chip.css',
+  'dist/chip/Chip.css',
   'dist/dim/Dim/Dim.css',
   'dist/divider/Divider/Divider.css',
   'dist/menu/MenuItem/MenuItem.css',
@@ -161,6 +167,7 @@ assert.match(css, /data-color=['"]?brand/);
 assert.match(css, /data-color=['"]?neutral/);
 assert.match(css, /\.eli-icon-button/);
 assert.match(css, /\.eli-chip/);
+assert.match(css, /\.eli-chip--filter/);
 assert.match(css, /\.eli-badge/);
 assert.match(css, /\.eli-checkbox/);
 assert.match(css, /\.eli-alert/);
@@ -190,7 +197,9 @@ assert.match(css, /--eli-color-static-white:/);
 assert.match(css, /--eli-font-family-sans:/);
 assert.match(js, /커스텀 버튼/);
 assert.match(js, /항목 추가/);
-assert.match(js, /칩 태그/);
+assert.match(js, /선택 칩/);
+assert.match(js, /삭제 칩/);
+assert.match(js, /컬러/);
 assert.match(js, /태그 삭제/);
 assert.match(js, /배지 라벨/);
 assert.match(js, /약관 동의/);
@@ -211,5 +220,5 @@ assert.match(js, /소개를 입력하세요/);
 assert.match(await readFile(join(consumer, 'dist/index.html'), 'utf8'), /rel="stylesheet"/);
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
-console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·Alert·Badge·Button·IconButton·Chip·Checkbox·Divider·MenuItem·Modal·Select·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
+console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·Modal·Select·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
 console.log('브라우저 확인 대상: .artifacts/packaging/consumer');
