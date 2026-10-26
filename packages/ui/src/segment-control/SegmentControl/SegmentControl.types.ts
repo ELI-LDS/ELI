@@ -1,0 +1,43 @@
+import type { HTMLAttributes } from 'react';
+
+/* Option */
+export interface SegmentControlOption {
+  /** 옵션을 구분하고 선택 결과로 전달할 값이에요. */
+  value: string;
+
+  /** 옵션에 표시할 라벨이에요. */
+  label: string;
+}
+
+/** Segment Control은 디자인 명세에 맞게 2개부터 4개까지 옵션을 받아요. */
+export type SegmentControlOptions =
+  | readonly [SegmentControlOption, SegmentControlOption]
+  | readonly [SegmentControlOption, SegmentControlOption, SegmentControlOption]
+  | readonly [
+      SegmentControlOption,
+      SegmentControlOption,
+      SegmentControlOption,
+      SegmentControlOption,
+    ];
+
+/* Props */
+export interface SegmentControlProps
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
+  /** 화면 낭독기에 전달할 Segment Control의 이름이에요. */
+  'aria-label': string;
+
+  /** 표시할 옵션 목록이에요. 2개부터 4개까지 전달할 수 있어요. */
+  options: SegmentControlOptions;
+
+  /** 외부에서 제어하는 선택 값이에요. */
+  value?: string;
+
+  /** 비제어 방식에서 처음 선택할 값이에요. 생략하면 첫 번째 옵션을 선택해요. */
+  defaultValue?: string;
+
+  /** 옵션을 선택하면 해당 `value`를 전달해요. */
+  onValueChange?: (value: string) => void;
+
+  /** SegmentControl의 루트 `div`에 전달할 클래스 이름이에요. */
+  className?: string;
+}

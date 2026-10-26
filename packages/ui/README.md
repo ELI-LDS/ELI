@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·SegmentControl·Toggle·TextField·TextArea를 구현했어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
@@ -187,6 +187,21 @@ const options = [
 
 export function CategorySelect() {
   return <Select label="분류" options={options} placeholder="분류를 선택하세요" />;
+}
+```
+
+SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요.
+
+```tsx
+import { SegmentControl } from '@eli/ui/segment-control';
+
+const viewOptions = [
+  { label: '목록', value: 'list' },
+  { label: '격자', value: 'grid' },
+] as const;
+
+export function ViewControl() {
+  return <SegmentControl aria-label="보기 방식" options={viewOptions} />;
 }
 ```
 
