@@ -1,0 +1,50 @@
+@import '../../tokens/index.css';
+
+@layer components {
+/* 전체 컨테이너 */
+.eli-segment-control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 333px;
+  max-width: 100%;
+  height: 40px;
+  padding: var(--eli-layout-scale-1, 4px);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: var(--eli-background-subtle, #eaf0f9);
+}
+
+/* 개별 선택 영역 */
+.eli-segment-control__segment {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: 32px;
+  padding: 0 var(--eli-layout-scale-2, 8px);
+  border: 0;
+  border-radius: var(--eli-layout-scale-1, 4px);
+  background: transparent;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  font-weight: var(--eli-font-weight-semibold, 600);
+  cursor: pointer;
+}
+
+/* 선택 상태 */
+.eli-segment-control__segment[data-selected='true'] {
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
+  box-shadow: 0 3px 8px 0 var(--eli-effect-shadow, rgb(75 86 104 / 20%));
+}
+
+/* 긴 라벨은 각 Segment 안에서 줄여요. */
+.eli-segment-control__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+}

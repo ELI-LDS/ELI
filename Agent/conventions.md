@@ -11,7 +11,7 @@
 | 설정·진입점 | 도구의 표준 이름 | `package.json`, `index.ts` |
 | 지침 문서 | 소문자 | `architecture.md` |
 
-현재 공개 컴포넌트 이름은 `Alert`, `Badge`, `Button`, `Chip`, `RemovableChip`, `FilterChip`, `Checkbox`, `Divider`, `IconButton`, `MenuItem`, `Modal`, `Select`, `SnackBar`, `TextArea`, `TextField`, `Toggle`로 맞춰요. 서로 다른 대소문자 표기를 섞지 않아요.
+현재 공개 컴포넌트 이름은 `Alert`, `Badge`, `Button`, `Chip`, `RemovableChip`, `FilterChip`, `Checkbox`, `Divider`, `IconButton`, `MenuItem`, `Modal`, `Select`, `SegmentControl`, `SnackBar`, `TextArea`, `TextField`, `Toggle`로 맞춰요. 서로 다른 대소문자 표기를 섞지 않아요.
 
 ## 공개 경로를 관리해요
 
