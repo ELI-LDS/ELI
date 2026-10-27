@@ -58,28 +58,16 @@ ELI/
 ├── packages/
 │   └── ui/                 # npm으로 배포할 @eli/ui 패키지
 │       └── src/
-│           ├── alert/      # Alert 컴포넌트 그룹
-│           ├── badge/      # Badge 컴포넌트 그룹
-│           ├── button/     # Button·IconButton 컴포넌트 그룹
-│           ├── checkbox/   # Checkbox 컴포넌트 그룹
-│           ├── chip/       # Chip 컴포넌트 그룹
-│           ├── divider/    # Divider 컴포넌트 그룹
+│           ├── {group}/    # 공개 컴포넌트를 역할별로 묶은 그룹
 │           ├── dim/        # 오버레이 컴포넌트가 공유하는 내부 Dim
 │           ├── icon/       # 컴포넌트에서 재사용하는 내부 아이콘
-│           ├── menu/       # MenuItem 컴포넌트 그룹
-│           ├── modal/      # Modal 컴포넌트 그룹
-│           ├── select/     # Select 컴포넌트 그룹
-│           ├── segment-control/ # SegmentControl 컴포넌트 그룹
-│           ├── snackbar/   # SnackBar 컴포넌트 그룹
-│           ├── text/       # TextField·TextArea 같은 텍스트 입력 컴포넌트 그룹
-│           ├── toggle/     # Toggle 컴포넌트 그룹
 │           └── tokens/     # 공통 색상·타이포그래피 토큰
 ├── scripts/                # 빌드·개발 환경·배포 용량 검사
 └── tests/
     └── packaging/          # 패키지 설치·타입·CSS 연결 검증
 ```
 
-새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 현재 `alert/Alert/`, `badge/Badge/`, `button/Button/`, `button/IconButton/`, `chip/Chip/`, `chip/RemovableChip/`, `chip/FilterChip/`, `checkbox/Checkbox/`, `divider/Divider/`, `menu/MenuItem/`, `snackbar/SnackBar/`, `modal/Modal/`, `select/Select/`, `segment-control/SegmentControl/`, `text/TextField/`, `text/TextArea/`, `toggle/Toggle/`에는 각 컴포넌트의 타입·구조·스타일이 있어요. Select의 옵션 행은 공개 MenuItem을 재사용해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고, 별도 공개 경로를 제공하지 않아요. `tokens/`에는 완성된 색상·타이포그래피·레이아웃 토큰이 있어요.
+새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 실제 공개 그룹 경로는 `packages/ui/package.json`의 `exports`에서 확인해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고 별도 공개 경로를 제공하지 않아요. `tokens/`에는 공통 색상·타이포그래피·레이아웃 토큰이 있어요.
 
 공통 작업 규칙은 루트 `AGENTS.md`에서 안내하고, 상세 지침은 `Agent/`에서 관리해요. `node_modules/`, `dist/`, `storybook-static/`, `.artifacts/`는 자동 생성 폴더라 직접 수정하거나 Git에 올리지 않아요.
 
