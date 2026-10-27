@@ -9,10 +9,7 @@ export interface MenuItemProps
   /** 텍스트 왼쪽에 표시할 아이콘이에요. */
   leftIcon?: ReactNode;
 
-  /** 텍스트 오른쪽 끝에 표시할 단축키예요. */
-  shortcut?: ReactNode;
-
-  /** 단축키 다음에 표시할 오른쪽 아이콘이에요. */
+  /** 텍스트 오른쪽에 표시할 아이콘이에요. */
   rightIcon?: ReactNode;
 
   /** 메뉴 항목을 비활성화할지 정해요. `true`이면 선택할 수 없어요. 기본값은 `false`예요. */

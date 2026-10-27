@@ -16,7 +16,7 @@
 
 `packages/ui/src/divider/index.ts`는 Divider와 관련 타입을 `@eli/ui/divider`로 공개해요. Divider는 부모 영역의 너비를 따르고 `Border/Divider` 의미 토큰으로 구분선을 표시해요.
 
-`packages/ui/src/menu/index.ts`는 MenuItem과 관련 타입을 `@eli/ui/menu`로 공개해요. MenuItem은 기본 텍스트와 선택적인 좌우 아이콘·단축키를 하나의 컴포넌트로 관리하고, Hover·Pressed는 실제 사용자 상호작용으로 표현해요. Pointer 상태는 `MenuItem/useMenuItem.ts`, 기본 모양은 `MenuItem.css`, Mouse Down·Up 애니메이션은 `MenuItem.interaction.css`에서 관리해요.
+`packages/ui/src/menu/index.ts`는 MenuItem과 관련 타입을 `@eli/ui/menu`로 공개해요. MenuItem은 기본 텍스트와 선택적인 좌우 아이콘을 하나의 컴포넌트로 관리하고, Hover·Pressed는 실제 사용자 상호작용으로 표현해요. Pointer 상태는 `MenuItem/useMenuItem.ts`, 기본 모양은 `MenuItem.css`, Mouse Down·Up 애니메이션은 `MenuItem.interaction.css`에서 관리해요.
 
 `packages/ui/src/snackbar/index.ts`는 SnackBar와 관련 타입을 `@eli/ui/snackbar`로 공개해요. 메시지, 액션 버튼명과 액션 버튼 색상은 하나의 SnackBar props로 관리해요.
 

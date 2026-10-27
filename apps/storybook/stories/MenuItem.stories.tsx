@@ -9,18 +9,12 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     children: '선택',
-    shortcut: '⇧⌘P',
   },
   argTypes: {
     children: {
       name: '텍스트',
       control: 'text',
       description: '메뉴 항목에 표시할 내용이에요.',
-    },
-    shortcut: {
-      name: '단축키',
-      control: 'text',
-      description: '오른쪽 영역에 표시할 단축키예요.',
     },
     leftIcon: {
       table: { disable: true },
@@ -34,15 +28,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* 아이콘과 단축키 조합을 한눈에 확인해요. */
+/* 좌우 아이콘 조합을 한눈에 확인해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
     <div style={{ display: 'grid', gap: 12, width: 'min(332px, calc(100vw - 32px))' }}>
-      <MenuItem {...args} shortcut={null} />
-      <MenuItem {...args} leftIcon={<XIcon />} shortcut={null} />
-      <MenuItem {...args} rightIcon={<ChevronForwardIcon />} shortcut={null} />
+      <MenuItem {...args} />
+      <MenuItem {...args} leftIcon={<XIcon />} />
+      <MenuItem {...args} rightIcon={<ChevronForwardIcon />} />
       <MenuItem {...args} leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />} />
     </div>
   ),
@@ -57,15 +51,15 @@ export const States: Story = {
       <p style={{ color: '#4b5668', margin: 0 }}>
         메뉴 항목에 마우스를 올리거나 누르고 있는 동안 상태 변화를 확인해요.
       </p>
-      <MenuItem {...args} shortcut={null} />
+      <MenuItem {...args} />
     </div>
   ),
 };
 
-/* 텍스트와 단축키를 바꿔 MenuItem 하나를 확인해요. */
+/* 텍스트를 바꿔 MenuItem 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { include: ['children', 'shortcut'] } },
+  parameters: { controls: { include: ['children'] } },
   render: args => (
     <div style={{ width: 'min(332px, calc(100vw - 32px))' }}>
       <MenuItem {...args} leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />} />
