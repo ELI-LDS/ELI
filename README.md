@@ -51,6 +51,7 @@ pnpm dev
 ELI/
 ├── .github/workflows/       # GitHub에서 실행하는 자동화 작업
 ├── Agent/                  # 구조·코드·검증·버전·협업 지침
+├── docs/                   # 디자이너 협업 가이드와 개선 제안
 ├── apps/
 │   └── storybook/          # 컴포넌트를 개발하고 디자인을 확인하는 앱
 │       ├── .storybook/     # Storybook 실행과 미리보기 설정
@@ -78,5 +79,7 @@ ELI/
 ## 함께 작업해요
 
 [AGENTS.md](AGENTS.md)에서 작업별 지침을 확인해요. [Git 규칙](Agent/branch.md)을 따르고 [검증 기준](Agent/testing.md)에 따라 PR에 실제 검사 결과와 용량을 기록해요. [버전 규칙](Agent/versioning.md)에 따라 예상 변경 유형도 적어요.
+
+디자인 전달과 공동 검토 방법은 [디자이너 협업 가이드](docs/designer-guide.md)에서 확인해요. 앞으로 논의할 작업은 [개선 제안](docs/improvements.md)에 정리해요. 개선 제안의 확정 여부와 진행 상태는 현재 적용 중인 지침과 구분해요. `docs/`는 저장소의 Markdown 문서이며 별도의 문서 사이트는 아직 없어요.
 
 현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. Next.js 소비 검증과 npm 자동 배포는 후속 작업이에요.
