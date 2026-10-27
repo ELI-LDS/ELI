@@ -11,7 +11,7 @@
 | 설정·진입점 | 도구의 표준 이름 | `package.json`, `index.ts` |
 | 지침 문서 | 소문자 | `architecture.md` |
 
-현재 공개 컴포넌트 이름은 `Alert`, `Badge`, `Button`, `Chip`, `RemovableChip`, `FilterChip`, `Checkbox`, `Divider`, `IconButton`, `MenuItem`, `Modal`, `Select`, `SegmentControl`, `SnackBar`, `TextArea`, `TextField`, `Toggle`로 맞춰요. 서로 다른 대소문자 표기를 섞지 않아요.
+공개 컴포넌트 이름은 구현 심벌과 파일 이름에서 같은 PascalCase 표기를 사용해요. 현재 공개된 이름을 지침에 따로 나열하지 않고 그룹 진입점과 `package.json`의 `exports`를 기준으로 확인해요.
 
 ## 공개 경로를 관리해요
 

@@ -51,6 +51,7 @@ pnpm dev
 ELI/
 ├── .github/workflows/       # GitHub에서 실행하는 자동화 작업
 ├── Agent/                  # 구조·코드·검증·버전·협업 지침
+├── docs/                   # 디자이너 협업 가이드와 개선 제안
 ├── apps/
 │   └── storybook/          # 컴포넌트를 개발하고 디자인을 확인하는 앱
 │       ├── .storybook/     # Storybook 실행과 미리보기 설정
@@ -58,28 +59,16 @@ ELI/
 ├── packages/
 │   └── ui/                 # npm으로 배포할 @eli/ui 패키지
 │       └── src/
-│           ├── alert/      # Alert 컴포넌트 그룹
-│           ├── badge/      # Badge 컴포넌트 그룹
-│           ├── button/     # Button·IconButton 컴포넌트 그룹
-│           ├── checkbox/   # Checkbox 컴포넌트 그룹
-│           ├── chip/       # Chip 컴포넌트 그룹
-│           ├── divider/    # Divider 컴포넌트 그룹
+│           ├── {group}/    # 공개 컴포넌트를 역할별로 묶은 그룹
 │           ├── dim/        # 오버레이 컴포넌트가 공유하는 내부 Dim
 │           ├── icon/       # 컴포넌트에서 재사용하는 내부 아이콘
-│           ├── menu/       # MenuItem 컴포넌트 그룹
-│           ├── modal/      # Modal 컴포넌트 그룹
-│           ├── select/     # Select 컴포넌트 그룹
-│           ├── segment-control/ # SegmentControl 컴포넌트 그룹
-│           ├── snackbar/   # SnackBar 컴포넌트 그룹
-│           ├── text/       # TextField·TextArea 같은 텍스트 입력 컴포넌트 그룹
-│           ├── toggle/     # Toggle 컴포넌트 그룹
 │           └── tokens/     # 공통 색상·타이포그래피 토큰
 ├── scripts/                # 빌드·개발 환경·배포 용량 검사
 └── tests/
     └── packaging/          # 패키지 설치·타입·CSS 연결 검증
 ```
 
-새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 현재 `alert/Alert/`, `badge/Badge/`, `button/Button/`, `button/IconButton/`, `chip/Chip/`, `chip/RemovableChip/`, `chip/FilterChip/`, `checkbox/Checkbox/`, `divider/Divider/`, `menu/MenuItem/`, `snackbar/SnackBar/`, `modal/Modal/`, `select/Select/`, `segment-control/SegmentControl/`, `text/TextField/`, `text/TextArea/`, `toggle/Toggle/`에는 각 컴포넌트의 타입·구조·스타일이 있어요. Select의 옵션 행은 공개 MenuItem을 재사용해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고, 별도 공개 경로를 제공하지 않아요. `tokens/`에는 완성된 색상·타이포그래피·레이아웃 토큰이 있어요.
+새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 실제 공개 그룹 경로는 `packages/ui/package.json`의 `exports`에서 확인해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고 별도 공개 경로를 제공하지 않아요. `tokens/`에는 공통 색상·타이포그래피·레이아웃 토큰이 있어요.
 
 공통 작업 규칙은 루트 `AGENTS.md`에서 안내하고, 상세 지침은 `Agent/`에서 관리해요. `node_modules/`, `dist/`, `storybook-static/`, `.artifacts/`는 자동 생성 폴더라 직접 수정하거나 Git에 올리지 않아요.
 
@@ -90,5 +79,7 @@ ELI/
 ## 함께 작업해요
 
 [AGENTS.md](AGENTS.md)에서 작업별 지침을 확인해요. [Git 규칙](Agent/branch.md)을 따르고 [검증 기준](Agent/testing.md)에 따라 PR에 실제 검사 결과와 용량을 기록해요. [버전 규칙](Agent/versioning.md)에 따라 예상 변경 유형도 적어요.
+
+디자인 전달과 공동 검토 방법은 [디자이너 협업 가이드](docs/designer-guide.md)에서 확인해요. 앞으로 논의할 작업은 [개선 제안](docs/improvements.md)에 정리해요. 개선 제안의 확정 여부와 진행 상태는 현재 적용 중인 지침과 구분해요. `docs/`는 저장소의 Markdown 문서이며 별도의 문서 사이트는 아직 없어요.
 
 현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. Next.js 소비 검증과 npm 자동 배포는 후속 작업이에요.

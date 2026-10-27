@@ -1,6 +1,6 @@
 # @eli/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 색상·타이포그래피·레이아웃 토큰과 Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·SnackBar·Modal·Select·SegmentControl·Toggle·TextField·TextArea를 구현했어요.
+ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 현재 공개 경로는 `package.json`의 `exports`, 구현된 컴포넌트와 사용 예시는 아래 문서에서 확인할 수 있어요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
