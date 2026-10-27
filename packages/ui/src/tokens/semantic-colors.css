@@ -16,7 +16,7 @@
 
   /* Background */
   --eli-background-default: var(--eli-color-static-white);
-  --eli-background-subtle: var(--eli-color-neutral-50);
+  --eli-background-subtle: var(--eli-color-neutral-100);
   --eli-background-strong: var(--eli-color-neutral-300);
   --eli-background-error: var(--eli-color-red-50);
   --eli-background-success: var(--eli-color-green-50);
