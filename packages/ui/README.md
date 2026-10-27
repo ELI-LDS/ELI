@@ -147,13 +147,13 @@ export function SectionDivider() {
 }
 ```
 
-MenuItem은 텍스트와 선택적인 좌우 아이콘·단축키를 받아요.
+MenuItem은 텍스트와 선택적인 좌우 아이콘을 받아요.
 
 ```tsx
 import { MenuItem } from '@eli/ui/menu';
 
 export function Menu() {
-  return <MenuItem shortcut="⇧⌘P">선택</MenuItem>;
+  return <MenuItem>선택</MenuItem>;
 }
 ```
 
