@@ -25,9 +25,9 @@ const meta = {
       description: '라벨과 삭제 버튼을 모두 누를 수 없게 해요.',
     },
     removeLabel: {
-      name: '삭제 버튼 이름',
+      name: '삭제 버튼 설명',
       control: 'text',
-      description: '화면 낭독기에 전달할 X 버튼 이름이에요.',
+      description: 'X 아이콘이 무엇을 삭제하는 버튼인지 화면 낭독기가 읽을 수 있게 설명해요.',
     },
     onClick: {
       name: '라벨 동작',
@@ -46,8 +46,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* 기본 라벨과 최대 너비의 말줄임표를 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
     <div style={{ display: 'grid', gap: 16 }}>

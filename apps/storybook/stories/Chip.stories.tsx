@@ -56,8 +56,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* Default와 Selected 디자인을 나란히 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: 'flex', gap: 24 }}>

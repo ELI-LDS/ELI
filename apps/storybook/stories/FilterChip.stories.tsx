@@ -51,8 +51,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* 선택하지 않은 상태와 한 개·여러 개를 선택한 상태를 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
     <div style={{ display: 'flex', gap: 24 }}>

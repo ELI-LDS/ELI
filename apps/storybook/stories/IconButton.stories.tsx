@@ -23,9 +23,10 @@ const variantNames = {
 interface IconButtonGalleryProps {
   description: string;
   disabled?: boolean;
+  title: string;
 }
 
-function IconButtonGallery({ description, disabled = false }: IconButtonGalleryProps) {
+function IconButtonGallery({ description, disabled = false, title }: IconButtonGalleryProps) {
   return (
     <div
       style={{
@@ -35,7 +36,10 @@ function IconButtonGallery({ description, disabled = false }: IconButtonGalleryP
         minWidth: 360,
       }}
     >
-      <p style={{ color: '#4b5668', margin: 0 }}>{description}</p>
+      <div style={{ display: 'grid', gap: 8 }}>
+        <h2 style={{ fontSize: 24, margin: 0 }}>{title}</h2>
+        <p style={{ color: '#4b5668', margin: 0 }}>{description}</p>
+      </div>
 
       {colors.map(color => (
         <section key={color} style={{ display: 'grid', gap: 20 }}>
@@ -88,9 +92,9 @@ const meta = {
   },
   argTypes: {
     'aria-label': {
-      name: '접근성 이름',
+      name: '버튼 설명',
       control: 'text',
-      description: '화면 낭독기에 전달할 버튼 이름이에요.',
+      description: '화면에 텍스트가 없는 버튼의 동작을 화면 낭독기가 읽을 수 있게 설명해요.',
     },
     icon: {
       name: '아이콘',
@@ -135,15 +139,20 @@ type Story = StoryObj<typeof meta>;
 /* 주요 디자인 조합과 실제 Hover, Pressed 상호작용을 한눈에 확인해요. */
 export const Variants: Story = {
   name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: () => (
-    <IconButtonGallery description="버튼 위에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요." />
+    <div style={{ display: 'grid', gap: 64 }}>
+      <IconButtonGallery
+        description="버튼 위에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요."
+        title="기본 상태"
+      />
+      <IconButtonGallery
+        description="전체 디자인 조합의 비활성화 상태예요."
+        disabled
+        title="비활성화"
+      />
+    </div>
   ),
-};
-
-/* 전체 디자인 조합의 Disabled 상태를 확인해요. */
-export const Disabled: Story = {
-  name: '상태별 보기',
-  render: () => <IconButtonGallery description="전체 디자인 조합의 비활성화 상태예요." disabled />,
 };
 
 /* 공개 props를 바꿔 버튼 하나를 직접 확인해요. */

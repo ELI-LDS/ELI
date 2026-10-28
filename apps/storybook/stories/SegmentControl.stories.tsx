@@ -49,9 +49,9 @@ const meta = {
   },
   argTypes: {
     'aria-label': {
-      name: '접근성 이름',
+      name: '선택 영역 설명',
       control: 'text',
-      description: '화면 낭독기에 전달할 Segment Control의 이름이에요.',
+      description: 'Segment Control이 무엇을 선택하는 영역인지 화면 낭독기가 읽을 수 있게 설명해요.',
     },
     options: {
       name: '옵션',

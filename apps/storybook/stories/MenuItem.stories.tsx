@@ -2,6 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronForwardIcon } from '@/packages/ui/src/icon/ChevronForwardIcon.js';
 import { XIcon } from '@/packages/ui/src/icon/XIcon.js';
 import { MenuItem } from '@/packages/ui/src/menu/MenuItem/MenuItem.js';
+import type { MenuItemProps } from '@/packages/ui/src/menu/MenuItem/MenuItem.types.js';
+
+interface MenuItemStoryArgs extends MenuItemProps {
+  showLeftIcon: boolean;
+  showRightIcon: boolean;
+}
 
 const meta = {
   title: '컴포넌트/MenuItem',
@@ -9,6 +15,9 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     children: '선택',
+    disabled: false,
+    showLeftIcon: false,
+    showRightIcon: true,
   },
   argTypes: {
     children: {
@@ -16,14 +25,39 @@ const meta = {
       control: 'text',
       description: '메뉴 항목에 표시할 내용이에요.',
     },
+    showLeftIcon: {
+      name: '왼쪽 아이콘 표시',
+      control: 'boolean',
+      description: '`true`면 텍스트 왼쪽에 예시 아이콘을 표시해요.',
+    },
+    showRightIcon: {
+      name: '오른쪽 아이콘 표시',
+      control: 'boolean',
+      description: '`true`면 텍스트 오른쪽에 예시 아이콘을 표시해요.',
+    },
+    disabled: {
+      name: '비활성화',
+      control: 'boolean',
+      description: '`true`면 메뉴 항목을 선택할 수 없어요.',
+    },
     leftIcon: {
       table: { disable: true },
     },
     rightIcon: {
       table: { disable: true },
     },
+    className: {
+      table: { disable: true },
+    },
   },
-} satisfies Meta<typeof MenuItem>;
+  render: ({ showLeftIcon, showRightIcon, ...args }) => (
+    <MenuItem
+      {...args}
+      leftIcon={showLeftIcon ? <XIcon /> : undefined}
+      rightIcon={showRightIcon ? <ChevronForwardIcon /> : undefined}
+    />
+  ),
+} satisfies Meta<MenuItemStoryArgs>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -32,37 +66,32 @@ type Story = StoryObj<typeof meta>;
 export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
-  render: args => (
-    <div style={{ display: 'grid', gap: 12, width: 'min(332px, calc(100vw - 32px))' }}>
-      <MenuItem {...args} />
-      <MenuItem {...args} leftIcon={<XIcon />} />
-      <MenuItem {...args} rightIcon={<ChevronForwardIcon />} />
-      <MenuItem {...args} leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />} />
-    </div>
-  ),
-};
-
-/* 항목에 마우스를 올리거나 누르고 있는 동안 Hover와 Pressed 상태를 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
-  parameters: { controls: { disable: true } },
-  render: args => (
+  render: ({ children }) => (
     <div style={{ display: 'grid', gap: 16, width: 'min(332px, calc(100vw - 32px))' }}>
       <p style={{ color: '#4b5668', margin: 0 }}>
-        메뉴 항목에 마우스를 올리거나 누르고 있는 동안 상태 변화를 확인해요.
+        각 항목에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요.
       </p>
-      <MenuItem {...args} />
+      <MenuItem>{children}</MenuItem>
+      <MenuItem leftIcon={<XIcon />}>{children}</MenuItem>
+      <MenuItem rightIcon={<ChevronForwardIcon />}>{children}</MenuItem>
+      <MenuItem leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />}>
+        {children}
+      </MenuItem>
+      <MenuItem disabled rightIcon={<ChevronForwardIcon />}>
+        {children}
+      </MenuItem>
     </div>
   ),
 };
 
-/* 텍스트를 바꿔 MenuItem 하나를 확인해요. */
+/* 텍스트와 좌우 아이콘 표시 여부를 바꿔 MenuItem 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { include: ['children'] } },
-  render: args => (
-    <div style={{ width: 'min(332px, calc(100vw - 32px))' }}>
-      <MenuItem {...args} leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />} />
-    </div>
-  ),
+  decorators: [
+    Story => (
+      <div style={{ width: 'min(332px, calc(100vw - 32px))' }}>
+        <Story />
+      </div>
+    ),
+  ],
 };

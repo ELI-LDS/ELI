@@ -16,9 +16,9 @@ const meta = {
   },
   argTypes: {
     'aria-label': {
-      name: '접근성 이름',
+      name: '체크박스 설명',
       control: 'text',
-      description: '화면 낭독기에 전달할 체크박스 이름이에요.',
+      description: '화면에 라벨이 없을 때 체크박스의 용도를 화면 낭독기가 읽을 수 있게 설명해요.',
     },
     defaultChecked: {
       name: '처음 선택 상태',
@@ -42,8 +42,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* Off와 On 상태를 한눈에 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: () => (
     <div
       style={{

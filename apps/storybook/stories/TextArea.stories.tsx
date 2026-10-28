@@ -33,8 +33,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* Figma의 기본·입력 완료·비활성화 상태와 실제 Hover·Focus를 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
     <div
@@ -69,5 +69,5 @@ export const States: Story = {
 /* 라벨과 Placeholder 문구를 바꿔 Text Area 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { include: ['label', 'placeholder'] } },
+  parameters: { controls: { include: ['라벨', 'Placeholder 문구'] } },
 };
