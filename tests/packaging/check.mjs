@@ -22,6 +22,25 @@ await mkdir(consumer);
 await writeFile(join(consumer, 'package.json'), JSON.stringify({ name: 'eli-private-consumer', private: true, type: 'module' }));
 execFileSync('npm', ['install', '--offline', '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', '--package-lock=false', join(work, info.filename)], { cwd: consumer, stdio: 'inherit' });
 await writeFile(join(consumer, 'index.html'), '<html><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
+await writeFile(join(consumer, 'custom.css'), `.consumer-button {
+  width: 100%;
+  color: #fff;
+  background: #7c3aed;
+}
+
+.consumer-button:hover:not(:disabled) {
+  background: #6d28d9;
+}
+
+.consumer-button:active:not(:disabled) {
+  background: #5b21b6;
+}
+
+.consumer-button:disabled {
+  color: #fff;
+  background: #c4b5fd;
+}
+`);
 await writeFile(join(consumer, 'main.tsx'), `import { createRoot } from 'react-dom/client';
 import { Alert } from '@eli/ui/alert';
 import { Badge } from '@eli/ui/badge';
@@ -36,8 +55,9 @@ import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
+import './custom.css';
 const chipOptions = [{ label: '블랙', value: 'black' }, { label: '화이트', value: 'white' }];
-createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button backgroundColor="#153464" color="neutral" icon={null} width="100%">커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem>메뉴</MenuItem><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
+createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button className="consumer-button" color="neutral" icon={null}>커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem>메뉴</MenuItem><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
 `);
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
@@ -169,6 +189,14 @@ assert.match(
 assert.match(await readFile(join(installedPackage, 'README.md'), 'utf8'), /컴포넌트 스타일을 바꿔요/);
 assert.match(css, /\.eli-button/);
 assert.match(css, /@layer components/);
+assert.match(css, /\.consumer-button\{/);
+assert.match(css, /\.consumer-button:hover:not\(:disabled\)/);
+assert.match(css, /\.consumer-button:active:not\(:disabled\)/);
+assert.match(css, /\.consumer-button:disabled/);
+assert.match(css, /#7c3aed/);
+assert.match(css, /#6d28d9/);
+assert.match(css, /#5b21b6/);
+assert.match(css, /#c4b5fd/);
 assert.match(css, /data-color=['"]?brand/);
 assert.match(css, /data-color=['"]?neutral/);
 assert.match(css, /\.eli-icon-button/);
@@ -203,6 +231,7 @@ assert.match(css, /--eli-color-blue-500:/);
 assert.match(css, /--eli-color-static-white:/);
 assert.match(css, /--eli-font-family-sans:/);
 assert.match(js, /커스텀 버튼/);
+assert.match(js, /consumer-button/);
 assert.match(js, /항목 추가/);
 assert.match(js, /선택 칩/);
 assert.match(js, /삭제 칩/);
@@ -228,5 +257,5 @@ assert.match(js, /소개를 입력하세요/);
 assert.match(await readFile(join(consumer, 'dist/index.html'), 'utf8'), /rel="stylesheet"/);
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
-console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·Modal·Select·SegmentControl·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
+console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·Modal·Select·SegmentControl·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
 console.log('브라우저 확인 대상: .artifacts/packaging/consumer');
