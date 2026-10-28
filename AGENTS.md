@@ -31,4 +31,4 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 
 새 컴포넌트를 추가했다는 이유만으로 `Agent/` 문서에 컴포넌트 이름을 나열하지 않아요. 공개 경로의 기준은 `packages/ui/package.json`의 `exports`, 구현 현황은 루트 README와 Storybook이에요. 지침에는 여러 작업에 반복 적용할 규칙과 예외적인 구조만 기록해요.
 
-디자인 전달·공동 검토에는 [디자이너 협업 가이드](docs/designer-guide.md)를 참고해요. [개선 제안](docs/improvements.md)은 미확정 작업을 관리하는 문서예요. 제안을 현재 적용 중인 규칙이나 구현된 기능으로 취급하지 않아요.
+디자인 전달·공동 검토에는 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요. [개선 제안](handbook/improvements.md)은 미확정 작업을 관리하는 문서예요. 제안을 현재 적용 중인 규칙이나 구현된 기능으로 취급하지 않아요.
