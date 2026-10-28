@@ -5,6 +5,7 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 ## 먼저 지켜요
 
 - 사용자는 `@eli/ui`를 한 번 설치하고 `@eli/ui/button` 같은 그룹 경로에서 컴포넌트를 가져와요.
+- 전체 패키지 설치와 별도로, 원하는 컴포넌트 하나와 필요한 파일만 소비 프로젝트에 추가하는 레지스트리·CLI 방식을 제공하는 것이 배포 목표예요. 현재 구현 여부와 구조는 [구조 지침](Agent/architecture.md#두-가지-소비-방식을-제공해요)에서 구분해요.
 - 컴포넌트를 import하면 기본 CSS와 공통 토큰이 함께 연결되어야 해요. 사용자에게 별도 CSS import나 전용 플러그인을 요구하지 않아요.
 - 실행 의존성은 꼭 필요한 경우에만 추가해요. React는 peer dependency로 공유해요.
 - Storybook·테스트·개발 도구를 배포 결과물에 포함하지 않아요.
@@ -22,6 +23,7 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 | 컴포넌트·스타일 구현 | [컴포넌트](Agent/components.md) |
 | 한국어 문서 작성 | [글쓰기](Agent/writing.md) |
 | 구현 확인·리뷰 | [검증](Agent/testing.md) |
+| 소비자 패키지 매니저·설치 명령 | [패키지 매니저](Agent/package-managers.md) |
 | 공개 API 변경·릴리스 준비 | [버전](Agent/versioning.md) |
 | 브랜치·커밋·PR | [Git 규칙](Agent/branch.md) |
 
