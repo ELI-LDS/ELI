@@ -35,6 +35,20 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/* 한 줄과 두 줄 메시지의 전체 UI를 확인해요. */
+export const Overview: Story = {
+  name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
+  render: args => (
+    <div style={{ display: 'grid', gap: 24 }}>
+      <SnackBar {...args}>메세지를 작성합니다.</SnackBar>
+      <SnackBar {...args}>
+        스낵바 메시지가 길어지면 최대 두 줄까지 표시되는 모습을 확인할 수 있어요.
+      </SnackBar>
+    </div>
+  ),
+};
+
 /* 텍스트, 버튼명과 버튼 색상을 바꿔 스낵바 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',

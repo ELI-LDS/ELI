@@ -12,7 +12,7 @@ export interface RemovableChipProps
   /** X 아이콘을 누르면 호출돼요. 라벨 영역의 클릭 동작은 실행하지 않아요. */
   onRemove: MouseEventHandler<HTMLButtonElement>;
 
-  /** 화면 낭독기에 전달할 X 버튼 이름이에요. 기본값은 `삭제`예요. */
+  /** X 아이콘이 무엇을 삭제하는 버튼인지 화면 낭독기가 읽을 수 있게 설명해요. 기본값은 `삭제`예요. */
   removeLabel?: string;
 
   /** `true`이면 라벨과 삭제 버튼을 모두 누를 수 없어요. 기본값은 `false`예요. */

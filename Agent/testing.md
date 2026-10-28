@@ -14,7 +14,9 @@
 
 검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 사용해요. React 버전별 독립 설치나 프레임워크별 라우팅·RSC·hydration 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
 
-`pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 기본 스타일·상태·커스터마이징을 확인해요. 새 공개 컴포넌트에는 지침에 맞는 Story를 함께 추가해요. 상호작용·키보드·접근성 자동 검사는 아직 없어요.
+`pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 디자인 조합·상태와 `직접 바꿔보기`의 Controls 반영을 확인해요. Story 구성과 확인 방법은 [컴포넌트 구현 규칙](components.md#storybook을-함께-확인해요)을 따라요. 상호작용·키보드·접근성 자동 검사는 아직 없어요.
+
+외부 `className`과 소비 앱의 CSS가 기본·Hover·Pressed·Disabled 스타일을 덮어쓸 수 있는지는 `pnpm test:packaging`의 비공개 소비 예제에서 확인해요. Storybook에 스타일 도구별 전용 Story를 추가하지 않아요.
 
 현재 `pnpm check`는 컴포넌트 단위 테스트를 실행하지 않아요. 실제 컴포넌트와 `.test.tsx`를 추가할 때 테스트 실행 도구와 명령도 함께 구성해요. `.storybook`의 설정 파일은 통합 타입 검사에 포함해요.
 

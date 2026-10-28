@@ -18,6 +18,7 @@ type Story = StoryObj<typeof meta>;
 /* 부모 영역에 맞춰 반응형으로 늘어나는 기본 구분선을 확인해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: args => (
     <div style={{ width: 'min(362px, calc(100vw - 32px))' }}>
       <Divider {...args} />

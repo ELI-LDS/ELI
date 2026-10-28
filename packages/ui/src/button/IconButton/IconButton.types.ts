@@ -12,7 +12,7 @@ export type IconButtonColor = 'brand' | 'neutral';
 /* Props */
 export interface IconButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'color'> {
-  /** 화면 낭독기에 전달할 버튼 이름이에요. 텍스트가 없는 버튼이라 반드시 입력해요. */
+  /** 화면에 텍스트가 없는 버튼의 동작을 화면 낭독기가 읽을 수 있게 설명해요. 반드시 입력해요. */
   'aria-label': string;
 
   /** 버튼에 표시할 아이콘이에요. 생략하면 Plus 아이콘을 표시해요. */

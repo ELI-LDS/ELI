@@ -61,6 +61,12 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/* 기본 텍스트와 두 버튼으로 구성된 Modal 전체 UI를 확인해요. */
+export const Overview: Story = {
+  name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
+};
+
 /* 공개 props를 바꿔 Modal 하나를 직접 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',

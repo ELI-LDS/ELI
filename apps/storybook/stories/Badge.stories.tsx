@@ -37,6 +37,7 @@ type Story = StoryObj<typeof meta>;
 /* Medium과 Large 크기를 한눈에 확인해요. */
 export const Sizes: Story = {
   name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: () => (
     <div
       style={{

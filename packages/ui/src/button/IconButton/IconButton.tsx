@@ -17,7 +17,7 @@ import type { IconButtonProps } from './IconButton.types.js';
  * - `disabled`: `true`이면 비활성화해요.
  *
  * ### 내용과 동작
- * - `aria-label`: 아이콘의 동작을 설명하는 필수 이름
+ * - `aria-label`: 화면 낭독기가 읽을 버튼 동작 설명
  * - `icon`: 표시할 아이콘, 기본값은 Plus 아이콘
  * - `onClick`: 클릭했을 때 실행할 함수
  *

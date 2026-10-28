@@ -23,7 +23,7 @@ export type SegmentControlOptions =
 /* Props */
 export interface SegmentControlProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
-  /** 화면 낭독기에 전달할 Segment Control의 이름이에요. */
+  /** Segment Control이 무엇을 선택하는 영역인지 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 
   /** 표시할 옵션 목록이에요. 2개부터 4개까지 전달할 수 있어요. */

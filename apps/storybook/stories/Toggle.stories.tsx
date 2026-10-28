@@ -10,6 +10,11 @@ const meta = {
     defaultChecked: false,
   },
   argTypes: {
+    'aria-label': {
+      name: '토글 설명',
+      control: 'text',
+      description: '토글로 무엇을 켜고 끄는지 화면 낭독기가 읽을 수 있게 설명해요.',
+    },
     defaultChecked: {
       name: '초기 상태',
       control: 'boolean',
@@ -28,8 +33,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* Off와 On 디자인을 함께 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ alignItems: 'center', display: 'flex', gap: 24 }}>
       <Toggle aria-label="Off 토글" />

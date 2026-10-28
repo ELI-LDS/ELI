@@ -55,8 +55,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* 네 가지 상태를 한눈에 확인해요. */
-export const Statuses: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
+  parameters: { controls: { disable: true } },
   render: () => (
     <div
       style={{

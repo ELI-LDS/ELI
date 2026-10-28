@@ -31,8 +31,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 /* 회원가입 폼에서 서로 겹치지 않는 네 가지 상태를 한눈에 확인해요. */
-export const States: Story = {
-  name: '상태별 보기',
+export const Overview: Story = {
+  name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
     <div
@@ -64,5 +64,5 @@ export const States: Story = {
 /* 라벨과 Placeholder 문구를 바꿔 Text Field 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { include: ['label', 'placeholder'] } },
+  parameters: { controls: { include: ['라벨', 'Placeholder 문구'] } },
 };
