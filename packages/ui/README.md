@@ -127,7 +127,7 @@ export function Chips() {
 }
 ```
 
-Checkbox는 네이티브 체크박스예요. 라벨 텍스트가 없으므로 `aria-label`이나 연결된 `label`로 이름을 전달해요.
+Checkbox는 네이티브 체크박스예요. 라벨 텍스트가 없으면 `aria-label`로 용도를 설명하거나 별도의 `label`을 연결해요.
 
 ```tsx
 import { Checkbox } from '@eli/ui/checkbox';

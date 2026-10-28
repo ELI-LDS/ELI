@@ -17,7 +17,7 @@ import type { RemovableChipProps } from './RemovableChip.types.js';
  * - `children`: 칩에 표시할 라벨
  * - `onClick`: 라벨 영역을 눌렀을 때 실행할 함수
  * - `onRemove`: X 아이콘을 눌렀을 때 실행할 함수
- * - `removeLabel`: X 버튼의 접근성 이름, 기본값은 `삭제`
+ * - `removeLabel`: 화면 낭독기가 읽을 삭제 버튼 설명, 기본값은 `삭제`
  *
  * ### 스타일 변경
  * - `className`: 바깥 `span`에 외부 클래스를 전달해요.

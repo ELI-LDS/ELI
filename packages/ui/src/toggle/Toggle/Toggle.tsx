@@ -17,7 +17,7 @@ import { useToggle } from './useToggle.js';
  * - `disabled`: `true`이면 비활성화해요.
  *
  * ### 내용과 동작
- * - `aria-label`: Toggle의 동작을 설명하는 이름
+ * - `aria-label`: 화면 낭독기가 읽을 Toggle 동작 설명
  * - `onCheckedChange`: 바뀐 상태를 받는 함수
  *
  * ### 스타일 변경
