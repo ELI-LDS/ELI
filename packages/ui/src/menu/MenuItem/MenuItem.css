@@ -60,7 +60,7 @@
 
 /* State / Hover */
 .eli-menu-item:hover:not(:disabled) {
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Pressed */

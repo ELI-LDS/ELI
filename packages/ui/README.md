@@ -157,6 +157,45 @@ export function Menu() {
 }
 ```
 
+NavigationBar는 3개부터 5개의 주요 화면 이동 항목을 표시해요. 기본 상태에는 outlined 아이콘을 사용하고, 활성 탭에만 filled 아이콘을 사용해요.
+
+```tsx
+import { NavigationBar } from '@eli/ui/navigation';
+import {
+  HomeFilledIcon,
+  HomeOutlinedIcon,
+  ProfileFilledIcon,
+  ProfileOutlinedIcon,
+  SearchFilledIcon,
+  SearchOutlinedIcon,
+} from './icons';
+
+const items = [
+  {
+    value: 'home',
+    label: '홈',
+    outlinedIcon: <HomeOutlinedIcon />,
+    filledIcon: <HomeFilledIcon />,
+  },
+  {
+    value: 'search',
+    label: '검색',
+    outlinedIcon: <SearchOutlinedIcon />,
+    filledIcon: <SearchFilledIcon />,
+  },
+  {
+    value: 'profile',
+    label: '내 정보',
+    outlinedIcon: <ProfileOutlinedIcon />,
+    filledIcon: <ProfileFilledIcon />,
+  },
+] as const;
+
+export function Example() {
+  return <NavigationBar aria-label="주요 메뉴" items={items} />;
+}
+```
+
 Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요.
 
 ```tsx
