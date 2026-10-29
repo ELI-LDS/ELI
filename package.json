@@ -13,13 +13,15 @@
     "build:storybook": "pnpm --filter @eli/storybook build",
     "size": "pnpm build && node scripts/check-package.mjs",
     "test:packaging": "pnpm build && node tests/packaging/check.mjs",
-    "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:packaging && pnpm size"
+    "test:next": "pnpm build && node tests/next/check.mjs",
+    "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:packaging && pnpm test:next && pnpm size"
   },
   "devDependencies": {
     "@types/node": "24.13.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "eslint": "10.11.0",
+    "next": "16.4.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "typescript": "5.9.3",
