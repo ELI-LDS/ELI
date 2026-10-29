@@ -50,6 +50,7 @@ import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
+import { NavigationBar, NavigationBarItem } from '@eli/ui/navigation';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
@@ -57,7 +58,8 @@ import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
 import './custom.css';
 const chipOptions = [{ label: '블랙', value: 'black' }, { label: '화이트', value: 'white' }];
-createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button className="consumer-button" color="neutral" icon={null}>커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem>메뉴</MenuItem><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
+const navigationItems = [{ value: 'home', label: '탐색 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'search', label: '탐색 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'profile', label: '탐색 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
+createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button className="consumer-button" color="neutral" icon={null}>커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><MenuItem>메뉴</MenuItem><NavigationBar aria-label="주요 탐색" items={navigationItems} /><NavigationBarItem active filledIcon={<span>●</span>} label="탐색 항목" outlinedIcon={<span>○</span>} /><Modal height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><SnackBar actionColor="#153464" /><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /></>);
 `);
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
@@ -73,13 +75,15 @@ import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
+import { NavigationBar, NavigationBarItem } from '@eli/ui/navigation';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
 
-const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 선택 칩</Chip><RemovableChip onRemove={() => undefined}>서버 삭제 칩</RemovableChip><FilterChip label="서버 필터" options={[{ label: '서버 옵션 1', value: 'server-1' }, { label: '서버 옵션 2', value: 'server-2' }]} selectedValues={['server-1', 'server-2']} /><Divider /><MenuItem>서버 메뉴</MenuItem><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SegmentControl aria-label="서버 보기 방식" options={[{ label: '서버 목록', value: 'list' }, { label: '서버 격자', value: 'grid' }]} /><SnackBar>서버 메시지</SnackBar><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /></main>);
+const serverNavigationItems = [{ value: 'server-home', label: '서버 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-search', label: '서버 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-profile', label: '서버 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
+const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 선택 칩</Chip><RemovableChip onRemove={() => undefined}>서버 삭제 칩</RemovableChip><FilterChip label="서버 필터" options={[{ label: '서버 옵션 1', value: 'server-1' }, { label: '서버 옵션 2', value: 'server-2' }]} selectedValues={['server-1', 'server-2']} /><Divider /><MenuItem>서버 메뉴</MenuItem><NavigationBar aria-label="서버 주요 탐색" items={serverNavigationItems} /><NavigationBarItem filledIcon={<span>●</span>} label="서버 탐색 항목" outlinedIcon={<span>○</span>} /><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SegmentControl aria-label="서버 보기 방식" options={[{ label: '서버 목록', value: 'list' }, { label: '서버 격자', value: 'grid' }]} /><SnackBar>서버 메시지</SnackBar><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /></main>);
 export default markup;
 `);
 await build({
@@ -105,6 +109,8 @@ const clientComponents = [
   'dist/chip/Chip/Chip.js',
   'dist/menu/MenuItem/MenuItem.js',
   'dist/modal/Modal/Modal.js',
+  'dist/navigation/NavigationBar/NavigationBar.js',
+  'dist/navigation/NavigationBarItem/NavigationBarItem.js',
   'dist/select/Select/Select.js',
   'dist/segment-control/SegmentControl/SegmentControl.js',
   'dist/snackbar/SnackBar/SnackBar.js',
@@ -136,6 +142,8 @@ const documentedComponents = [
   'dist/divider/Divider/Divider.d.ts',
   'dist/menu/MenuItem/MenuItem.d.ts',
   'dist/modal/Modal/Modal.d.ts',
+  'dist/navigation/NavigationBar/NavigationBar.d.ts',
+  'dist/navigation/NavigationBarItem/NavigationBarItem.d.ts',
   'dist/select/Select/Select.d.ts',
   'dist/segment-control/SegmentControl/SegmentControl.d.ts',
   'dist/snackbar/SnackBar/SnackBar.d.ts',
@@ -161,6 +169,8 @@ const layeredStyleSheets = [
   'dist/menu/MenuItem/MenuItem.css',
   'dist/menu/MenuItem/MenuItem.interaction.css',
   'dist/modal/Modal/Modal.css',
+  'dist/navigation/NavigationBar/NavigationBar.css',
+  'dist/navigation/NavigationBarItem/NavigationBarItem.css',
   'dist/select/Select/Select.css',
   'dist/segment-control/SegmentControl/SegmentControl.css',
   'dist/snackbar/SnackBar/SnackBar.css',
@@ -212,6 +222,8 @@ assert.match(css, /--eli-effect-dim:/);
 assert.match(css, /--eli-effect-shadow:/);
 assert.match(css, /\.eli-menu-item/);
 assert.match(css, /\.eli-dim/);
+assert.match(css, /\.eli-navigation-bar/);
+assert.match(css, /\.eli-navigation-bar-item/);
 assert.match(css, /\.eli-typo-heading-h1/);
 assert.match(css, /\.eli-typo-heading-h2/);
 assert.match(css, /\.eli-typo-heading-h3/);
@@ -242,6 +254,8 @@ assert.match(js, /약관 동의/);
 assert.match(js, /알림 제목/);
 assert.match(js, /알림 본문/);
 assert.match(js, /메뉴/);
+assert.match(js, /탐색 홈/);
+assert.match(js, /탐색 항목/);
 assert.match(js, /첫 번째 안내/);
 assert.match(js, /두 번째 안내/);
 assert.match(js, /분류를 선택하세요/);
@@ -257,5 +271,5 @@ assert.match(js, /소개를 입력하세요/);
 assert.match(await readFile(join(consumer, 'dist/index.html'), 'utf8'), /rel="stylesheet"/);
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
-console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·Modal·Select·SegmentControl·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
+console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·NavigationBar·NavigationBarItem·Modal·Select·SegmentControl·SnackBar·TextField·TextArea·Toggle CSS와 토큰 자동 연결 검증을 통과했어요.');
 console.log('브라우저 확인 대상: .artifacts/packaging/consumer');

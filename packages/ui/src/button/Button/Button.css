@@ -164,7 +164,7 @@
 
 /* State / Neutral / Large, Medium / Solid / Hover */
 .eli-button[data-variant='solid'][data-color='neutral']:hover:not(:disabled) {
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Neutral / Large, Medium / Solid / Pressed */
@@ -180,7 +180,7 @@
 /* State / Neutral / Large, Medium / Outline / Hover */
 .eli-button[data-variant='outline'][data-color='neutral']:hover:not(:disabled) {
   border-color: var(--eli-border-default, #8b98aa);
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Neutral / Large, Medium / Outline / Pressed */
@@ -197,7 +197,7 @@
 
 /* State / Neutral / Large, Medium / Ghost / Hover */
 .eli-button[data-variant='ghost'][data-color='neutral']:hover:not(:disabled) {
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Neutral / Large, Medium / Ghost / Pressed */

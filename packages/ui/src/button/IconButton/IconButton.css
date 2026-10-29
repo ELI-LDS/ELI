@@ -134,7 +134,7 @@
 
 /* State / Neutral / Solid / Hover */
 .eli-icon-button[data-variant='solid'][data-color='neutral']:hover:not(:disabled) {
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Neutral / Solid / Pressed */
@@ -150,7 +150,7 @@
 /* State / Neutral / Outline / Hover */
 .eli-icon-button[data-variant='outline'][data-color='neutral']:hover:not(:disabled) {
   border-color: var(--eli-border-default, #8b98aa);
-  background: var(--eli-background-interaction-neutral-hover, #f4f8fe);
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
 }
 
 /* State / Neutral / Outline / Pressed */

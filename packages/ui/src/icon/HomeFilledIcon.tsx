@@ -1,0 +1,18 @@
+/* Home Filled Icon */
+export function HomeFilledIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 20.5V14.5H14V20.5H19V12.5H22L12 3.5L2 12.5H5V20.5H10Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
