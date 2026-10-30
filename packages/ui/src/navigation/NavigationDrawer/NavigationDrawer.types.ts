@@ -2,7 +2,7 @@ import type { HTMLAttributes, ReactNode } from 'react';
 
 export interface NavigationDrawerProps
   extends Omit<HTMLAttributes<HTMLElement>, 'aria-label' | 'children' | 'defaultValue'> {
-  /** Drawer 안에 배치할 NavigationDrawerMenu와 Divider예요. */
+  /** Drawer 안에 배치할 NavigationDrawerCategory, NavigationDrawerMenu와 Divider예요. */
   children: ReactNode;
 
   /** Navigation Drawer가 담당하는 탐색 영역을 화면 낭독기에 설명해요. */

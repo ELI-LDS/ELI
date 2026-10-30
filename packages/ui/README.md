@@ -197,16 +197,21 @@ export function Example() {
 }
 ```
 
-NavigationDrawer는 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
+NavigationDrawer는 카테고리, 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerCategory`는 클릭 동작 없이 메뉴 묶음의 이름을 표시하며, `label`로 카테고리명을 바꿀 수 있어요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
 
 ```tsx
-import { NavigationDrawer, NavigationDrawerMenu } from '@eli/ui/navigation';
+import {
+  NavigationDrawer,
+  NavigationDrawerCategory,
+  NavigationDrawerMenu,
+} from '@eli/ui/navigation';
 import { Divider } from '@eli/ui/divider';
 import { HomeFilledIcon, HomeOutlinedIcon } from './icons';
 
 export function SideMenu() {
   return (
     <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
+      <NavigationDrawerCategory label="학습" />
       <NavigationDrawerMenu
         filledIcon={<HomeFilledIcon />}
         label="학습"
