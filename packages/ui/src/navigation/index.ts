@@ -8,6 +8,8 @@ export { NavigationBarItem } from './NavigationBarItem/NavigationBarItem.js';
 export type { NavigationBarItemProps } from './NavigationBarItem/NavigationBarItem.types.js';
 export { NavigationDrawer } from './NavigationDrawer/NavigationDrawer.js';
 export type { NavigationDrawerProps } from './NavigationDrawer/NavigationDrawer.types.js';
+export { NavigationDrawerCategory } from './NavigationDrawerCategory/NavigationDrawerCategory.js';
+export type { NavigationDrawerCategoryProps } from './NavigationDrawerCategory/NavigationDrawerCategory.types.js';
 export { NavigationDrawerMenu } from './NavigationDrawerMenu/NavigationDrawerMenu.js';
 export type {
   NavigationDrawerMenuProps,

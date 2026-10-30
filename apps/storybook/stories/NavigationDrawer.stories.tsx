@@ -4,7 +4,13 @@ import { Divider } from '@/packages/ui/src/divider/Divider/Divider.js';
 import { HomeFilledIcon } from '@/packages/ui/src/icon/HomeFilledIcon.js';
 import { HomeOutlinedIcon } from '@/packages/ui/src/icon/HomeOutlinedIcon.js';
 import { NavigationDrawer } from '@/packages/ui/src/navigation/NavigationDrawer/NavigationDrawer.js';
+import { NavigationDrawerCategory } from '@/packages/ui/src/navigation/NavigationDrawerCategory/NavigationDrawerCategory.js';
+import type { NavigationDrawerProps } from '@/packages/ui/src/navigation/NavigationDrawer/NavigationDrawer.types.js';
 import { NavigationDrawerMenu } from '@/packages/ui/src/navigation/NavigationDrawerMenu/NavigationDrawerMenu.js';
+
+interface NavigationDrawerStoryArgs extends NavigationDrawerProps {
+  categoryLabel: string;
+}
 
 interface SubMenuDraft {
   id: number;
@@ -38,7 +44,13 @@ const editorButtonStyle = {
   cursor: 'pointer',
 } as const;
 
-function NavigationDrawerEditor({ ariaLabel }: { ariaLabel: string }) {
+function NavigationDrawerEditor({
+  ariaLabel,
+  categoryLabel,
+}: {
+  ariaLabel: string;
+  categoryLabel: string;
+}) {
   const [menus, setMenus] = useState(initialMenus);
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const nextId = useRef(6);
@@ -123,6 +135,7 @@ function NavigationDrawerEditor({ ariaLabel }: { ariaLabel: string }) {
         onValueChange={setSelectedValue}
         value={selectedValue ?? ''}
       >
+        <NavigationDrawerCategory label={categoryLabel} />
         {menus.map(menu => {
           return (
             <NavigationDrawerMenu
@@ -218,6 +231,7 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     'aria-label': '서비스 메뉴',
+    categoryLabel: '카테고리',
     children: null,
   },
   argTypes: {
@@ -226,16 +240,21 @@ const meta = {
       control: 'text',
       description: 'Navigation Drawer가 어떤 탐색 영역인지 화면 낭독기가 읽을 수 있게 설명해요.',
     },
+    categoryLabel: {
+      name: '카테고리명',
+      control: 'text',
+      description: '메뉴 묶음 위에 표시할 카테고리 이름이에요.',
+    },
     children: { table: { disable: true } },
     className: { table: { disable: true } },
     value: { table: { disable: true } },
     defaultValue: { table: { disable: true } },
     onValueChange: { table: { disable: true } },
   },
-} satisfies Meta<typeof NavigationDrawer>;
+} satisfies Meta<NavigationDrawerStoryArgs>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<NavigationDrawerStoryArgs>;
 
 /* 실제 라벨로 Drawer의 메뉴·하위 메뉴·상태 조합을 확인해요. */
 export const Overview: Story = {
@@ -243,6 +262,7 @@ export const Overview: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
+      <NavigationDrawerCategory label="주요 메뉴" />
       <NavigationDrawerMenu
         filledIcon={<HomeFilledIcon />}
         label="홈"
@@ -261,6 +281,7 @@ export const Overview: Story = {
         value="learning"
       />
       <Divider />
+      <NavigationDrawerCategory label="서비스" />
       <NavigationDrawerMenu
         filledIcon={<HomeFilledIcon />}
         label="커뮤니티"
@@ -288,5 +309,10 @@ export const Overview: Story = {
 export const Playground: Story = {
   name: '직접 바꿔보기',
   parameters: { layout: 'padded' },
-  render: args => <NavigationDrawerEditor ariaLabel={args['aria-label']} />,
+  render: args => (
+    <NavigationDrawerEditor
+      ariaLabel={args['aria-label']}
+      categoryLabel={args.categoryLabel}
+    />
+  ),
 };
