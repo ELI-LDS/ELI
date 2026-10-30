@@ -147,13 +147,14 @@ export function SectionDivider() {
 }
 ```
 
-MenuItem은 텍스트와 선택적인 좌우 아이콘을 받아요.
+MenuItem은 텍스트와 선택적인 좌우 아이콘·단축키 안내를 받아요. `shortcut`은 안내를
+표시하며 실제 키보드 동작은 별도로 연결해야 해요.
 
 ```tsx
 import { MenuItem } from '@eli/ui/menu';
 
 export function Menu() {
-  return <MenuItem>선택</MenuItem>;
+  return <MenuItem shortcut="⇧⌘P">명령 팔레트 열기</MenuItem>;
 }
 ```
 
@@ -242,7 +243,8 @@ export function ConfirmModal() {
 }
 ```
 
-Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록을 전달해요.
+Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록을 전달해요. 옵션 행은
+MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요.
 
 ```tsx
 import { Select } from '@eli/ui/select';

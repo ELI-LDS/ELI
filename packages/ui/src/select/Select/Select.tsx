@@ -2,7 +2,6 @@
 
 import './Select.css';
 import { ArrowDownIcon } from '../../icon/ArrowDownIcon.js';
-import { ChevronForwardIcon } from '../../icon/ChevronForwardIcon.js';
 import { MenuItem } from '../../menu/MenuItem/MenuItem.js';
 import type { SelectProps } from './Select.types.js';
 import { useSelect } from './useSelect.js';
@@ -16,7 +15,7 @@ import { useSelect } from './useSelect.js';
  * ### 주요 설정
  * - `label`: 입력 영역 이름, 기본값은 `라벨`
  * - `placeholder`: 선택 전 안내 문구, 기본값은 `선택해주세요.`
- * - `options`: `{ value, label }` 목록
+ * - `options`: `{ value, label }` 목록. 옵션에는 아이콘과 단축키 안내를 표시하지 않아요.
  *
  * ### 내용과 동작
  * - `value`: 외부에서 제어하는 선택 값
@@ -39,7 +38,7 @@ export function Select(props: SelectProps) {
     placeholder = '선택해주세요.',
     value,
     ...selectProps
-    } = props;
+  } = props;
   /* Select의 상태와 상호작용은 전용 Hook에서 관리해요. */
   const {
     handleBlur,
@@ -114,7 +113,6 @@ export function Select(props: SelectProps) {
                 id={`${listboxId}-option-${index}`}
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}
-                rightIcon={<ChevronForwardIcon />}
                 role="option"
               >
                 {option.label}

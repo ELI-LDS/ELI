@@ -18,6 +18,7 @@ const meta = {
     disabled: false,
     showLeftIcon: false,
     showRightIcon: true,
+    shortcut: '⇧⌘P',
   },
   argTypes: {
     children: {
@@ -34,6 +35,11 @@ const meta = {
       name: '오른쪽 아이콘 표시',
       control: 'boolean',
       description: '`true`면 텍스트 오른쪽에 예시 아이콘을 표시해요.',
+    },
+    shortcut: {
+      name: '단축키 안내',
+      control: 'text',
+      description: '오른쪽에 표시할 단축키 안내예요. 실제 키보드 동작은 별도로 연결해요.',
     },
     disabled: {
       name: '비활성화',
@@ -62,7 +68,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* 좌우 아이콘 조합을 한눈에 확인해요. */
+/* 좌우 아이콘과 단축키 안내 조합을 한눈에 확인해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
@@ -74,6 +80,7 @@ export const Overview: Story = {
       <MenuItem>{children}</MenuItem>
       <MenuItem leftIcon={<XIcon />}>{children}</MenuItem>
       <MenuItem rightIcon={<ChevronForwardIcon />}>{children}</MenuItem>
+      <MenuItem shortcut="⇧⌘P">{children}</MenuItem>
       <MenuItem leftIcon={<XIcon />} rightIcon={<ChevronForwardIcon />}>
         {children}
       </MenuItem>
@@ -84,7 +91,7 @@ export const Overview: Story = {
   ),
 };
 
-/* 텍스트와 좌우 아이콘 표시 여부를 바꿔 MenuItem 하나를 확인해요. */
+/* 텍스트, 좌우 아이콘 표시 여부와 단축키 안내를 바꿔 MenuItem 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
   decorators: [
