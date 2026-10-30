@@ -196,6 +196,34 @@ export function Example() {
 }
 ```
 
+NavigationDrawer는 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
+
+```tsx
+import { NavigationDrawer, NavigationDrawerMenu } from '@eli/ui/navigation';
+import { Divider } from '@eli/ui/divider';
+import { HomeFilledIcon, HomeOutlinedIcon } from './icons';
+
+export function SideMenu() {
+  return (
+    <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
+      <NavigationDrawerMenu
+        filledIcon={<HomeFilledIcon />}
+        label="학습"
+        outlinedIcon={<HomeOutlinedIcon />}
+        subItems={[
+          { label: '내 강의', value: 'my-course' },
+          { label: '최근 본 강의', value: 'recent-course' },
+        ]}
+        value="learning"
+      />
+      <Divider />
+    </NavigationDrawer>
+  );
+}
+```
+
+직접 선택값을 제어하려면 `value`와 `onValueChange`를 함께 사용해요. 특별한 조립이 필요할 때만 저수준 행 컴포넌트인 `NavigationDrawerItem`을 사용해요.
+
 Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요.
 
 ```tsx

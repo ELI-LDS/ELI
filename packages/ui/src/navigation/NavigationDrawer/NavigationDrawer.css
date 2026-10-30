@@ -1,0 +1,20 @@
+@import '../../tokens/index.css';
+
+@layer components {
+/* 세로 탐색 영역 */
+.eli-navigation-drawer {
+  box-sizing: border-box;
+  display: flex;
+  width: 256px;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--eli-background-default, #fff);
+}
+
+/* Divider는 항목 경계 위에 겹쳐 전체 높이를 바꾸지 않아요. */
+.eli-navigation-drawer > .eli-divider {
+  flex: 0 0 1px;
+  margin-top: -1px;
+}
+}
