@@ -9,10 +9,11 @@ import { useMenuItem } from './useMenuItem.js';
  * 메뉴나 선택 목록에서 하나의 항목을 표시해요.
  *
  * @example 빠른 사용
- * `<MenuItem onClick={() => openSearch()}>검색</MenuItem>`
+ * `<MenuItem shortcut="⌘K" onClick={() => openSearch()}>검색</MenuItem>`
  *
  * ### 주요 설정
  * - `leftIcon`, `rightIcon`: 양쪽에 표시할 아이콘
+ * - `shortcut`: 오른쪽에 표시할 단축키 안내. 실제 키보드 동작은 별도로 연결해요.
  * - `disabled`: `true`이면 비활성화해요.
  *
  * ### 내용과 동작
@@ -33,6 +34,7 @@ export function MenuItem(props: MenuItemProps) {
     onPointerLeave,
     onPointerUp,
     rightIcon,
+    shortcut,
     type = 'button',
     ...buttonProps
   } = props;
@@ -68,6 +70,11 @@ export function MenuItem(props: MenuItemProps) {
       <span className="eli-menu-item__text">
         <span className="eli-menu-item__label eli-typo-body-medium">{children}</span>
       </span>
+
+      {/* Shortcut */}
+      {shortcut !== undefined && shortcut !== null ? (
+        <span className="eli-menu-item__shortcut eli-typo-label-medium">{shortcut}</span>
+      ) : null}
 
       {/* Right Icon */}
       {rightIcon !== undefined && rightIcon !== null ? (

@@ -135,7 +135,8 @@ export const Overview: Story = {
       }}
     >
       <p style={{ color: '#4b5668', margin: 0 }}>
-        선택 영역에 마우스를 올리거나 눌러 Hover와 펼침 상태를 확인해요.
+        선택 영역에 마우스를 올리거나 눌러 Hover와 펼침 상태를 확인해요. Select의
+        옵션에는 좌우 아이콘과 단축키 안내를 표시하지 않아요.
       </p>
 
       <div style={{ display: 'grid', gap: 8 }}>

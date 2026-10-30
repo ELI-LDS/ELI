@@ -46,6 +46,14 @@
   transform-origin: center;
 }
 
+/* Shortcut */
+.eli-menu-item__shortcut {
+  flex: 0 0 auto;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
 /* Right Icon */
 .eli-menu-item__right-icon {
   display: inline-flex;
