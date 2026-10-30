@@ -1,0 +1,18 @@
+/* Expand Less Icon */
+export function ExpandLessIcon() {
+  return (
+    <svg
+      aria-hidden="true"
+      focusable="false"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M12 8.295L6 14.295L7.41 15.705L12 11.125L16.59 15.705L18 14.295L12 8.295Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
