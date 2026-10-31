@@ -279,6 +279,32 @@ export function ViewControl() {
 }
 ```
 
+Tab은 같은 화면 안의 콘텐츠를 전환하는 한 개의 선택 항목이에요. 여러 Tab은 `role="tablist"`인 부모 안에 배치하고, `active`로 현재 선택 항목을 표시해요.
+
+```tsx
+import { useState } from 'react';
+import { Tab } from '@eli/ui/tab';
+
+export function ProfileTabs() {
+  const [activeTab, setActiveTab] = useState<'posts' | 'likes'>('posts');
+
+  return (
+    <div aria-label="프로필 정보" role="tablist">
+      <Tab
+        active={activeTab === 'posts'}
+        label="게시글"
+        onActiveChange={active => active && setActiveTab('posts')}
+      />
+      <Tab
+        active={activeTab === 'likes'}
+        label="좋아요"
+        onActiveChange={active => active && setActiveTab('likes')}
+      />
+    </div>
+  );
+}
+```
+
 TextField는 아래 경로에서 가져와요. 라벨과 Placeholder 문구를 바꾸고 하나의 상태를 선택할 수 있어요.
 
 ```tsx
