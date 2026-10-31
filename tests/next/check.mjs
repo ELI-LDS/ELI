@@ -91,9 +91,11 @@ import { useState } from 'react';
 import { Button } from '@eli/ui/button';
 import { RemovableChip } from '@eli/ui/chip';
 import { Select } from '@eli/ui/select';
+import { Tab } from '@eli/ui/tab';
 
 export function ClientExample() {
   const [count, setCount] = useState(0);
+  const [selectedTab, setSelectedTab] = useState('first');
   const [value, setValue] = useState<string>();
 
   return (
@@ -107,6 +109,18 @@ export function ClientExample() {
         options={[{ label: '첫 번째', value: 'first' }]}
         value={value}
       />
+      <div aria-label="클라이언트 탭" role="tablist">
+        <Tab
+          active={selectedTab === 'first'}
+          label="첫 번째 탭"
+          onActiveChange={active => active && setSelectedTab('first')}
+        />
+        <Tab
+          active={selectedTab === 'second'}
+          label="두 번째 탭"
+          onActiveChange={active => active && setSelectedTab('second')}
+        />
+      </div>
     </section>
   );
 }
@@ -125,6 +139,7 @@ import { Modal } from '@eli/ui/modal';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
+import { Tab } from '@eli/ui/tab';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
 import { ClientExample } from './client-example';
@@ -157,6 +172,9 @@ export default function Page() {
         options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]}
       />
       <SnackBar>서버 메시지</SnackBar>
+      <div aria-label="서버 콘텐츠 탭" role="tablist">
+        <Tab label="서버 탭" />
+      </div>
       <TextField label="서버 입력" />
       <TextArea label="서버 여러 줄 입력" />
       <Toggle aria-label="서버 토글" />
@@ -201,6 +219,7 @@ for (const selector of [
   '.eli-select',
   '.eli-segment-control',
   '.eli-snackbar',
+  '.eli-tab',
   '.eli-text-area',
   '.eli-text-field',
   '.eli-toggle',
@@ -249,6 +268,8 @@ try {
   assert.match(html, /서버 컴포넌트 알림/);
   assert.match(html, /서버에서 렌더링한 버튼/);
   assert.match(html, /클라이언트 상호작용/);
+  assert.match(html, /서버 탭/);
+  assert.match(html, /첫 번째 탭/);
   assert.match(html, /\/_next\/static\/.*\.css/);
 } finally {
   server.kill('SIGTERM');
