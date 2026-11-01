@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import type { KeyboardEvent } from 'react';
-import type { SegmentControlProps } from './SegmentControl.types.js';
+import type {
+  SegmentControlOption,
+  SegmentControlProps,
+} from './SegmentControl.types.js';
+
+function getFirstOptionValue(options: readonly SegmentControlOption[]) {
+  return options[0]?.value;
+}
 
 interface UseSegmentControlOptions {
   defaultValue: SegmentControlProps['defaultValue'];
@@ -16,9 +23,9 @@ export function useSegmentControl({
   options,
   value,
 }: UseSegmentControlOptions) {
-  /* 비제어 방식은 전달받은 기본값이나 첫 번째 옵션으로 시작해요. */
+  /* JavaScript나 Storybook Control에서 잘못된 빈 배열이 와도 렌더링을 중단하지 않아요. */
   const [internalValue, setInternalValue] = useState(
-    () => defaultValue ?? options[0].value,
+    () => defaultValue ?? getFirstOptionValue(options) ?? '',
   );
   const selectedValue = value ?? internalValue;
   const selectedIndex = options.findIndex(option => option.value === selectedValue);
