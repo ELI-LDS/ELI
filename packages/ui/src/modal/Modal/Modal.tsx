@@ -38,25 +38,19 @@ export function Modal(props: ModalProps) {
     height,
     width,
     ...modalProps
-    } = props;
-  /* Class Name */
+  } = props;
   const modalClassName = ['eli-modal', className].filter(Boolean).join(' ');
 
-  /* Content Style */
+  /* width는 좁은 화면에서 viewport를 넘지 않도록 최대 너비를 함께 제한해요. */
   const contentStyle: CSSProperties = {
     ...(height !== undefined ? { height } : {}),
     ...(width !== undefined ? { maxWidth: '100%', width } : {}),
   };
 
   return (
-    /* Root */
     <div {...modalProps} className={modalClassName}>
-      {/* Dim */}
       <Dim />
-
-      {/* Content */}
       <div className="eli-modal__content" style={contentStyle}>
-        {/* Text */}
         <div className="eli-modal__text">
           <div className="eli-modal__title eli-typo-heading-h4">{title}</div>
           <div className="eli-modal__descriptions eli-typo-body-medium">
@@ -68,8 +62,6 @@ export function Modal(props: ModalProps) {
             ) : null}
           </div>
         </div>
-
-        {/* Actions */}
         <div className="eli-modal__actions">
           <Button color="neutral" icon={null} onClick={onSecondaryAction} variant="solid" width="100%">
             {secondaryAction}

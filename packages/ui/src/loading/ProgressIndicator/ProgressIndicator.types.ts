@@ -1,7 +1,6 @@
 import type { HTMLAttributes } from 'react';
 import type { IndicatorProgress } from '../loading.types.js';
 
-/* Props */
 export interface ProgressIndicatorProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'aria-label' | 'children' | 'role'> {
   /** 진행 상태를 화면 낭독기가 읽을 수 있게 설명해요. */
