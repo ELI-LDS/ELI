@@ -105,19 +105,19 @@ const meta = {
       name: '색상',
       control: 'inline-radio',
       options: colors,
-      description: '버튼의 색상 조합이에요.',
+      description: '버튼의 색상 조합이에요. 조합 선택 기준은 디자이너와 합의 중이에요.',
     },
     size: {
       name: '크기',
       control: 'inline-radio',
       options: sizes,
-      description: '버튼의 기본 크기예요.',
+      description: '버튼의 기본 크기예요. 크기 선택 기준은 디자이너와 합의 중이에요.',
     },
     variant: {
       name: '형태',
       control: 'inline-radio',
       options: variants,
-      description: '버튼의 형태예요.',
+      description: '버튼의 형태예요. 형태 선택 기준은 디자이너와 합의 중이에요.',
     },
     disabled: {
       name: '비활성화',
@@ -142,6 +142,9 @@ export const Variants: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: 'grid', gap: 64 }}>
+      <p style={{ color: '#4b5668', margin: 0 }}>
+        색상·형태·크기의 사용 기준은 디자이너와 합의 중이며, 이 화면에서는 정의된 디자인 조합만 비교해요.
+      </p>
       <IconButtonGallery
         description="버튼 위에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요."
         title="기본 상태"

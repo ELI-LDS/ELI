@@ -20,6 +20,10 @@ import type { ButtonProps } from './Button.types.js';
  * - `icon`: 왼쪽 아이콘 — 생략하면 Plus 아이콘, `null`이면 숨김
  * - `disabled`: 비활성화 여부 — `true`, `false`(기본)
  *
+ * ### 선택 가이드
+ * - 문구로 동작을 설명해야 하면 Button을 사용하고, 익숙한 아이콘 하나로 충분하면 IconButton을 사용해요.
+ * - `color`, `variant`, `size`의 구체적인 사용 기준은 디자이너와 합의 중이에요. 승인된 화면의 조합을 따르고 모양만 보고 임의로 선택하지 않아요.
+ *
  * ### 내용과 동작
  * - `children`: 버튼 텍스트나 내용 — 기본값 `버튼`
  * - `onClick`: 버튼을 눌렀을 때 실행할 함수
