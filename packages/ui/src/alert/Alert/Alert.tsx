@@ -32,29 +32,19 @@ const statusIcons = {
  */
 export function Alert(props: AlertProps) {
   const {
-    /* Content */
     message,
     title,
-
-    /* Style Options */
     status = 'info',
-
-    /* Native Element */
     className,
     ...alertProps
-    } = props;
-  /* Class Name */
+  } = props;
   const alertClassName = ['eli-alert', className].filter(Boolean).join(' ');
 
   return (
-    /* Root */
     <div {...alertProps} className={alertClassName} data-status={status}>
-      {/* Status Icon */}
       <span aria-hidden="true" className="eli-alert__icon">
         {statusIcons[status]}
       </span>
-
-      {/* Text */}
       <div className="eli-alert__content">
         <p className="eli-alert__title eli-typo-label-large">{title}</p>
         {message !== undefined && message !== null ? (

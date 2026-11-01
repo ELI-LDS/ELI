@@ -30,19 +30,13 @@ const typographyClassNames = {
  */
 export function Badge(props: BadgeProps) {
   const {
-    /* Content */
     children,
-
-    /* Style Options */
     size = 'medium',
     type = 'neutral',
-
-    /* Native Element */
     className,
     ...badgeProps
   } = props;
 
-  /* Class Name */
   const badgeClassName = ['eli-badge', typographyClassNames[size], className]
     .filter(Boolean)
     .join(' ');

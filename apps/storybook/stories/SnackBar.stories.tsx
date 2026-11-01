@@ -6,7 +6,7 @@ const meta = {
   component: SnackBar,
   parameters: { layout: 'centered' },
   args: {
-    children: '메세지를 작성합니다.',
+    children: '메시지를 작성합니다.',
     action: '액션',
     actionColor: '#3584fb',
   },
@@ -41,7 +41,7 @@ export const Overview: Story = {
   parameters: { controls: { disable: true } },
   render: args => (
     <div style={{ display: 'grid', gap: 24 }}>
-      <SnackBar {...args}>메세지를 작성합니다.</SnackBar>
+      <SnackBar {...args}>메시지를 작성합니다.</SnackBar>
       <SnackBar {...args}>
         스낵바 메시지가 길어지면 최대 두 줄까지 표시되는 모습을 확인할 수 있어요.
       </SnackBar>
