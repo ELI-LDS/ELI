@@ -57,14 +57,6 @@
     justify-content: center;
   }
 
-  .eli-fab__icon[data-default-icon='add'] {
-    background: url('./fab-add.svg') center / 24px 24px no-repeat;
-  }
-
-  .eli-fab__icon[data-default-icon='close'] {
-    background: url('./fab-close.svg') center / 24px 24px no-repeat;
-  }
-
   .eli-fab__icon > :is(svg, img) {
     width: 24px;
     height: 24px;

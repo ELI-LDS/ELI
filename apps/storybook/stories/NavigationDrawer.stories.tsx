@@ -7,6 +7,7 @@ import { NavigationDrawer } from '@/packages/ui/src/navigation/NavigationDrawer/
 import { NavigationDrawerCategory } from '@/packages/ui/src/navigation/NavigationDrawerCategory/NavigationDrawerCategory.js';
 import type { NavigationDrawerProps } from '@/packages/ui/src/navigation/NavigationDrawer/NavigationDrawer.types.js';
 import { NavigationDrawerMenu } from '@/packages/ui/src/navigation/NavigationDrawerMenu/NavigationDrawerMenu.js';
+import { NavigationDrawerItem } from '@/packages/ui/src/navigation/NavigationDrawerItem/NavigationDrawerItem.js';
 
 interface NavigationDrawerStoryArgs extends NavigationDrawerProps {
   categoryLabel: string;
@@ -261,47 +262,64 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
-      <NavigationDrawerCategory label="주요 메뉴" />
-      <NavigationDrawerMenu
-        filledIcon={<HomeFilledIcon />}
-        label="홈"
-        outlinedIcon={<HomeOutlinedIcon />}
-        value="home"
-      />
-      <NavigationDrawerMenu
-        defaultExpanded
-        filledIcon={<HomeFilledIcon />}
-        label="학습"
-        outlinedIcon={<HomeOutlinedIcon />}
-        subItems={[
-          { label: '내 강의', value: 'my-course' },
-          { label: '최근 본 강의', value: 'recent-course' },
-        ]}
-        value="learning"
-      />
-      <Divider />
-      <NavigationDrawerCategory label="서비스" />
-      <NavigationDrawerMenu
-        filledIcon={<HomeFilledIcon />}
-        label="커뮤니티"
-        outlinedIcon={<HomeOutlinedIcon />}
-        value="community"
-      />
-      <NavigationDrawerMenu
-        filledIcon={<HomeFilledIcon />}
-        label="설정"
-        outlinedIcon={<HomeOutlinedIcon />}
-        value="settings"
-      />
-      <Divider />
-      <NavigationDrawerMenu
-        filledIcon={<HomeFilledIcon />}
-        label="도움말"
-        outlinedIcon={<HomeOutlinedIcon />}
-        value="help"
-      />
-    </NavigationDrawer>
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
+      <section style={{ display: 'grid', gap: 12 }}>
+        <strong>전체 구성</strong>
+        <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
+          <NavigationDrawerCategory label="주요 메뉴" />
+          <NavigationDrawerMenu
+            filledIcon={<HomeFilledIcon />}
+            label="홈"
+            outlinedIcon={<HomeOutlinedIcon />}
+            value="home"
+          />
+          <NavigationDrawerMenu
+            defaultExpanded
+            filledIcon={<HomeFilledIcon />}
+            label="학습"
+            outlinedIcon={<HomeOutlinedIcon />}
+            subItems={[
+              { label: '내 강의', value: 'my-course' },
+              { label: '최근 본 강의', value: 'recent-course' },
+            ]}
+            value="learning"
+          />
+          <Divider />
+          <NavigationDrawerCategory label="서비스" />
+          <NavigationDrawerMenu
+            filledIcon={<HomeFilledIcon />}
+            label="커뮤니티"
+            outlinedIcon={<HomeOutlinedIcon />}
+            value="community"
+          />
+          <NavigationDrawerMenu
+            filledIcon={<HomeFilledIcon />}
+            label="설정"
+            outlinedIcon={<HomeOutlinedIcon />}
+            value="settings"
+          />
+        </NavigationDrawer>
+      </section>
+
+      <section style={{ display: 'grid', gap: 12, width: 230 }}>
+        <strong>항목 상태</strong>
+        <NavigationDrawerItem
+          expandable
+          filledIcon={<HomeFilledIcon />}
+          label="주 메뉴"
+          outlinedIcon={<HomeOutlinedIcon />}
+        />
+        <NavigationDrawerItem
+          active
+          expandable
+          filledIcon={<HomeFilledIcon />}
+          label="선택된 주 메뉴"
+          outlinedIcon={<HomeOutlinedIcon />}
+        />
+        <NavigationDrawerItem label="하위 메뉴" variant="sub-menu" />
+        <NavigationDrawerItem active label="선택된 하위 메뉴" variant="sub-menu" />
+      </section>
+    </div>
   ),
 };
 

@@ -37,10 +37,6 @@
     justify-content: center;
   }
 
-  .eli-fab-menu-segment__icon[data-default-icon='add'] {
-    background: url('./fab-menu-add.svg') center / 24px 24px no-repeat;
-  }
-
   .eli-fab-menu-segment__icon > :is(svg, img) {
     width: 24px;
     height: 24px;

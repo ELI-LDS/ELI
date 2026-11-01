@@ -22,6 +22,7 @@
 
 /* 선택 영역과 옵션 목록 */
 .eli-select__control {
+  position: relative;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -83,6 +84,10 @@
 
 /* 옵션 목록 */
 .eli-select__menu {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
   box-sizing: border-box;
   display: flex;
   width: 100%;

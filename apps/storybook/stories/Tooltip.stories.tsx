@@ -38,4 +38,10 @@ export const Overview: Story = {
 /* 설명을 바꿔 툴팁 하나를 직접 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
+  parameters: { layout: 'padded' },
+  decorators: [Story => (
+    <div style={{ display: 'flex', minHeight: 200, alignItems: 'flex-start' }}>
+      <Story />
+    </div>
+  )],
 };
