@@ -14,7 +14,7 @@ import type { SnackBarProps } from './SnackBar.types.js';
  * - `actionColor`: 오른쪽 버튼의 글자 색상
  *
  * ### 내용과 동작
- * - `children`: 메시지, 기본값은 `메세지를 작성합니다.`
+ * - `children`: 메시지, 기본값은 `메시지를 작성합니다.`
  * - `onAction`: 오른쪽 버튼을 눌렀을 때 실행할 함수
  *
  * ### 스타일 변경
@@ -25,21 +25,16 @@ export function SnackBar(props: SnackBarProps) {
   const {
     action = '액션',
     actionColor,
-    children = '메세지를 작성합니다.',
+    children = '메시지를 작성합니다.',
     className,
     onAction,
     ...snackBarProps
-    } = props;
-  /* Class Name */
+  } = props;
   const snackBarClassName = ['eli-snackbar', className].filter(Boolean).join(' ');
 
   return (
-    /* Root */
     <div {...snackBarProps} className={snackBarClassName}>
-      {/* Message */}
       <span className="eli-snackbar__message eli-typo-body-medium">{children}</span>
-
-      {/* Action */}
       {action !== undefined && action !== null ? (
         <button
           className="eli-snackbar__action eli-typo-label-large"
