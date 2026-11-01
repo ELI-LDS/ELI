@@ -4,7 +4,7 @@ ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
-모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider·Tooltip은 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. 프레임워크별 RSC·라우팅·hydration 지원 범위는 해당 소비 예제를 추가하면서 별도로 검증해요.
+모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider·LoadingIndicator·ProgressIndicator·Tooltip은 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. 프레임워크별 RSC·라우팅·hydration 지원 범위는 해당 소비 예제를 추가하면서 별도로 검증해요.
 
 React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스와 npm scope 소유권을 확정하기 전에는 공개 게시하지 않아요.
 
@@ -79,6 +79,15 @@ import { Tooltip } from '@eli/ui/tooltip';
 export function SaveDescription() {
   return <Tooltip>버튼을 누르면 파일을 저장해요.</Tooltip>;
 }
+```
+
+LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `progress`를 표시하고, 알 수 없으면 값을 생략해 반복 애니메이션으로 진행 중임을 알려요.
+
+```tsx
+import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
+
+<LoadingIndicator aria-label="프로필 불러오는 중" />
+<ProgressIndicator aria-label="파일 업로드" progress={80} />
 ```
 
 Alert는 `status`에 맞는 색상과 아이콘으로 제목과 본문을 표시해요. 화면에 띄우는 Toast 동작은 포함하지 않아요.
