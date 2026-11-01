@@ -1,12 +1,9 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-/* Size */
 export type BadgeSize = 'large' | 'medium';
 
-/* Type */
 export type BadgeType = 'neutral' | 'error' | 'success' | 'caution';
 
-/* Props */
 export interface BadgeProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children'> {
   /** 배지에 표시할 내용이에요. */
   children: ReactNode;

@@ -1,9 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-/* Status */
 export type AlertStatus = 'error' | 'success' | 'caution' | 'info';
 
-/* Props */
 export interface AlertProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'title'> {
   /** 알림 제목이에요. */
   title: ReactNode;

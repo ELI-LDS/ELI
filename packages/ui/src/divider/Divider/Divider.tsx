@@ -19,7 +19,6 @@ import type { DividerProps } from './Divider.types.js';
  */
 export function Divider(props: DividerProps) {
   const { className, ...dividerProps } = props;
-  /* Class Name */
   const dividerClassName = ['eli-divider', className].filter(Boolean).join(' ');
 
   return <hr {...dividerProps} className={dividerClassName} />;
