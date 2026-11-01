@@ -1,25 +1,13 @@
 @import '../../tokens/index.css';
 
-@property --eli-loading-indicator-rotate {
-  syntax: '<angle>';
-  initial-value: 0rad;
-  inherits: false;
-}
-
-/* Figma의 원형 Indeterminate 회전을 그대로 사용해요. */
+/* 반복 경계에서 감속하지 않고 같은 속도로 계속 회전해요. */
 @keyframes eli-loading-indicator-rotate {
-  0% {
-    --eli-loading-indicator-rotate: -12.566rad;
-    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  from {
+    transform: rotate(0turn);
   }
 
-  50% {
-    --eli-loading-indicator-rotate: -6.283rad;
-    animation-timing-function: cubic-bezier(0, 0, 0.448, 1);
-  }
-
-  100% {
-    --eli-loading-indicator-rotate: -0.008rad;
+  to {
+    transform: rotate(1turn);
   }
 }
 
@@ -74,8 +62,7 @@
 
   /* Indeterminate Active Indicator */
   .eli-loading-indicator__active {
-    transform: rotate(var(--eli-loading-indicator-rotate, -12.566rad));
-    animation: eli-loading-indicator-rotate 2s linear infinite;
+    animation: eli-loading-indicator-rotate 1s linear infinite;
     will-change: transform;
   }
 
