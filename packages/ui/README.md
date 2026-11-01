@@ -279,6 +279,20 @@ export function ViewControl() {
 }
 ```
 
+Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요.
+
+```tsx
+import { Slider } from '@eli/ui/slider';
+
+<Slider aria-label="볼륨" defaultValue={60} />
+
+<Slider
+  aria-label="가격 범위"
+  defaultValue={[27, 60]}
+  variant="range"
+/>
+```
+
 Tab은 같은 화면 안의 콘텐츠를 전환하는 한 개의 선택 항목이에요. 여러 Tab은 `role="tablist"`인 부모 안에 배치하고, `active`로 현재 선택 항목을 표시해요.
 
 ```tsx
