@@ -35,29 +35,23 @@ import type { ButtonProps } from './Button.types.js';
  */
 export function Button(props: ButtonProps) {
   const {
-    /* Content */
     children = '버튼',
     icon = <PlusIcon />,
-
-    /* Style Options */
     backgroundColor,
     color = 'brand',
     height,
     size = 'large',
     variant = 'solid',
     width,
-
-    /* Native Button */
     className,
     style,
     type = 'button',
     ...buttonProps
   } = props;
 
-  /* Class Name */
   const buttonClassName = ['eli-button', className].filter(Boolean).join(' ');
 
-  /* Custom Style */
+  /* 전용 크기·색상 props가 일반 style보다 우선하도록 마지막에 합쳐요. */
   const buttonStyle: CSSProperties = {
     ...style,
     ...(backgroundColor !== undefined ? { backgroundColor } : {}),
@@ -66,7 +60,6 @@ export function Button(props: ButtonProps) {
   };
 
   return (
-    /* Root */
     <button
       {...buttonProps}
       className={buttonClassName}
@@ -76,10 +69,7 @@ export function Button(props: ButtonProps) {
       style={buttonStyle}
       type={type}
     >
-      {/* Left Icon */}
       {icon ? <span className="eli-button__icon">{icon}</span> : null}
-
-      {/* Text */}
       <span className="eli-button__text eli-typo-label-large">{children}</span>
     </button>
   );

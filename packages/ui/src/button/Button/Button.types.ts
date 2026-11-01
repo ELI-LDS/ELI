@@ -37,7 +37,6 @@ export interface ButtonProps
   /** 버튼을 비활성화해요. `true` 또는 `false`를 사용하며 기본값은 `false`예요. JSX에서는 `disabled`를 `disabled={true}`의 축약형으로 사용할 수 있어요. */
   disabled?: boolean;
 
-  /* Style Options */
   /** 버튼 색상 조합이에요. 기본값은 `brand`예요. */
   color?: ButtonColor;
 

@@ -18,7 +18,6 @@ export interface IconButtonProps
   /** 버튼에 표시할 아이콘이에요. 생략하면 Plus 아이콘을 표시해요. */
   icon?: ReactNode;
 
-  /* Style Options */
   /** 버튼 색상 조합이에요. 기본값은 `brand`예요. */
   color?: IconButtonColor;
 

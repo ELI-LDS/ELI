@@ -27,24 +27,17 @@ import type { IconButtonProps } from './IconButton.types.js';
  */
 export function IconButton(props: IconButtonProps) {
   const {
-    /* Content */
     icon = <PlusIcon />,
-
-    /* Style Options */
     color = 'brand',
     size = 'large',
     variant = 'solid',
-
-    /* Native Button */
     className,
     type = 'button',
     ...buttonProps
-    } = props;
-  /* Class Name */
+  } = props;
   const iconButtonClassName = ['eli-icon-button', className].filter(Boolean).join(' ');
 
   return (
-    /* Root */
     <button
       {...buttonProps}
       className={iconButtonClassName}
@@ -53,7 +46,6 @@ export function IconButton(props: IconButtonProps) {
       data-variant={variant}
       type={type}
     >
-      {/* Icon */}
       <span className="eli-icon-button__icon">{icon}</span>
     </button>
   );
