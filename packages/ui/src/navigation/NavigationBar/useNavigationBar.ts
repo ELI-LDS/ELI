@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import type { NavigationBarProps } from './NavigationBar.types.js';
+import type {
+  NavigationBarOption,
+  NavigationBarProps,
+} from './NavigationBar.types.js';
+
+function getFirstItemValue(items: readonly NavigationBarOption[]) {
+  return items[0]?.value;
+}
 
 interface UseNavigationBarOptions {
   defaultValue: NavigationBarProps['defaultValue'];
@@ -15,9 +22,9 @@ export function useNavigationBar({
   onValueChange,
   value,
 }: UseNavigationBarOptions) {
-  /* 비제어 방식은 전달받은 기본값이나 첫 번째 항목으로 시작해요. */
+  /* JavaScript에서 잘못된 빈 배열이 와도 탐색 영역 전체가 렌더링을 중단하지 않아요. */
   const [internalValue, setInternalValue] = useState(
-    () => defaultValue ?? items[0].value,
+    () => defaultValue ?? getFirstItemValue(items) ?? '',
   );
   const selectedValue = value ?? internalValue;
 
