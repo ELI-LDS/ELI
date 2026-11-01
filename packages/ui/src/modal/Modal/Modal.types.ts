@@ -1,6 +1,5 @@
 import type { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
-/* Props */
 export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'title'> {
   /** Modal의 제목이에요. 생략하면 `제목`을 표시해요. */
   title?: ReactNode;
