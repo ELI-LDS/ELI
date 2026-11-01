@@ -4,7 +4,7 @@ ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
 
-모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider는 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. 프레임워크별 RSC·라우팅·hydration 지원 범위는 해당 소비 예제를 추가하면서 별도로 검증해요.
+모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider·Tooltip은 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. 프레임워크별 RSC·라우팅·hydration 지원 범위는 해당 소비 예제를 추가하면서 별도로 검증해요.
 
 React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스와 npm scope 소유권을 확정하기 전에는 공개 게시하지 않아요.
 
@@ -61,13 +61,23 @@ export const customButton = style({
 
 `style`과 Button의 `backgroundColor`, `width`, `height`도 계속 사용할 수 있어요. `className`은 반응형이나 상태별 스타일처럼 클래스 기반 커스터마이즈가 필요할 때 사용해요. 복합 컴포넌트의 내부 요소는 현재 공개된 prop으로 바꿀 수 있는 범위만 지원해요.
 
-Badge는 텍스트를 표시하고 `size`로 크기를 정해요.
+Badge는 짧은 상태나 분류를 표시해요. `type`으로 의미 색상을, `size`로 크기를 정해요.
 
 ```tsx
 import { Badge } from '@eli/ui/badge';
 
 export function Label() {
-  return <Badge size="medium">ELI 라이브러리</Badge>;
+  return <Badge size="medium" type="success">완료</Badge>;
+}
+```
+
+Tooltip은 요소를 이해하는 데 필요한 짧은 설명을 표시해요. 최대 너비는 200px이며, 위치 계산과 열고 닫는 동작은 Tooltip을 사용하는 화면에서 연결해요.
+
+```tsx
+import { Tooltip } from '@eli/ui/tooltip';
+
+export function SaveDescription() {
+  return <Tooltip>버튼을 누르면 파일을 저장해요.</Tooltip>;
 }
 ```
 

@@ -21,7 +21,8 @@
     "./slider": { "types": "./dist/slider/index.d.ts", "import": "./dist/slider/index.js" },
     "./tab": { "types": "./dist/tab/index.d.ts", "import": "./dist/tab/index.js" },
     "./text": { "types": "./dist/text/index.d.ts", "import": "./dist/text/index.js" },
-    "./toggle": { "types": "./dist/toggle/index.d.ts", "import": "./dist/toggle/index.js" }
+    "./toggle": { "types": "./dist/toggle/index.d.ts", "import": "./dist/toggle/index.js" },
+    "./tooltip": { "types": "./dist/tooltip/index.d.ts", "import": "./dist/tooltip/index.js" }
   },
   "sideEffects": ["**/*.css"],
   "peerDependencies": { "react": "^19.3.0" },

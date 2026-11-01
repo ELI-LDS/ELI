@@ -9,7 +9,26 @@
   align-items: center;
   padding: var(--eli-layout-scale-2, 8px) var(--eli-layout-scale-3, 12px);
   border-radius: var(--eli-layout-scale-2, 8px);
-  background: var(--eli-background-subtle, #f4f8fe);
+  background: var(--eli-background-subtle, #eaf0f9);
   color: var(--eli-foreground-subtle, #8b98aa);
+  white-space: nowrap;
+}
+
+/* Error */
+.eli-badge[data-type='error'] {
+  background: var(--eli-background-error, #faeded);
+  color: var(--eli-foreground-error, #cf1111);
+}
+
+/* Success */
+.eli-badge[data-type='success'] {
+  background: var(--eli-background-success, #e8f6e8);
+  color: var(--eli-foreground-success, #177214);
+}
+
+/* Caution */
+.eli-badge[data-type='caution'] {
+  background: var(--eli-background-caution, #fffae0);
+  color: var(--eli-foreground-caution, #c27700);
 }
 }

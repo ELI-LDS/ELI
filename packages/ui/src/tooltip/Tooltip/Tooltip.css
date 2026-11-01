@@ -1,0 +1,26 @@
+@import '../../tokens/index.css';
+
+@layer components {
+/* 툴팁 영역 */
+.eli-tooltip {
+  box-sizing: border-box;
+  display: inline-flex;
+  max-width: 200px;
+  padding: var(--eli-layout-scale-2, 8px);
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--eli-layout-scale-1, 4px);
+  background: var(--eli-background-subtle, #eaf0f9);
+  box-shadow: 0 3px 8px 0 var(--eli-effect-shadow, rgb(75 86 104 / 20%));
+  color: var(--eli-foreground-default, #4b5668);
+}
+
+/* 여러 줄 설명 */
+.eli-tooltip__content {
+  min-width: 0;
+  flex: 1 0 0;
+  overflow-wrap: break-word;
+  font-weight: var(--eli-font-weight-semibold, 600);
+  white-space: pre-wrap;
+}
+}
