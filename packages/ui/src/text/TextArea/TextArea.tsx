@@ -30,8 +30,7 @@ export function TextArea(props: TextAreaProps) {
     placeholder = '내용을 입력하세요',
     style,
     ...textAreaProps
-    } = props;
-  /* Class Name */
+  } = props;
   const textAreaClassName = ['eli-text-area', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-area__input',
@@ -39,12 +38,8 @@ export function TextArea(props: TextAreaProps) {
   ].join(' ');
 
   return (
-    /* Root */
     <label className={textAreaClassName} style={style}>
-      {/* Label */}
       <span className="eli-text-area__label eli-typo-label-medium">{label}</span>
-
-      {/* Input */}
       <textarea
         {...textAreaProps}
         className={inputClassName}

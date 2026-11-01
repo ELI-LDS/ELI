@@ -33,7 +33,7 @@ export function Toggle(props: ToggleProps) {
     onClick,
     type = 'button',
     ...buttonProps
-    } = props;
+  } = props;
   /* Toggle의 상태와 클릭 상호작용은 전용 Hook에서 관리해요. */
   const { handleClick, isChecked } = useToggle({
     checked,
@@ -42,15 +42,13 @@ export function Toggle(props: ToggleProps) {
     onClick,
   });
 
-  /* Class Name */
   const toggleClassName = ['eli-toggle', className].filter(Boolean).join(' ');
 
-  /* Accessible Name */
+  /* 외부 설명이 없을 때도 이름 없는 switch가 되지 않도록 기본 설명을 사용해요. */
   const ariaLabel =
     buttonProps['aria-label'] ?? (buttonProps['aria-labelledby'] ? undefined : '토글');
 
   return (
-    /* Root */
     <button
       {...buttonProps}
       aria-checked={isChecked}
@@ -61,7 +59,6 @@ export function Toggle(props: ToggleProps) {
       role="switch"
       type={type}
     >
-      {/* Switch */}
       <span aria-hidden="true" className="eli-toggle__switch" />
     </button>
   );

@@ -24,7 +24,9 @@ const fourOptions: SegmentControlOptions = [
 
 function SegmentControlPreview(props: SegmentControlProps) {
   const { defaultValue, onValueChange, value: initialValue, ...segmentControlProps } = props;
-  const [value, setValue] = useState(initialValue ?? defaultValue ?? props.options[0].value);
+  const [value, setValue] = useState(
+    initialValue ?? defaultValue ?? props.options[0]?.value ?? '',
+  );
 
   return (
     <SegmentControl

@@ -47,7 +47,6 @@ export function MenuItem(props: MenuItemProps) {
     interaction,
   } = useMenuItem({ onPointerCancel, onPointerDown, onPointerLeave, onPointerUp });
 
-  /* Class Name */
   const menuItemClassName = ['eli-menu-item', className].filter(Boolean).join(' ');
 
   return (
@@ -61,22 +60,15 @@ export function MenuItem(props: MenuItemProps) {
       onPointerUp={handlePointerUp}
       type={type}
     >
-      {/* Left Icon */}
       {leftIcon !== undefined && leftIcon !== null ? (
         <span className="eli-menu-item__left-icon">{leftIcon}</span>
       ) : null}
-
-      {/* Text */}
       <span className="eli-menu-item__text">
         <span className="eli-menu-item__label eli-typo-body-medium">{children}</span>
       </span>
-
-      {/* Shortcut */}
       {shortcut !== undefined && shortcut !== null ? (
         <span className="eli-menu-item__shortcut eli-typo-label-medium">{shortcut}</span>
       ) : null}
-
-      {/* Right Icon */}
       {rightIcon !== undefined && rightIcon !== null ? (
         <span className="eli-menu-item__right-icon">{rightIcon}</span>
       ) : null}

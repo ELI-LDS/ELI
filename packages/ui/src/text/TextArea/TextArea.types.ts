@@ -1,6 +1,5 @@
 import type { ReactNode, TextareaHTMLAttributes } from 'react';
 
-/* Props */
 export interface TextAreaProps
   extends Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,

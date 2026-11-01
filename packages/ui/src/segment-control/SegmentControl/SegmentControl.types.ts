@@ -1,6 +1,5 @@
 import type { HTMLAttributes } from 'react';
 
-/* Option */
 export interface SegmentControlOption {
   /** 옵션을 구분하고 선택 결과로 전달할 값이에요. */
   value: string;
@@ -20,7 +19,6 @@ export type SegmentControlOptions =
       SegmentControlOption,
     ];
 
-/* Props */
 export interface SegmentControlProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
   /** Segment Control이 무엇을 선택하는 영역인지 화면 낭독기가 읽을 수 있게 설명해요. */

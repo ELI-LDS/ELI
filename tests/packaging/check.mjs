@@ -326,7 +326,7 @@ assert.match(js, /옵션 2/);
 assert.match(js, /보기 방식/);
 assert.match(js, /격자/);
 assert.match(js, /제목/);
-assert.match(js, /메세지를 작성합니다\./);
+assert.match(js, /메시지를 작성합니다\./);
 assert.match(js, /액션/);
 assert.match(js, /소비자 범위/);
 assert.match(js, /시작 값/);
