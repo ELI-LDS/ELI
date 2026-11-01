@@ -16,6 +16,10 @@ import type { IconButtonProps } from './IconButton.types.js';
  * - `size`: `large`(기본값), `medium`
  * - `disabled`: `true`이면 비활성화해요.
  *
+ * ### 선택 가이드
+ * - 아이콘만으로 동작을 명확히 이해할 수 있을 때 사용해요. 문구가 필요하면 Button을 사용해요.
+ * - `color`, `variant`, `size`의 구체적인 사용 기준은 디자이너와 합의 중이에요. 승인된 화면의 조합을 따라요.
+ *
  * ### 내용과 동작
  * - `aria-label`: 화면 낭독기가 읽을 버튼 동작 설명
  * - `icon`: 표시할 아이콘, 기본값은 Plus 아이콘

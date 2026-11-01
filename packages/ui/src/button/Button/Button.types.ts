@@ -1,15 +1,11 @@
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
 
-/* Size */
 export type ButtonSize = 'large' | 'medium';
 
-/* Variant */
 export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 
-/* Color */
 export type ButtonColor = 'brand' | 'neutral';
 
-/* Props */
 export interface ButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'color'> {
   /**

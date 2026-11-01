@@ -1,15 +1,11 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-/* Size */
 export type IconButtonSize = 'large' | 'medium';
 
-/* Variant */
 export type IconButtonVariant = 'solid' | 'outline';
 
-/* Color */
 export type IconButtonColor = 'brand' | 'neutral';
 
-/* Props */
 export interface IconButtonProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children' | 'color'> {
   /** 화면에 텍스트가 없는 버튼의 동작을 화면 낭독기가 읽을 수 있게 설명해요. 반드시 입력해요. */
