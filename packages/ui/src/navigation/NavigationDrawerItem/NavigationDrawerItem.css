@@ -51,6 +51,12 @@
   color: inherit;
 }
 
+/* Main Menu의 펼침 아이콘 */
+.eli-navigation-drawer-item[data-variant='main-menu']
+  .eli-navigation-drawer-item__right-icon {
+  color: var(--eli-foreground-subtle, #8b98aa);
+}
+
 /* 한 줄 라벨 */
 .eli-navigation-drawer-item__label {
   min-width: 0;
@@ -75,6 +81,16 @@
 .eli-navigation-drawer-item[data-active='true'] {
   background: var(--eli-background-subtle, #eaf0f9);
   color: var(--eli-foreground-strong, #020812);
+}
+
+/* 활성 메뉴 / Hover */
+.eli-navigation-drawer-item[data-active='true']:is(button):hover {
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
+}
+
+/* 활성 메뉴 / Pressed */
+.eli-navigation-drawer-item[data-active='true']:is(button):active {
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
 }
 
 /* 비활성 메뉴 / Hover */
