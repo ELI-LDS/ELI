@@ -23,16 +23,16 @@
 
 ## 배포 안정성 검사를 보완해요
 
-현재 `pnpm check`는 실제 tarball의 구성·공개 경로·타입·Vite 빌드·일반 SSR·Next.js App Router 빌드와 서버 HTML·CSS 연결·용량을 확인해요. 아래 항목은 아직 완료되지 않은 개선 후보예요. 현재 필수 검사와 결과 해석은 [검증 기준](../Agent/testing.md#소비자-입장에서-확인해요)에서 관리해요. 상호작용 성능 기준선은 [Design Systems Should Be Fast by Default](https://denodell.com/blog/design-systems-should-be-fast-by-default)의 측정 관점을 ELI 환경에 맞게 적용하는 제안이에요.
+현재 `pnpm check`는 실제 tarball의 구성·공개 경로·타입·Vite 빌드·일반 SSR·브라우저 상호작용·axe 접근성·Next.js App Router의 빌드와 hydration·용량을 확인해요. 아래 표는 완료된 기반과 아직 남은 확장 범위를 함께 관리해요. 현재 필수 검사와 결과 해석은 [검증 기준](../Agent/testing.md#소비자-입장에서-확인해요)에서 관리해요. 상호작용 성능 기준선은 [Design Systems Should Be Fast by Default](https://denodell.com/blog/design-systems-should-be-fast-by-default)의 측정 관점을 ELI 환경에 맞게 적용하는 제안이에요.
 
 | 순서 | 개선 항목 | 확인할 문제 | 완료 기준 | 상태 |
 | --- | --- | --- | --- | --- |
 | 1 | 격리된 tarball 설치 | 저장소의 상위 `node_modules`에 우연히 의존하거나 peer dependency 충돌을 숨길 수 있어요. | 저장소 밖 임시 경로에서 React·React DOM을 명시한 소비 앱이 `--legacy-peer-deps` 없이 설치·타입 검사·빌드돼요. | 진행 중 |
 | 2 | 패키지 매니저 호환성 | npm·pnpm·Yarn·Bun의 peer dependency와 설치 방식 차이로 특정 환경에서만 실패할 수 있어요. | [패키지 매니저 지원](../Agent/package-managers.md)의 행렬대로 같은 tarball을 격리 설치하고 타입 검사·소비 빌드를 통과해요. | 진행 중 |
-| 3 | 브라우저 상호작용과 계산 스타일 | CSS가 번들에 존재해도 실제 우선순위가 다르거나 상태 동작이 깨질 수 있어요. | 클릭·입력·선택·키보드·포커스와 외부 클래스의 Default·Hover·Pressed·Disabled 계산 스타일을 실제 브라우저에서 검증해요. | 제안 |
+| 3 | 브라우저 상호작용과 계산 스타일 | CSS가 번들에 존재해도 실제 우선순위가 다르거나 상태 동작이 깨질 수 있어요. | 클릭·입력·선택·키보드·포커스와 외부 클래스의 Default·Hover·Pressed·Disabled 계산 스타일을 실제 브라우저에서 검증해요. | 진행 중 |
 | 4 | 상호작용 성능 기준선 | 패키지 용량만으로 긴 목록과 대량 상태 변경에서 UI가 멈추는 문제를 찾을 수 없어요. | [검증 기준](../Agent/testing.md#상호작용-성능을-별도로-확인해요)의 대표 시나리오를 프로덕션 빌드에서 반복 측정하고, 전체 처리 시간·최장 멈춤 시간·확장 비율을 PR에서 비교해요. | 제안 |
-| 5 | Next.js 소비 예제 | 일반 SSR 검사만으로 RSC·`use client`·hydration 호환성을 보장할 수 없어요. | 실제 tarball의 App Router 프로덕션 빌드·서버 HTML·클라이언트 경계·CSS 연결을 확인하고, 브라우저 hydration과 콘솔 오류 검사까지 완료해요. | 진행 중 |
-| 6 | 접근성 자동 검사 | Storybook 수동 확인만으로 화면 낭독기가 읽는 설명·역할·상태와 키보드 회귀를 놓칠 수 있어요. | 주요 컴포넌트의 접근성 속성·키보드 조작·포커스 이동을 자동 검사하고 예외를 기록해요. | 제안 |
+| 5 | Next.js 소비 예제 | 일반 SSR 검사만으로 RSC·`use client`·hydration 호환성을 보장할 수 없어요. | 실제 tarball의 App Router 프로덕션 빌드·서버 HTML·클라이언트 경계·CSS 연결을 확인하고, 브라우저 hydration과 콘솔 오류 검사까지 완료해요. | 완료 |
+| 6 | 접근성 자동 검사 | Storybook 수동 확인만으로 화면 낭독기가 읽는 설명·역할·상태와 키보드 회귀를 놓칠 수 있어요. | 주요 컴포넌트의 접근성 속성·키보드 조작·포커스 이동을 자동 검사하고 예외를 기록해요. | 진행 중 |
 | 7 | 시각 회귀 | 토큰이나 공통 CSS 변경으로 여러 컴포넌트의 화면이 함께 달라질 수 있어요. | 디자이너가 승인한 주요 Story의 모바일·데스크탑 기준 화면을 비교하고 의도한 차이만 승인해요. | 제안 |
 | 8 | Node.js·React·브라우저 행렬 | 지원 범위를 넓힐 때 특정 버전이나 브라우저에서만 문제가 발생할 수 있어요. | README와 peer dependency에 약속한 Node.js·React·브라우저 조합을 CI에서 검증해요. | 제안 |
 

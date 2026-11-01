@@ -84,6 +84,14 @@ Chip·FilterChip·RemovableChip·FabMenuSegment·Tooltip은 디자인에서 정�
 5. 기능 영역별 수정이 끝나면 Storybook·JSDoc·한국어 주석을 실제 공개 API와 다시 맞춰요.
 6. Playwright·axe 검사, VoiceOver 수동 검사, 성능 기준선과 패키지 매니저 설치 행렬을 순서대로 추가해요.
 
+## 자동 접근성 기준선
+
+2026년 11월 2일에 Playwright 1.64.1의 Chromium과 axe-core 4.14.0으로 실제 tarball 소비 화면을 검사했어요. 색상 대비를 제외한 자동 검사 규칙은 모두 통과해야 해요.
+
+색상 대비는 현재 디자인 토큰을 사용하는 14개 요소에서 개선이 필요해요. Button 1개, Chip 계열 3개, FAB 1개, MenuItem 단축키 1개, NavigationBar 2개, NavigationDrawer 2개, SegmentControl 1개, Slider 3개예요. 디자인 값을 임의로 바꾸지 않고 디자이너와 토큰·상태별 대비를 합의할 때까지 이 수를 임시 기준선으로 고정해요.
+
+자동 검사는 색상 대비 위반이 14개보다 늘거나 줄어도 실패해요. 변경이 의도된 경우 대상과 이유를 확인한 뒤 이 보고서와 검증 코드를 함께 갱신해요. 이 기준선은 접근성 검사를 통과했다는 뜻이 아니며, 배포 전 해결하거나 지원 범위와 남은 위험을 명확히 합의해야 해요.
+
 ## 배포 전 확인 항목
 
 - Modal 최대 너비와 dialog 포커스 동작

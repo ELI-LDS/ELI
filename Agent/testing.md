@@ -2,9 +2,9 @@
 
 ## 기본 검사를 실행해요
 
-고정한 Node.js·pnpm 환경에서 `pnpm install --frozen-lockfile`로 설치해요. 검증은 변경 위험도에 맞춰 실행하고 실제로 실행한 범위만 기록해요.
+고정한 Node.js·pnpm 환경에서 `pnpm install --frozen-lockfile`로 설치하고, 브라우저 검증을 처음 실행하는 환경에서는 `pnpm exec playwright install chromium`으로 고정된 Playwright용 Chromium을 준비해요. 브라우저 바이너리는 개발 검사에만 사용하며 배포 패키지에는 포함하지 않아요. 검증은 변경 위험도에 맞춰 실행하고 실제로 실행한 범위만 기록해요.
 
-공개 props·import 경로·상태 로직·이벤트·키보드·포커스·접근성, 공통 토큰, 빌드 설정, 의존성, SSR·클라이언트 경계, 패키징 결과처럼 여러 소비자에게 영향을 주는 핵심 변경에는 `pnpm check`를 실행해요. 이 명령은 타입 검사, 린트, Storybook 빌드, 패키징 검사, Next.js 소비 검사와 용량 측정을 순서대로 실행해요.
+공개 props·import 경로·상태 로직·이벤트·키보드·포커스·접근성, 공통 토큰, 빌드 설정, 의존성, SSR·클라이언트 경계, 패키징 결과처럼 여러 소비자에게 영향을 주는 핵심 변경에는 `pnpm check`를 실행해요. 이 명령은 타입 검사, 린트, Storybook 빌드, 브라우저 소비 검사, Next.js 소비 검사와 용량 측정을 순서대로 실행해요.
 
 문서 문구, 주석, JSDoc, Storybook 설명이나 기존 토큰을 사용하는 고립된 CSS 선언처럼 공개 계약과 핵심 동작을 바꾸지 않는 수정에는 매번 `pnpm check`를 반복하지 않아도 돼요. 변경 diff와 적용 범위를 확인하고 필요한 최소 검증만 선택해요. 전체 검사를 생략했다면 PR에 변경 위험이 낮다고 판단한 근거와 실제 확인 범위를 적고, 실행하지 않은 검사를 통과했다고 표현하지 않아요.
 
@@ -16,17 +16,17 @@
 
 같은 tarball을 SSR용으로 번들하고 모든 공개 컴포넌트를 `react-dom/server`로 렌더링해 브라우저 전역 없이 초기 HTML을 만들 수 있는지 확인해요. Hook이나 사용자 이벤트가 있는 컴포넌트는 배포 JS 첫 줄에 `'use client'`가 유지되는지도 확인해요. 이 검증은 공통 SSR 안전성을 확인하며 Next.js·Remix 같은 프레임워크별 통합 테스트를 대신하지 않아요.
 
-`pnpm test:next`는 실제 tarball을 Next.js 16.4.3 App Router 소비 앱에 풀어 프로덕션 빌드를 실행해요. Server Component에서 ELI의 정적·클라이언트 컴포넌트를 그룹 경로로 직접 가져오고, 별도 Client Component에서는 이벤트와 상태를 연결해 클라이언트 경계를 확인해요. 빌드된 CSS에 ELI 컴포넌트와 토큰이 자동 포함되는지, 프로덕션 서버 HTML에 서버·클라이언트 컴포넌트의 초기 내용이 렌더링되는지도 확인해요.
-
-이 검사는 실제 브라우저에서 React가 hydration을 마친 뒤 이벤트가 작동하는지까지 확인하지 않아요. 브라우저 hydration·콘솔 오류·상호작용은 후속 브라우저 자동 검사에서 검증해요. Next.js나 React 버전을 바꿀 때는 `test:next` 소비 앱의 고정 버전도 함께 갱신하고 결과를 기록해요.
+`pnpm test:next`는 실제 tarball을 Next.js 16.4.3 App Router 소비 앱에 풀어 프로덕션 빌드를 실행해요. Server Component에서 ELI의 정적·클라이언트 컴포넌트를 그룹 경로로 직접 가져오고, 별도 Client Component에서는 이벤트와 상태를 연결해 클라이언트 경계를 확인해요. 빌드된 CSS와 서버 HTML뿐 아니라 Chromium에서 hydration 이후 Button·Select 상호작용과 콘솔 오류도 확인해요. Next.js나 React 버전을 바꿀 때는 소비 앱의 고정 버전도 함께 갱신하고 결과를 기록해요.
 
 검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 사용해요. React 버전별 독립 설치나 프레임워크별 라우팅·RSC·hydration 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
 
-`pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 디자인 조합·상태와 `직접 바꿔보기`의 Controls 반영을 확인해요. Story 구성과 확인 방법은 [컴포넌트 구현 규칙](components.md#storybook을-함께-확인해요)을 따라요. 상호작용·키보드·접근성 자동 검사는 아직 없어요.
+`pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 디자인 조합·상태와 `직접 바꿔보기`의 Controls 반영을 확인해요. Story 구성과 확인 방법은 [컴포넌트 구현 규칙](components.md#storybook을-함께-확인해요)을 따라요.
 
-`pnpm test:packaging`은 외부 `className`이 루트 요소에 전달되고 소비 앱의 기본·Hover·Pressed·Disabled CSS가 최종 번들에 포함되는지 확인해요. 현재 검사는 브라우저의 계산된 스타일을 읽지 않으므로 실제 우선순위까지 자동으로 보장한다고 표현하지 않아요. Storybook에 스타일 도구별 전용 Story를 추가하지 않아요.
+`pnpm test:browser`는 `test:packaging`이 만든 실제 tarball 소비 앱을 Chromium에서 열어요. Checkbox·Toggle·Select·SegmentControl·TextField·TextArea·Tab의 클릭·입력·선택·키보드·포커스, 브라우저 콘솔 오류, axe의 자동 접근성 위반을 확인해요. 외부 Button 클래스의 Default·Hover·Pressed·Disabled 계산 스타일도 읽어 ELI 기본 스타일보다 우선하는지 검증해요. Modal의 포커스 계약과 Tooltip 트리거처럼 명세가 확정되지 않은 동작, VoiceOver 수동 검토와 모든 컴포넌트의 전체 키보드 조합을 대신하지 않아요.
 
-현재 `pnpm check`는 컴포넌트 단위 테스트를 실행하지 않아요. 실제 컴포넌트와 `.test.tsx`를 추가할 때 테스트 실행 도구와 명령도 함께 구성해요. `.storybook`의 설정 파일은 통합 타입 검사에 포함해요.
+axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상을 기준선으로 따로 고정해요. 기준선보다 늘거나 줄면 테스트를 실패시키고 [컴포넌트 감사 보고서](../handbook/audits/2026-11-component-audit.md#자동-접근성-기준선)를 갱신할지 확인해요. 색상 값을 임의로 바꾸지 않으며, 색상 대비를 제외한 axe 규칙은 예외 없이 통과해야 해요.
+
+`pnpm test:packaging`은 외부 `className`이 루트 요소에 전달되고 상태별 CSS가 최종 번들에 포함되는지 확인하고, 실제 계산 스타일은 `test:browser`가 맡아요. Storybook에 스타일 도구별 전용 Story를 추가하지 않아요. 현재 `pnpm check`는 소스 단위의 `.test.tsx`를 실행하지 않으며, 실제 tarball 소비 관점의 통합 검사를 우선해요. `.storybook`의 설정 파일은 통합 타입 검사에 포함해요.
 
 ## 상호작용 성능을 별도로 확인해요
 
@@ -53,9 +53,8 @@
 - 저장소의 상위 `node_modules`를 참조할 수 없는 임시 경로에서 tarball을 설치해요.
 - 소비 앱이 React와 React DOM을 직접 선언하고, `--legacy-peer-deps` 없이 지원하는 peer dependency 조합을 설치해요.
 - 같은 tarball을 npm·pnpm·Yarn·Bun으로 각각 설치하고 타입 검사와 소비 빌드를 실행해요. Yarn은 Classic·Modern `node-modules`·Modern PnP를 분리해요. 전체 행렬과 설치 원칙은 [패키지 매니저 지원](package-managers.md)을 따라요. 하나라도 실패하면 초기 배포 준비가 끝난 것으로 보지 않아요.
-- Vite 소비 빌드와 `pnpm test:next`의 Next.js App Router 빌드·서버 렌더링·클라이언트 경계를 확인해요. 실제 브라우저 hydration과 콘솔 오류 검사는 별도로 완료해요.
-- 상태가 있는 컴포넌트의 클릭·입력·선택·키보드·포커스 이동을 실제 브라우저에서 확인해요.
-- 외부 클래스의 Default·Hover·Pressed·Disabled 계산 스타일을 브라우저에서 읽어 ELI 기본 스타일보다 우선하는지 확인해요.
+- Vite 소비 빌드와 `pnpm test:next`의 Next.js App Router 빌드·서버 렌더링·클라이언트 경계·브라우저 hydration을 확인해요.
+- `pnpm test:browser`로 대표 컴포넌트의 클릭·입력·선택·키보드·포커스 이동과 외부 클래스 계산 스타일을 확인해요.
 - 화면 낭독기가 읽는 설명·역할·상태와 키보드 조작을 확인하고, 주요 Story의 모바일·데스크탑 화면 차이를 검토해요.
 
 저장소 개발과 lockfile 관리는 pnpm만 사용해요. 소비자 패키지 매니저 검증의 버전·격리 방식·lockfile 규칙은 [패키지 매니저 지원](package-managers.md)에서 관리해요. 자동 검사가 준비되면 README에 소비자 지원 범위를 명시해요.

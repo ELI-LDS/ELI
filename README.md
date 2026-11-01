@@ -19,10 +19,11 @@ node --version
 pnpm --version
 pnpm exec node --version
 pnpm install --frozen-lockfile
+pnpm exec playwright install chromium
 pnpm dev
 ```
 
-`node --version`과 `pnpm exec node --version`은 모두 `v24.21.0`, `pnpm --version`은 `12.8.1`이어야 해요. Storybook은 `http://localhost:6006`에서 열어요. Vite로 React 프로젝트를 따로 생성하지 않아도 개발용 React와 도구들이 함께 설치돼요.
+`node --version`과 `pnpm exec node --version`은 모두 `v24.21.0`, `pnpm --version`은 `12.8.1`이어야 해요. Chromium은 브라우저 소비 검증에만 사용하며 배포 패키지에는 포함되지 않아요. Storybook은 `http://localhost:6006`에서 열어요. Vite로 React 프로젝트를 따로 생성하지 않아도 개발용 React와 도구들이 함께 설치돼요.
 
 다른 Node.js나 pnpm 버전은 설치 검사에서 거절해요. `pnpm-lock.yaml`을 삭제하거나 peer 검사를 끄는 방식으로 충돌을 해결하지 않아요. 도구 버전 변경은 별도 변경으로 검증해요.
 
@@ -38,7 +39,8 @@ pnpm dev
 | `pnpm lint` | 코드 규칙을 확인해요 |
 | `pnpm build:storybook` | Storybook 정적 페이지를 만들어요 |
 | `pnpm test:packaging` | tarball·공개 경로·소비 앱·CSS 연결을 확인해요 |
-| `pnpm test:next` | 실제 tarball의 Next.js App Router 빌드·서버 렌더링·CSS 연결을 확인해요 |
+| `pnpm test:browser` | 실제 tarball 소비 화면의 상호작용·키보드·계산 스타일·axe 접근성을 확인해요 |
+| `pnpm test:next` | 실제 tarball의 Next.js App Router 빌드·서버 렌더링·hydration·CSS 연결을 확인해요 |
 | `pnpm size` | 다운로드 크기·압축 해제 크기·파일 수를 기록해요 |
 | `pnpm check` | 위 검증을 한 번에 실행해요 |
 
@@ -66,11 +68,12 @@ ELI/
 │           └── tokens/     # 공통 색상·타이포그래피 토큰
 ├── scripts/                # 빌드·개발 환경·배포 용량 검사
 └── tests/
+    ├── browser/            # 실제 브라우저 상호작용·접근성 검증
     ├── next/               # Next.js App Router 소비 검증
     └── packaging/          # 패키지 설치·타입·CSS 연결 검증
 ```
 
-새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 동작 테스트는 컴포넌트 가까이에 둬요. 실제 공개 그룹 경로는 `packages/ui/package.json`의 `exports`에서 확인해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고 별도 공개 경로를 제공하지 않아요. `tokens/`에는 공통 색상·타이포그래피·레이아웃 토큰이 있어요.
+새 컴포넌트는 `packages/ui/src/`의 해당 그룹 안에 PascalCase 폴더로 추가하고 그룹의 `index.ts`에서 공개해요. Storybook 예제는 `apps/storybook/stories/`, 소스 단위 테스트는 컴포넌트 가까이, 실제 소비 환경의 통합 검사는 `tests/`에 둬요. 실제 공개 그룹 경로는 `packages/ui/package.json`의 `exports`에서 확인해요. `dim/`과 `icon/`은 컴포넌트 내부에서 재사용하고 별도 공개 경로를 제공하지 않아요. `tokens/`에는 공통 색상·타이포그래피·레이아웃 토큰이 있어요.
 
 공통 작업 규칙은 루트 `AGENTS.md`에서 안내하고, 상세 지침은 `Agent/`에서 관리해요. `node_modules/`, `dist/`, `storybook-static/`, `.artifacts/`는 자동 생성 폴더라 직접 수정하거나 Git에 올리지 않아요.
 
@@ -84,4 +87,4 @@ ELI/
 
 디자인 전달과 공동 검토 방법은 [디자이너 협업 가이드](handbook/designer-guide.md)에서 확인해요. 앞으로 논의할 작업은 [개선 제안](handbook/improvements.md)에 정리하고, 특정 시점의 점검 결과는 `handbook/audits/`에 보관해요. 개선 제안의 확정 여부와 진행 상태는 현재 적용 중인 지침과 구분해요. `handbook/`은 팀 내부 문서를 관리하고, 추후 사용자용 문서 사이트는 `apps/docs`에서 별도로 관리할 예정이에요.
 
-현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. Next.js 브라우저 hydration 검사와 npm 자동 배포는 후속 작업이에요.
+현재 패키지 라이선스는 `UNLICENSED`로 두고 공개 게시를 막아뒀어요. 배포 전에는 라이선스·npm scope 소유권·지원 환경을 확정해요. npm 자동 배포는 후속 작업이에요.

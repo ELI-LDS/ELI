@@ -13,10 +13,13 @@
     "build:storybook": "pnpm --filter @eli/storybook build",
     "size": "pnpm build && node scripts/check-package.mjs",
     "test:packaging": "pnpm build && node tests/packaging/check.mjs",
+    "test:browser": "pnpm test:packaging && node tests/browser/check.mjs",
     "test:next": "pnpm build && node tests/next/check.mjs",
-    "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:packaging && pnpm test:next && pnpm size"
+    "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:browser && pnpm test:next && pnpm size"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.14.0",
+    "@playwright/test": "1.64.1",
     "@types/node": "24.13.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
