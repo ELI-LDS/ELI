@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge } from '@/packages/ui/src/badge/Badge/Badge.js';
 
 const sizes = ['medium', 'large'] as const;
+const types = ['neutral', 'error', 'success', 'caution'] as const;
 
 const sizeNames = {
   large: 'Large',
@@ -14,7 +15,8 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     children: 'ELI 라이브러리',
-    size: 'large',
+    size: 'medium',
+    type: 'neutral',
   },
   argTypes: {
     children: {
@@ -28,14 +30,20 @@ const meta = {
       options: sizes,
       description: '배지의 크기예요.',
     },
+    type: {
+      name: '종류',
+      control: 'inline-radio',
+      options: types,
+      description: '배지가 전달하는 의미에 맞는 색상을 사용해요.',
+    },
   },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* Medium과 Large 크기를 한눈에 확인해요. */
-export const Sizes: Story = {
+/* 네 가지 종류와 두 가지 크기를 한눈에 확인해요. */
+export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
@@ -47,10 +55,19 @@ export const Sizes: Story = {
         gap: 20,
       }}
     >
-      {sizes.map(size => (
-        <div key={size} style={{ display: 'grid', gap: 8, justifyItems: 'start' }}>
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{sizeNames[size]}</span>
-          <Badge size={size}>ELI 라이브러리</Badge>
+      {types.map(type => (
+        <div key={type} style={{ display: 'grid', gap: 8, justifyItems: 'start' }}>
+          <span style={{ color: '#6c788a', fontSize: 12 }}>{type}</span>
+          <div style={{ display: 'flex', gap: 12 }}>
+            {sizes.map(size => (
+              <div key={size} style={{ display: 'grid', gap: 4 }}>
+                <span style={{ color: '#8b98aa', fontSize: 11 }}>{sizeNames[size]}</span>
+                <Badge size={size} type={type}>
+                  ELI 라이브러리
+                </Badge>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
     </div>

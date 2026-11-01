@@ -11,10 +11,15 @@ const typographyClassNames = {
  * 짧은 상태나 분류를 작은 라벨로 표시해요.
  *
  * @example 빠른 사용
- * `<Badge size="medium">신규</Badge>`
+ * `<Badge size="medium" type="success">완료</Badge>`
  *
  * ### 주요 설정
- * - `size`: `large`(기본값), `medium`
+ * - `size`: `medium`(기본값), `large`
+ * - `type`: `neutral`(기본값), `error`, `success`, `caution`
+ *
+ * ### 선택 가이드
+ * - `neutral`: 일반적인 상태나 분류
+ * - `error`, `success`, `caution`: 오류·성공·주의 결과
  *
  * ### 내용과 동작
  * - `children`: 배지에 표시할 내용
@@ -29,19 +34,21 @@ export function Badge(props: BadgeProps) {
     children,
 
     /* Style Options */
-    size = 'large',
+    size = 'medium',
+    type = 'neutral',
 
     /* Native Element */
     className,
     ...badgeProps
-    } = props;
+  } = props;
+
   /* Class Name */
   const badgeClassName = ['eli-badge', typographyClassNames[size], className]
     .filter(Boolean)
     .join(' ');
 
   return (
-    <span {...badgeProps} className={badgeClassName} data-size={size}>
+    <span {...badgeProps} className={badgeClassName} data-size={size} data-type={type}>
       {children}
     </span>
   );

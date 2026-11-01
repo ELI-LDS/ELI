@@ -146,6 +146,7 @@ import { Slider } from '@eli/ui/slider';
 import { Tab } from '@eli/ui/tab';
 import { TextArea, TextField } from '@eli/ui/text';
 import { Toggle } from '@eli/ui/toggle';
+import { Tooltip } from '@eli/ui/tooltip';
 import { ClientExample } from './client-example';
 
 export default function Page() {
@@ -154,6 +155,7 @@ export default function Page() {
       <h1>ELI Next.js 검증</h1>
       <Alert status="success" title="서버 컴포넌트 알림" />
       <Badge>서버 배지</Badge>
+      <Tooltip>서버 도움말</Tooltip>
       <Button>서버에서 렌더링한 버튼</Button>
       <IconButton aria-label="서버 아이콘 버튼" />
       <Checkbox aria-label="서버 체크박스" defaultChecked />
@@ -229,6 +231,7 @@ for (const selector of [
   '.eli-text-area',
   '.eli-text-field',
   '.eli-toggle',
+  '.eli-tooltip',
 ]) {
   assert.ok(css.includes(selector), `Next.js CSS에 ${selector} 스타일이 포함되어야 해요.`);
 }
@@ -275,6 +278,7 @@ try {
   assert.match(html, /서버에서 렌더링한 버튼/);
   assert.match(html, /클라이언트 상호작용/);
   assert.match(html, /서버 탭/);
+  assert.match(html, /서버 도움말/);
   assert.match(html, /첫 번째 탭/);
   assert.match(html, /서버 범위 시작 값/);
   assert.match(html, /\/_next\/static\/.*\.css/);

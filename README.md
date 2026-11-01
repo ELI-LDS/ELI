@@ -2,7 +2,7 @@
 
 동아리 개발자를 위한 React 디자인 컴포넌트 라이브러리예요. 현재는 `@eli/ui`를 한 번 설치하고 그룹별 경로에서 컴포넌트를 가져오는 사용 경험을 만들어요. 기본 CSS와 디자인 토큰은 컴포넌트가 내부에서 연결해요. 추후에는 shadcn/ui처럼 공통 `tokens/`와 원하는 컴포넌트 폴더만 소스로 추가하고, 관계없는 컴포넌트는 내려받지 않는 선택 설치 방식도 함께 제공할 예정이에요.
 
-현재는 개발 환경과 패키징 검증을 준비하고 색상·타이포그래피·레이아웃 토큰 구현을 완료한 단계예요. Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·NavigationBar·NavigationBarItem·NavigationDrawer·NavigationDrawerMenu·NavigationDrawerItem·SnackBar·Toggle·Modal·Select·SegmentControl·Slider·Tab·TextField·TextArea의 기본 구조와 디자인 상태를 구현했어요. Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 선택 컴포넌트 레지스트리·CLI, 문서 사이트와 MCP는 아직 구현하지 않았어요. npm에도 게시하지 않았어요.
+현재는 개발 환경과 패키징 검증을 준비하고 색상·타이포그래피·레이아웃 토큰 구현을 완료한 단계예요. Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·MenuItem·NavigationBar·NavigationBarItem·NavigationDrawer·NavigationDrawerMenu·NavigationDrawerItem·SnackBar·Toggle·Tooltip·Modal·Select·SegmentControl·Slider·Tab·TextField·TextArea의 기본 구조와 디자인 상태를 구현했어요. Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 선택 컴포넌트 레지스트리·CLI, 문서 사이트와 MCP는 아직 구현하지 않았어요. npm에도 게시하지 않았어요.
 
 `@eli/ui`는 폰트 패밀리 토큰만 제공하고 Pretendard 파일이나 폰트 패키지를 포함하지 않아요. 추후 초기 설정 도구가 소비 프로젝트에 폰트를 한 번 설치하고 연결할 예정이에요. 현재는 소비 프로젝트가 Pretendard를 직접 불러와야 해요.
 
