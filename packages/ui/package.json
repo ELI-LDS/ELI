@@ -18,6 +18,7 @@
     "./select": { "types": "./dist/select/index.d.ts", "import": "./dist/select/index.js" },
     "./segment-control": { "types": "./dist/segment-control/index.d.ts", "import": "./dist/segment-control/index.js" },
     "./snackbar": { "types": "./dist/snackbar/index.d.ts", "import": "./dist/snackbar/index.js" },
+    "./slider": { "types": "./dist/slider/index.d.ts", "import": "./dist/slider/index.js" },
     "./tab": { "types": "./dist/tab/index.d.ts", "import": "./dist/tab/index.js" },
     "./text": { "types": "./dist/text/index.d.ts", "import": "./dist/text/index.js" },
     "./toggle": { "types": "./dist/toggle/index.d.ts", "import": "./dist/toggle/index.js" }
