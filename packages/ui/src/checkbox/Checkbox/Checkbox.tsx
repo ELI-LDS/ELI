@@ -25,16 +25,11 @@ import type { CheckboxProps } from './Checkbox.types.js';
  */
 export function Checkbox(props: CheckboxProps) {
   const { className, style, ...inputProps } = props;
-  /* Class Name */
   const checkboxClassName = ['eli-checkbox', className].filter(Boolean).join(' ');
 
   return (
-    /* Root */
     <span className={checkboxClassName} style={style}>
-      {/* Native Checkbox */}
       <input {...inputProps} className="eli-checkbox__input" type="checkbox" />
-
-      {/* Check Icon */}
       <span aria-hidden="true" className="eli-checkbox__icon">
         <CheckIcon />
       </span>

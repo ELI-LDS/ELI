@@ -1,6 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-/* Option */
 export interface SelectOption {
   /** 선택 값으로 사용하는 고유한 문자열이에요. */
   value: string;
@@ -9,7 +8,6 @@ export interface SelectOption {
   label: ReactNode;
 }
 
-/* Props */
 export interface SelectProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
   /** 선택 영역 위에 표시할 라벨이에요. 생략하면 `라벨`을 표시해요. */

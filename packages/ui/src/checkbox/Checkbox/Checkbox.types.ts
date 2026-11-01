@@ -1,6 +1,5 @@
 import type { InputHTMLAttributes } from 'react';
 
-/* Props */
 export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   /** 외부에서 제어하는 선택 상태예요. `true`이면 선택되고 `false`이면 해제돼요. `onChange`와 함께 사용해요. */
   checked?: boolean;

@@ -1,6 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-/* Props */
 export interface MenuItemProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** 메뉴 항목에 표시할 내용이에요. 생략하면 `선택`을 표시해요. */

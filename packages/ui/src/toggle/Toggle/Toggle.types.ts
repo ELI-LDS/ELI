@@ -1,6 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
 
-/* Props */
 export interface ToggleProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-checked' | 'children' | 'onChange'> {
   /** 외부에서 제어하는 상태예요. `true`이면 On, `false`이면 Off예요. */

@@ -34,8 +34,7 @@ export function TextField(props: TextFieldProps) {
     style,
     type = 'text',
     ...inputProps
-    } = props;
-  /* Class Name */
+  } = props;
   const textFieldClassName = ['eli-text-field', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-field__input',
@@ -43,18 +42,13 @@ export function TextField(props: TextFieldProps) {
   ].join(' ');
 
   return (
-    /* Root */
     <label
       className={textFieldClassName}
       data-state={state}
       style={style}
     >
-      {/* Label */}
       <span className="eli-text-field__label eli-typo-label-medium">{label}</span>
-
-      {/* Input Container */}
       <span className="eli-text-field__container">
-        {/* Input */}
         <input
           {...inputProps}
           aria-invalid={ariaInvalid ?? (state === 'error' || undefined)}
@@ -63,8 +57,6 @@ export function TextField(props: TextFieldProps) {
           placeholder={placeholder}
           type={type}
         />
-
-        {/* Right Icon */}
         <span className="eli-text-field__icon">
           <XIcon />
         </span>

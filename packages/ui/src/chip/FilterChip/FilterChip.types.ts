@@ -1,6 +1,5 @@
 import type { ButtonHTMLAttributes } from 'react';
 
-/* Option */
 export interface FilterChipOption {
   /** 화면에 표시할 옵션 이름이에요. */
   label: string;
@@ -9,7 +8,6 @@ export interface FilterChipOption {
   value: string;
 }
 
-/* Props */
 export interface FilterChipProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** 필터를 선택하지 않았을 때 표시할 항목명이에요. */

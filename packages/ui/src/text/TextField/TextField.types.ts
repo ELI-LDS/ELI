@@ -1,9 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from 'react';
 
-/* State */
 export type TextFieldState = 'default' | 'error' | 'success' | 'disabled';
 
-/* Props */
 export interface TextFieldProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,

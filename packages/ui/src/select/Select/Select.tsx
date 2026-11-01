@@ -55,11 +55,9 @@ export function Select(props: SelectProps) {
     valueId,
   } = useSelect({ defaultValue, onBlur, onKeyDown, onValueChange, options, value });
 
-  /* Class Name */
   const selectClassName = ['eli-select', className].filter(Boolean).join(' ');
 
   return (
-    /* Root */
     <div
       {...selectProps}
       className={selectClassName}
@@ -67,14 +65,10 @@ export function Select(props: SelectProps) {
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
     >
-      {/* Label */}
       <div className="eli-select__label eli-typo-label-medium" id={labelId}>
         {label}
       </div>
-
-      {/* Select */}
       <div className="eli-select__control">
-        {/* Trigger */}
         <button
           aria-controls={listboxId}
           aria-expanded={isOpen}
@@ -97,8 +91,6 @@ export function Select(props: SelectProps) {
             <ArrowDownIcon />
           </span>
         </button>
-
-        {/* Options */}
         {isOpen ? (
           <div
             aria-labelledby={labelId}
