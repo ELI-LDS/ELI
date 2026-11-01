@@ -1,6 +1,5 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-/* Item */
 export interface NavigationBarOption {
   /** 항목을 구분하고 선택 결과로 전달할 값이에요. */
   value: string;
@@ -32,7 +31,6 @@ export type NavigationBarOptions =
       NavigationBarOption,
     ];
 
-/* Props */
 export interface NavigationBarProps
   extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'defaultValue' | 'onChange'> {
   /** Navigation Bar의 목적을 화면 낭독기가 읽을 수 있게 설명해요. */

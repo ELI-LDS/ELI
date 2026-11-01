@@ -1,6 +1,5 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
-/* Props */
 export interface NavigationBarItemProps
   extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   /** Navigation Bar Item에 표시할 한 줄 라벨이에요. */
