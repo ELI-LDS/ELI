@@ -1,6 +1,8 @@
 'use client';
 
 import './Fab.css';
+import { CloseIcon } from '../../icon/CloseIcon.js';
+import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { FabProps } from './Fab.types.js';
 
 /**
@@ -41,8 +43,9 @@ export function Fab(props: FabProps) {
     ...buttonProps
   } = props;
   const fabClassName = ['eli-fab', className].filter(Boolean).join(' ');
-  const visibleIcon = expanded ? expandedIcon : icon;
-  const defaultIcon = expanded ? 'close' : 'add';
+  const visibleIcon = expanded
+    ? (expandedIcon === undefined ? <CloseIcon size={24} /> : expandedIcon)
+    : (icon === undefined ? <PlusIcon size={24} /> : icon);
 
   return (
     <button
@@ -54,11 +57,7 @@ export function Fab(props: FabProps) {
       type={type}
     >
       {visibleIcon !== null && (
-        <span
-          aria-hidden="true"
-          className="eli-fab__icon"
-          data-default-icon={visibleIcon === undefined ? defaultIcon : undefined}
-        >
+        <span aria-hidden="true" className="eli-fab__icon">
           {visibleIcon}
         </span>
       )}

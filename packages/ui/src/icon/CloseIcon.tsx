@@ -1,12 +1,14 @@
-/* Close Icon */
-export function CloseIcon() {
+import type { IconProps } from './icon.types.js';
+
+/* 여러 컴포넌트에서 크기와 색상을 상속해 사용하는 Close Icon */
+export function CloseIcon({ size = 24 }: IconProps) {
   return (
     <svg
       aria-hidden="true"
       focusable="false"
-      height="24"
+      height={size}
       viewBox="0 0 24 24"
-      width="24"
+      width={size}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

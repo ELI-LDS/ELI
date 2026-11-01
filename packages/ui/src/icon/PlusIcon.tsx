@@ -1,12 +1,14 @@
-/* Plus Icon */
-export function PlusIcon() {
+import type { IconProps } from './icon.types.js';
+
+/* 여러 컴포넌트에서 크기와 색상을 상속해 사용하는 Plus Icon */
+export function PlusIcon({ size = 20 }: IconProps) {
   return (
     <svg
       aria-hidden="true"
       focusable="false"
-      height="20"
+      height={size}
       viewBox="0 0 20 20"
-      width="20"
+      width={size}
       xmlns="http://www.w3.org/2000/svg"
     >
       <path

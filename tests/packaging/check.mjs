@@ -360,13 +360,6 @@ for (const assetName of [
   );
   assert.ok((await stat(loadingAsset)).size > 0, `${assetName}이 배포 파일에 있어야 해요.`);
 }
-for (const assetPath of [
-  'dist/fab/Fab/fab-add.svg',
-  'dist/fab/Fab/fab-close.svg',
-  'dist/fab/FabMenuSegment/fab-menu-add.svg',
-]) {
-  assert.ok((await stat(join(installedPackage, assetPath))).size > 0, `${assetPath}이 배포 파일에 있어야 해요.`);
-}
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
 console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·Fab·FabMenu·FabMenuSegment·LoadingIndicator·ProgressIndicator·MenuItem·NavigationBar·NavigationBarItem·NavigationDrawer·NavigationDrawerCategory·NavigationDrawerMenu·NavigationDrawerItem·Modal·Select·SegmentControl·Slider·SnackBar·Tab·TextField·TextArea·Toggle·Tooltip CSS와 토큰 자동 연결 검증을 통과했어요.');

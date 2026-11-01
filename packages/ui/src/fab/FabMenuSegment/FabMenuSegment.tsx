@@ -1,6 +1,7 @@
 'use client';
 
 import './FabMenuSegment.css';
+import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { FabMenuSegmentProps } from './FabMenuSegment.types.js';
 
 /**
@@ -26,19 +27,16 @@ export function FabMenuSegment(props: FabMenuSegmentProps) {
     type = 'button',
     ...buttonProps
   } = props;
+  const visibleIcon = icon === undefined ? <PlusIcon size={24} /> : icon;
   const segmentClassName = ['eli-fab-menu-segment', className]
     .filter(Boolean)
     .join(' ');
 
   return (
     <button {...buttonProps} className={segmentClassName} type={type}>
-      {icon !== null && (
-        <span
-          aria-hidden="true"
-          className="eli-fab-menu-segment__icon"
-          data-default-icon={icon === undefined ? 'add' : undefined}
-        >
-          {icon}
+      {visibleIcon !== null && (
+        <span aria-hidden="true" className="eli-fab-menu-segment__icon">
+          {visibleIcon}
         </span>
       )}
       <span className="eli-fab-menu-segment__label eli-typo-label-large">
