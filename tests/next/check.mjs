@@ -4,6 +4,7 @@ import { mkdir, readFile, readdir, realpath, rm, symlink, writeFile } from 'node
 import net from 'node:net';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { chromium } from '@playwright/test';
 import { packInfo, validatePackage } from '../../scripts/check-package.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
@@ -177,7 +178,7 @@ export default function Page() {
       <LoadingIndicator aria-label="서버 원형 진행" progress={50} />
       <ProgressIndicator aria-label="서버 막대 진행" />
       <MenuItem>서버 메뉴</MenuItem>
-      <Modal message="서버 안내" subMessage={null} />
+      <Modal message="서버 안내" style={{ display: 'none' }} subMessage={null} />
       <Select
         defaultValue="server"
         label="서버 선택"
@@ -301,6 +302,33 @@ try {
   assert.match(html, /첫 번째 탭/);
   assert.match(html, /서버 범위 시작 값/);
   assert.match(html, /\/_next\/static\/.*\.css/);
+
+  const browser = await chromium.launch();
+  try {
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    const browserErrors = [];
+    page.on('console', message => {
+      if (message.type() === 'error') browserErrors.push(`console: ${message.text()}`);
+    });
+    page.on('pageerror', error => browserErrors.push(`pageerror: ${error.message}`));
+    await page.goto(`http://127.0.0.1:${port}`, { waitUntil: 'networkidle' });
+
+    const counter = page.getByRole('button', { name: '클릭 0' });
+    await counter.click();
+    assert.equal(await page.getByRole('button', { name: '클릭 1' }).count(), 1);
+
+    const selectTrigger = page.locator('.eli-select')
+      .filter({ hasText: '클라이언트 선택' })
+      .locator('.eli-select__trigger');
+    await selectTrigger.click();
+    await page.getByRole('option', { name: '첫 번째' }).click();
+    assert.match(await selectTrigger.innerText(), /첫 번째/);
+    assert.deepEqual(browserErrors, [], 'Next.js hydration과 상호작용 중 브라우저 오류가 없어야 해요.');
+    await context.close();
+  } finally {
+    await browser.close();
+  }
 } finally {
   server.kill('SIGTERM');
   await new Promise(resolve => {
