@@ -120,6 +120,28 @@ export function AddButton() {
 }
 ```
 
+Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요.
+
+```tsx
+import { Fab, FabMenu } from '@eli/ui/fab';
+
+export function FloatingActions() {
+  return (
+    <>
+      <Fab aria-label="게시물 작성" onClick={() => {}} showLabel={false} />
+      <FabMenu
+        items={[
+          { id: 'photo', label: '사진 추가', onClick: () => {} },
+          { id: 'post', label: '게시물 작성', onClick: () => {} },
+        ]}
+        label="추가"
+        showLabel={false}
+      />
+    </>
+  );
+}
+```
+
 Chip은 선택, 삭제, 필터 진입 목적에 맞는 독립 컴포넌트를 사용해요. 상태와 목록 데이터는 부모에서 관리해요.
 
 ```tsx

@@ -90,6 +90,7 @@ await writeFile(
 import { useState } from 'react';
 import { Button } from '@eli/ui/button';
 import { RemovableChip } from '@eli/ui/chip';
+import { FabMenu } from '@eli/ui/fab';
 import { Select } from '@eli/ui/select';
 import { Slider } from '@eli/ui/slider';
 import { Tab } from '@eli/ui/tab';
@@ -105,6 +106,10 @@ export function ClientExample() {
       <h2>클라이언트 상호작용</h2>
       <Button onClick={() => setCount(current => current + 1)}>클릭 {count}</Button>
       <RemovableChip onRemove={() => setCount(current => current + 1)}>삭제 칩</RemovableChip>
+      <FabMenu
+        items={[{ id: 'create', label: '클라이언트 FAB 액션', onClick: () => setCount(current => current + 1) }]}
+        label="클라이언트 FAB"
+      />
       <Select
         label="클라이언트 선택"
         onValueChange={setValue}
@@ -137,6 +142,7 @@ import { Button, IconButton } from '@eli/ui/button';
 import { Checkbox } from '@eli/ui/checkbox';
 import { Chip, FilterChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
+import { Fab } from '@eli/ui/fab';
 import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
@@ -167,6 +173,7 @@ export default function Page() {
         selectedValues={['all']}
       />
       <Divider />
+      <Fab label="서버 FAB" />
       <LoadingIndicator aria-label="서버 원형 진행" progress={50} />
       <ProgressIndicator aria-label="서버 막대 진행" />
       <MenuItem>서버 메뉴</MenuItem>
@@ -224,6 +231,9 @@ for (const selector of [
   '.eli-checkbox',
   '.eli-chip',
   '.eli-divider',
+  '.eli-fab',
+  '.eli-fab-menu',
+  '.eli-fab-menu-segment',
   '.eli-loading-indicator',
   '.eli-progress-indicator',
   '.eli-menu-item',
@@ -284,6 +294,8 @@ try {
   assert.match(html, /클라이언트 상호작용/);
   assert.match(html, /서버 탭/);
   assert.match(html, /서버 도움말/);
+  assert.match(html, /서버 FAB/);
+  assert.match(html, /클라이언트 FAB/);
   assert.match(html, /서버 원형 진행/);
   assert.match(html, /서버 막대 진행/);
   assert.match(html, /첫 번째 탭/);
