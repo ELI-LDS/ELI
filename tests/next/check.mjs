@@ -137,6 +137,7 @@ import { Button, IconButton } from '@eli/ui/button';
 import { Checkbox } from '@eli/ui/checkbox';
 import { Chip, FilterChip } from '@eli/ui/chip';
 import { Divider } from '@eli/ui/divider';
+import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
 import { Select } from '@eli/ui/select';
@@ -166,6 +167,8 @@ export default function Page() {
         selectedValues={['all']}
       />
       <Divider />
+      <LoadingIndicator aria-label="서버 원형 진행" progress={50} />
+      <ProgressIndicator aria-label="서버 막대 진행" />
       <MenuItem>서버 메뉴</MenuItem>
       <Modal message="서버 안내" subMessage={null} />
       <Select
@@ -221,6 +224,8 @@ for (const selector of [
   '.eli-checkbox',
   '.eli-chip',
   '.eli-divider',
+  '.eli-loading-indicator',
+  '.eli-progress-indicator',
   '.eli-menu-item',
   '.eli-modal',
   '.eli-select',
@@ -279,6 +284,8 @@ try {
   assert.match(html, /클라이언트 상호작용/);
   assert.match(html, /서버 탭/);
   assert.match(html, /서버 도움말/);
+  assert.match(html, /서버 원형 진행/);
+  assert.match(html, /서버 막대 진행/);
   assert.match(html, /첫 번째 탭/);
   assert.match(html, /서버 범위 시작 값/);
   assert.match(html, /\/_next\/static\/.*\.css/);

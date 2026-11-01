@@ -1,0 +1,98 @@
+@import '../../tokens/index.css';
+
+@property --eli-loading-indicator-rotate {
+  syntax: '<angle>';
+  initial-value: 0rad;
+  inherits: false;
+}
+
+/* Figma의 원형 Indeterminate 회전을 그대로 사용해요. */
+@keyframes eli-loading-indicator-rotate {
+  0% {
+    --eli-loading-indicator-rotate: -12.566rad;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  50% {
+    --eli-loading-indicator-rotate: -6.283rad;
+    animation-timing-function: cubic-bezier(0, 0, 0.448, 1);
+  }
+
+  100% {
+    --eli-loading-indicator-rotate: -0.008rad;
+  }
+}
+
+@layer components {
+  /* 공통 원형 영역 */
+  .eli-loading-indicator {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    flex: none;
+  }
+
+  .eli-loading-indicator__determinate,
+  .eli-loading-indicator__track,
+  .eli-loading-indicator__active {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  /* 퍼센트별 원형 이미지 */
+  .eli-loading-indicator__determinate {
+    background: url('./progress-0.svg') center / 40px 40px no-repeat;
+  }
+
+  .eli-loading-indicator[data-progress='10'] .eli-loading-indicator__determinate {
+    background-image: url('./progress-10.svg');
+  }
+
+  .eli-loading-indicator[data-progress='30'] .eli-loading-indicator__determinate {
+    background-image: url('./progress-30.svg');
+  }
+
+  .eli-loading-indicator[data-progress='50'] .eli-loading-indicator__determinate {
+    background-image: url('./progress-50.svg');
+  }
+
+  .eli-loading-indicator[data-progress='80'] .eli-loading-indicator__determinate {
+    background-image: url('./progress-80.svg');
+  }
+
+  .eli-loading-indicator[data-progress='100'] .eli-loading-indicator__determinate {
+    background-image: url('./progress-100.svg');
+  }
+
+  /* Indeterminate Track */
+  .eli-loading-indicator__track {
+    background: url('./indeterminate-track.svg') center / 40px 40px no-repeat;
+  }
+
+  /* Indeterminate Active Indicator */
+  .eli-loading-indicator__active {
+    transform: rotate(var(--eli-loading-indicator-rotate, -12.566rad));
+    animation: eli-loading-indicator-rotate 2s linear infinite;
+    will-change: transform;
+  }
+
+  .eli-loading-indicator__active::before {
+    position: absolute;
+    inset: 0.49% 50% 50% 0.49%;
+    background: url('./indeterminate-active.svg') center / 100% 100% no-repeat;
+    content: '';
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-loading-indicator__active {
+      transform: rotate(0rad);
+      animation: none;
+      will-change: auto;
+    }
+  }
+}
