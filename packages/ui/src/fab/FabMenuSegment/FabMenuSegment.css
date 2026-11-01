@@ -1,0 +1,55 @@
+@import '../../tokens/index.css';
+
+@layer components {
+  /* 펼쳐진 메뉴의 개별 액션 버튼을 관리해요. */
+  .eli-fab-menu-segment {
+    box-sizing: border-box;
+    display: inline-flex;
+    height: 56px;
+    padding: 0 var(--eli-layout-scale-4, 16px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--eli-layout-scale-1, 4px);
+    border: 0;
+    border-radius: var(--eli-layout-scale-2, 8px);
+    color: var(--eli-foreground-default, #4b5668);
+    background: var(--eli-background-interaction-neutral-default, #eaf0f9);
+    filter:
+      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
+      drop-shadow(1px 6px 6px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
+    cursor: pointer;
+  }
+
+  .eli-fab-menu-segment:active:not(:disabled) {
+    background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+  }
+
+  .eli-fab-menu-segment:disabled {
+    cursor: not-allowed;
+  }
+
+  .eli-fab-menu-segment__icon {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eli-fab-menu-segment__icon[data-default-icon='add'] {
+    background: url('./fab-menu-add.svg') center / 24px 24px no-repeat;
+  }
+
+  .eli-fab-menu-segment__icon > :is(svg, img) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .eli-fab-menu-segment__label {
+    overflow: hidden;
+    max-width: 160px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}

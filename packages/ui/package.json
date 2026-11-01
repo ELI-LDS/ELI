@@ -12,6 +12,7 @@
     "./checkbox": { "types": "./dist/checkbox/index.d.ts", "import": "./dist/checkbox/index.js" },
     "./chip": { "types": "./dist/chip/index.d.ts", "import": "./dist/chip/index.js" },
     "./divider": { "types": "./dist/divider/index.d.ts", "import": "./dist/divider/index.js" },
+    "./fab": { "types": "./dist/fab/index.d.ts", "import": "./dist/fab/index.js" },
     "./loading": { "types": "./dist/loading/index.d.ts", "import": "./dist/loading/index.js" },
     "./menu": { "types": "./dist/menu/index.d.ts", "import": "./dist/menu/index.js" },
     "./modal": { "types": "./dist/modal/index.d.ts", "import": "./dist/modal/index.js" },

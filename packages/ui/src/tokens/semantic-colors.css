@@ -53,4 +53,5 @@
   /* Effect */
   --eli-effect-dim: rgb(from var(--eli-color-neutral-900) r g b / 40%);
   --eli-effect-shadow: rgb(from var(--eli-color-neutral-700) r g b / 20%);
+  --eli-effect-fab: rgb(from var(--eli-color-neutral-900) r g b / 20%);
 }
