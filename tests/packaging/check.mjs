@@ -21,7 +21,7 @@ const consumer = join(work, 'consumer');
 await mkdir(consumer);
 await writeFile(join(consumer, 'package.json'), JSON.stringify({ name: 'eli-private-consumer', private: true, type: 'module' }));
 execFileSync('npm', ['install', '--offline', '--ignore-scripts', '--legacy-peer-deps', '--no-audit', '--no-fund', '--package-lock=false', join(work, info.filename)], { cwd: consumer, stdio: 'inherit' });
-await writeFile(join(consumer, 'index.html'), '<html lang="ko"><head><title>ELI 브라우저 검증</title></head><body><main><h1>ELI 소비자 브라우저 검증</h1><div id="root"></div></main><script type="module" src="/main.tsx"></script></body></html>');
+await writeFile(join(consumer, 'index.html'), '<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:"><title>ELI 브라우저 검증</title></head><body><main><h1>ELI 소비자 브라우저 검증</h1><div id="root"></div></main><script type="module" src="/main.tsx"></script></body></html>');
 await writeFile(join(consumer, 'custom.css'), `.consumer-button {
   width: 100%;
   color: #fff;

@@ -2,7 +2,7 @@
 
 ## 기본 검사를 실행해요
 
-고정한 Node.js·pnpm 환경에서 `pnpm install --frozen-lockfile`로 설치하고, 브라우저 검증을 처음 실행하는 환경에서는 `pnpm exec playwright install chromium`으로 고정된 Playwright용 Chromium을 준비해요. 브라우저 바이너리는 개발 검사에만 사용하며 배포 패키지에는 포함하지 않아요. 검증은 변경 위험도에 맞춰 실행하고 실제로 실행한 범위만 기록해요.
+고정한 Node.js·pnpm 환경에서 `pnpm install --frozen-lockfile`로 설치하고, 일상 브라우저 검증을 처음 실행하는 환경에서는 `pnpm exec playwright install chromium`으로 고정된 Playwright용 Chromium을 준비해요. 전체 브라우저 행렬은 `pnpm exec playwright install chromium firefox webkit`으로 엔진을 준비해요. 브라우저 바이너리는 개발 검사에만 사용하며 배포 패키지에는 포함하지 않아요. 검증은 변경 위험도에 맞춰 실행하고 실제로 실행한 범위만 기록해요.
 
 공개 props·import 경로·상태 로직·이벤트·키보드·포커스·접근성, 공통 토큰, 빌드 설정, 의존성, SSR·클라이언트 경계, 패키징 결과처럼 여러 소비자에게 영향을 주는 핵심 변경에는 `pnpm check`를 실행해요. 이 명령은 타입 검사, 린트, Storybook 빌드, 브라우저 소비 검사, Next.js 소비 검사와 용량 측정을 순서대로 실행해요.
 
@@ -23,6 +23,14 @@
 `pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 디자인 조합·상태와 `직접 바꿔보기`의 Controls 반영을 확인해요. Story 구성과 확인 방법은 [컴포넌트 구현 규칙](components.md#storybook을-함께-확인해요)을 따라요.
 
 `pnpm test:browser`는 `test:packaging`이 만든 실제 tarball 소비 앱을 Chromium에서 열어요. Checkbox·Toggle·Select·SegmentControl·TextField·TextArea·Tab의 클릭·입력·선택·키보드·포커스, 브라우저 콘솔 오류, axe의 자동 접근성 위반을 확인해요. 외부 Button 클래스의 Default·Hover·Pressed·Disabled 계산 스타일도 읽어 ELI 기본 스타일보다 우선하는지 검증해요. Modal의 포커스 계약과 Tooltip 트리거처럼 명세가 확정되지 않은 동작, VoiceOver 수동 검토와 모든 컴포넌트의 전체 키보드 조합을 대신하지 않아요.
+
+## 브라우저와 모바일 환경을 구분해 확인해요
+
+데스크톱 지원 목표는 최신 안정 Chrome·Edge·Safari와 Firefox예요. GitHub Actions의 브라우저 행렬은 실제 Chrome·Edge 채널과 Playwright가 고정한 Chromium·Firefox·WebKit에서 같은 tarball 소비 검사를 실행해요. `pnpm test:browsers`는 로컬에서 Chromium·Firefox·WebKit과 Android Chromium·iOS WebKit 기기 조건을 순서대로 확인하고, 일상 `pnpm check`는 실행 비용을 고려해 Chromium 대표 검사만 실행해요.
+
+Android와 iOS 자동 검사는 Playwright의 Pixel·iPhone 기기 설정으로 화면 크기, 사용자 에이전트, 터치 입력을 재현해요. 이 결과는 실제 Android Chrome, iOS Safari나 운영체제 WebView를 실행한 것이 아니므로 실기기 통과로 기록하지 않아요. 릴리스 전에는 최소한 최신 안정 macOS Safari, iOS Safari와 Android Chrome에서 대표 소비 화면의 터치·입력·스크롤·가상 키보드·화면 회전과 콘솔 오류를 수동 확인해요. 실제 기기나 기기 클라우드를 사용할 수 없다면 미검증 범위로 남기고 지원 완료라고 표현하지 않아요.
+
+키보드·Hover·Pressed 계산 스타일은 데스크톱 대상에서 확인하고, 모바일 대상에서는 탭·터치로 같은 작업을 완료할 수 있는지 확인해요. axe 색상 대비 기준선은 엔진별 계산 차이로 중복된 기준선을 만들지 않도록 Chromium 대표 환경에서만 추적하고, 색상 대비를 제외한 자동 접근성 규칙과 브라우저 콘솔 오류는 모든 자동 대상에서 확인해요.
 
 axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상을 기준선으로 따로 고정해요. 기준선보다 늘거나 줄면 테스트를 실패시키고 [컴포넌트 감사 보고서](../handbook/audits/2026-11-component-audit.md#자동-접근성-기준선)를 갱신할지 확인해요. 색상 값을 임의로 바꾸지 않으며, 색상 대비를 제외한 axe 규칙은 예외 없이 통과해야 해요.
 
@@ -56,7 +64,8 @@ axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상
 - 소비 앱이 React와 React DOM을 직접 선언하고, `--legacy-peer-deps` 없이 지원하는 peer dependency 조합을 설치해요.
 - 같은 tarball을 npm·pnpm·Yarn·Bun으로 각각 설치하고 타입 검사와 소비 빌드를 실행해요. Yarn은 Classic·Modern `node-modules`·Modern PnP를 분리해요. 전체 행렬과 설치 원칙은 [패키지 매니저 지원](package-managers.md)을 따라요. 하나라도 실패하면 초기 배포 준비가 끝난 것으로 보지 않아요.
 - Vite 소비 빌드와 `pnpm test:next`의 Next.js App Router 빌드·서버 렌더링·클라이언트 경계·브라우저 hydration을 확인해요.
-- `pnpm test:browser`로 대표 컴포넌트의 클릭·입력·선택·키보드·포커스 이동과 외부 클래스 계산 스타일을 확인해요.
+- `pnpm test:browsers`와 브라우저 호환성 CI로 대표 컴포넌트의 클릭·입력·선택·키보드·포커스 이동, 터치와 외부 클래스 계산 스타일을 확인해요.
+- 실제 macOS Safari, iOS Safari와 Android Chrome에서 대표 흐름을 수동 확인하고 기기·OS·브라우저 버전을 기록해요.
 - 화면 낭독기가 읽는 설명·역할·상태와 키보드 조작을 확인하고, 주요 Story의 모바일·데스크탑 화면 차이를 검토해요.
 
 저장소 개발과 lockfile 관리는 pnpm만 사용해요. 소비자 패키지 매니저 검증의 버전·격리 방식·lockfile 규칙은 [패키지 매니저 지원](package-managers.md)에서 관리하고, README에 안내한 범위와 자동 행렬을 함께 갱신해요.
