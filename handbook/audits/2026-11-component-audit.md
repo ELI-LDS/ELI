@@ -101,6 +101,6 @@ Chip·FilterChip·RemovableChip·FabMenuSegment·Tooltip은 디자인에서 정�
 - Tab의 단독 토글 API와 tablist 조합 규칙
 - 디자이너가 승인한 Storybook 기준 화면과 확인 날짜
 - 브라우저·접근성 검사, VoiceOver 수동 결과, 성능 기준선
-- npm·pnpm·Yarn Classic·Yarn Modern node-modules·Yarn PnP·Bun 설치 행렬
+- npm·pnpm·Yarn Classic·Yarn Modern node-modules·Yarn PnP·Bun 설치 행렬의 최신 자동 검사 결과
 
 이 항목이 남아 있는 동안에는 중간 감사가 끝났다는 의미로만 사용하고, npm 공개 배포 준비가 완료됐다고 표현하지 않아요.

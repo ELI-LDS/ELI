@@ -39,6 +39,7 @@ pnpm dev
 | `pnpm lint` | 코드 규칙을 확인해요 |
 | `pnpm build:storybook` | Storybook 정적 페이지를 만들어요 |
 | `pnpm test:packaging` | tarball·공개 경로·소비 앱·CSS 연결을 확인해요 |
+| `pnpm test:package-managers` | 같은 tarball을 npm·pnpm·Yarn Classic·Yarn Modern·Bun에서 설치하고 타입·Vite 빌드를 확인해요 |
 | `pnpm test:browser` | 실제 tarball 소비 화면의 상호작용·키보드·계산 스타일·axe 접근성을 확인해요 |
 | `pnpm test:next` | 실제 tarball의 Next.js App Router 빌드·서버 렌더링·hydration·CSS 연결을 확인해요 |
 | `pnpm size` | 다운로드 크기·압축 해제 크기·파일 수를 기록해요 |
@@ -70,6 +71,7 @@ ELI/
 └── tests/
     ├── browser/            # 실제 브라우저 상호작용·접근성 검증
     ├── next/               # Next.js App Router 소비 검증
+    ├── package-managers/   # 소비자 패키지 매니저 호환성 검증
     └── packaging/          # 패키지 설치·타입·CSS 연결 검증
 ```
 

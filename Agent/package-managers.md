@@ -45,7 +45,7 @@ CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 �
 
 ## 초기 지원 행렬을 고정해요
 
-아래 버전은 2026년 10월 28일 기준 자동 검증 도입 목표예요. 같은 tarball을 사용한 수동 검증은 한 차례 통과했지만 자동 행렬이 아직 연결되지 않았으므로 사용자 문서에 지원 완료라고 표시하지 않아요.
+아래 버전은 2026년 11월 2일 기준 자동 검증 행렬이에요. `.github/workflows/package-manager-compatibility.yml`이 한 번 만든 같은 tarball을 각 소비 환경에 전달하고, 저장소 밖 임시 프로젝트에서 설치·타입 검사·Vite 빌드를 실행해요.
 
 | 대상 | 설치 방식 | 목표 버전 |
 | --- | --- | --- |
@@ -57,6 +57,8 @@ CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 �
 | Bun | Bun 기본 설치 방식 | 1.4.4 |
 
 “Yarn 지원”이라고만 작성하지 않아요. Classic과 Modern을 구분하고, Modern은 `node-modules`와 PnP를 각각 검증해요. 버전을 갱신할 때는 공식 안정 버전을 다시 확인하고 별도 PR에서 행렬 전체를 실행해요. `latest`, `stable` 같은 이동 태그를 CI 검증 버전으로 사용하지 않아요.
+
+전체 행렬은 `pnpm test:package-managers`로 실행할 수 있어요. 이 명령은 표에 고정한 각 패키지 매니저가 로컬에 준비돼 있어야 하므로, PR의 자동 행렬을 공통 확인 기준으로 사용해요. CI는 npm과 Yarn 실행 파일을 임시 경로에 설치하고 Bun과 pnpm도 고정 버전으로 준비해 개인의 전역 설정을 바꾸지 않아요.
 
 ## 같은 tarball로 검증해요
 
@@ -85,10 +87,12 @@ pnpFallbackMode: none
 
 PnP에는 `node_modules`와 일반적인 `.bin` 경로가 없어요. `node_modules/typescript/bin/tsc`처럼 설치 위치를 가정하지 않고 `yarn typecheck`, `yarn build`처럼 소비 프로젝트의 scripts를 통해 도구를 실행해요.
 
+현재 Vite 8은 PnP 사용을 권장하지 않는다는 경고를 출력하지만, ELI의 strict PnP 타입 검사와 Vite 빌드는 통과해요. 경고를 성공으로 숨기지 않고 Vite를 갱신할 때 행렬을 다시 실행해 실제 호환성이 깨지지 않았는지 확인해요.
+
 ELI의 누락된 dependency나 peer dependency를 `packageExtensions`, `pnpIgnorePatterns`, `pnpMode: loose`로 숨기지 않아요. 실패 원인이 ELI의 패키지 선언이라면 `packages/ui/package.json`을 수정하고, 외부 도구 문제라면 근거와 임시 대응 범위를 검증 결과에 기록해요.
 
 ## 검증 결과를 승격해요
 
-현재 지원 행렬의 구현 상태는 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 관리해요. 자동 검사가 실제로 통과하면 [검증 기준](testing.md#실제-배포-전-검증을-완성해요)의 필수 명령에 연결하고 README와 패키지 README에 설치 명령·지원 버전·제약을 공개해요.
+지원 행렬의 구현 상태는 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 관리해요. 자동 검사는 관련 패키지·빌드·검증 파일이 바뀌는 PR에서 실행하고, 릴리스 PR에서도 최신 성공 결과를 확인해요. README와 패키지 README에 안내한 지원 버전을 바꾸려면 행렬과 지침을 함께 갱신해요.
 
 명령과 설치 방식은 [npm 패키지 설치](https://docs.npmjs.com/using-npm-packages-in-your-projects/), [pnpm add](https://pnpm.io/cli/add), [Yarn 사용법](https://yarnpkg.com/getting-started/usage), [Yarn PnP](https://yarnpkg.com/features/pnp), [Bun add](https://bun.sh/docs/pm/cli/add)의 공식 문서를 기준으로 확인해요.

@@ -27,8 +27,8 @@
 
 | 순서 | 개선 항목 | 확인할 문제 | 완료 기준 | 상태 |
 | --- | --- | --- | --- | --- |
-| 1 | 격리된 tarball 설치 | 저장소의 상위 `node_modules`에 우연히 의존하거나 peer dependency 충돌을 숨길 수 있어요. | 저장소 밖 임시 경로에서 React·React DOM을 명시한 소비 앱이 `--legacy-peer-deps` 없이 설치·타입 검사·빌드돼요. | 진행 중 |
-| 2 | 패키지 매니저 호환성 | npm·pnpm·Yarn·Bun의 peer dependency와 설치 방식 차이로 특정 환경에서만 실패할 수 있어요. | [패키지 매니저 지원](../Agent/package-managers.md)의 행렬대로 같은 tarball을 격리 설치하고 타입 검사·소비 빌드를 통과해요. | 진행 중 |
+| 1 | 격리된 tarball 설치 | 저장소의 상위 `node_modules`에 우연히 의존하거나 peer dependency 충돌을 숨길 수 있어요. | 저장소 밖 임시 경로에서 React·React DOM을 명시한 소비 앱이 `--legacy-peer-deps` 없이 설치·타입 검사·빌드돼요. | 완료 |
+| 2 | 패키지 매니저 호환성 | npm·pnpm·Yarn·Bun의 peer dependency와 설치 방식 차이로 특정 환경에서만 실패할 수 있어요. | [패키지 매니저 지원](../Agent/package-managers.md)의 행렬대로 같은 tarball을 격리 설치하고 타입 검사·소비 빌드를 통과해요. | 완료 |
 | 3 | 브라우저 상호작용과 계산 스타일 | CSS가 번들에 존재해도 실제 우선순위가 다르거나 상태 동작이 깨질 수 있어요. | 클릭·입력·선택·키보드·포커스와 외부 클래스의 Default·Hover·Pressed·Disabled 계산 스타일을 실제 브라우저에서 검증해요. | 진행 중 |
 | 4 | 상호작용 성능 기준선 | 패키지 용량만으로 긴 목록과 대량 상태 변경에서 UI가 멈추는 문제를 찾을 수 없어요. | [검증 기준](../Agent/testing.md#상호작용-성능을-별도로-확인해요)의 대표 시나리오를 프로덕션 빌드에서 반복 측정하고, 전체 처리 시간·최장 멈춤 시간·확장 비율을 PR에서 비교해요. | 제안 |
 | 5 | Next.js 소비 예제 | 일반 SSR 검사만으로 RSC·`use client`·hydration 호환성을 보장할 수 없어요. | 실제 tarball의 App Router 프로덕션 빌드·서버 HTML·클라이언트 경계·CSS 연결을 확인하고, 브라우저 hydration과 콘솔 오류 검사까지 완료해요. | 완료 |
@@ -38,7 +38,7 @@
 
 도입 순서는 격리 설치, 패키지 매니저 호환성, 브라우저 상호작용과 계산 스타일, 상호작용 성능 기준선, Next.js 소비 예제, 접근성, 시각 회귀, Node.js·React·브라우저 행렬 순으로 잡아요. npm·pnpm·Yarn·Bun은 초기 배포 지원 범위로 합의했으므로 패키지 매니저 호환성 검사를 릴리스 전에 완료해요. 새 테스트 도구는 실행 의존성이 아니라 개발 의존성으로 검토하고, 해결하는 문제와 설치 용량·유지 비용을 PR에 기록해요.
 
-2026년 10월 28일에는 SHA-256 `a171f469c0814211b71ed4a7fabefa14ff2aeed2bd1d6480c343b3812e69ae3e`인 같은 tarball을 저장소 밖 새 임시 소비 앱에 설치해 npm 11.19.0, pnpm 12.8.1, Yarn Classic 1.22.22, Yarn Modern 4.18.1의 `node-modules`·strict PnP, Bun 1.4.4에서 타입 검사와 Vite 빌드를 수동으로 통과했어요. 강제 설치나 peer dependency 완화 옵션은 사용하지 않았어요. Next.js 16.4.3 프로덕션 앱에서는 브라우저 hydration 후 Button·Select·RemovableChip의 상호작용과 콘솔 오류가 없음을 확인했어요. Storybook에서는 Button의 Default·Hover·Pressed·Disabled 계산 스타일과 Modal의 데스크탑·375px 모바일 배치를 확인했어요. 실제 tarball 소비 화면에서는 외부 Button 클래스의 Default·Hover·Pressed·Disabled 계산 스타일이 ELI 기본값보다 우선하는 것도 확인했어요. 이 수동 행렬의 자동화가 남아 있어 관련 항목은 완료로 올리지 않아요.
+2026년 10월 28일에는 SHA-256 `a171f469c0814211b71ed4a7fabefa14ff2aeed2bd1d6480c343b3812e69ae3e`인 같은 tarball을 저장소 밖 새 임시 소비 앱에 설치해 패키지 매니저 행렬을 수동으로 통과했어요. 2026년 11월 2일에는 같은 범위를 `.github/workflows/package-manager-compatibility.yml`과 `tests/package-managers/`로 자동화했어요. 강제 설치나 peer dependency 완화 옵션은 사용하지 않아요. Next.js 16.4.3 프로덕션 앱에서는 브라우저 hydration 후 Button·Select 상호작용과 콘솔 오류를 자동 확인해요. Storybook 기준 화면과 VoiceOver 수동 검토는 별도 항목으로 남겨요.
 
 각 검사가 구현되면 이 문서의 상태를 `완료`로 바꾸는 데 그치지 않고 `pnpm check` 또는 릴리스 전용 명령에 연결해요. 반복 적용할 필수 기준은 [검증 기준](../Agent/testing.md)에 승격하고 이 문서에는 결정 이유와 결과 링크만 남겨요.
 
