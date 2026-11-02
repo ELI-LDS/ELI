@@ -34,6 +34,8 @@ axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상
 
 초기 대표 시나리오는 옵션 250개가 있는 Select를 열고 방향키로 이동한 뒤 선택하는 동작과 Checkbox 100개를 한 번에 선택하거나 해제하는 동작이에요. 실제 사용 범위가 달라지면 디자이너와 합의한 최대 규모를 시나리오에 반영해요.
 
+`pnpm test:performance`는 실제 tarball의 프로덕션 Vite 빌드를 Chromium에서 열고 Select 125개·250개와 Checkbox 100개 시나리오를 측정해 `.artifacts/performance/baseline.json`에 기록해요. 이 파일은 기기별 측정 결과라 Git에 올리지 않고, 비교가 필요한 PR에 환경과 중앙값을 직접 적어요.
+
 아래 지표를 각각 기록해요.
 
 - 전체 처리 시간: 한 동작으로 메인 스레드가 작업한 총시간
@@ -42,7 +44,7 @@ axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상
 
 성능 결과는 프로덕션 빌드에서 같은 Chromium 버전과 4배 CPU 제한을 사용해 세 번 측정한 중앙값으로 비교해요. 전체 처리 시간은 브라우저의 메인 스레드 작업 시간으로, 최장 멈춤 시간은 Long Animation Frames처럼 긴 작업 구간을 확인할 수 있는 브라우저 측정값으로 기록해요. 측정 환경과 브라우저 버전도 결과와 함께 남겨요.
 
-[Design Systems Should Be Fast by Default](https://denodell.com/blog/design-systems-should-be-fast-by-default)에서 제안한 전체 300ms 이하, 최장 멈춤 100ms 이하, 확장 비율 2.5 미만은 초기 참고값으로만 사용해요. ELI의 기준선과 실행 환경이 안정되기 전에는 이 수치로 PR을 실패시키지 않아요. 자동 측정 도입 상태는 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 관리하고, 구현 전 결과를 `pnpm check`가 검증한다고 표현하지 않아요.
+[Design Systems Should Be Fast by Default](https://denodell.com/blog/design-systems-should-be-fast-by-default)에서 제안한 전체 300ms 이하, 최장 멈춤 100ms 이하, 확장 비율 2.5 미만은 초기 참고값으로만 사용해요. ELI의 기준선과 실행 환경이 안정되기 전에는 이 수치로 PR을 실패시키지 않아요. 자동 측정 도입 상태는 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 관리하고, 기준선을 수집한다는 이유로 일반 `pnpm check`의 필수 실패 조건이라고 표현하지 않아요.
 
 ## 실제 배포 전 검증을 완성해요
 
