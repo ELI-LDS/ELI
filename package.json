@@ -13,6 +13,7 @@
     "build:storybook": "pnpm --filter @eli/storybook build",
     "size": "pnpm build && node scripts/check-package.mjs",
     "test:packaging": "pnpm build && node tests/packaging/check.mjs",
+    "test:package-managers": "pnpm build && node tests/package-managers/prepare.mjs && node tests/package-managers/check.mjs --all",
     "test:browser": "pnpm test:packaging && node tests/browser/check.mjs",
     "test:next": "pnpm build && node tests/next/check.mjs",
     "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:browser && pnpm test:next && pnpm size"

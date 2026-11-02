@@ -8,6 +8,8 @@ ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 
 
 React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스와 npm scope 소유권을 확정하기 전에는 공개 게시하지 않아요.
 
+같은 tarball을 npm 11.19.0, pnpm 12.8.1, Yarn Classic 1.22.22, Yarn Modern 4.18.1의 `node-modules`·strict PnP, Bun 1.4.4에서 설치해 타입 검사와 Vite 빌드를 자동 검증해요. 저장소 개발과 lockfile 관리는 pnpm만 사용해요.
+
 ## 컴포넌트 스타일을 바꿔요
 
 ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 덮어쓸 수 있어요. 일반 CSS, CSS Modules, Tailwind CSS, Emotion과 vanilla-extract처럼 최종적으로 클래스 이름을 만드는 방식이라면 같은 API를 사용해요. 별도 ELI 플러그인이나 스타일 도구 의존성은 필요하지 않아요.

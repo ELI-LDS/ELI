@@ -1,0 +1,86 @@
+name: Verify consumer package managers
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/package-manager-compatibility.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'packages/ui/**'
+      - 'scripts/build-ui.mjs'
+      - 'scripts/check-package.mjs'
+      - 'tests/package-managers/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  package-tarball:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: node tests/package-managers/prepare.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eli-ui-tarball
+          path: .artifacts/package-managers/*.tgz
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 1
+
+  consumer:
+    needs: package-tarball
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manager:
+          - npm
+          - pnpm
+          - yarn-classic
+          - yarn-modern-node-modules
+          - yarn-modern-pnp
+          - bun
+    name: ${{ matrix.manager }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+      - if: matrix.manager == 'npm'
+        run: |
+          npm install --prefix "$RUNNER_TEMP/eli-npm" --ignore-scripts --no-audit --no-fund npm@11.19.0
+          echo "ELI_NPM_BINARY=$RUNNER_TEMP/eli-npm/node_modules/.bin/npm" >> "$GITHUB_ENV"
+      - if: matrix.manager == 'pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - if: matrix.manager == 'yarn-classic'
+        run: |
+          npm install --prefix "$RUNNER_TEMP/eli-yarn" --ignore-scripts --no-audit --no-fund yarn@1.22.22
+          echo "ELI_YARN_BINARY=$RUNNER_TEMP/eli-yarn/node_modules/.bin/yarn" >> "$GITHUB_ENV"
+      - if: startsWith(matrix.manager, 'yarn-modern')
+        run: |
+          npm install --prefix "$RUNNER_TEMP/eli-yarn" --ignore-scripts --no-audit --no-fund @yarnpkg/cli-dist@4.18.1
+          echo "ELI_YARN_BINARY=$RUNNER_TEMP/eli-yarn/node_modules/.bin/yarn" >> "$GITHUB_ENV"
+      - if: matrix.manager == 'bun'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - uses: actions/download-artifact@v4
+        with:
+          name: eli-ui-tarball
+          path: .artifacts/package-managers
+      - run: node tests/package-managers/check.mjs --manager ${{ matrix.manager }}

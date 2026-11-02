@@ -57,7 +57,9 @@ axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상
 - `pnpm test:browser`로 대표 컴포넌트의 클릭·입력·선택·키보드·포커스 이동과 외부 클래스 계산 스타일을 확인해요.
 - 화면 낭독기가 읽는 설명·역할·상태와 키보드 조작을 확인하고, 주요 Story의 모바일·데스크탑 화면 차이를 검토해요.
 
-저장소 개발과 lockfile 관리는 pnpm만 사용해요. 소비자 패키지 매니저 검증의 버전·격리 방식·lockfile 규칙은 [패키지 매니저 지원](package-managers.md)에서 관리해요. 자동 검사가 준비되면 README에 소비자 지원 범위를 명시해요.
+저장소 개발과 lockfile 관리는 pnpm만 사용해요. 소비자 패키지 매니저 검증의 버전·격리 방식·lockfile 규칙은 [패키지 매니저 지원](package-managers.md)에서 관리하고, README에 안내한 범위와 자동 행렬을 함께 갱신해요.
+
+`pnpm test:package-managers`는 한 번 만든 tarball을 npm·pnpm·Yarn Classic·Yarn Modern의 `node-modules`·strict PnP·Bun 소비 앱에 설치해 타입 검사와 Vite 빌드를 실행해요. 네트워크 설치와 여섯 환경 준비 비용이 크므로 일반 `pnpm check`에는 중복해서 넣지 않고, 관련 파일이 바뀌는 PR의 GitHub Actions 행렬과 릴리스 준비에서 필수로 확인해요.
 
 Node.js·React·브라우저 지원 범위를 늘릴 때는 새 조합을 검증 대상에 추가해요. 모든 조합을 임의로 약속하지 않고 README와 peer dependency에 명시한 범위만 지원해요.
 
