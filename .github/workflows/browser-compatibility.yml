@@ -1,0 +1,53 @@
+name: Verify browser compatibility
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/browser-compatibility.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'packages/ui/**'
+      - 'scripts/build-ui.mjs'
+      - 'tests/browser/**'
+      - 'tests/packaging/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: chromium
+            install: chromium
+          - target: chrome
+            install: chrome
+          - target: edge
+            install: msedge
+          - target: firefox
+            install: firefox
+          - target: webkit
+            install: webkit
+          - target: android-chromium
+            install: chromium
+          - target: ios-webkit
+            install: webkit
+    name: ${{ matrix.target }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps ${{ matrix.install }}
+      - run: pnpm test:packaging
+      - run: pnpm test:browser:target -- --target=${{ matrix.target }}

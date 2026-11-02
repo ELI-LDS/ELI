@@ -4,7 +4,20 @@ import net from 'node:net';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import AxeBuilder from '@axe-core/playwright';
-import { chromium } from '@playwright/test';
+import { chromium, devices, firefox, webkit } from '@playwright/test';
+
+const targetName = process.argv.find(argument => argument.startsWith('--target='))?.split('=')[1] ?? 'chromium';
+const targets = {
+  chromium: { browserType: chromium, desktop: true },
+  chrome: { browserType: chromium, desktop: true, launchOptions: { channel: 'chrome' } },
+  edge: { browserType: chromium, desktop: true, launchOptions: { channel: 'msedge' } },
+  firefox: { browserType: firefox, desktop: true },
+  webkit: { browserType: webkit, desktop: true },
+  'android-chromium': { browserType: chromium, contextOptions: devices['Pixel 7'], desktop: false },
+  'ios-webkit': { browserType: webkit, contextOptions: devices['iPhone 15'], desktop: false },
+};
+const target = targets[targetName];
+assert.ok(target, `지원하지 않는 브라우저 검증 대상이에요: ${targetName}`);
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const consumer = join(root, '.artifacts/packaging/consumer');
@@ -33,7 +46,7 @@ let serverOutput = '';
 server.stdout.on('data', chunk => { serverOutput += chunk; });
 server.stderr.on('data', chunk => { serverOutput += chunk; });
 
-const browser = await chromium.launch();
+const browser = await target.browserType.launch(target.launchOptions);
 
 try {
   const url = `http://127.0.0.1:${port}`;
@@ -47,7 +60,7 @@ try {
     }
   }
 
-  const context = await browser.newContext();
+  const context = await browser.newContext(target.contextOptions);
   const page = await context.newPage();
   const browserErrors = [];
   page.on('console', message => {
@@ -58,37 +71,52 @@ try {
 
   const customButton = page.getByRole('button', { name: '커스텀 버튼', exact: true });
   assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(124, 58, 237)');
-  await customButton.hover();
-  assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(109, 40, 217)');
-  await page.mouse.down();
-  assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(91, 33, 182)');
-  await page.mouse.up();
+  if (target.desktop) {
+    await customButton.hover();
+    assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(109, 40, 217)');
+    await page.mouse.down();
+    assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(91, 33, 182)');
+    await page.mouse.up();
+  } else {
+    await customButton.tap();
+  }
 
   const disabledButton = page.getByRole('button', { name: '비활성 커스텀 버튼' });
   assert.equal(await disabledButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(196, 181, 253)');
 
   const checkbox = page.getByRole('checkbox', { name: '약관 동의' });
   assert.equal(await checkbox.isChecked(), true);
-  await checkbox.press('Space');
+  if (target.desktop) await checkbox.press('Space');
+  else await checkbox.tap();
   assert.equal(await checkbox.isChecked(), false);
 
   const toggle = page.getByRole('switch', { name: '알림 설정' });
   assert.equal(await toggle.getAttribute('aria-checked'), 'true');
-  await toggle.click();
+  if (target.desktop) await toggle.click();
+  else await toggle.tap();
   assert.equal(await toggle.getAttribute('aria-checked'), 'false');
 
   const selectTrigger = page.locator('.eli-select__trigger');
-  await selectTrigger.click();
-  await page.getByRole('option', { name: '옵션 2' }).click();
+  if (target.desktop) await selectTrigger.click();
+  else await selectTrigger.tap();
+  const secondOption = page.getByRole('option', { name: '옵션 2' });
+  if (target.desktop) await secondOption.click();
+  else await secondOption.tap();
   assert.match(await selectTrigger.innerText(), /옵션 2/);
 
   const segment = page.getByRole('radiogroup', { name: '보기 방식' });
   const listOption = segment.getByRole('radio', { name: '목록' });
   const gridOption = segment.getByRole('radio', { name: '격자' });
-  await listOption.focus();
-  await listOption.press('ArrowRight');
+  if (target.desktop) {
+    await listOption.focus();
+    await listOption.press('ArrowRight');
+  } else {
+    await gridOption.tap();
+  }
   assert.equal(await gridOption.getAttribute('aria-checked'), 'true');
-  assert.equal(await gridOption.evaluate(element => element === document.activeElement), true);
+  if (target.desktop) {
+    assert.equal(await gridOption.evaluate(element => element === document.activeElement), true);
+  }
 
   const textField = page.getByLabel('이메일');
   await textField.fill('hello@eli.dev');
@@ -100,20 +128,24 @@ try {
 
   const tab = page.getByRole('tab', { name: '소비자 탭' });
   assert.equal(await tab.getAttribute('aria-selected'), 'false');
-  await tab.click();
+  if (target.desktop) await tab.click();
+  else await tab.tap();
   assert.equal(await tab.getAttribute('aria-selected'), 'true');
 
-  const contrast = await new AxeBuilder({ page })
-    .exclude('.browser-modal')
-    .withRules(['color-contrast'])
-    .analyze();
-  assert.equal(contrast.violations.length, 1);
-  assert.equal(contrast.violations[0]?.id, 'color-contrast');
-  assert.equal(
-    contrast.violations[0]?.nodes.length,
-    14,
-    '디자이너와 합의할 기존 색상 대비 기준선보다 위반이 늘거나 줄면 기준을 다시 검토해야 해요.',
-  );
+  // 색상 대비 기준선은 엔진별 계산 차이와 무관하게 한 환경에서만 추적해요.
+  if (targetName === 'chromium') {
+    const contrast = await new AxeBuilder({ page })
+      .exclude('.browser-modal')
+      .withRules(['color-contrast'])
+      .analyze();
+    assert.equal(contrast.violations.length, 1);
+    assert.equal(contrast.violations[0]?.id, 'color-contrast');
+    assert.equal(
+      contrast.violations[0]?.nodes.length,
+      14,
+      '디자이너와 합의할 기존 색상 대비 기준선보다 위반이 늘거나 줄면 기준을 다시 검토해야 해요.',
+    );
+  }
 
   const accessibility = await new AxeBuilder({ page })
     .exclude('.browser-modal')
@@ -139,4 +171,4 @@ try {
   });
 }
 
-console.log('실제 tarball 소비 화면의 상호작용·키보드·계산 스타일·axe 접근성 검증을 통과했어요.');
+console.log(`${targetName}에서 실제 tarball 소비 화면의 상호작용·계산 스타일·axe 접근성 검증을 통과했어요.`);

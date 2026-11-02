@@ -16,6 +16,8 @@
     "test:package-managers": "pnpm build && node tests/package-managers/prepare.mjs && node tests/package-managers/check.mjs --all",
     "test:performance": "pnpm build && node tests/performance/check.mjs",
     "test:browser": "pnpm test:packaging && node tests/browser/check.mjs",
+    "test:browsers": "pnpm test:packaging && node tests/browser/matrix.mjs",
+    "test:browser:target": "node tests/browser/check.mjs",
     "test:next": "pnpm build && node tests/next/check.mjs",
     "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:browser && pnpm test:next && pnpm size"
   },
