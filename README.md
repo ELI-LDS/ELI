@@ -42,13 +42,14 @@ pnpm dev
 | `pnpm test:package-managers` | 같은 tarball을 npm·pnpm·Yarn Classic·Yarn Modern·Bun에서 설치하고 타입·Vite 빌드를 확인해요 |
 | `pnpm test:performance` | Select 긴 목록과 Checkbox 100개 변경의 브라우저 성능 기준선을 측정해요 |
 | `pnpm test:browser` | 실제 tarball 소비 화면의 상호작용·키보드·계산 스타일·axe 접근성을 확인해요 |
+| `pnpm test:browsers` | Chromium·Firefox·WebKit과 Android·iOS 기기 조건에서 같은 소비 화면을 확인해요 |
 | `pnpm test:next` | 실제 tarball의 Next.js App Router 빌드·서버 렌더링·hydration·CSS 연결을 확인해요 |
 | `pnpm size` | 다운로드 크기·압축 해제 크기·파일 수를 기록해요 |
 | `pnpm check` | 타입·린트·Storybook·브라우저·Next.js·용량의 일상 핵심 검증을 실행해요 |
 
 용량 보고서는 `.artifacts/package-size.txt`와 `.artifacts/package-size.json`에서 확인해요. **ELI 패키지 자체 크기**이며 React·추가 의존성·브라우저 번들 크기는 포함하지 않아요. 초기 빈 패키지와 완성된 라이브러리의 크기는 달라요.
 
-패키지 매니저 전체 행렬과 성능 기준선은 실행 비용이 커서 일반 `pnpm check`에 중복하지 않아요. 관련 파일이 바뀌거나 릴리스를 준비할 때 각각의 전용 명령과 자동 행렬을 확인해요.
+패키지 매니저·브라우저 전체 행렬과 성능 기준선은 실행 비용이 커서 일반 `pnpm check`에 중복하지 않아요. 관련 파일이 바뀌거나 릴리스를 준비할 때 각각의 전용 명령과 자동 행렬을 확인해요. 브라우저 행렬의 모바일 대상은 기기 조건을 에뮬레이션하므로 실제 iOS Safari와 Android Chrome 확인을 대신하지 않아요.
 
 ## 폴더 구조
 
