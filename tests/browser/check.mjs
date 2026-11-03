@@ -90,11 +90,49 @@ try {
   else await checkbox.tap();
   assert.equal(await checkbox.isChecked(), false);
 
+  const frontendRadio = page.getByRole('radio', { name: '프론트엔드' });
+  const backendRadio = page.getByRole('radio', { name: '백엔드' });
+  assert.equal(await frontendRadio.isChecked(), true);
+  assert.equal(await backendRadio.isChecked(), false);
+  if (target.desktop) await backendRadio.click();
+  else await backendRadio.tap();
+  assert.equal(await frontendRadio.isChecked(), false);
+  assert.equal(await backendRadio.isChecked(), true);
+
   const toggle = page.getByRole('switch', { name: '알림 설정' });
   assert.equal(await toggle.getAttribute('aria-checked'), 'true');
   if (target.desktop) await toggle.click();
   else await toggle.tap();
   assert.equal(await toggle.getAttribute('aria-checked'), 'false');
+
+  const navigationBar = page.getByRole('navigation', { name: '주요 탐색' });
+  const navigationHome = navigationBar.getByRole('button', { name: '탐색 홈' });
+  const navigationSearch = navigationBar.getByRole('button', { name: '탐색 검색' });
+  assert.equal(await navigationHome.getAttribute('aria-current'), 'page');
+  if (target.desktop) await navigationSearch.click();
+  else await navigationSearch.tap();
+  assert.equal(await navigationHome.getAttribute('aria-current'), null);
+  assert.equal(await navigationSearch.getAttribute('aria-current'), 'page');
+  // 색상 대비 기준선은 초기 소비 화면과 비교할 수 있도록 선택 상태를 되돌려요.
+  if (target.desktop) await navigationHome.click();
+  else await navigationHome.tap();
+
+  const navigationDrawer = page.getByRole('navigation', { name: '서비스 탐색' });
+  const drawerHome = navigationDrawer.getByRole('button', { name: 'Drawer 홈' });
+  const drawerSettings = navigationDrawer.getByRole('button', { name: 'Drawer 설정' });
+  assert.equal(await drawerHome.getAttribute('aria-expanded'), 'true');
+  if (target.desktop) await drawerHome.click();
+  else await drawerHome.tap();
+  assert.equal(await drawerHome.getAttribute('aria-expanded'), 'false');
+  if (target.desktop) await drawerHome.click();
+  else await drawerHome.tap();
+  assert.equal(await drawerHome.getAttribute('aria-expanded'), 'true');
+  if (target.desktop) await drawerSettings.click();
+  else await drawerSettings.tap();
+  assert.equal(await drawerSettings.getAttribute('aria-current'), 'page');
+  const drawerSubItem = navigationDrawer.getByRole('button', { name: 'Drawer 하위 메뉴' });
+  if (target.desktop) await drawerSubItem.click();
+  else await drawerSubItem.tap();
 
   const selectTrigger = page.locator('.eli-select__trigger');
   if (target.desktop) await selectTrigger.click();
@@ -136,6 +174,8 @@ try {
   if (targetName === 'chromium') {
     const contrast = await new AxeBuilder({ page })
       .exclude('.browser-modal')
+      // 상태 전환 검증을 위해 추가한 테스트 전용 항목은 기존 색상 기준선에서 제외해요.
+      .exclude('.browser-drawer-settings')
       .withRules(['color-contrast'])
       .analyze();
     assert.equal(contrast.violations.length, 1);

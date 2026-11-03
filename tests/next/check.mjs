@@ -147,6 +147,7 @@ import { Fab } from '@eli/ui/fab';
 import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
+import { Radio } from '@eli/ui/radio';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
@@ -179,6 +180,7 @@ export default function Page() {
       <ProgressIndicator aria-label="서버 막대 진행" />
       <MenuItem>서버 메뉴</MenuItem>
       <Modal message="서버 안내" style={{ display: 'none' }} subMessage={null} />
+      <Radio aria-label="서버 Radio" name="server-radio" value="server" />
       <Select
         defaultValue="server"
         label="서버 선택"
@@ -239,6 +241,7 @@ for (const selector of [
   '.eli-progress-indicator',
   '.eli-menu-item',
   '.eli-modal',
+  '.eli-radio',
   '.eli-select',
   '.eli-segment-control',
   '.eli-snackbar',
@@ -299,6 +302,7 @@ try {
   assert.match(html, /클라이언트 FAB/);
   assert.match(html, /서버 원형 진행/);
   assert.match(html, /서버 막대 진행/);
+  assert.match(html, /서버 Radio/);
   assert.match(html, /첫 번째 탭/);
   assert.match(html, /서버 범위 시작 값/);
   assert.match(html, /\/_next\/static\/.*\.css/);
