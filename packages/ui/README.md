@@ -84,11 +84,13 @@ export function SaveDescription() {
 ```
 
 LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `progress`를 표시하고, 알 수 없으면 값을 생략해 반복 애니메이션으로 진행 중임을 알려요.
+LoadingIndicator의 `continuous`는 일정하게 회전하고, `cycle`은 Figma의 2초 가감속 모션을 반복해요.
 
 ```tsx
 import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 
 <LoadingIndicator aria-label="프로필 불러오는 중" />
+<LoadingIndicator aria-label="동기화하는 중" variant="cycle" />
 <ProgressIndicator aria-label="파일 업로드" progress={80} />
 ```
 
@@ -177,6 +179,22 @@ import { Checkbox } from '@eli/ui/checkbox';
 
 export function Agreement() {
   return <Checkbox aria-label="약관 동의" defaultChecked />;
+}
+```
+
+Radio는 여러 선택지 중 하나만 고를 때 사용해요. 같은 선택 묶음은 동일한 `name`을 전달해요.
+
+```tsx
+import { Radio } from '@eli/ui/radio';
+
+export function CourseType() {
+  return (
+    <fieldset>
+      <legend>과정 선택</legend>
+      <label><Radio name="course" value="frontend" /> 프론트엔드</label>
+      <label><Radio name="course" value="backend" /> 백엔드</label>
+    </fieldset>
+  );
 }
 ```
 

@@ -128,12 +128,14 @@ async function verify(manager, tarball) {
     await writeFile(join(work, 'index.html'), '<html lang="ko"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
     await writeFile(join(work, 'main.tsx'), `import { createRoot } from 'react-dom/client';
 import { Button } from '@eli/ui/button';
+import { Radio } from '@eli/ui/radio';
 import { Select } from '@eli/ui/select';
 import { TextField } from '@eli/ui/text';
 
 createRoot(document.getElementById('root')!).render(
   <main>
     <Button>소비자 버튼</Button>
+    <Radio aria-label="소비자 Radio" name="consumer-radio" value="radio" />
     <Select label="소비자 선택" options={[{ label: '옵션', value: 'option' }]} />
     <TextField label="소비자 입력" />
   </main>,
@@ -169,6 +171,7 @@ createRoot(document.getElementById('root')!).render(
     const cssFiles = await collect(join(work, 'dist'), '.css');
     const css = (await Promise.all(cssFiles.map(file => readFile(file, 'utf8')))).join('\n');
     assert.match(css, /\.eli-button/);
+    assert.match(css, /\.eli-radio/);
     assert.match(css, /\.eli-select/);
     assert.match(css, /\.eli-text-field/);
     assert.match(css, /--eli-color-blue-500:/);

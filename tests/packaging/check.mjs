@@ -58,6 +58,7 @@ import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
 import { NavigationBar, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli/ui/navigation';
+import { Radio } from '@eli/ui/radio';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
@@ -69,7 +70,7 @@ import { Tooltip } from '@eli/ui/tooltip';
 import './custom.css';
 const chipOptions = [{ label: '블랙', value: 'black' }, { label: '화이트', value: 'white' }];
 const navigationItems = [{ value: 'home', label: '탐색 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'search', label: '탐색 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'profile', label: '탐색 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
-createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button className="consumer-button" color="neutral" icon={null}>커스텀 버튼</Button><Button className="consumer-button" color="neutral" disabled icon={null}>비활성 커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium" type="success">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><LoadingIndicator aria-label="소비자 원형 진행" progress={50} /><ProgressIndicator aria-label="소비자 막대 진행" /><Fab label="소비자 FAB" /><FabMenu defaultExpanded items={[{ id: 'first', label: '소비자 FAB 메뉴' }]} label="소비자 메뉴" /><FabMenuSegment label="소비자 Segment" /><MenuItem shortcut="⇧⌘P">메뉴</MenuItem><NavigationBar aria-label="주요 탐색" items={navigationItems} /><NavigationBarItem active filledIcon={<span>●</span>} label="탐색 항목" outlinedIcon={<span>○</span>} /><NavigationDrawer aria-label="서비스 탐색" defaultValue="drawer-sub"><NavigationDrawerCategory label="Drawer 카테고리" /><NavigationDrawerMenu defaultExpanded filledIcon={<span>●</span>} label="Drawer 홈" outlinedIcon={<span>○</span>} subItems={[{ label: 'Drawer 하위 메뉴', value: 'drawer-sub' }]} value="drawer-home" /></NavigationDrawer><Modal className="browser-modal" height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><Slider aria-label="소비자 값" defaultValue={60} /><Slider aria-label="소비자 범위" defaultValue={[27, 60]} variant="range" /><SnackBar actionColor="#153464" /><div aria-label="콘텐츠 탭" role="tablist"><Tab defaultActive={false} label="소비자 탭" onActiveChange={() => undefined} /></div><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /><Tooltip>소비자 도움말</Tooltip></>);
+createRoot(document.getElementById('root')!).render(<><Button color="brand" size="large">버튼</Button><Button className="consumer-button" color="neutral" icon={null}>커스텀 버튼</Button><Button className="consumer-button" color="neutral" disabled icon={null}>비활성 커스텀 버튼</Button><IconButton aria-label="항목 추가" color="neutral" size="medium" variant="outline" /><Chip selected>선택 칩</Chip><RemovableChip onRemove={() => undefined} removeLabel="태그 삭제">삭제 칩</RemovableChip><FilterChip label="컬러" options={chipOptions} selectedValues={['black', 'white']} /><Badge size="medium" type="success">배지 라벨</Badge><Checkbox aria-label="약관 동의" defaultChecked /><Radio aria-label="프론트엔드" defaultChecked name="course" value="frontend" /><Radio aria-label="백엔드" name="course" value="backend" /><Alert message="알림 본문" status="success" title="알림 제목" /><Divider /><LoadingIndicator aria-label="소비자 원형 진행" progress={50} /><LoadingIndicator aria-label="소비자 2초 반복 진행" variant="cycle" /><ProgressIndicator aria-label="소비자 막대 진행" /><Fab label="소비자 FAB" /><FabMenu defaultExpanded items={[{ id: 'first', label: '소비자 FAB 메뉴' }]} label="소비자 메뉴" /><FabMenuSegment label="소비자 Segment" /><MenuItem shortcut="⇧⌘P">메뉴</MenuItem><NavigationBar aria-label="주요 탐색" items={navigationItems} /><NavigationBarItem active filledIcon={<span>●</span>} label="탐색 항목" outlinedIcon={<span>○</span>} /><NavigationDrawer aria-label="서비스 탐색" defaultValue="drawer-sub"><NavigationDrawerCategory label="Drawer 카테고리" /><NavigationDrawerMenu defaultExpanded filledIcon={<span>●</span>} label="Drawer 홈" outlinedIcon={<span>○</span>} subItems={[{ label: 'Drawer 하위 메뉴', value: 'drawer-sub' }]} value="drawer-home" /><NavigationDrawerMenu className="browser-drawer-settings" filledIcon={<span>●</span>} label="Drawer 설정" outlinedIcon={<span>○</span>} value="drawer-settings" /></NavigationDrawer><Modal className="browser-modal" height={320} message="첫 번째 안내" positiveAction="확인" secondaryAction="취소" subMessage="두 번째 안내" width={480} /><Select label="분류" options={[{ label: '옵션 1', value: 'option-1' }, { label: '옵션 2', value: 'option-2' }]} placeholder="분류를 선택하세요" /><SegmentControl aria-label="보기 방식" options={[{ label: '목록', value: 'list' }, { label: '격자', value: 'grid' }]} /><Slider aria-label="소비자 값" defaultValue={60} /><Slider aria-label="소비자 범위" defaultValue={[27, 60]} variant="range" /><SnackBar actionColor="#153464" /><div aria-label="콘텐츠 탭" role="tablist"><Tab defaultActive={false} label="소비자 탭" onActiveChange={() => undefined} /></div><TextField label="이메일" placeholder="이메일을 입력하세요" state="success" /><TextArea label="소개" placeholder="소개를 입력하세요" /><Toggle aria-label="알림 설정" defaultChecked /><Tooltip>소비자 도움말</Tooltip></>);
 `);
 await writeFile(join(consumer, 'tsconfig.json'), JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true }, include: ['main.tsx'] }));
 execFileSync(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(consumer, 'tsconfig.json')], { stdio: 'inherit' });
@@ -88,6 +89,7 @@ import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
 import { MenuItem } from '@eli/ui/menu';
 import { Modal } from '@eli/ui/modal';
 import { NavigationBar, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli/ui/navigation';
+import { Radio } from '@eli/ui/radio';
 import { Select } from '@eli/ui/select';
 import { SegmentControl } from '@eli/ui/segment-control';
 import { SnackBar } from '@eli/ui/snackbar';
@@ -98,7 +100,7 @@ import { Toggle } from '@eli/ui/toggle';
 import { Tooltip } from '@eli/ui/tooltip';
 
 const serverNavigationItems = [{ value: 'server-home', label: '서버 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-search', label: '서버 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-profile', label: '서버 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
-const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Chip>서버 선택 칩</Chip><RemovableChip onRemove={() => undefined}>서버 삭제 칩</RemovableChip><FilterChip label="서버 필터" options={[{ label: '서버 옵션 1', value: 'server-1' }, { label: '서버 옵션 2', value: 'server-2' }]} selectedValues={['server-1', 'server-2']} /><Divider /><LoadingIndicator aria-label="서버 원형 진행" progress={80} /><ProgressIndicator aria-label="서버 막대 진행" progress={30} /><Fab label="서버 FAB" /><FabMenu defaultExpanded items={[{ id: 'server-action', label: '서버 FAB 메뉴' }]} label="서버 메뉴 FAB" /><FabMenuSegment label="서버 Segment" /><MenuItem>서버 메뉴</MenuItem><NavigationBar aria-label="서버 주요 탐색" items={serverNavigationItems} /><NavigationBarItem filledIcon={<span>●</span>} label="서버 탐색 항목" outlinedIcon={<span>○</span>} /><NavigationDrawer aria-label="서버 서비스 탐색" defaultValue="server-drawer-sub"><NavigationDrawerCategory label="서버 Drawer 카테고리" /><NavigationDrawerMenu defaultExpanded filledIcon={<span>●</span>} label="서버 Drawer 홈" outlinedIcon={<span>○</span>} subItems={[{ label: '서버 Drawer 하위 메뉴', value: 'server-drawer-sub' }]} value="server-drawer-home" /></NavigationDrawer><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SegmentControl aria-label="서버 보기 방식" options={[{ label: '서버 목록', value: 'list' }, { label: '서버 격자', value: 'grid' }]} /><Slider aria-label="서버 값" defaultValue={60} /><Slider aria-label="서버 범위" defaultValue={[27, 60]} variant="range" /><SnackBar>서버 메시지</SnackBar><div aria-label="서버 콘텐츠 탭" role="tablist"><Tab label="서버 탭" /></div><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /><Tooltip>서버 도움말</Tooltip></main>);
+const markup = renderToString(<main><Alert status="info" title="서버 알림" /><Badge>서버 배지</Badge><Button>서버 버튼</Button><IconButton aria-label="서버 아이콘 버튼" /><Checkbox aria-label="서버 체크박스" /><Radio aria-label="서버 Radio" name="server-radio" value="server" /><Chip>서버 선택 칩</Chip><RemovableChip onRemove={() => undefined}>서버 삭제 칩</RemovableChip><FilterChip label="서버 필터" options={[{ label: '서버 옵션 1', value: 'server-1' }, { label: '서버 옵션 2', value: 'server-2' }]} selectedValues={['server-1', 'server-2']} /><Divider /><LoadingIndicator aria-label="서버 원형 진행" progress={80} /><LoadingIndicator aria-label="서버 2초 반복 진행" variant="cycle" /><ProgressIndicator aria-label="서버 막대 진행" progress={30} /><Fab label="서버 FAB" /><FabMenu defaultExpanded items={[{ id: 'server-action', label: '서버 FAB 메뉴' }]} label="서버 메뉴 FAB" /><FabMenuSegment label="서버 Segment" /><MenuItem>서버 메뉴</MenuItem><NavigationBar aria-label="서버 주요 탐색" items={serverNavigationItems} /><NavigationBarItem filledIcon={<span>●</span>} label="서버 탐색 항목" outlinedIcon={<span>○</span>} /><NavigationDrawer aria-label="서버 서비스 탐색" defaultValue="server-drawer-sub"><NavigationDrawerCategory label="서버 Drawer 카테고리" /><NavigationDrawerMenu defaultExpanded filledIcon={<span>●</span>} label="서버 Drawer 홈" outlinedIcon={<span>○</span>} subItems={[{ label: '서버 Drawer 하위 메뉴', value: 'server-drawer-sub' }]} value="server-drawer-home" /></NavigationDrawer><Modal message="서버 첫 문장" subMessage="서버 둘째 문장" /><Select defaultValue="server" label="서버 선택" options={[{ label: '서버 옵션', value: 'server' }]} /><SegmentControl aria-label="서버 보기 방식" options={[{ label: '서버 목록', value: 'list' }, { label: '서버 격자', value: 'grid' }]} /><Slider aria-label="서버 값" defaultValue={60} /><Slider aria-label="서버 범위" defaultValue={[27, 60]} variant="range" /><SnackBar>서버 메시지</SnackBar><div aria-label="서버 콘텐츠 탭" role="tablist"><Tab label="서버 탭" /></div><TextField label="서버 입력" /><TextArea label="서버 여러 줄 입력" /><Toggle aria-label="서버 토글" /><Tooltip>서버 도움말</Tooltip></main>);
 export default markup;
 `);
 await build({
@@ -132,6 +134,7 @@ const clientComponents = [
   'dist/fab/FabMenuSegment/FabMenuSegment.js',
   'dist/menu/MenuItem/MenuItem.js',
   'dist/modal/Modal/Modal.js',
+  'dist/radio/Radio/Radio.js',
   'dist/navigation/NavigationBar/NavigationBar.js',
   'dist/navigation/NavigationBarItem/NavigationBarItem.js',
   'dist/navigation/NavigationDrawer/NavigationDrawer.js',
@@ -175,6 +178,7 @@ const documentedComponents = [
   'dist/loading/ProgressIndicator/ProgressIndicator.d.ts',
   'dist/menu/MenuItem/MenuItem.d.ts',
   'dist/modal/Modal/Modal.d.ts',
+  'dist/radio/Radio/Radio.d.ts',
   'dist/navigation/NavigationBar/NavigationBar.d.ts',
   'dist/navigation/NavigationBarItem/NavigationBarItem.d.ts',
   'dist/navigation/NavigationDrawer/NavigationDrawer.d.ts',
@@ -214,6 +218,7 @@ const layeredStyleSheets = [
   'dist/menu/MenuItem/MenuItem.css',
   'dist/menu/MenuItem/MenuItem.interaction.css',
   'dist/modal/Modal/Modal.css',
+  'dist/radio/Radio/Radio.css',
   'dist/navigation/NavigationBar/NavigationBar.css',
   'dist/navigation/NavigationBarItem/NavigationBarItem.css',
   'dist/navigation/NavigationDrawer/NavigationDrawer.css',
@@ -286,6 +291,7 @@ assert.match(css, /\.eli-navigation-bar-item/);
 assert.match(css, /\.eli-navigation-drawer/);
 assert.match(css, /\.eli-navigation-drawer-category/);
 assert.match(css, /\.eli-navigation-drawer-item/);
+assert.match(css, /\.eli-radio/);
 assert.match(css, /\.eli-typo-heading-h1/);
 assert.match(css, /\.eli-typo-heading-h2/);
 assert.match(css, /\.eli-typo-heading-h3/);
@@ -315,6 +321,8 @@ assert.match(js, /컬러/);
 assert.match(js, /태그 삭제/);
 assert.match(js, /배지 라벨/);
 assert.match(js, /약관 동의/);
+assert.match(js, /프론트엔드/);
+assert.match(js, /백엔드/);
 assert.match(js, /알림 제목/);
 assert.match(js, /알림 본문/);
 assert.match(js, /⇧⌘P/);
@@ -343,11 +351,14 @@ assert.match(js, /소비자 FAB/);
 assert.match(js, /소비자 FAB 메뉴/);
 assert.match(js, /소비자 Segment/);
 assert.match(js, /소비자 원형 진행/);
+assert.match(js, /소비자 2초 반복 진행/);
 assert.match(js, /소비자 막대 진행/);
 assert.match(await readFile(join(consumer, 'dist/index.html'), 'utf8'), /rel="stylesheet"/);
 const sliderArrow = join(installedPackage, 'dist/slider/Slider/indicator-arrow.svg');
 assert.ok((await stat(sliderArrow)).size > 0, 'Slider 값 표시 화살표 SVG가 배포 파일에 있어야 해요.');
 assert.match(await readFile(sliderArrow, 'utf8'), /width="10\.001" height="8"/);
+const radioOnAsset = join(installedPackage, 'dist/radio/Radio/state-on.svg');
+assert.ok((await stat(radioOnAsset)).size > 0, 'Radio 선택 상태 SVG가 배포 파일에 있어야 해요.');
 for (const assetName of [
   'indeterminate-active.svg',
   'indeterminate-track.svg',
@@ -367,5 +378,5 @@ for (const assetName of [
 }
 const bundle = { jsBytes: Buffer.byteLength(js), cssBytes: Buffer.byteLength(css), note: '개발 검증 예제와 React DOM을 포함한 Vite 번들이에요. ELI 단독 다운로드 크기가 아니에요.' };
 await writeFile(join(work, 'consumer-bundle.json'), JSON.stringify(bundle, null, 2));
-console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Divider·Fab·FabMenu·FabMenuSegment·LoadingIndicator·ProgressIndicator·MenuItem·NavigationBar·NavigationBarItem·NavigationDrawer·NavigationDrawerCategory·NavigationDrawerMenu·NavigationDrawerItem·Modal·Select·SegmentControl·Slider·SnackBar·Tab·TextField·TextArea·Toggle·Tooltip CSS와 토큰 자동 연결 검증을 통과했어요.');
+console.log('패키지 파일·실제 tarball·소비자 타입·SSR 렌더링·외부 className 스타일 덮어쓰기·Alert·Badge·Button·IconButton·Chip·RemovableChip·FilterChip·Checkbox·Radio·Divider·Fab·FabMenu·FabMenuSegment·LoadingIndicator·ProgressIndicator·MenuItem·NavigationBar·NavigationBarItem·NavigationDrawer·NavigationDrawerCategory·NavigationDrawerMenu·NavigationDrawerItem·Modal·Select·SegmentControl·Slider·SnackBar·Tab·TextField·TextArea·Toggle·Tooltip CSS와 토큰 자동 연결 검증을 통과했어요.');
 console.log('브라우저 확인 대상: .artifacts/packaging/consumer');

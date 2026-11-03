@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LoadingIndicator } from '@/packages/ui/src/loading/LoadingIndicator/LoadingIndicator.js';
 
 const progressOptions = [undefined, 0, 10, 30, 50, 80, 100] as const;
+const indeterminateVariants = [
+  { label: 'Continuous', variant: 'continuous' },
+  { label: 'Cycle (2초)', variant: 'cycle' },
+] as const;
 
 const meta = {
   title: '컴포넌트/LoadingIndicator',
@@ -9,6 +13,7 @@ const meta = {
   parameters: { layout: 'centered' },
   args: {
     'aria-label': '콘텐츠 불러오는 중',
+    variant: 'continuous',
   },
   argTypes: {
     'aria-label': {
@@ -31,6 +36,12 @@ const meta = {
       },
       description: '완료 비율을 알면 값을 고르고, 알 수 없으면 비워 반복 애니메이션을 사용해요.',
     },
+    variant: {
+      name: '반복 방식',
+      control: 'select',
+      options: ['continuous', 'cycle'],
+      description: '진행률을 모를 때 일정한 회전 또는 Figma의 2초 가감속 반복을 선택해요.',
+    },
     className: { table: { disable: true } },
   },
 } satisfies Meta<typeof LoadingIndicator>;
@@ -38,31 +49,38 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* 반복 애니메이션과 퍼센트별 원형 상태를 함께 확인해요. */
+/* 두 반복 방식과 퍼센트별 원형 상태를 함께 확인해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
-      {progressOptions.map(progress => (
+      {indeterminateVariants.map(({ label, variant }) => (
         <div
-          key={progress ?? 'indeterminate'}
+          key={variant}
           style={{ display: 'grid', gap: 8, justifyItems: 'center' }}
         >
-          <span style={{ color: '#6c788a', fontSize: 12 }}>
-            {progress === undefined ? 'Indeterminate' : `${progress}%`}
-          </span>
+          <span style={{ color: '#6c788a', fontSize: 12 }}>{label}</span>
           <LoadingIndicator
-            aria-label={progress === undefined ? '진행률을 모르는 작업' : `${progress}% 완료`}
-            {...(progress === undefined ? {} : { progress })}
+            aria-label={`${label} 방식으로 진행 중`}
+            variant={variant}
           />
+        </div>
+      ))}
+      {progressOptions.filter(progress => progress !== undefined).map(progress => (
+        <div
+          key={progress}
+          style={{ display: 'grid', gap: 8, justifyItems: 'center' }}
+        >
+          <span style={{ color: '#6c788a', fontSize: 12 }}>{progress}%</span>
+          <LoadingIndicator aria-label={`${progress}% 완료`} progress={progress} />
         </div>
       ))}
     </div>
   ),
 };
 
-/* 진행 상태 설명과 진행률을 바꿔 직접 확인해요. */
+/* 진행 상태 설명·진행률·반복 방식을 바꿔 직접 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
 };
