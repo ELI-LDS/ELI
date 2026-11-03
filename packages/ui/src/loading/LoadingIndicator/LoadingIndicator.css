@@ -1,13 +1,36 @@
 @import '../../tokens/index.css';
 
-/* 반복 경계에서 감속하지 않고 같은 속도로 계속 회전해요. */
-@keyframes eli-loading-indicator-rotate {
+@property --eli-loading-indicator-cycle-rotate {
+  syntax: '<angle>';
+  initial-value: 0rad;
+  inherits: false;
+}
+
+/* Continuous는 반복 경계에서 감속하지 않고 같은 속도로 회전해요. */
+@keyframes eli-loading-indicator-continuous-rotate {
   from {
     transform: rotate(0turn);
   }
 
   to {
     transform: rotate(1turn);
+  }
+}
+
+/* Cycle은 Figma에서 전달된 두 단계 가감속을 2초 동안 재생해요. */
+@keyframes eli-loading-indicator-cycle-rotate {
+  0% {
+    --eli-loading-indicator-cycle-rotate: -12.566rad;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  50% {
+    --eli-loading-indicator-cycle-rotate: -6.283rad;
+    animation-timing-function: cubic-bezier(0, 0, 0.448, 1);
+  }
+
+  100% {
+    --eli-loading-indicator-cycle-rotate: -0.008rad;
   }
 }
 
@@ -62,8 +85,18 @@
 
   /* Indeterminate Active Indicator */
   .eli-loading-indicator__active {
-    animation: eli-loading-indicator-rotate 1s linear infinite;
     will-change: transform;
+  }
+
+  .eli-loading-indicator[data-variant='continuous']
+    .eli-loading-indicator__active {
+    animation: eli-loading-indicator-continuous-rotate 1s linear infinite;
+  }
+
+  .eli-loading-indicator[data-variant='cycle']
+    .eli-loading-indicator__active {
+    transform: rotate(var(--eli-loading-indicator-cycle-rotate, -12.566rad));
+    animation: eli-loading-indicator-cycle-rotate 2s linear infinite;
   }
 
   .eli-loading-indicator__active::before {

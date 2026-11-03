@@ -1,0 +1,35 @@
+@import '../../tokens/index.css';
+
+@layer components {
+  /* 네이티브 Radio가 선택 묶음과 키보드 동작을 담당해요. */
+  .eli-radio {
+    position: relative;
+    display: inline-flex;
+    width: var(--eli-layout-scale-6, 24px);
+    height: 24px;
+    flex: 0 0 24px;
+  }
+
+  /* Off */
+  .eli-radio__input {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    border: 2px solid var(--eli-border-interaction-default, #a9b5c5);
+    border-radius: var(--eli-layout-scale-999, 999px);
+    appearance: none;
+    background: var(--eli-background-default, #fff);
+    cursor: pointer;
+  }
+
+  /* On: Figma에서 전달한 선택 상태 이미지를 그대로 사용해요. */
+  .eli-radio__input:checked {
+    border: 0;
+    background: url('./state-on.svg') center / 24px 24px no-repeat;
+  }
+
+  .eli-radio__input:disabled {
+    cursor: not-allowed;
+  }
+}

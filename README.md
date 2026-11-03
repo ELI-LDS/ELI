@@ -93,6 +93,7 @@ export function FullWidthButton() {
 | `@eli/ui/menu` | `MenuItem` |
 | `@eli/ui/modal` | `Modal` |
 | `@eli/ui/navigation` | `NavigationBar`, `NavigationBarItem`, `NavigationDrawer`, `NavigationDrawerCategory`, `NavigationDrawerMenu`, `NavigationDrawerItem` |
+| `@eli/ui/radio` | `Radio` |
 | `@eli/ui/segment-control` | `SegmentControl` |
 | `@eli/ui/select` | `Select` |
 | `@eli/ui/slider` | `Slider` |

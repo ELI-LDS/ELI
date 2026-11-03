@@ -17,6 +17,7 @@
     "./menu": { "types": "./dist/menu/index.d.ts", "import": "./dist/menu/index.js" },
     "./modal": { "types": "./dist/modal/index.d.ts", "import": "./dist/modal/index.js" },
     "./navigation": { "types": "./dist/navigation/index.d.ts", "import": "./dist/navigation/index.js" },
+    "./radio": { "types": "./dist/radio/index.d.ts", "import": "./dist/radio/index.js" },
     "./select": { "types": "./dist/select/index.d.ts", "import": "./dist/select/index.js" },
     "./segment-control": { "types": "./dist/segment-control/index.d.ts", "import": "./dist/segment-control/index.js" },
     "./snackbar": { "types": "./dist/snackbar/index.d.ts", "import": "./dist/snackbar/index.js" },
