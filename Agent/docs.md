@@ -71,10 +71,21 @@ apps/docs/
 - 모든 API와 MCP 도구는 읽기 전용이에요.
 - 표의 도구와 경로는 초안이에요. 구현하면서 확정해요.
 
+## 원격 MCP를 연결해요
+
+`backend/mcp/server.ts`에서 `mcp-handler`와 `@modelcontextprotocol/server`로 MCP 서버를 정의하고, `app/mcp/route.ts`에서 GET·POST로 연결해요. 서버는 세션 없이 동작해서 별도 저장소가 필요 없어요.
+
+```bash
+pnpm dev:docs
+claude mcp add --transport http eli-docs http://localhost:3000/mcp
+```
+
+도구는 `registerTool`로 등록하고 입력 스키마는 zod로 검증해요. 모든 도구에 `annotations: { readOnlyHint: true }`를 지정해요.
+
 ## 정하지 않은 것
 
 - **배포 대상:** Vercel과 Cloudflare 모두 페이지·Route Handler·MCP를 한 번에 배포할 수 있어요. Vercel은 Next.js를 바로 지원해요. Cloudflare는 Storybook을 이미 배포하고 있지만 Next.js를 올리려면 OpenNext 어댑터가 필요해요.
 - **에이전트 응답 형식:** 기본은 JSON이에요. TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** 아직 npm 배포 전이라 최신 문서 하나만 제공해요. 배포를 시작하면 버전별 조회가 필요한지 다시 검토해요.
 
-현재는 Next.js 앱 셋업과 빈 영역 폴더만 있어요. 조회 계층·API·MCP는 아직 구현되지 않았어요.
+현재는 MCP 엔드포인트만 있고 등록된 도구가 없어요. 조회 계층·GET API·MCP 도구는 아직 구현되지 않았어요.
