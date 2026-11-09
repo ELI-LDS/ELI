@@ -1,18 +1,82 @@
 @import '../../tokens/index.css';
 
 @layer components {
-  /* Segment 목록과 메인 FAB를 오른쪽 기준으로 쌓아요. */
   .eli-fab-menu {
+    --_open-duration: 200ms;
+    --_close-duration: 150ms;
+
+    --_open-easing: cubic-bezier(0.16, 1, 0.3, 1);
+    --_close-easing: cubic-bezier(0.4, 0, 1, 1);
+
+    --_offset-y: 8px;
+
+    position: relative;
     display: inline-flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: var(--eli-layout-scale-2, 8px);
   }
 
+  /* --------------------------------
+   * Menu Container
+   * -------------------------------- */
+
   .eli-fab-menu__items {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + var(--eli-layout-scale-2, 8px));
+
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: var(--eli-layout-scale-2, 8px);
+
+    /* Collapsed */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(var(--_offset-y));
+
+    transition:
+      opacity var(--_close-duration) var(--_close-easing),
+      transform var(--_close-duration) var(--_close-easing),
+      visibility 0s linear var(--_close-duration);
+  }
+
+  /* Expanded */
+  .eli-fab-menu[data-expanded='true'] .eli-fab-menu__items {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+
+    transition:
+      opacity var(--_open-duration) var(--_open-easing),
+      transform var(--_open-duration) var(--_open-easing),
+      visibility 0s linear 0s;
+  }
+
+  /* --------------------------------
+   * Main FAB (Fab.css의 색·아이콘 전환을 메뉴 타이밍에 맞춰요)
+   * -------------------------------- */
+
+  .eli-fab-menu .eli-fab {
+    --_duration: var(--_close-duration);
+    --_easing: var(--_close-easing);
+  }
+
+  .eli-fab-menu[data-expanded='true'] .eli-fab {
+    --_duration: var(--_open-duration);
+    --_easing: var(--_open-easing);
+  }
+
+  /* --------------------------------
+   * Reduced Motion
+   * -------------------------------- */
+
+  @media (prefers-reduced-motion: reduce) {
+    .eli-fab-menu {
+      --_open-duration: 0.01ms;
+      --_close-duration: 0.01ms;
+    }
   }
 }

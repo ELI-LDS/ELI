@@ -40,7 +40,11 @@ function ExampleScreen({
   return (
     <div className="eli-fab-story__screen">
       <ExampleContent />
-      {expanded && <div aria-hidden="true" className="eli-fab-story__dim" />}
+      <div
+        aria-hidden="true"
+        className="eli-fab-story__dim"
+        data-visible={expanded}
+      />
       <FabMenu
         className="eli-fab-story__menu"
         expanded={expanded}

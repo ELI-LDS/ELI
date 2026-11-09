@@ -25,6 +25,7 @@ import { useFabMenu } from './useFabMenu.js';
  *
  * ### 내용과 동작
  * - 메인 FAB를 누르면 메뉴가 열리거나 닫혀요.
+ * - 메뉴 전체가 한 번에 페이드되며 아래에서 올라와요. 닫힐 때는 더 짧고 빠르게 사라져요.
  * - 개별 항목을 누르면 `onClick`을 실행한 뒤 메뉴를 닫아요.
  * - `onExpandedChange`: 열림 상태가 바뀔 때 다음 상태를 전달해요.
  *
@@ -55,26 +56,25 @@ export function FabMenu(props: FabMenuProps) {
 
   return (
     <div {...divProps} className={menuClassName} data-expanded={isExpanded}>
-      {isExpanded && (
-        <div
-          aria-label={`${label} 메뉴`}
-          className="eli-fab-menu__items"
-          id={menuId}
-          role="group"
-        >
-          {items.map(item => (
-            <FabMenuSegment
-              icon={item.icon}
-              key={item.id}
-              label={item.label}
-              onClick={event => {
-                item.onClick?.(event);
-                closeMenu();
-              }}
-            />
-          ))}
-        </div>
-      )}
+      {/* 닫혀도 DOM에 남겨두고 CSS로 숨겨요. 그래야 닫히는 모션이 보여요. */}
+      <div
+        aria-label={`${label} 메뉴`}
+        className="eli-fab-menu__items"
+        id={menuId}
+        role="group"
+      >
+        {items.map(item => (
+          <FabMenuSegment
+            icon={item.icon}
+            key={item.id}
+            label={item.label}
+            onClick={event => {
+              item.onClick?.(event);
+              closeMenu();
+            }}
+          />
+        ))}
+      </div>
 
       <Fab
         aria-controls={menuId}
