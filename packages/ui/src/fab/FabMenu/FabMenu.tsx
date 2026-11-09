@@ -2,6 +2,7 @@
 
 import { useId } from 'react';
 import './FabMenu.css';
+import './FabMenu.interaction.css';
 import { Fab } from '../Fab/Fab.js';
 import { FabMenuSegment } from '../FabMenuSegment/FabMenuSegment.js';
 import type { FabMenuProps } from './FabMenu.types.js';

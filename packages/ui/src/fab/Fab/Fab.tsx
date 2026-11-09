@@ -1,6 +1,7 @@
 'use client';
 
 import './Fab.css';
+import './Fab.interaction.css';
 import { CloseIcon } from '../../icon/CloseIcon.js';
 import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { FabProps } from './Fab.types.js';
