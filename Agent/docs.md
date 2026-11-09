@@ -14,23 +14,32 @@ content/*.md ──빌드 스크립트──▶ 엄격한 TS 데이터 ──▶
 
 ## 폴더 구조
 
+프론트 영역과 백엔드 영역을 나누고, 두 영역이 함께 읽는 문서 데이터는 공용 영역에 둬요.
+
 ```text
 apps/docs/
-├── content/              # 마크다운 원본
-│   ├── components/       # 컴포넌트당 파일 하나 (예: button.md)
-│   └── guides/           # 설치·폰트 설정 같은 공통 가이드
-├── scripts/              # 마크다운 → TS 데이터 빌드 스크립트
-├── lib/content/
-│   ├── schema.ts         # 문서 데이터 타입
-│   ├── generated/        # 빌드 결과 (Git에 포함하지 않아요)
-│   └── query.ts          # 목록·단건·섹션·검색 조회 함수
-└── app/
-    ├── api/v1/           # GET Route Handler
-    ├── mcp/              # 원격 MCP 엔드포인트
-    └── ...               # 사람용 페이지 (구조 미정)
+├── app/                      # Next.js 라우팅 진입점
+│   ├── layout.tsx, page.tsx  # 프론트 라우트
+│   ├── api/v1/               # 백엔드 라우트: GET Route Handler
+│   └── mcp/                  # 백엔드 라우트: 원격 MCP 엔드포인트
+├── frontend/                 # 프론트 영역: 사람용 페이지 UI
+├── backend/                  # 백엔드 영역
+│   ├── api/                  # GET API 파라미터 검증·응답 구성
+│   └── mcp/                  # MCP 서버와 도구 정의
+├── content/                  # 공용 영역: 문서 데이터
+│   ├── source/
+│   │   ├── components/       # 컴포넌트 마크다운 원본, 컴포넌트당 파일 하나 (예: button.md)
+│   │   └── guides/           # 설치·폰트 설정 같은 공통 가이드 원본
+│   ├── schema.ts             # 문서 데이터 타입 (예정)
+│   ├── query.ts              # 목록·단건·섹션·검색 조회 함수 (예정)
+│   └── generated/            # 빌드 결과, Git에 포함하지 않아요 (예정)
+└── scripts/                  # 마크다운 → TS 데이터 빌드 스크립트
 ```
 
-사람용 페이지의 폴더 구조는 아직 정하지 않았어요.
+- `app/`에는 라우트 파일만 둬요. 라우트 파일은 `frontend/`나 `backend/`의 코드를 불러와 연결만 해요.
+- `frontend/`와 `backend/`는 `content/`에만 의존해요. 두 영역은 서로 import하지 않아요.
+- `content/`는 `frontend/`와 `backend/`를 import하지 않아요.
+- `frontend/` 내부 구조는 아직 정하지 않았어요.
 
 ## 원본은 마크다운으로 써요
 
@@ -42,7 +51,7 @@ apps/docs/
 
 ## 조회 계층을 하나로 둬요
 
-페이지, GET API, MCP는 모두 `lib/content/query.ts`의 같은 함수를 호출해요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
+페이지, GET API, MCP는 모두 `content/query.ts`의 같은 함수를 호출해요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
 
 ## API와 MCP 도구를 작게 나눠요
 
@@ -68,4 +77,4 @@ apps/docs/
 - **에이전트 응답 형식:** 기본은 JSON이에요. TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** 아직 npm 배포 전이라 최신 문서 하나만 제공해요. 배포를 시작하면 버전별 조회가 필요한지 다시 검토해요.
 
-현재는 Next.js 앱 셋업만 있어요. 위 구조와 API는 아직 구현되지 않았어요.
+현재는 Next.js 앱 셋업과 빈 영역 폴더만 있어요. 조회 계층·API·MCP는 아직 구현되지 않았어요.
