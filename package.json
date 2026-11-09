@@ -11,6 +11,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "build:storybook": "pnpm --filter @eli/storybook build",
+    "dev:docs": "pnpm --filter @eli/docs dev",
+    "build:docs": "pnpm --filter @eli/docs build",
     "size": "pnpm build && node scripts/check-package.mjs",
     "test:packaging": "pnpm build && node tests/packaging/check.mjs",
     "test:package-managers": "pnpm build && node tests/package-managers/prepare.mjs && node tests/package-managers/check.mjs --all",
