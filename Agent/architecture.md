@@ -51,4 +51,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`는 문서·랜딩 페이지용 Next.js App Router 앱의 초기 셋업만 있고 아직 내용과 배포는 없어요. 선택 컴포넌트 레지스트리·CLI, 폰트 초기 설정 도구, MCP, npm 배포 자동화는 아직 없어요. 필요할 때 `packages/docs-mcp`를 추가해요.
+색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`는 문서·랜딩 페이지용 Next.js App Router 앱의 초기 셋업만 있고 아직 내용과 배포는 없어요. 문서 원본·API·MCP 구조는 [문서 앱 지침](docs.md)에서 관리해요. 선택 컴포넌트 레지스트리·CLI, 폰트 초기 설정 도구, MCP, npm 배포 자동화는 아직 없어요.
