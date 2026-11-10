@@ -148,6 +148,8 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | 명령 | 하는 일 |
 | --- | --- |
 | `pnpm dev` | Storybook 개발 서버를 실행해요 |
+| `pnpm dev:docs` | 문서·랜딩 페이지 Next.js 개발 서버를 실행해요 |
+| `pnpm build:docs` | 문서·랜딩 페이지를 프로덕션 빌드해요 |
 | `pnpm build` | ESM·타입·CSS 배포 파일을 만들어요 |
 | `pnpm typecheck` | TypeScript 타입을 확인해요 |
 | `pnpm lint` | 코드 규칙을 확인해요 |
@@ -167,6 +169,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 ELI/
 ├── Agent/              # 개발·검증·배포 규칙
 ├── handbook/           # 팀 내부 협업 가이드와 점검 기록
+├── apps/docs/          # 문서·랜딩 페이지 Next.js 앱 (초기 셋업)
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
 ├── packages/ui/        # 배포할 @eli/ui 소스
 ├── scripts/            # 빌드와 패키지 검사 도구
