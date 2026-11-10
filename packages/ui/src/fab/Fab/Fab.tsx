@@ -1,6 +1,7 @@
 'use client';
 
 import './Fab.css';
+import './Fab.interaction.css';
 import { CloseIcon } from '../../icon/CloseIcon.js';
 import { PlusIcon } from '../../icon/PlusIcon.js';
 import type { FabProps } from './Fab.types.js';
@@ -24,6 +25,7 @@ import type { FabProps } from './Fab.types.js';
  * ### 내용과 동작
  * - `onClick`: FAB를 눌렀을 때 주요 액션이나 메뉴 열기 동작을 실행해요.
  * - `icon`, `expandedIcon`: 기본 Add·Close 아이콘을 다른 아이콘으로 바꿔요.
+ * - 열리고 닫힐 때 두 아이콘이 회전하며 교차 전환돼요. 둘 중 하나가 `null`이면 전환 없이 바로 바뀌어요.
  *
  * ### 스타일 변경
  * - `className`: 루트 `button`에 외부 클래스를 전달해요.
@@ -43,9 +45,11 @@ export function Fab(props: FabProps) {
     ...buttonProps
   } = props;
   const fabClassName = ['eli-fab', className].filter(Boolean).join(' ');
-  const visibleIcon = expanded
-    ? (expandedIcon === undefined ? <CloseIcon size={24} /> : expandedIcon)
-    : (icon === undefined ? <PlusIcon size={24} /> : icon);
+  const closedIcon = icon === undefined ? <PlusIcon size={24} /> : icon;
+  const openIcon = expandedIcon === undefined ? <CloseIcon size={24} /> : expandedIcon;
+  const visibleIcon = expanded ? openIcon : closedIcon;
+  // 두 아이콘이 모두 있으면 겹쳐두고 회전·페이드로 교차 전환해요.
+  const canMorph = closedIcon !== null && openIcon !== null;
 
   return (
     <button
@@ -56,10 +60,21 @@ export function Fab(props: FabProps) {
       data-expanded={expanded}
       type={type}
     >
-      {visibleIcon !== null && (
+      {canMorph ? (
         <span aria-hidden="true" className="eli-fab__icon">
-          {visibleIcon}
+          <span className="eli-fab__icon-layer" data-layer="closed">
+            {closedIcon}
+          </span>
+          <span className="eli-fab__icon-layer" data-layer="expanded">
+            {openIcon}
+          </span>
         </span>
+      ) : (
+        visibleIcon !== null && (
+          <span aria-hidden="true" className="eli-fab__icon">
+            {visibleIcon}
+          </span>
+        )
       )}
 
       {!expanded && showLabel && (

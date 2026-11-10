@@ -1,0 +1,58 @@
+@layer components {
+  /* 열기와 닫기의 시간·easing을 각각 관리해요. */
+  .eli-fab-menu {
+    --_open-duration: 200ms;
+    --_close-duration: 150ms;
+
+    --_open-easing: cubic-bezier(0.16, 1, 0.3, 1);
+    --_close-easing: cubic-bezier(0.4, 0, 1, 1);
+
+    --_offset-y: 8px;
+  }
+
+  /* 닫힌 메뉴는 퇴장 모션을 위해 DOM에 두되 상호작용하지 못하게 해요. */
+  .eli-fab-menu__items {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(var(--_offset-y));
+
+    transition:
+      opacity var(--_close-duration) var(--_close-easing),
+      transform var(--_close-duration) var(--_close-easing),
+      visibility 0s linear var(--_close-duration);
+  }
+
+  /* 열린 메뉴는 아래에서 올라오며 나타나요. */
+  .eli-fab-menu[data-expanded='true'] .eli-fab-menu__items {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+
+    transition:
+      opacity var(--_open-duration) var(--_open-easing),
+      transform var(--_open-duration) var(--_open-easing),
+      visibility 0s linear 0s;
+  }
+
+  /* 메인 FAB의 아이콘 전환을 메뉴의 닫기 시간과 맞춰요. */
+  .eli-fab-menu .eli-fab {
+    --_duration: var(--_close-duration);
+    --_easing: var(--_close-easing);
+  }
+
+  /* 메뉴가 열릴 때는 열기 시간과 easing을 사용해요. */
+  .eli-fab-menu[data-expanded='true'] .eli-fab {
+    --_duration: var(--_open-duration);
+    --_easing: var(--_open-easing);
+  }
+
+  /* 모션 감소 설정에서는 상태만 즉시 구분할 수 있게 해요. */
+  @media (prefers-reduced-motion: reduce) {
+    .eli-fab-menu {
+      --_open-duration: 0.01ms;
+      --_close-duration: 0.01ms;
+    }
+  }
+}

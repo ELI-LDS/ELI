@@ -1,0 +1,73 @@
+@layer components {
+  /* FAB의 색상과 아이콘 전환 시간을 관리해요. */
+  .eli-fab {
+    --_duration: 200ms;
+    --_easing: ease-out;
+
+    transition:
+      color var(--_duration) var(--_easing),
+      background-color var(--_duration) var(--_easing),
+      filter var(--_duration) var(--_easing);
+  }
+
+  /* 메뉴가 열리면 아이콘 전용 Neutral FAB로 전환해요. */
+  .eli-fab[data-expanded='true'] {
+    width: 56px;
+    color: var(--eli-foreground-default, #4b5668);
+    background: var(--eli-background-interaction-neutral-default, #eaf0f9);
+  }
+
+  /* 닫힌 FAB의 Pressed 상태예요. */
+  .eli-fab[data-expanded='false']:active:not(:disabled) {
+    background: var(--eli-background-interaction-brand-pressed, #2a69c8);
+    filter:
+      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
+      drop-shadow(1px 4px 3px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
+  }
+
+  /* 열린 FAB의 Pressed 상태예요. */
+  .eli-fab[data-expanded='true']:active:not(:disabled) {
+    background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+    filter:
+      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
+      drop-shadow(1px 4px 3px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
+  }
+
+  .eli-fab:disabled {
+    cursor: not-allowed;
+  }
+
+  /* 두 아이콘을 같은 위치에서 회전시키며 교차해요. */
+  .eli-fab__icon-layer {
+    transition:
+      opacity var(--_duration) var(--_easing),
+      transform var(--_duration) var(--_easing);
+  }
+
+  .eli-fab__icon-layer[data-layer='closed'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .eli-fab__icon-layer[data-layer='expanded'] {
+    opacity: 0;
+    transform: rotate(-45deg);
+  }
+
+  .eli-fab[data-expanded='true'] .eli-fab__icon-layer[data-layer='closed'] {
+    opacity: 0;
+    transform: rotate(45deg);
+  }
+
+  .eli-fab[data-expanded='true'] .eli-fab__icon-layer[data-layer='expanded'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* 모션 감소 설정에서는 상태만 즉시 구분할 수 있게 해요. */
+  @media (prefers-reduced-motion: reduce) {
+    .eli-fab {
+      --_duration: 0.01ms;
+    }
+  }
+}

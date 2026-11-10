@@ -1,7 +1,7 @@
 @import '../../tokens/index.css';
 
 @layer components {
-  /* FAB의 기본 크기와 닫힌 상태를 관리해요. */
+  /* FAB의 기본 크기와 모양을 관리해요. */
   .eli-fab {
     box-sizing: border-box;
     display: inline-flex;
@@ -21,34 +21,8 @@
     cursor: pointer;
   }
 
-  /* 메뉴가 열리면 아이콘 전용 Neutral FAB로 표시해요. */
-  .eli-fab[data-expanded='true'] {
-    width: 56px;
-    color: var(--eli-foreground-default, #4b5668);
-    background: var(--eli-background-interaction-neutral-default, #eaf0f9);
-  }
-
-  /* 닫힌 FAB를 누르는 동안 Brand Pressed 상태를 표시해요. */
-  .eli-fab[data-expanded='false']:active:not(:disabled) {
-    background: var(--eli-background-interaction-brand-pressed, #2a69c8);
-    filter:
-      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
-      drop-shadow(1px 4px 3px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
-  }
-
-  /* 열린 FAB를 누르는 동안 Neutral Pressed 상태를 표시해요. */
-  .eli-fab[data-expanded='true']:active:not(:disabled) {
-    background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
-    filter:
-      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
-      drop-shadow(1px 4px 3px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
-  }
-
-  .eli-fab:disabled {
-    cursor: not-allowed;
-  }
-
   .eli-fab__icon {
+    position: relative;
     display: inline-flex;
     width: 24px;
     height: 24px;
@@ -57,9 +31,22 @@
     justify-content: center;
   }
 
-  .eli-fab__icon > :is(svg, img) {
+  .eli-fab__icon > :is(svg, img),
+  .eli-fab__icon-layer > :is(svg, img) {
     width: 24px;
     height: 24px;
+  }
+
+  /*
+   * 아이콘 교차 전환: 닫힘 아이콘(+)은 45° 돌며 사라지고, 열림 아이콘(×)은 -45°에서 돌아 들어와요.
+   * 두 층을 겹쳐두고 opacity와 transform만 바꿔요.
+   */
+  .eli-fab__icon-layer {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .eli-fab__label {
@@ -68,4 +55,5 @@
     white-space: nowrap;
     text-overflow: ellipsis;
   }
+
 }
