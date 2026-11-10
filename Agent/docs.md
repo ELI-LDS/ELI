@@ -39,7 +39,7 @@ apps/docs/
 - `app/`에는 라우트 파일만 둬요. 라우트 파일은 `frontend/`나 `backend/`의 코드를 불러와 연결만 해요.
 - `frontend/`와 `backend/`는 `content/`에만 의존해요. 두 영역은 서로 import하지 않아요.
 - `content/`는 `frontend/`와 `backend/`를 import하지 않아요.
-- `frontend/` 내부 구조는 아직 정하지 않았어요.
+- `frontend/`는 `pages`, `features`, `layouts`, `shared`로 역할을 나눠요. 페이지 조립, 코드 배치와 Server·Client Component 기준은 [문서 프론트엔드 지침](docs-frontend.md)에서 관리해요.
 
 ## 원본은 마크다운으로 써요
 
