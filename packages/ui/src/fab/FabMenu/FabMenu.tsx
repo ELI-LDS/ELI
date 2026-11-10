@@ -59,9 +59,11 @@ export function FabMenu(props: FabMenuProps) {
     <div {...divProps} className={menuClassName} data-expanded={isExpanded}>
       {/* 닫혀도 DOM에 남겨두고 CSS로 숨겨요. 그래야 닫히는 모션이 보여요. */}
       <div
+        aria-hidden={!isExpanded}
         aria-label={`${label} 메뉴`}
         className="eli-fab-menu__items"
         id={menuId}
+        inert={!isExpanded}
         role="group"
       >
         {items.map(item => (
