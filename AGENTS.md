@@ -24,6 +24,7 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 | --- | --- |
 | 코드·설정 변경 | [구조](Agent/architecture.md), [컨벤션](Agent/conventions.md) |
 | 컴포넌트·스타일 구현 | [컴포넌트](Agent/components.md) |
+| 문서 앱·API·MCP | [문서 앱](Agent/docs.md) |
 | 한국어 문서 작성 | [글쓰기](Agent/writing.md) |
 | 구현 확인·리뷰 | [검증](Agent/testing.md) |
 | 소비자 패키지 매니저·설치 명령 | [패키지 매니저](Agent/package-managers.md) |
