@@ -6,6 +6,14 @@ export type {
 } from './NavigationBar/NavigationBar.types.js';
 export { NavigationBarItem } from './NavigationBarItem/NavigationBarItem.js';
 export type { NavigationBarItemProps } from './NavigationBarItem/NavigationBarItem.types.js';
+export { NavigationBarGlass } from './NavigationBarGlass/NavigationBarGlass.js';
+export type {
+  NavigationBarGlassOption,
+  NavigationBarGlassOptions,
+  NavigationBarGlassProps,
+} from './NavigationBarGlass/NavigationBarGlass.types.js';
+export { NavigationBarGlassItem } from './NavigationBarGlassItem/NavigationBarGlassItem.js';
+export type { NavigationBarGlassItemProps } from './NavigationBarGlassItem/NavigationBarGlassItem.types.js';
 export { NavigationDrawer } from './NavigationDrawer/NavigationDrawer.js';
 export type { NavigationDrawerProps } from './NavigationDrawer/NavigationDrawer.types.js';
 export { NavigationDrawerCategory } from './NavigationDrawerCategory/NavigationDrawerCategory.js';
