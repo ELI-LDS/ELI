@@ -22,15 +22,16 @@ import type { NavigationBarGlassItemProps } from './NavigationBarGlassItem.types
  * - `className`: 루트 `button`에 외부 클래스를 전달해요.
  * - `style`: 루트 `button`의 인라인 스타일을 바꿔요.
  */
-export function NavigationBarGlassItem({
-  active = false,
-  className,
-  filledIcon,
-  label,
-  outlinedIcon,
-  type = 'button',
-  ...buttonProps
-}: NavigationBarGlassItemProps) {
+export function NavigationBarGlassItem(props: NavigationBarGlassItemProps) {
+  const {
+    active = false,
+    className,
+    filledIcon,
+    label,
+    outlinedIcon,
+    type = 'button',
+    ...buttonProps
+  } = props;
   const navigationBarGlassItemClassName = [
     'eli-navigation-bar-glass-item',
     className,

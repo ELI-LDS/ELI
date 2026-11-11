@@ -29,6 +29,8 @@ interface PointerPosition {
   localX: number;
 }
 
+const itemSelector = '.eli-navigation-bar-glass-item';
+
 function getFirstItemValue(items: NavigationBarGlassProps['items']) {
   return items[0]?.value;
 }
@@ -73,7 +75,7 @@ export function useNavigationBarGlass({
     (index: number, centerAt?: number) => {
       const track = trackRef.current;
       const indicator = indicatorRef.current;
-      const count = track?.querySelectorAll('button').length ?? 0;
+      const count = track?.querySelectorAll(itemSelector).length ?? 0;
       if (!track || !indicator || !track.offsetWidth || !count) return;
 
       const slotWidth = track.offsetWidth / count;
@@ -98,7 +100,7 @@ export function useNavigationBarGlass({
   const getPointerPosition = useCallback(
     (clientX: number): PointerPosition | undefined => {
       const track = trackRef.current;
-      const count = track?.querySelectorAll('button').length ?? 0;
+      const count = track?.querySelectorAll(itemSelector).length ?? 0;
       if (!track || !track.offsetWidth || !count) return undefined;
 
       const rect = track.getBoundingClientRect();
@@ -119,7 +121,7 @@ export function useNavigationBarGlass({
 
   /* 드래그 중 손가락 아래의 아이콘만 강조해요. */
   const setHotItem = useCallback((hotIndex?: number) => {
-    const buttons = trackRef.current?.querySelectorAll('button');
+    const buttons = trackRef.current?.querySelectorAll(itemSelector);
     buttons?.forEach((button, index) => {
       if (index === hotIndex) button.setAttribute('data-hot', 'true');
       else button.removeAttribute('data-hot');
@@ -302,7 +304,8 @@ export function useNavigationBarGlass({
   ) => {
     if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
 
-    const buttons = trackRef.current?.querySelectorAll<HTMLButtonElement>('button');
+    const buttons = trackRef.current
+      ?.querySelectorAll<HTMLButtonElement>(itemSelector);
     if (!buttons?.length) return;
 
     /* 방향키는 선택값을 바꾸지 않고 인접 항목으로 포커스만 옮겨요. */

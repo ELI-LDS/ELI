@@ -31,15 +31,16 @@ import { useNavigationBarGlass } from './useNavigationBarGlass.js';
  * - `--eli-navigation-bar-glass-frost`, `--eli-navigation-bar-glass-depth`,
  *   `--eli-navigation-bar-glass-light-angle`, `--eli-navigation-bar-glass-light-intensity`로 유리 효과를 조정해요.
  */
-export function NavigationBarGlass({
-  'aria-label': ariaLabel,
-  className,
-  defaultValue,
-  items,
-  onValueChange,
-  value,
-  ...navigationProps
-}: NavigationBarGlassProps) {
+export function NavigationBarGlass(props: NavigationBarGlassProps) {
+  const {
+    'aria-label': ariaLabel,
+    className,
+    defaultValue,
+    items,
+    onValueChange,
+    value,
+    ...navigationProps
+  } = props;
   const {
     handleItemClick,
     handleItemKeyDown,

@@ -117,6 +117,26 @@ try {
   if (target.desktop) await navigationHome.click();
   else await navigationHome.tap();
 
+  const glassNavigation = page.getByRole('navigation', { name: '글래스 주요 탐색' });
+  const glassHome = glassNavigation.getByRole('button', { name: '글래스 홈' });
+  const glassSearch = glassNavigation.getByRole('button', { name: '글래스 검색' });
+  assert.equal(await glassHome.getAttribute('aria-current'), 'page');
+  if (target.desktop) {
+    await glassHome.focus();
+    await glassHome.press('ArrowRight');
+    assert.equal(
+      await glassSearch.evaluate(element => element === document.activeElement),
+      true,
+    );
+    await glassSearch.press('Enter');
+  } else {
+    await glassSearch.tap();
+  }
+  assert.equal(await glassHome.getAttribute('aria-current'), null);
+  assert.equal(await glassSearch.getAttribute('aria-current'), 'page');
+  if (target.desktop) await glassHome.click();
+  else await glassHome.tap();
+
   const navigationDrawer = page.getByRole('navigation', { name: '서비스 탐색' });
   const drawerHome = navigationDrawer.getByRole('button', { name: 'Drawer 홈' });
   const drawerSettings = navigationDrawer.getByRole('button', { name: 'Drawer 설정' });
