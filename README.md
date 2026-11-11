@@ -169,14 +169,15 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 ELI/
 ├── Agent/              # 개발·검증·배포 규칙
 ├── handbook/           # 팀 내부 협업 가이드와 점검 기록
-├── apps/docs/          # 문서·랜딩 페이지 Next.js 앱 (초기 셋업)
+├── apps/docs/          # 문서·랜딩 페이지 Next.js 앱
+│   └── frontend/       # 페이지·기능·레이아웃·공통 UI의 프론트엔드 구조
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
 ├── packages/ui/        # 배포할 @eli/ui 소스
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능 검사
 ```
 
-`packages/ui`만 `@eli/ui`로 배포해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 자세한 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
+`packages/ui`만 `@eli/ui`로 배포해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 자세한 구조는 [프로젝트 구조 지침](Agent/architecture.md), 문서 웹페이지 구현 기준은 [문서 프론트엔드 지침](Agent/docs-frontend.md)에서 확인해요.
 
 ## 로드맵
 
