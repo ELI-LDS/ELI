@@ -92,6 +92,7 @@ import { useState } from 'react';
 import { Button } from '@eli/ui/button';
 import { RemovableChip } from '@eli/ui/chip';
 import { FabMenu } from '@eli/ui/fab';
+import { NavigationBarGlass } from '@eli/ui/navigation';
 import { Select } from '@eli/ui/select';
 import { Slider } from '@eli/ui/slider';
 import { Tab } from '@eli/ui/tab';
@@ -101,6 +102,11 @@ export function ClientExample() {
   const [selectedTab, setSelectedTab] = useState('first');
   const [sliderValue, setSliderValue] = useState(60);
   const [value, setValue] = useState<string>();
+  const navigationItems = [
+    { value: 'home', label: 'Next 글래스 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> },
+    { value: 'search', label: 'Next 글래스 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> },
+    { value: 'profile', label: 'Next 글래스 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> },
+  ] as const;
 
   return (
     <section>
@@ -111,6 +117,7 @@ export function ClientExample() {
         items={[{ id: 'create', label: '클라이언트 FAB 액션', onClick: () => setCount(current => current + 1) }]}
         label="클라이언트 FAB"
       />
+      <NavigationBarGlass aria-label="Next 글래스 주요 탐색" items={navigationItems} />
       <Select
         label="클라이언트 선택"
         onValueChange={setValue}
@@ -241,6 +248,8 @@ for (const selector of [
   '.eli-progress-indicator',
   '.eli-menu-item',
   '.eli-modal',
+  '.eli-navigation-bar-glass',
+  '.eli-navigation-bar-glass-item',
   '.eli-radio',
   '.eli-select',
   '.eli-segment-control',
@@ -300,6 +309,7 @@ try {
   assert.match(html, /서버 도움말/);
   assert.match(html, /서버 FAB/);
   assert.match(html, /클라이언트 FAB/);
+  assert.match(html, /Next 글래스 홈/);
   assert.match(html, /서버 원형 진행/);
   assert.match(html, /서버 막대 진행/);
   assert.match(html, /서버 Radio/);

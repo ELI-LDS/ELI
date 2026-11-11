@@ -258,6 +258,24 @@ export function Example() {
 }
 ```
 
+NavigationBarGlass는 아이콘만 표시하는 유리 효과의 모바일 탐색 영역이에요. 3개부터 5개 항목을 균등하게 배치하고, 탭·키보드·포인터 드래그로 활성 항목을 바꿔요. `label`은 화면에는 표시되지 않으며 화면 낭독기가 각 항목을 구분할 때 사용해요.
+
+```tsx
+import { NavigationBarGlass } from '@eli/ui/navigation';
+
+export function GlassNavigation() {
+  return (
+    <NavigationBarGlass
+      aria-label="주요 메뉴"
+      items={items}
+      onValueChange={value => console.log(value)}
+    />
+  );
+}
+```
+
+화면 하단 고정 위치와 Safe Area 여백은 사용하는 앱에서 정해요. 외부 스타일에서는 `--eli-navigation-bar-glass-gutter`, `--eli-navigation-bar-glass-max-width`, `--eli-navigation-bar-glass-item-height`로 크기를 조절하고, `--eli-navigation-bar-glass-frost`, `--eli-navigation-bar-glass-depth`, `--eli-navigation-bar-glass-light-angle`, `--eli-navigation-bar-glass-light-intensity`로 유리 효과를 조절할 수 있어요. 특별한 조립이 필요할 때만 저수준 항목인 `NavigationBarGlassItem`을 직접 사용해요.
+
 NavigationDrawer는 카테고리, 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerCategory`는 클릭 동작 없이 메뉴 묶음의 이름을 표시하며, `label`로 카테고리명을 바꿀 수 있어요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
 
 ```tsx
