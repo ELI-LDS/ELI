@@ -10,7 +10,7 @@ import type { NavigationBarGlassItemProps } from './NavigationBarGlassItem.types
  * `<NavigationBarGlassItem label="홈" outlinedIcon={<HomeOutlined />} filledIcon={<HomeFilled />} />`
  *
  * ### 주요 설정
- * - `label`: 화면에는 표시하지 않고 접근성 이름으로 사용하는 라벨이에요.
+ * - `label`: 화면에는 표시하지 않고 화면 낭독기가 읽는 항목 설명이에요.
  * - `outlinedIcon`: 비활성 탭에서 사용하는 아이콘이에요.
  * - `filledIcon`: 활성 탭에서만 사용하는 아이콘이에요.
  * - `active`: `true`이면 활성 탭의 filled 아이콘을 사용해요.
