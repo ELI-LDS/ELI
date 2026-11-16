@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "description": "ELI React 디자인 컴포넌트 라이브러리",
   "type": "module",
-  "license": "UNLICENSED",
-  "files": ["dist", "README.md"],
+  "license": "MIT",
+  "files": ["dist", "README.md", "LICENSE"],
   "exports": {
     "./alert": { "types": "./dist/alert/index.d.ts", "import": "./dist/alert/index.js" },
     "./badge": { "types": "./dist/badge/index.d.ts", "import": "./dist/badge/index.js" },
@@ -32,7 +32,6 @@
   "peerDependencies": { "react": "^19.3.0" },
   "scripts": {
     "build": "node ../../scripts/build-ui.mjs",
-    "prepack": "pnpm build",
-    "prepublishOnly": "node -e \"throw new Error('아직 라이선스를 정하지 않았어요. license를 정한 뒤 이 검사를 지워요.')\""
+    "prepack": "pnpm build"
   }
 }

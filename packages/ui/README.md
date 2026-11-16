@@ -6,7 +6,7 @@ ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 
 
 모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider·LoadingIndicator·ProgressIndicator·Tooltip은 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. Next.js App Router는 실제 tarball 소비 앱의 프로덕션 빌드·서버 렌더링·hydration·상호작용을 별도로 검증해요.
 
-React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스를 확정하기 전에는 공개 게시하지 않아요.
+React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storybook과 검증 예제는 배포하지 않아요. 라이선스는 MIT예요.
 
 같은 tarball을 npm 11.19.0, pnpm 12.8.1, Yarn Classic 1.22.22, Yarn Modern 4.18.1의 `node-modules`·strict PnP, Bun 1.4.4에서 설치해 타입 검사와 Vite 빌드를 자동 검증해요. 저장소 개발과 lockfile 관리는 pnpm만 사용해요.
 
