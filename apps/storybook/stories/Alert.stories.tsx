@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Alert } from '@/packages/ui/src/alert/Alert/Alert.js';
 
 const statuses = ['error', 'success', 'caution', 'info'] as const;
@@ -25,7 +26,6 @@ const examples = {
 const meta = {
   title: '컴포넌트/Alert',
   component: Alert,
-  parameters: { layout: 'centered' },
   args: {
     message: examples.info.message,
     status: 'info',
@@ -59,20 +59,13 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div
-      style={{
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 24,
-      }}
-    >
+    <StoryOverview>
       {statuses.map(status => (
-        <div key={status} style={{ display: 'grid', gap: 8 }}>
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{status}</span>
+        <StoryCase key={status} title={status}>
           <Alert message={examples[status].message} status={status} title={examples[status].title} />
-        </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

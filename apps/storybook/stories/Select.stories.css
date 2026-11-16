@@ -1,16 +1,12 @@
-.eli-story-select-playground {
-  display: grid;
-  grid-template-columns: minmax(280px, 332px) minmax(280px, 360px);
-  align-items: start;
-  gap: 32px;
-  width: min(724px, calc(100vw - 48px));
-  font-family: var(--eli-font-family-sans, "Pretendard Variable");
-}
-
-.eli-story-select-playground__preview,
 .eli-story-select-playground__editor {
+  box-sizing: border-box;
   display: grid;
-  gap: 12px;
+  padding: 20px;
+  gap: 16px;
+  border: 1px solid #eaf0f9;
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--eli-font-family-sans, "Pretendard Variable");
 }
 
 .eli-story-select-playground__option {
@@ -30,6 +26,8 @@
 }
 
 .eli-story-select-playground__field input {
+  box-sizing: border-box;
+  width: 100%;
   min-width: 0;
   padding: 8px 12px;
 }
@@ -41,11 +39,4 @@
 
 .eli-story-select-playground__option button {
   align-self: end;
-}
-
-@media (width <= 720px) {
-  .eli-story-select-playground {
-    grid-template-columns: minmax(0, 1fr);
-    width: min(332px, calc(100vw - 32px));
-  }
 }

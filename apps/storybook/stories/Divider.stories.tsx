@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Divider } from '@/packages/ui/src/divider/Divider/Divider.js';
 
 const meta = {
   title: '컴포넌트/Divider',
   component: Divider,
-  parameters: { layout: 'centered' },
   argTypes: {
     className: {
       table: { disable: true },
@@ -20,8 +20,12 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div style={{ width: 'min(362px, calc(100vw - 32px))' }}>
-      <Divider {...args} />
-    </div>
+    <StoryOverview>
+      <StoryCase title="기본 구분선">
+        <div style={{ width: 'min(362px, calc(100vw - 32px))' }}>
+          <Divider {...args} />
+        </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };

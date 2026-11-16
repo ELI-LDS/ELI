@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { ProgressIndicator } from '@/packages/ui/src/loading/ProgressIndicator/ProgressIndicator.js';
 
 const progressOptions = [undefined, 0, 10, 30, 50, 80, 100] as const;
@@ -6,7 +7,6 @@ const progressOptions = [undefined, 0, 10, 30, 50, 80, 100] as const;
 const meta = {
   title: '컴포넌트/ProgressIndicator',
   component: ProgressIndicator,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '파일 업로드 진행 상태',
   },
@@ -43,19 +43,21 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 16, width: 343 }}>
+    <StoryOverview>
       {progressOptions.map(progress => (
-        <div key={progress ?? 'indeterminate'} style={{ display: 'grid', gap: 8 }}>
-          <span style={{ color: '#6c788a', fontSize: 12 }}>
-            {progress === undefined ? 'Indeterminate' : `${progress}%`}
-          </span>
+        <StoryCase
+          key={progress ?? 'indeterminate'}
+          title={progress === undefined ? 'Indeterminate' : `${progress}%`}
+        >
+          <div style={{ width: 343 }}>
           <ProgressIndicator
             aria-label={progress === undefined ? '진행률을 모르는 작업' : `${progress}% 완료`}
             {...(progress === undefined ? {} : { progress })}
           />
-        </div>
+          </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

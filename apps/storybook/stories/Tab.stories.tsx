@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs } from 'storybook/preview-api';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Tab } from '@/packages/ui/src/tab/Tab/Tab.js';
 
 const meta = {
   title: '컴포넌트/Tab',
   component: Tab,
-  parameters: { layout: 'centered' },
   args: {
     active: true,
     defaultActive: true,
@@ -49,15 +49,14 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        각 Tab에 마우스를 올리거나 누른 채로 Hover와 Pressed를 확인해요.
-      </p>
-      <div aria-label="예시 탭" role="tablist" style={{ display: 'flex' }}>
-        <Tab active label="탭 이름" />
-        <Tab active={false} label="탭 이름" />
-      </div>
-    </div>
+    <StoryOverview description="각 Tab에 마우스를 올리거나 누른 채로 Hover와 Pressed를 확인해요.">
+      <StoryCase title="선택 상태 비교">
+        <div aria-label="예시 탭" role="tablist" style={{ display: 'flex' }}>
+          <Tab active label="탭 이름" />
+          <Tab active={false} label="탭 이름" />
+        </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

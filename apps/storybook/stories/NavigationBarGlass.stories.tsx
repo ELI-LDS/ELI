@@ -1,6 +1,12 @@
 import { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs } from 'storybook/preview-api';
+import {
+  StoryCase,
+  StoryDeviceFrame,
+  StoryOverview,
+  StoryPreviewLayout,
+} from '../components/StoryDeviceFrame.js';
 import { HomeFilledIcon } from '@/packages/ui/src/icon/HomeFilledIcon.js';
 import { HomeOutlinedIcon } from '@/packages/ui/src/icon/HomeOutlinedIcon.js';
 import { NavigationBarGlass } from '@/packages/ui/src/navigation/NavigationBarGlass/NavigationBarGlass.js';
@@ -13,8 +19,6 @@ import './NavigationBarGlass.stories.css';
 
 type NavigationBarGlassStoryArgs = NavigationBarGlassProps & {
   activeIndex: number;
-  deviceHeight: number;
-  deviceWidth: number;
   itemCount: 3 | 4 | 5;
   labels: string[];
 };
@@ -74,44 +78,6 @@ function NavigationBarGlassPreview({
   );
 }
 
-function ExampleContent() {
-  return (
-    <div aria-hidden="true" className="eli-navigation-bar-glass-story__content">
-      <strong>제목을 입력하세요</strong>
-      <span>서브타이틀입니다</span>
-      <p>
-        글래스 내비게이션은 모바일 화면의 주요 메뉴를 전환해요.
-        화면 아래의 아이콘을 누르거나 indicator를 끌어 동작을 확인해요.
-      </p>
-    </div>
-  );
-}
-
-function ExampleScreen(props: NavigationBarGlassStoryArgs) {
-  return (
-    <div
-      className="eli-navigation-bar-glass-story__screen"
-      style={{ height: props.deviceHeight, width: props.deviceWidth }}
-    >
-      <ExampleContent />
-      <NavigationBarGlassPreview
-        aria-label={props['aria-label']}
-        activeIndex={props.activeIndex}
-        className="eli-navigation-bar-glass-story__navigation"
-        itemCount={props.itemCount}
-        labels={props.labels}
-        {...(props.defaultValue === undefined
-          ? {}
-          : { defaultValue: props.defaultValue })}
-        {...(props.onValueChange === undefined
-          ? {}
-          : { onValueChange: props.onValueChange })}
-        {...(props.value === undefined ? {} : { value: props.value })}
-      />
-    </div>
-  );
-}
-
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum);
 }
@@ -119,12 +85,9 @@ function clamp(value: number, minimum: number, maximum: number) {
 const meta = {
   title: '컴포넌트/NavigationBarGlass',
   component: NavigationBarGlass,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '주요 메뉴',
     activeIndex: 0,
-    deviceHeight: 620,
-    deviceWidth: 375,
     itemCount: 3,
     items: createItems(3, defaultLabels),
     labels: defaultLabels.slice(0, 3),
@@ -145,16 +108,6 @@ const meta = {
       name: '처음 활성화할 순서',
       control: { type: 'number', min: 0, max: 4, step: 1 },
       description: '0부터 시작하는 활성 항목의 순서예요. 항목 수보다 크면 마지막 항목을 사용해요.',
-    },
-    deviceWidth: {
-      name: '디바이스 너비',
-      control: { type: 'number', min: 1, step: 1 },
-      description: '미리보기 화면의 너비를 원하는 px 값으로 바꿔요.',
-    },
-    deviceHeight: {
-      name: '디바이스 높이',
-      control: { type: 'number', min: 1, step: 1 },
-      description: '미리보기 화면의 높이를 원하는 px 값으로 바꿔요.',
     },
     labels: {
       name: '접근성 라벨 목록',
@@ -180,10 +133,12 @@ const meta = {
     },
   },
   render: args => (
-    <NavigationBarGlassPreview
-      key={`${args.itemCount}-${args.activeIndex}-${args.labels.join('-')}`}
-      {...args}
-    />
+    <StoryDeviceFrame label="Glass Navigation Bar 직접 바꿔보기" placement="bottom">
+      <NavigationBarGlassPreview
+        key={`${args.itemCount}-${args.activeIndex}-${args.labels.join('-')}`}
+        {...args}
+      />
+    </StoryDeviceFrame>
   ),
 } satisfies Meta<NavigationBarGlassStoryArgs>;
 
@@ -195,17 +150,18 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 32 }}>
+    <StoryOverview description="항목 수에 따른 너비와 활성 indicator 위치를 비교해요.">
       {([3, 4, 5] as const).map(count => (
-        <div key={count} style={{ display: 'grid', gap: 8 }}>
-          <strong>{count}개 항목</strong>
-          <NavigationBarGlass
-            aria-label={`${count}개 주요 메뉴`}
-            items={createItems(count, defaultLabels)}
-          />
-        </div>
+        <StoryCase key={count} title={`${count}개 항목`}>
+          <StoryDeviceFrame label={`${count}개 Glass Navigation Bar 미리보기`} placement="bottom">
+            <NavigationBarGlass
+              aria-label={`${count}개 주요 메뉴`}
+              items={createItems(count, defaultLabels)}
+            />
+          </StoryDeviceFrame>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 
@@ -250,9 +206,8 @@ export const Playground: Story = {
       });
     };
 
-    return (
-      <div className="eli-navigation-bar-glass-story__playground">
-        <div className="eli-navigation-bar-glass-story__editor">
+    const editor = (
+      <div className="eli-navigation-bar-glass-story__editor">
           <label>
             <span>탐색 영역 설명</span>
             <input
@@ -262,31 +217,6 @@ export const Playground: Story = {
               value={args['aria-label']}
             />
           </label>
-
-          <div className="eli-navigation-bar-glass-story__size-editor">
-            <label>
-              <span>너비</span>
-              <input
-                min={1}
-                onChange={event => updateArgs({
-                  deviceWidth: Math.max(Number(event.currentTarget.value), 1),
-                })}
-                type="number"
-                value={args.deviceWidth}
-              />
-            </label>
-            <label>
-              <span>높이</span>
-              <input
-                min={1}
-                onChange={event => updateArgs({
-                  deviceHeight: Math.max(Number(event.currentTarget.value), 1),
-                })}
-                type="number"
-                value={args.deviceHeight}
-              />
-            </label>
-          </div>
 
           <label>
             <span>활성 메뉴</span>
@@ -330,15 +260,27 @@ export const Playground: Story = {
               메뉴 항목 추가
             </button>
           </div>
-        </div>
+      </div>
+    );
 
-        <ExampleScreen
-          {...args}
+    return (
+      <StoryPreviewLayout
+        device="mobile"
+        editor={editor}
+        label="Glass Navigation Bar 직접 바꿔보기"
+        placement="bottom"
+      >
+        <NavigationBarGlassPreview
+          aria-label={args['aria-label']}
           activeIndex={activeIndex}
           key={`${itemCount}-${activeIndex}-${labels.join('-')}`}
+          itemCount={itemCount}
           labels={labels}
+          {...(args.defaultValue === undefined ? {} : { defaultValue: args.defaultValue })}
+          {...(args.onValueChange === undefined ? {} : { onValueChange: args.onValueChange })}
+          {...(args.value === undefined ? {} : { value: args.value })}
         />
-      </div>
+      </StoryPreviewLayout>
     );
   },
 };

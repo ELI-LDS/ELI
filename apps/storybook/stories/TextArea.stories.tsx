@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { TextArea } from '@/packages/ui/src/text/TextArea/TextArea.js';
 
 const meta = {
   title: '컴포넌트/TextArea',
   component: TextArea,
-  parameters: { layout: 'centered' },
   args: {
     label: '라벨',
     placeholder: '내용을 입력하세요',
@@ -37,32 +37,17 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div
-      style={{
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 24,
-      }}
-    >
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        기본 입력 영역에 마우스를 올리거나 선택해 Hover와 Focus 상태를 확인해요.
-      </p>
-
-      <div style={{ display: 'grid', gap: 8 }}>
-        <strong>기본</strong>
+    <StoryOverview description="기본 입력 영역에 마우스를 올리거나 선택해 Hover와 Focus 상태를 확인해요.">
+      <StoryCase title="기본">
         <TextArea {...args} />
-      </div>
-
-      <div style={{ display: 'grid', gap: 8 }}>
-        <strong>입력 완료</strong>
+      </StoryCase>
+      <StoryCase title="입력 완료">
         <TextArea {...args} defaultValue="내용을 입력했어요" />
-      </div>
-
-      <div style={{ display: 'grid', gap: 8 }}>
-        <strong>비활성화</strong>
+      </StoryCase>
+      <StoryCase title="비활성화">
         <TextArea {...args} disabled />
-      </div>
-    </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

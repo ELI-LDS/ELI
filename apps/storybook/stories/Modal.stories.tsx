@@ -4,7 +4,6 @@ import { Modal } from '@/packages/ui/src/modal/Modal/Modal.js';
 const meta = {
   title: '컴포넌트/Modal',
   component: Modal,
-  parameters: { layout: 'fullscreen' },
   args: {
     title: '제목',
     message: '내용을 작성합니다',

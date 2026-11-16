@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Badge } from '@/packages/ui/src/badge/Badge/Badge.js';
 
 const sizes = ['medium', 'large'] as const;
@@ -12,7 +13,6 @@ const sizeNames = {
 const meta = {
   title: '컴포넌트/Badge',
   component: Badge,
-  parameters: { layout: 'centered' },
   args: {
     children: 'ELI 라이브러리',
     size: 'medium',
@@ -47,17 +47,9 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div
-      style={{
-        alignItems: 'start',
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 20,
-      }}
-    >
+    <StoryOverview>
       {types.map(type => (
-        <div key={type} style={{ display: 'grid', gap: 8, justifyItems: 'start' }}>
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{type}</span>
+        <StoryCase key={type} title={type}>
           <div style={{ display: 'flex', gap: 12 }}>
             {sizes.map(size => (
               <div key={size} style={{ display: 'grid', gap: 4 }}>
@@ -68,9 +60,9 @@ export const Overview: Story = {
               </div>
             ))}
           </div>
-        </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

@@ -1,5 +1,10 @@
 import { useRef, useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  StoryCase,
+  StoryOverview,
+  StoryPreviewLayout,
+} from '../components/StoryDeviceFrame.js';
 import { Divider } from '@/packages/ui/src/divider/Divider/Divider.js';
 import { HomeFilledIcon } from '@/packages/ui/src/icon/HomeFilledIcon.js';
 import { HomeOutlinedIcon } from '@/packages/ui/src/icon/HomeOutlinedIcon.js';
@@ -121,41 +126,8 @@ function NavigationDrawerEditor({
     ));
   };
 
-  return (
-    <div
-      style={{
-        alignItems: 'start',
-        display: 'grid',
-        gap: 32,
-        gridTemplateColumns: '256px 360px',
-        minWidth: 648,
-      }}
-    >
-      <NavigationDrawer
-        aria-label={ariaLabel}
-        onValueChange={setSelectedValue}
-        value={selectedValue ?? ''}
-      >
-        <NavigationDrawerCategory label={categoryLabel} />
-        {menus.map(menu => {
-          return (
-            <NavigationDrawerMenu
-              defaultExpanded={menu.subItems.length > 0}
-              filledIcon={<HomeFilledIcon />}
-              key={`${menu.id}-${menu.subItems.length > 0}`}
-              label={menu.label}
-              outlinedIcon={<HomeOutlinedIcon />}
-              subItems={menu.subItems.map(subItem => ({
-                label: subItem.label,
-                value: `sub-${menu.id}-${subItem.id}`,
-              }))}
-              value={`main-${menu.id}`}
-            />
-          );
-        })}
-      </NavigationDrawer>
-
-      <section style={{ display: 'grid', gap: 16, width: 360 }}>
+  const editor = (
+    <section style={{ display: 'grid', gap: 16, width: '100%' }}>
         <div>
           <h3 style={{ margin: '0 0 4px' }}>메뉴 구성</h3>
           <p style={{ color: '#4b5668', margin: 0 }}>
@@ -221,15 +193,39 @@ function NavigationDrawerEditor({
         <button onClick={addMainMenu} style={editorButtonStyle} type="button">
           주 메뉴 추가
         </button>
-      </section>
-    </div>
+    </section>
+  );
+
+  return (
+    <StoryPreviewLayout editor={editor} label="Navigation Drawer 직접 바꿔보기" placement="start">
+      <NavigationDrawer
+        aria-label={ariaLabel}
+        onValueChange={setSelectedValue}
+        value={selectedValue ?? ''}
+      >
+        <NavigationDrawerCategory label={categoryLabel} />
+        {menus.map(menu => (
+          <NavigationDrawerMenu
+            defaultExpanded={menu.subItems.length > 0}
+            filledIcon={<HomeFilledIcon />}
+            key={`${menu.id}-${menu.subItems.length > 0}`}
+            label={menu.label}
+            outlinedIcon={<HomeOutlinedIcon />}
+            subItems={menu.subItems.map(subItem => ({
+              label: subItem.label,
+              value: `sub-${menu.id}-${subItem.id}`,
+            }))}
+            value={`main-${menu.id}`}
+          />
+        ))}
+      </NavigationDrawer>
+    </StoryPreviewLayout>
   );
 }
 
 const meta = {
   title: '컴포넌트/NavigationDrawer',
   component: NavigationDrawer,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '서비스 메뉴',
     categoryLabel: '카테고리',
@@ -262,9 +258,8 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
-      <section style={{ display: 'grid', gap: 12 }}>
-        <strong>전체 구성</strong>
+    <StoryOverview>
+      <StoryCase title="전체 구성">
         <NavigationDrawer aria-label="서비스 메뉴" defaultValue="my-course">
           <NavigationDrawerCategory label="주요 메뉴" />
           <NavigationDrawerMenu
@@ -299,10 +294,10 @@ export const Overview: Story = {
             value="settings"
           />
         </NavigationDrawer>
-      </section>
+      </StoryCase>
 
-      <section style={{ display: 'grid', gap: 12, width: 230 }}>
-        <strong>항목 상태</strong>
+      <StoryCase title="항목 상태">
+        <div style={{ display: 'grid', gap: 12, width: 230 }}>
         <NavigationDrawerItem
           expandable
           filledIcon={<HomeFilledIcon />}
@@ -318,15 +313,15 @@ export const Overview: Story = {
         />
         <NavigationDrawerItem label="하위 메뉴" variant="sub-menu" />
         <NavigationDrawerItem active label="선택된 하위 메뉴" variant="sub-menu" />
-      </section>
-    </div>
+        </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 
 /* 메뉴와 하위 메뉴를 원하는 만큼 구성하고 선택 동작을 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { layout: 'padded' },
   render: args => (
     <NavigationDrawerEditor
       ariaLabel={args['aria-label']}

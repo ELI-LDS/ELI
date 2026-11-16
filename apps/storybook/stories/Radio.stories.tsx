@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Radio } from '@/packages/ui/src/radio/Radio/Radio.js';
 
 const meta = {
   title: '컴포넌트/Radio',
   component: Radio,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '선택지',
     defaultChecked: false,
@@ -54,30 +54,24 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <fieldset
-      style={{
-        border: 0,
-        display: 'grid',
-        gap: 12,
-        margin: 0,
-        padding: 0,
-      }}
-    >
-      <legend style={{ marginBottom: 12 }}>관심 분야</legend>
-      {['프론트엔드', '백엔드', '디자인'].map((label, index) => (
-        <label
-          key={label}
-          style={{ alignItems: 'center', display: 'flex', gap: 8 }}
+    <StoryOverview>
+      <StoryCase title="선택 묶음">
+        <fieldset
+          style={{ border: 0, display: 'grid', gap: 12, margin: 0, padding: 0 }}
         >
-          <Radio
-            defaultChecked={index === 1}
-            name="interest"
-            value={label}
-          />
-          {label}
-        </label>
-      ))}
-    </fieldset>
+          <legend style={{ marginBottom: 12 }}>관심 분야</legend>
+          {['프론트엔드', '백엔드', '디자인'].map((label, index) => (
+            <label
+              key={label}
+              style={{ alignItems: 'center', display: 'flex', gap: 8 }}
+            >
+              <Radio defaultChecked={index === 1} name="interest" value={label} />
+              {label}
+            </label>
+          ))}
+        </fieldset>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

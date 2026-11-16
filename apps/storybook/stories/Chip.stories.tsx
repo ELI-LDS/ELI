@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Chip } from '@/packages/ui/src/chip/Chip/Chip.js';
 import type { ChipProps } from '@/packages/ui/src/chip/Chip/Chip.types.js';
 
@@ -22,7 +23,6 @@ function ChipPreview(props: ChipProps) {
 const meta = {
   title: '컴포넌트/Chip/Chip',
   component: Chip,
-  parameters: { layout: 'centered' },
   args: {
     children: 'ELI 라이브러리',
     disabled: false,
@@ -60,10 +60,10 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'flex', gap: 24 }}>
-      <Chip selected={false}>ELI 라이브러리</Chip>
-      <Chip selected>ELI 라이브러리</Chip>
-    </div>
+    <StoryOverview>
+      <StoryCase title="선택 전"><Chip selected={false}>ELI 라이브러리</Chip></StoryCase>
+      <StoryCase title="선택 후"><Chip selected>ELI 라이브러리</Chip></StoryCase>
+    </StoryOverview>
   ),
 };
 

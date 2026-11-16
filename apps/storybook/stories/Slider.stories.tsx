@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { useState } from 'react';
 import { Slider } from '@/packages/ui/src/slider/Slider/Slider.js';
 import type {
@@ -11,7 +12,6 @@ import type {
 const meta = {
   title: '컴포넌트/Slider',
   component: Slider,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '값 선택',
     defaultValue: 60,
@@ -80,16 +80,18 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 80, ...previewStyle }}>
-      <section style={{ display: 'grid', gap: 12 }}>
-        <h3 style={{ margin: 0 }}>Standard</h3>
+    <StoryOverview>
+      <StoryCase title="Standard">
+        <div style={previewStyle}>
         <Slider aria-label="기본 값" defaultValue={60} />
-      </section>
-      <section style={{ display: 'grid', gap: 12 }}>
-        <h3 style={{ margin: 0 }}>Range</h3>
+        </div>
+      </StoryCase>
+      <StoryCase title="Range">
+        <div style={previewStyle}>
         <Slider aria-label="범위 값" defaultValue={[27, 60]} variant="range" />
-      </section>
-    </div>
+        </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

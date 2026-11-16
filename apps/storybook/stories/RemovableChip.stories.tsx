@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { fn } from 'storybook/test';
 import { RemovableChip } from '@/packages/ui/src/chip/RemovableChip/RemovableChip.js';
 
 const meta = {
   title: '컴포넌트/Chip/RemovableChip',
   component: RemovableChip,
-  parameters: { layout: 'centered' },
   args: {
     children: 'ELI 라이브러리',
     disabled: false,
@@ -50,10 +50,14 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <RemovableChip {...args}>ELI 라이브러리</RemovableChip>
-      <RemovableChip {...args}>아주 긴 최근 검색어를 표시합니다</RemovableChip>
-    </div>
+    <StoryOverview>
+      <StoryCase title="기본 문구">
+        <RemovableChip {...args}>ELI 라이브러리</RemovableChip>
+      </StoryCase>
+      <StoryCase title="긴 문구">
+        <RemovableChip {...args}>아주 긴 최근 검색어를 표시합니다</RemovableChip>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { LoadingIndicator } from '@/packages/ui/src/loading/LoadingIndicator/LoadingIndicator.js';
 
 const progressOptions = [undefined, 0, 10, 30, 50, 80, 100] as const;
@@ -10,7 +11,6 @@ const indeterminateVariants = [
 const meta = {
   title: '컴포넌트/LoadingIndicator',
   component: LoadingIndicator,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '콘텐츠 불러오는 중',
     variant: 'continuous',
@@ -54,29 +54,21 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
+    <StoryOverview>
       {indeterminateVariants.map(({ label, variant }) => (
-        <div
-          key={variant}
-          style={{ display: 'grid', gap: 8, justifyItems: 'center' }}
-        >
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{label}</span>
+        <StoryCase key={variant} title={label}>
           <LoadingIndicator
             aria-label={`${label} 방식으로 진행 중`}
             variant={variant}
           />
-        </div>
+        </StoryCase>
       ))}
       {progressOptions.filter(progress => progress !== undefined).map(progress => (
-        <div
-          key={progress}
-          style={{ display: 'grid', gap: 8, justifyItems: 'center' }}
-        >
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{progress}%</span>
+        <StoryCase key={progress} title={`${progress}%`}>
           <LoadingIndicator aria-label={`${progress}% 완료`} progress={progress} />
-        </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

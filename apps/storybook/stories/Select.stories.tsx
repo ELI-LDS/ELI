@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  StoryCase,
+  StoryOverview,
+  StoryPreviewLayout,
+} from '../components/StoryDeviceFrame.js';
 import { Select } from '@/packages/ui/src/select/Select/Select.js';
 import type { SelectProps } from '@/packages/ui/src/select/Select/Select.types.js';
 import './Select.stories.css';
@@ -43,13 +48,9 @@ function SelectPlayground({ options: initialOptions, ...selectProps }: SelectPro
   };
 
   return (
-    <div className="eli-story-select-playground">
-      <div className="eli-story-select-playground__preview">
-        <strong>미리보기</strong>
-        <Select {...selectProps} options={editableOptions} />
-      </div>
-
-      <section className="eli-story-select-playground__editor">
+    <StoryPreviewLayout
+      editor={(
+        <section className="eli-story-select-playground__editor">
         <strong>옵션 편집</strong>
         {editableOptions.map((option, index) => (
           <div className="eli-story-select-playground__option" key={option.value}>
@@ -74,15 +75,18 @@ function SelectPlayground({ options: initialOptions, ...selectProps }: SelectPro
         <button onClick={addOption} type="button">
           옵션 추가
         </button>
-      </section>
-    </div>
+        </section>
+      )}
+      label="Select 직접 바꿔보기"
+    >
+      <Select {...selectProps} options={editableOptions} />
+    </StoryPreviewLayout>
   );
 }
 
 const meta = {
   title: '컴포넌트/Select',
   component: Select,
-  parameters: { layout: 'centered' },
   args: {
     label: '라벨',
     options,
@@ -127,34 +131,22 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div
-      style={{
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 40,
-      }}
-    >
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        선택 영역에 마우스를 올리거나 눌러 Hover와 펼침 상태를 확인해요. Select의
-        옵션에는 좌우 아이콘과 단축키 안내를 표시하지 않아요.
-      </p>
-
-      <div style={{ display: 'grid', gap: 8 }}>
-        <strong>선택 전</strong>
+    <StoryOverview description="선택 영역에 마우스를 올리거나 눌러 Hover와 펼침 상태를 확인해요. Select의 옵션에는 좌우 아이콘과 단축키 안내를 표시하지 않아요.">
+      <StoryCase title="선택 전">
         <Select {...args} />
-      </div>
-
-      <div style={{ display: 'grid', gap: 8 }}>
-        <strong>선택 완료</strong>
+      </StoryCase>
+      <StoryCase title="선택 완료">
         <Select {...args} defaultValue="option-1" />
-      </div>
-    </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 
 /* 라벨, Placeholder 문구와 옵션 목록을 바꿔 Select 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { exclude: ['옵션 목록'] } },
+  parameters: {
+    controls: { exclude: ['옵션 목록'] },
+  },
   render: args => <SelectPlayground key={args.options.map(option => option.value).join('-')} {...args} />,
 };

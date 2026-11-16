@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  StoryCase,
+  StoryDeviceFrame,
+  StoryOverview,
+} from '../components/StoryDeviceFrame.js';
 import { HomeFilledIcon } from '@/packages/ui/src/icon/HomeFilledIcon.js';
 import { HomeOutlinedIcon } from '@/packages/ui/src/icon/HomeOutlinedIcon.js';
 import { NavigationBar } from '@/packages/ui/src/navigation/NavigationBar/NavigationBar.js';
@@ -62,7 +67,6 @@ function NavigationBarPreview({
 const meta = {
   title: '컴포넌트/NavigationBar',
   component: NavigationBar,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '주요 메뉴',
     activeIndex: 0,
@@ -111,10 +115,12 @@ const meta = {
     },
   },
   render: args => (
-    <NavigationBarPreview
-      key={`${args.itemCount}-${args.activeIndex}-${args.labels.join('-')}`}
-      {...args}
-    />
+    <StoryDeviceFrame label="Navigation Bar 직접 바꿔보기" placement="bottom">
+      <NavigationBarPreview
+        key={`${args.itemCount}-${args.activeIndex}-${args.labels.join('-')}`}
+        {...args}
+      />
+    </StoryDeviceFrame>
   ),
 } satisfies Meta<NavigationBarStoryArgs>;
 
@@ -126,21 +132,22 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 32 }}>
+    <StoryOverview description="항목 수에 따른 너비와 활성 아이콘을 비교해요.">
       {([3, 4, 5] as const).map(count => {
         const items = createItems(count, defaultLabels);
 
         return (
-          <div key={count} style={{ display: 'grid', gap: 8 }}>
-            <strong>{count}개 항목</strong>
-            <NavigationBar
-              aria-label={`${count}개 주요 메뉴`}
-              items={items}
-            />
-          </div>
+          <StoryCase key={count} title={`${count}개 항목`}>
+            <StoryDeviceFrame label={`${count}개 Navigation Bar 미리보기`} placement="bottom">
+              <NavigationBar
+                aria-label={`${count}개 주요 메뉴`}
+                items={items}
+              />
+            </StoryDeviceFrame>
+          </StoryCase>
         );
       })}
-    </div>
+    </StoryOverview>
   ),
 };
 

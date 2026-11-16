@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { SnackBar } from '@/packages/ui/src/snackbar/SnackBar/SnackBar.js';
 
 const meta = {
   title: '컴포넌트/SnackBar',
   component: SnackBar,
-  parameters: { layout: 'centered' },
   args: {
     children: '메시지를 작성합니다.',
     action: '액션',
@@ -40,12 +40,16 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div style={{ display: 'grid', gap: 24 }}>
-      <SnackBar {...args}>메시지를 작성합니다.</SnackBar>
-      <SnackBar {...args}>
-        스낵바 메시지가 길어지면 최대 두 줄까지 표시되는 모습을 확인할 수 있어요.
-      </SnackBar>
-    </div>
+    <StoryOverview>
+      <StoryCase title="한 줄 메시지">
+        <SnackBar {...args}>메시지를 작성합니다.</SnackBar>
+      </StoryCase>
+      <StoryCase title="두 줄 메시지">
+        <SnackBar {...args}>
+          스낵바 메시지가 길어지면 최대 두 줄까지 표시되는 모습을 확인할 수 있어요.
+        </SnackBar>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 
