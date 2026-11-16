@@ -83,3 +83,18 @@ test('색상 값을 찾으면 종료 코드 2와 위치를 돌려줘요', () => 
   assert.equal(run().status, 0);
   assert.equal(spawnSync(process.execPath, [postEdit], { input: 'not json', encoding: 'utf8' }).status, 0);
 });
+
+test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
+  for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
+    const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');
+    assert.match(template, /^## 정하지 않은 것$/m, dir);
+    assert.match(readFileSync(join(harness, 'skills', dir, 'SKILL.md'), 'utf8'), /template\.md/, dir);
+  }
+});
+
+test('eli 스킬이 가리키는 참고 문서가 있어요', () => {
+  const skill = readFileSync(join(harness, 'skills/eli/SKILL.md'), 'utf8');
+  const refs = [...skill.matchAll(/`(references\/[\w-]+\.md)`/g)].map((match) => match[1]);
+  assert.ok(refs.length >= 3);
+  for (const ref of refs) readFileSync(join(harness, 'skills/eli', ref), 'utf8');
+});

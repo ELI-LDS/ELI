@@ -46,6 +46,23 @@
 - 훅은 `DESIGN.md`가 없는 프로젝트에서 UI 작업을 요청받으면 `/eli-setup`을 먼저 제안하게 해요.
 - `/eli-design-md`, `/eli-ux-writing`, `/eli-design-system`은 셋업 뒤에 한 부분만 다시 만들거나 자세히 정할 때 써요.
 
+### 화면 코드의 기준은 eli 스킬의 references에 둬요
+
+- `skills/eli/references/`에 CSS(`css.md`), 마크업·접근성·React(`code.md`), 화면 디자인(`design.md`) 기준을 둬요. 어느 서비스에나 적용되는 일반 기준이에요.
+- `skills/eli/SKILL.md`에는 항상 지킬 핵심 규칙과 어느 문서를 언제 읽는지만 적어요.
+- 이 문서들에는 ELI의 컴포넌트 이름, props, 토큰 값을 적지 않아요. ELI 자체의 정보는 원격 MCP가 가져요.
+- 기준은 MDN, web.dev, WCAG 2.2, react.dev 같은 1차 자료로 확인한 내용만 적고, 문서 끝에 출처를 남겨요. 실무 관행은 관행이라고 구분해요.
+- 브라우저 지원 현황은 시간이 지나면 달라져요. `css.md`의 "써도 되는 기능" 표는 기준 날짜를 적고, 고칠 때 다시 확인해요.
+- `/eli-verify`의 화면 품질 점검은 이 문서들을 기준으로 써요.
+
+### 문서 세 개는 초안을 가져와 맞춰 써요
+
+- `DESIGN.md`, `ICON.md`, `UX-WRITING.md`의 상세한 초안을 각 스킬 폴더의 `template.md`에 둬요. 스킬은 문서를 처음부터 새로 쓰지 않고, 초안을 가져와 사용자의 서비스에 맞게 고쳐요.
+- 초안의 `{중괄호}`는 채울 자리이고, `<!-- 맞춤: ... -->` 주석은 어떻게 고칠지 알려주는 지시예요. 저장한 문서에는 둘 다 남기지 않아요.
+- 초안에는 여러 서비스에 공통으로 맞는 기본 내용만 적어요. ELI의 컴포넌트 이름, props, 토큰 값은 적지 않아요.
+- 문서의 구성을 바꿀 때는 `template.md`를 고쳐요. 스킬에는 구성을 다시 적지 않아요.
+- `ICON.md` 초안의 형태 값(캔버스, 선 굵기, 모서리 반경)은 임시 기본값이에요. 디자이너의 규칙을 원격 `icon` 가이드에 적으면 그 값이 먼저 적용돼요.
+
 ### 기본 동작
 
 - `hooks/session-start.mjs`는 세션을 시작할 때 프로젝트가 `@eli/ui`를 쓰는지 확인하고, 쓰는 경우에만 짧은 지침을 출력해요. [ponytail](https://github.com/DietrichGebert/ponytail)의 SessionStart 훅 방식을 참고해요.
@@ -63,7 +80,7 @@
 ### DESIGN.md에 CSS 단위 기준을 반드시 적어요
 
 - `/eli-design-md`와 `/eli-setup`은 `DESIGN.md`에 `## 단위` 표를 항상 적어요. 글자는 `rem`, 레이아웃은 `%`와 `fr`, 화면 높이는 `dvh`, 테두리는 `px`처럼 용도별로 무엇을 쓰는지와 그 이유를 적어요.
-- 기본 표는 `skills/eli-design-md/SKILL.md`에서 관리해요.
+- 기본 표는 `skills/eli-design-md/template.md`에서 관리해요.
 - 기본 동작은 CSS 값을 쓸 때 이 표에서 단위를 고르게 하고, `/eli-verify`는 표와 다른 단위를 보고해요.
 - 글자 크기, 간격, 모서리는 토큰으로 쓰므로, 이 표는 새 토큰을 정할 때와 토큰이 다루지 않는 레이아웃 크기에 적용해요.
 
