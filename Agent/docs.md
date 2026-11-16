@@ -50,44 +50,7 @@ apps/docs/
 - 토큰도 마크다운에 직접 쓰지 않아요. `packages/ui/src/tokens`의 CSS 파일에서 추출해요.
 - 전달받지 않은 컴포넌트 명세와 디자인 값을 문서에 임의로 쓰지 않아요.
 
-### 컴포넌트 문서의 형식
-
-frontmatter 필드는 모두 필수예요.
-
-| 필드 | 값 |
-| --- | --- |
-| `name` | `packages/ui`가 내보내는 컴포넌트 이름 (예: `Button`) |
-| `group` | `packages/ui/package.json`의 `exports` 경로 (예: `button`) |
-| `description` | 한 줄 설명 |
-| `status` | `stable` 또는 `draft` |
-
-`##` 제목에는 섹션 키를 그대로 써요. 사람용 페이지는 `schema.ts`의 한국어 라벨로 바꿔 보여줘요.
-
-| 섹션 키 | 내용 | 필수 |
-| --- | --- | --- |
-| `summary` | 무엇을 하는 컴포넌트인지 | 필수 |
-| `when-to-use` | 언제 쓰고 언제 쓰지 않는지, 대신 쓸 컴포넌트 | 필수 |
-| `examples` | 복사해서 쓸 수 있는 코드 예시 | 필수 |
-| `variants` | 크기·색상·상태 같은 변형과 고르는 기준 | 선택 |
-| `do-dont` | 권장하는 사용법과 피해야 할 사용법. `/eli-verify`가 점검 기준으로 읽어요 | 선택 |
-| `accessibility` | 키보드, 스크린 리더, 라벨 요구 사항 | 선택 |
-| `related` | 함께 쓰거나 헷갈리기 쉬운 컴포넌트 | 선택 |
-
-### 가이드 문서의 형식
-
-`content/source/guides/{topic}.md`에 frontmatter `title`, `description`과 마크다운 본문으로 써요. 주제는 아래 목록만 허용해요.
-
-| 주제 | 내용 | 읽는 곳 |
-| --- | --- | --- |
-| `install` | 프레임워크·패키지 매니저별 설치 방법 | 기본 동작, `/eli-design-system`, `/eli-doctor` |
-| `font` | Pretendard 연결 방법 | 기본 동작, `/eli-design-system`, `/eli-doctor` |
-| `design-system-page` | 디자인 시스템 페이지의 구성과 순서 | `/eli-design-system` |
-| `verify` | 점검 규칙, 예외, 네이티브 요소와 ELI 컴포넌트의 대응, 화면 품질 기준(터치 영역 크기 등) | `/eli-verify` |
-| `icon` | 커스텀 아이콘의 그리드·선 굵기·모서리·색 규칙. `ICON.md` 초안의 기본값보다 먼저 적용해요 | `/eli-icon` |
-
-`DESIGN.md`, `ICON.md`, `UX-WRITING.md`의 초안은 원격 가이드가 아니라 하네스의 스킬 폴더에 있어요. 원격에는 ELI 자체의 정보만 둬요.
-
-`icon` 가이드는 디자이너에게 규칙을 전달받은 뒤에 써요. 가이드 주제를 추가하거나 이름을 바꾸면 [하네스](harness.md)의 스킬도 함께 고쳐요.
+frontmatter 필드, 섹션 키, 가이드 주제와 각 가이드가 담아야 하는 내용은 [원격 MCP 규격](mcp-spec.md#콘텐츠)에서 관리해요.
 
 ## 조회 계층을 하나로 둬요
 
@@ -97,32 +60,16 @@ frontmatter 필드는 모두 필수예요.
 
 도구 설명도 에이전트의 컨텍스트를 차지해요. 그래서 도구 수는 적게 두고 필터는 파라미터로 받아요. 응답에는 요청한 부분만 담아요.
 
-| MCP 도구 | GET API | 입력 | 응답 |
-| --- | --- | --- | --- |
-| `list_components` | `/api/v1/components?group=&status=` | `group?`, `status?` | `{ components: [{ name, group, description, status, import }] }` |
-| `get_component` | `/api/v1/components/{name}?sections=` | `name`, `sections?` (섹션 키 배열) | `{ name, group, import, sections: { [키]: 마크다운 } }` |
-| `get_props` | `/api/v1/components/{name}/props?names=` | `name`, `names?` | `{ name, props: [{ name, type, required, default, description }] }` |
-| `search` | `/api/v1/search?q=&limit=` | `q` (2자 이상), `limit?` (기본 5, 최대 20) | `{ results: [{ id, kind, title, excerpt }] }` |
-| `get_tokens` | `/api/v1/tokens?category=` | `category` | `{ category, tokens: [{ name, value, description }] }` |
-| `get_guide` | `/api/v1/guides/{topic}` | `topic?` | `{ topic, title, body }` |
+| MCP 도구 | GET API | 하는 일 |
+| --- | --- | --- |
+| `list_components` | `/api/v1/components` | 컴포넌트 목록 |
+| `get_component` | `/api/v1/components/{name}` | 컴포넌트 문서의 요청한 섹션 |
+| `get_props` | `/api/v1/components/{name}/props` | props의 타입·기본값·설명 |
+| `search` | `/api/v1/search` | 문서 검색 |
+| `get_tokens` | `/api/v1/tokens` | 디자인 토큰 |
+| `get_guide` | `/api/v1/guides/{topic}` | 공통 가이드 |
 
-- `name`은 컴포넌트 이름이에요. 대소문자를 구분하지 않고 찾아요.
-- `import`는 `@eli/ui/button` 같은 그룹 경로예요.
-- `get_component`에서 `sections`를 생략하면 `summary`와 `when-to-use`만 돌려줘요. 문서에 없는 선택 섹션을 요청하면 그 키를 응답에서 빼요.
-- `get_props`에서 `names`를 생략하면 모든 prop을 돌려줘요. `default`와 `description`은 타입에 없으면 `null`이에요.
-- `search`의 `kind`는 `component` 또는 `guide`예요. `id`는 `get_component`의 `name`이나 `get_guide`의 `topic`으로 바로 쓸 수 있어요. `excerpt`는 200자 이하예요. 본문 전체는 주지 않아요.
-- `get_tokens`의 `category`는 `color`, `semantic-color`, `typography`, `layout` 중 하나예요. `name`은 `--eli-layout-scale-4` 같은 CSS 변수 이름이에요. `description`은 CSS 주석에 없으면 `null`이에요.
-- `get_guide`에서 `topic`을 생략하면 `{ guides: [{ topic, title, description }] }` 목록을 돌려줘요.
-
-### 공통 규칙
-
-- 엔드포인트는 `/mcp` 하나예요. Streamable HTTP로 통신하고 세션과 인증 없이 동작해요.
-- 서버 이름은 `eli-docs`예요. 서버 버전은 `@eli/ui`의 버전과 같게 둬요.
-- 모든 API와 MCP 도구는 읽기 전용이에요.
-- MCP 도구는 JSON을 텍스트 콘텐츠 하나로 돌려줘요.
-- 허용하지 않는 값이나 없는 이름을 받으면 MCP 도구는 `isError: true`와 함께 허용하는 값 목록을 돌려줘요. GET API는 잘못된 파라미터에 400, 없는 이름에 404를 돌려줘요. 에이전트가 다시 추측하지 않고 바로 고쳐 호출할 수 있어야 해요.
-- 문서 내용은 배포 단위로만 바뀌므로 GET API는 빌드할 때 정적으로 만들어요.
-- 도구를 추가하거나 입력·응답을 바꾸면 [하네스](harness.md)의 스킬도 함께 고쳐요.
+도구의 입력과 응답 형식, 오류 응답, 도구 설명 문구, 구현 순서는 [원격 MCP 규격](mcp-spec.md)에서 관리해요. 이 문서에는 다시 적지 않아요.
 
 ## 원격 MCP를 연결해요
 
@@ -137,9 +84,8 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 
 ## 정하지 않은 것
 
-- **도메인:** 아직 정하지 않았어요. 정해지면 이 문서와 `packages/harness/skills/eli/SKILL.md`의 주소를 함께 고쳐요.
 - **배포 설정:** 배포 대상은 Cloudflare로 정했어요. Next.js를 올리려면 OpenNext 어댑터가 필요하고, 아직 설정하지 않았어요.
 - **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** 아직 npm 배포 전이라 최신 문서 하나만 제공해요. 배포를 시작하면 버전별 조회가 필요한지 다시 검토해요.
 
-현재는 MCP 엔드포인트만 있고 등록된 도구가 없어요. 문서 원본·조회 계층·GET API·MCP 도구는 아직 구현되지 않았어요. 위 스펙은 구현할 때 따를 기준이에요.
+현재는 MCP 엔드포인트만 있고 등록된 도구가 없어요. 문서 원본·조회 계층·GET API·MCP 도구는 아직 구현되지 않았어요. 구현할 때는 [원격 MCP 규격](mcp-spec.md)을 따라요.
