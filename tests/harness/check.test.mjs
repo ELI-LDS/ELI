@@ -109,7 +109,8 @@ test('프로젝트 안에 설치한 훅은 @eli-design/ui가 없어도 지침을
 
 test('글꼴 안내가 있고 디자인 시스템 스킬이 가리켜요', () => {
   const fonts = readFileSync(join(harness, 'skills/eli-design-system/fonts.md'), 'utf8');
-  assert.match(fonts, /^## 쓰지 않는 글꼴$/m);
+  assert.match(fonts, /^# 글꼴은 Pretendard로 고정해요$/m);
+  assert.doesNotMatch(fonts, /Asta Sans|Wanted Sans|SUIT/);
   assert.match(readFileSync(join(harness, 'skills/eli-design-system/SKILL.md'), 'utf8'), /fonts\.md/);
 });
 
