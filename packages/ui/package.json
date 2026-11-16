@@ -1,6 +1,6 @@
 {
-  "name": "@eli/ui",
-  "version": "0.1.0",
+  "name": "@eli-design/ui",
+  "version": "0.0.0",
   "description": "ELI React 디자인 컴포넌트 라이브러리",
   "type": "module",
   "license": "UNLICENSED",
@@ -27,11 +27,12 @@
     "./toggle": { "types": "./dist/toggle/index.d.ts", "import": "./dist/toggle/index.js" },
     "./tooltip": { "types": "./dist/tooltip/index.d.ts", "import": "./dist/tooltip/index.js" }
   },
+  "publishConfig": { "access": "public" },
   "sideEffects": ["**/*.css"],
   "peerDependencies": { "react": "^19.3.0" },
   "scripts": {
     "build": "node ../../scripts/build-ui.mjs",
     "prepack": "pnpm build",
-    "prepublishOnly": "node -e \"throw new Error('아직 공개 배포를 준비하지 않았어요. 라이선스·scope·공개 API를 먼저 확인해요.')\""
+    "prepublishOnly": "node -e \"throw new Error('아직 라이선스를 정하지 않았어요. license를 정한 뒤 이 검사를 지워요.')\""
   }
 }

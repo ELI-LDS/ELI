@@ -14,12 +14,12 @@ const INSTRUCTIONS = `ELI 하네스: 이 프로젝트는 ELI를 써요.
 - eli-docs MCP가 연결되지 않았으면 추측해서 작업하지 않고, eli 스킬의 연결 방법을 사용자에게 안내해요.
 - 명령: /eli-setup, /eli-doctor, /eli-design-md, /eli-design-system, /eli-verify, /eli-icon, /eli-ux-writing`;
 
-// shortcut: 루트 package.json만 확인해요. 모노레포의 하위 워크스페이스만 @eli/ui를 쓰는 경우가 생기면 워크스페이스도 확인해요.
+// shortcut: 루트 package.json만 확인해요. 모노레포의 하위 워크스페이스만 @eli-design/ui를 쓰는 경우가 생기면 워크스페이스도 확인해요.
 function usesEli(dir) {
   try {
     const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
     return ['dependencies', 'devDependencies', 'peerDependencies'].some(
-      (field) => pkg[field] && '@eli/ui' in pkg[field],
+      (field) => pkg[field] && '@eli-design/ui' in pkg[field],
     );
   } catch {
     return false; // package.json이 없거나 깨져 있으면 조용히 넘어가요. 훅이 세션 시작을 막으면 안 돼요.
@@ -29,7 +29,7 @@ function usesEli(dir) {
 const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어요(DESIGN.md가 없어요). 사용자가 UI나 디자인 작업을 요청하면 먼저 /eli-setup으로 셋업하자고 제안해요.`;
 
 const dir = process.cwd();
-// 훅이 프로젝트 안에 설치되어 있으면 @eli/ui를 아직 설치하지 못했어도 ELI를 쓰는 프로젝트예요.
+// 훅이 프로젝트 안에 설치되어 있으면 @eli-design/ui를 아직 설치하지 못했어도 ELI를 쓰는 프로젝트예요.
 const installedInProject = import.meta.dirname.startsWith(dir);
 if (installedInProject || usesEli(dir)) {
   const setUp = existsSync(join(dir, 'DESIGN.md'));

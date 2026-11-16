@@ -114,7 +114,7 @@ async function verify(manager, tarball) {
         typecheck: 'tsc --noEmit',
       },
       dependencies: {
-        '@eli/ui': `file:${tarball}`,
+        '@eli-design/ui': `file:${tarball}`,
         react: '19.3.0',
         'react-dom': '19.3.0',
       },
@@ -127,10 +127,10 @@ async function verify(manager, tarball) {
     }, null, 2));
     await writeFile(join(work, 'index.html'), '<html lang="ko"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
     await writeFile(join(work, 'main.tsx'), `import { createRoot } from 'react-dom/client';
-import { Button } from '@eli/ui/button';
-import { Radio } from '@eli/ui/radio';
-import { Select } from '@eli/ui/select';
-import { TextField } from '@eli/ui/text';
+import { Button } from '@eli-design/ui/button';
+import { Radio } from '@eli-design/ui/radio';
+import { Select } from '@eli-design/ui/select';
+import { TextField } from '@eli-design/ui/text';
 
 createRoot(document.getElementById('root')!).render(
   <main>

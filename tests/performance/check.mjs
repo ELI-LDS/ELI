@@ -14,7 +14,7 @@ const consumer = join(work, 'consumer');
 const viteBin = join(root, 'node_modules/vite/bin/vite.js');
 
 await rm(work, { force: true, recursive: true });
-await mkdir(join(consumer, 'node_modules/@eli/ui'), { recursive: true });
+await mkdir(join(consumer, 'node_modules/@eli-design/ui'), { recursive: true });
 
 // 소스 경로가 아니라 실제 배포 tarball을 사용해 소비자 조건에 가깝게 측정해요.
 const info = packInfo(join(root, 'packages/ui'), work);
@@ -24,7 +24,7 @@ execFileSync('tar', [
   join(work, info.filename),
   '--strip-components=1',
   '-C',
-  join(consumer, 'node_modules/@eli/ui'),
+  join(consumer, 'node_modules/@eli-design/ui'),
 ]);
 
 // 측정 도구만 고정된 개발 의존성을 공유하고 ELI는 tarball을 직접 풀어 사용해요.
@@ -39,8 +39,8 @@ for (const dependency of ['react', 'react-dom', 'vite']) {
 await writeFile(join(consumer, 'index.html'), '<html lang="ko"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
 await writeFile(join(consumer, 'main.tsx'), `import { useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Checkbox } from '@eli/ui/checkbox';
-import { Select } from '@eli/ui/select';
+import { Checkbox } from '@eli-design/ui/checkbox';
+import { Select } from '@eli-design/ui/select';
 
 function SelectScenario({ count }: { count: number }) {
   const options = useMemo(

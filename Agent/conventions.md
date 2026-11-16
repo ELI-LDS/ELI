@@ -15,7 +15,7 @@
 
 ## 공개 경로를 관리해요
 
-사용자는 `@eli/ui/button` 같은 그룹 경로에서 named import해요. 내부 파일 경로를 공개하지 않아요. 공개 entry는 `package.json`의 `exports`에 JS와 타입을 함께 등록해요. 실제 구현이 없는 컴포넌트를 임시로 export하지 않아요.
+사용자는 `@eli-design/ui/button` 같은 그룹 경로에서 named import해요. 내부 파일 경로를 공개하지 않아요. 공개 entry는 `package.json`의 `exports`에 JS와 타입을 함께 등록해요. 실제 구현이 없는 컴포넌트를 임시로 export하지 않아요.
 
 라이브러리의 상대 TS/TSX import는 출력 경로에 맞춰 `.js` 확장자를 써요. 타입 전용 import와 export에는 `type`을 붙여요. `any`로 오류를 숨기지 않아요.
 

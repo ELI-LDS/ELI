@@ -47,26 +47,26 @@ await writeFile(join(consumer, 'custom.css'), `.consumer-button {
 }
 `);
 await writeFile(join(consumer, 'main.tsx'), `import { createRoot } from 'react-dom/client';
-import { Alert } from '@eli/ui/alert';
-import { Badge } from '@eli/ui/badge';
-import { Button, IconButton } from '@eli/ui/button';
-import { Checkbox } from '@eli/ui/checkbox';
-import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
-import { Divider } from '@eli/ui/divider';
-import { Fab, FabMenu, FabMenuSegment } from '@eli/ui/fab';
-import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
-import { MenuItem } from '@eli/ui/menu';
-import { Modal } from '@eli/ui/modal';
-import { NavigationBar, NavigationBarGlass, NavigationBarGlassItem, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli/ui/navigation';
-import { Radio } from '@eli/ui/radio';
-import { Select } from '@eli/ui/select';
-import { SegmentControl } from '@eli/ui/segment-control';
-import { SnackBar } from '@eli/ui/snackbar';
-import { Slider } from '@eli/ui/slider';
-import { Tab } from '@eli/ui/tab';
-import { TextArea, TextField } from '@eli/ui/text';
-import { Toggle } from '@eli/ui/toggle';
-import { Tooltip } from '@eli/ui/tooltip';
+import { Alert } from '@eli-design/ui/alert';
+import { Badge } from '@eli-design/ui/badge';
+import { Button, IconButton } from '@eli-design/ui/button';
+import { Checkbox } from '@eli-design/ui/checkbox';
+import { Chip, FilterChip, RemovableChip } from '@eli-design/ui/chip';
+import { Divider } from '@eli-design/ui/divider';
+import { Fab, FabMenu, FabMenuSegment } from '@eli-design/ui/fab';
+import { LoadingIndicator, ProgressIndicator } from '@eli-design/ui/loading';
+import { MenuItem } from '@eli-design/ui/menu';
+import { Modal } from '@eli-design/ui/modal';
+import { NavigationBar, NavigationBarGlass, NavigationBarGlassItem, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli-design/ui/navigation';
+import { Radio } from '@eli-design/ui/radio';
+import { Select } from '@eli-design/ui/select';
+import { SegmentControl } from '@eli-design/ui/segment-control';
+import { SnackBar } from '@eli-design/ui/snackbar';
+import { Slider } from '@eli-design/ui/slider';
+import { Tab } from '@eli-design/ui/tab';
+import { TextArea, TextField } from '@eli-design/ui/text';
+import { Toggle } from '@eli-design/ui/toggle';
+import { Tooltip } from '@eli-design/ui/tooltip';
 import './custom.css';
 const chipOptions = [{ label: '블랙', value: 'black' }, { label: '화이트', value: 'white' }];
 const navigationItems = [{ value: 'home', label: '탐색 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'search', label: '탐색 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'profile', label: '탐색 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
@@ -79,26 +79,26 @@ await build({ root: consumer, configFile: false, logLevel: 'warn', build: { mini
 
 // 실제 배포 패키지를 서버용으로 번들하고 브라우저 전역 없이 렌더링해요.
 await writeFile(join(consumer, 'server.tsx'), `import { renderToString } from 'react-dom/server';
-import { Alert } from '@eli/ui/alert';
-import { Badge } from '@eli/ui/badge';
-import { Button, IconButton } from '@eli/ui/button';
-import { Checkbox } from '@eli/ui/checkbox';
-import { Chip, FilterChip, RemovableChip } from '@eli/ui/chip';
-import { Divider } from '@eli/ui/divider';
-import { Fab, FabMenu, FabMenuSegment } from '@eli/ui/fab';
-import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
-import { MenuItem } from '@eli/ui/menu';
-import { Modal } from '@eli/ui/modal';
-import { NavigationBar, NavigationBarGlass, NavigationBarGlassItem, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli/ui/navigation';
-import { Radio } from '@eli/ui/radio';
-import { Select } from '@eli/ui/select';
-import { SegmentControl } from '@eli/ui/segment-control';
-import { SnackBar } from '@eli/ui/snackbar';
-import { Slider } from '@eli/ui/slider';
-import { Tab } from '@eli/ui/tab';
-import { TextArea, TextField } from '@eli/ui/text';
-import { Toggle } from '@eli/ui/toggle';
-import { Tooltip } from '@eli/ui/tooltip';
+import { Alert } from '@eli-design/ui/alert';
+import { Badge } from '@eli-design/ui/badge';
+import { Button, IconButton } from '@eli-design/ui/button';
+import { Checkbox } from '@eli-design/ui/checkbox';
+import { Chip, FilterChip, RemovableChip } from '@eli-design/ui/chip';
+import { Divider } from '@eli-design/ui/divider';
+import { Fab, FabMenu, FabMenuSegment } from '@eli-design/ui/fab';
+import { LoadingIndicator, ProgressIndicator } from '@eli-design/ui/loading';
+import { MenuItem } from '@eli-design/ui/menu';
+import { Modal } from '@eli-design/ui/modal';
+import { NavigationBar, NavigationBarGlass, NavigationBarGlassItem, NavigationBarItem, NavigationDrawer, NavigationDrawerCategory, NavigationDrawerMenu } from '@eli-design/ui/navigation';
+import { Radio } from '@eli-design/ui/radio';
+import { Select } from '@eli-design/ui/select';
+import { SegmentControl } from '@eli-design/ui/segment-control';
+import { SnackBar } from '@eli-design/ui/snackbar';
+import { Slider } from '@eli-design/ui/slider';
+import { Tab } from '@eli-design/ui/tab';
+import { TextArea, TextField } from '@eli-design/ui/text';
+import { Toggle } from '@eli-design/ui/toggle';
+import { Tooltip } from '@eli-design/ui/tooltip';
 
 const serverNavigationItems = [{ value: 'server-home', label: '서버 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-search', label: '서버 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-profile', label: '서버 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
 const serverGlassNavigationItems = [{ value: 'server-glass-home', label: '서버 글래스 홈', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-glass-search', label: '서버 글래스 검색', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }, { value: 'server-glass-profile', label: '서버 글래스 내 정보', outlinedIcon: <span>○</span>, filledIcon: <span>●</span> }] as const;
@@ -109,7 +109,7 @@ await build({
   root: consumer,
   configFile: false,
   logLevel: 'warn',
-  ssr: { noExternal: ['@eli/ui'] },
+  ssr: { noExternal: ['@eli-design/ui'] },
   build: { emptyOutDir: true, minify: true, outDir: 'dist-ssr', ssr: 'server.tsx' },
 });
 const serverBundle = await import(pathToFileURL(join(consumer, 'dist-ssr/server.js')).href);
@@ -157,7 +157,7 @@ const clientComponents = [
 ];
 for (const componentPath of clientComponents) {
   assert.match(
-    await readFile(join(consumer, 'node_modules/@eli/ui', componentPath), 'utf8'),
+    await readFile(join(consumer, 'node_modules/@eli-design/ui', componentPath), 'utf8'),
     /^['"]use client['"];?/,
   );
 }
@@ -166,7 +166,7 @@ const assets = join(consumer, 'dist/assets');
 const files = await readdir(assets);
 const css = (await Promise.all(files.filter(x => x.endsWith('.css')).map(x => readFile(join(assets, x), 'utf8')))).join('\n');
 const js = (await Promise.all(files.filter(x => x.endsWith('.js')).map(x => readFile(join(assets, x), 'utf8')))).join('\n');
-const installedPackage = join(consumer, 'node_modules/@eli/ui');
+const installedPackage = join(consumer, 'node_modules/@eli-design/ui');
 const documentedComponents = [
   'dist/alert/Alert/Alert.d.ts',
   'dist/badge/Badge/Badge.d.ts',

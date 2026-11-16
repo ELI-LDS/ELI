@@ -7,7 +7,7 @@
   "scripts": {
     "preinstall": "node scripts/check-environment.mjs",
     "dev": "pnpm --filter @eli/storybook dev",
-    "build": "pnpm --filter @eli/ui build",
+    "build": "pnpm --filter @eli-design/ui build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "build:storybook": "pnpm --filter @eli/storybook build",

@@ -2,29 +2,29 @@
 
 ## 개발 환경과 소비 환경을 구분해요
 
-ELI 저장소의 개발·lockfile·스크립트 실행은 루트 `packageManager`에 고정한 pnpm만 사용해요. `@eli/ui` 소비자는 npm·pnpm·Yarn·Bun 중 자신의 프로젝트가 사용하는 패키지 매니저로 설치할 수 있어야 해요.
+ELI 저장소의 개발·lockfile·스크립트 실행은 루트 `packageManager`에 고정한 pnpm만 사용해요. `@eli-design/ui` 소비자는 npm·pnpm·Yarn·Bun 중 자신의 프로젝트가 사용하는 패키지 매니저로 설치할 수 있어야 해요.
 
 소비 호환성을 위해 저장소에 `package-lock.json`, `yarn.lock`, `bun.lock`을 추가하지 않아요. 각 패키지 매니저 검증은 저장소 밖의 격리된 임시 소비 프로젝트에서 수행해요.
 
 ## 라이브러리는 프로젝트 의존성으로 설치해요
 
-`@eli/ui`는 사용자의 `package.json`과 lockfile에 기록되어야 하므로 각 패키지 매니저의 의존성 추가 명령을 안내해요.
+`@eli-design/ui`는 사용자의 `package.json`과 lockfile에 기록되어야 하므로 각 패키지 매니저의 의존성 추가 명령을 안내해요.
 
 ```bash
 # npm
-npm install @eli/ui
+npm install @eli-design/ui
 
 # pnpm
-pnpm add @eli/ui
+pnpm add @eli-design/ui
 
 # Yarn
-yarn add @eli/ui
+yarn add @eli-design/ui
 
 # Bun
-bun add @eli/ui
+bun add @eli-design/ui
 ```
 
-`npx`, `pnpm dlx`, `yarn dlx`, `bunx`는 패키지 실행 파일을 임시로 내려받아 실행하는 명령이에요. `@eli/ui` 설치 방법으로 안내하지 않아요. 특히 `yarn dlx`는 프로젝트 의존성을 기록하지 않으므로 `yarn add` 대신 사용하지 않아요.
+`npx`, `pnpm dlx`, `yarn dlx`, `bunx`는 패키지 실행 파일을 임시로 내려받아 실행하는 명령이에요. `@eli-design/ui` 설치 방법으로 안내하지 않아요. 특히 `yarn dlx`는 프로젝트 의존성을 기록하지 않으므로 `yarn add` 대신 사용하지 않아요.
 
 추후 초기 설정과 선택 컴포넌트 설치 CLI를 구현하면 라이브러리 설치와 구분해 아래 형식으로 안내해요. 실제 CLI 패키지명과 명령은 구현 전까지 예시로 공개하지 않아요.
 
@@ -41,7 +41,7 @@ yarn dlx {CLI 패키지} add button
 bunx {CLI 패키지} add button
 ```
 
-CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 확인하고 같은 도구로 필요한 외부 의존성을 설치해야 해요. 패키지 방식을 선택한 경우에만 `@eli/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#두-가지-소비-방식을-제공해요)에서 관리해요.
+CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 확인하고 같은 도구로 필요한 외부 의존성을 설치해야 해요. 패키지 방식을 선택한 경우에만 `@eli-design/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli-design/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#두-가지-소비-방식을-제공해요)에서 관리해요.
 
 ## 초기 지원 행렬을 고정해요
 
@@ -72,7 +72,7 @@ CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 �
 
 `--force`, `--legacy-peer-deps`, peer dependency 검사 해제 옵션은 사용하지 않아요. 한 행렬이라도 실패하면 초기 배포 준비가 끝난 것으로 보지 않아요.
 
-패키지 원본의 파일 목록·JSDoc·CSS 레이어 검사는 tarball을 직접 풀어 한 번 확인해요. 소비 환경 검사에서는 `node_modules/@eli/ui` 같은 설치 경로를 직접 읽지 않고 각 패키지 매니저의 해석 방식으로 import·타입 검사·빌드를 실행해요.
+패키지 원본의 파일 목록·JSDoc·CSS 레이어 검사는 tarball을 직접 풀어 한 번 확인해요. 소비 환경 검사에서는 `node_modules/@eli-design/ui` 같은 설치 경로를 직접 읽지 않고 각 패키지 매니저의 해석 방식으로 import·타입 검사·빌드를 실행해요.
 
 ## Yarn PnP를 별도로 검증해요
 

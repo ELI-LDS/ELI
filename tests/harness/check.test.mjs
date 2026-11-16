@@ -16,19 +16,19 @@ function runHook(packageJson, designMd = false) {
   return execFileSync(process.execPath, [hook], { cwd: dir, encoding: 'utf8' });
 }
 
-test('@eli/ui를 쓰는 프로젝트에는 지침을 출력해요', () => {
-  const output = runHook(JSON.stringify({ dependencies: { '@eli/ui': '0.1.0' } }));
+test('@eli-design/ui를 쓰는 프로젝트에는 지침을 출력해요', () => {
+  const output = runHook(JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } }));
   assert.match(output, /eli-docs/);
   assert.match(output, /\/eli-verify/);
 });
 
 test('DESIGN.md가 없을 때만 셋업을 제안해요', () => {
-  const pkg = JSON.stringify({ dependencies: { '@eli/ui': '0.1.0' } });
+  const pkg = JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } });
   assert.match(runHook(pkg), /아직 ELI를 셋업하지 않았어요/);
   assert.doesNotMatch(runHook(pkg, true), /아직 ELI를 셋업하지 않았어요/);
 });
 
-test('@eli/ui를 쓰지 않으면 아무것도 출력하지 않아요', () => {
+test('@eli-design/ui를 쓰지 않으면 아무것도 출력하지 않아요', () => {
   assert.equal(runHook(JSON.stringify({ dependencies: { react: '19.3.0' } })), '');
 });
 
@@ -99,7 +99,7 @@ test('eli 스킬이 가리키는 참고 문서가 있어요', () => {
   for (const ref of refs) readFileSync(join(harness, 'skills/eli', ref), 'utf8');
 });
 
-test('프로젝트 안에 설치한 훅은 @eli/ui가 없어도 지침을 출력해요', () => {
+test('프로젝트 안에 설치한 훅은 @eli-design/ui가 없어도 지침을 출력해요', () => {
   const dir = realpathSync(mkdtempSync(join(tmpdir(), 'eli-harness-')));
   const installed = join(dir, '.claude/hooks/eli/session-start.mjs');
   cpSync(hook, installed);

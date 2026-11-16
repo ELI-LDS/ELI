@@ -19,7 +19,7 @@
 | 항목 | 값 |
 | --- | --- |
 | 서버 이름 | `eli-docs` |
-| 서버 버전 | `@eli/ui`의 `version`과 같게 둬요 |
+| 서버 버전 | `@eli-design/ui`의 `version`과 같게 둬요 |
 | 엔드포인트 | `/mcp` 하나 (GET, POST) |
 | 전송 방식 | Streamable HTTP |
 | 세션 | 없어요. 요청마다 독립적으로 처리해요 |
@@ -76,14 +76,14 @@
 ```json
 {
   "components": [
-    { "name": "Button", "group": "button", "description": "아이콘과 텍스트를 함께 표시하는 버튼", "status": "stable", "import": "@eli/ui/button" },
-    { "name": "IconButton", "group": "button", "description": "…", "status": "stable", "import": "@eli/ui/button" }
+    { "name": "Button", "group": "button", "description": "아이콘과 텍스트를 함께 표시하는 버튼", "status": "stable", "import": "@eli-design/ui/button" },
+    { "name": "IconButton", "group": "button", "description": "…", "status": "stable", "import": "@eli-design/ui/button" }
   ]
 }
 ```
 
 - 이름순으로 정렬해요.
-- `import`는 `@eli/ui/` 뒤에 `group`을 붙인 경로예요.
+- `import`는 `@eli-design/ui/` 뒤에 `group`을 붙인 경로예요.
 - 조건에 맞는 컴포넌트가 없으면 오류가 아니라 빈 배열을 줘요.
 - 없는 `group`은 `invalid_argument`예요.
 
@@ -103,7 +103,7 @@
 {
   "name": "Button",
   "group": "button",
-  "import": "@eli/ui/button",
+  "import": "@eli-design/ui/button",
   "status": "stable",
   "sections": {
     "summary": "…마크다운…",
