@@ -25,6 +25,7 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 | 코드·설정 변경 | [구조](Agent/architecture.md), [컨벤션](Agent/conventions.md) |
 | 컴포넌트·스타일 구현 | [컴포넌트](Agent/components.md) |
 | 문서 앱 전체 구조·API·MCP | [문서 앱](Agent/docs.md) |
+| 하네스·`/eli-...` 명령·로컬 MCP | [하네스](Agent/harness.md) |
 | 문서 웹페이지·프론트엔드 | [문서 프론트엔드](Agent/docs-frontend.md), [검증](Agent/testing.md) |
 | 한국어 문서 작성 | [글쓰기](Agent/writing.md) |
 | 구현 확인·리뷰 | [검증](Agent/testing.md) |
