@@ -1,6 +1,6 @@
 # ELI 작업 지침
 
-ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이브러리예요. 상세 지침은 루트 `Agent/`에서 관리해요.
+ELI는 누구나 쉽게 쓰는 React 디자인 컴포넌트 라이브러리와, AI 에이전트가 디자인 기준을 지키게 하는 하네스예요. 상세 지침은 루트 `Agent/`에서 관리해요.
 
 ## 먼저 지켜요
 
@@ -25,6 +25,8 @@ ELI는 동아리 개발자가 쉽게 쓰는 React 디자인 컴포넌트 라이�
 | 코드·설정 변경 | [구조](Agent/architecture.md), [컨벤션](Agent/conventions.md) |
 | 컴포넌트·스타일 구현 | [컴포넌트](Agent/components.md) |
 | 문서 앱 전체 구조·API·MCP | [문서 앱](Agent/docs.md) |
+| 원격 MCP 도구·응답 형식·문서 원본 형식 | [원격 MCP 규격](Agent/mcp-spec.md) |
+| 하네스·`/eli-...` 명령·로컬 MCP | [하네스](Agent/harness.md) |
 | 문서 웹페이지·프론트엔드 | [문서 프론트엔드](Agent/docs-frontend.md), [검증](Agent/testing.md) |
 | 한국어 문서 작성 | [글쓰기](Agent/writing.md) |
 | 구현 확인·리뷰 | [검증](Agent/testing.md) |

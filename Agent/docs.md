@@ -47,7 +47,10 @@ apps/docs/
 - 빌드 스크립트는 원본을 파싱해 `schema.ts` 타입을 만족하는 TS 데이터를 만들어요.
 - 검증은 엄격하게 해요. 필수 frontmatter가 없거나, 정해지지 않은 섹션이 있거나, `packages/ui`에 없는 컴포넌트를 가리키면 빌드를 실패시켜요.
 - props는 마크다운에 직접 쓰지 않아요. `packages/ui`의 TypeScript 타입에서 추출해요. 직접 쓴 props는 구현과 쉽게 어긋나고, 틀린 props는 에이전트가 잘못된 코드를 쓰게 만들어요.
-- frontmatter 필드, 섹션 목록, props 추출 방법은 첫 컴포넌트 문서를 작성할 때 정해요. 전달받지 않은 컴포넌트 명세를 문서에 임의로 쓰지 않아요.
+- 토큰도 마크다운에 직접 쓰지 않아요. `packages/ui/src/tokens`의 CSS 파일에서 추출해요.
+- 전달받지 않은 컴포넌트 명세와 디자인 값을 문서에 임의로 쓰지 않아요.
+
+frontmatter 필드, 섹션 키, 가이드 주제와 각 가이드가 담아야 하는 내용은 [원격 MCP 규격](mcp-spec.md#콘텐츠)에서 관리해요.
 
 ## 조회 계층을 하나로 둬요
 
@@ -57,19 +60,16 @@ apps/docs/
 
 도구 설명도 에이전트의 컨텍스트를 차지해요. 그래서 도구 수는 적게 두고 필터는 파라미터로 받아요. 응답에는 요청한 부분만 담아요.
 
-| MCP 도구 | GET API | 응답 |
+| MCP 도구 | GET API | 하는 일 |
 | --- | --- | --- |
-| `list_components` | `/api/v1/components?group=&status=` | 이름·그룹·한 줄 설명·import 경로만 담은 목록 |
-| `get_component` | `/api/v1/components/{name}?sections=` | 요청한 섹션만 |
-| `get_props` | `/api/v1/components/{name}/props?names=` | 요청한 prop의 타입·기본값·설명 |
-| `search` | `/api/v1/search?q=&limit=` | 일치한 문서 id와 짧은 발췌 (본문 전체는 주지 않아요) |
-| `get_tokens` | `/api/v1/tokens?category=` | 디자인 토큰 |
+| `list_components` | `/api/v1/components` | 컴포넌트 목록 |
+| `get_component` | `/api/v1/components/{name}` | 컴포넌트 문서의 요청한 섹션 |
+| `get_props` | `/api/v1/components/{name}/props` | props의 타입·기본값·설명 |
+| `search` | `/api/v1/search` | 문서 검색 |
+| `get_tokens` | `/api/v1/tokens` | 디자인 토큰 |
 | `get_guide` | `/api/v1/guides/{topic}` | 공통 가이드 |
 
-- 문서 내용은 배포 단위로만 바뀌므로 GET API는 빌드할 때 정적으로 만들어요.
-- 쿼리 파라미터는 허용된 값만 받아요. 모르는 섹션이나 이름에는 400이나 404를 돌려줘요.
-- 모든 API와 MCP 도구는 읽기 전용이에요.
-- 표의 도구와 경로는 초안이에요. 구현하면서 확정해요.
+도구의 입력과 응답 형식, 오류 응답, 도구 설명 문구, 구현 순서는 [원격 MCP 규격](mcp-spec.md)에서 관리해요. 이 문서에는 다시 적지 않아요.
 
 ## 원격 MCP를 연결해요
 
@@ -84,8 +84,8 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 
 ## 정하지 않은 것
 
-- **배포 대상:** Vercel과 Cloudflare 모두 페이지·Route Handler·MCP를 한 번에 배포할 수 있어요. Vercel은 Next.js를 바로 지원해요. Cloudflare는 Storybook을 이미 배포하고 있지만 Next.js를 올리려면 OpenNext 어댑터가 필요해요.
-- **에이전트 응답 형식:** 기본은 JSON이에요. TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
+- **배포 설정:** 배포 대상은 Cloudflare로 정했어요. Next.js를 올리려면 OpenNext 어댑터가 필요하고, 아직 설정하지 않았어요.
+- **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** 아직 npm 배포 전이라 최신 문서 하나만 제공해요. 배포를 시작하면 버전별 조회가 필요한지 다시 검토해요.
 
-현재는 MCP 엔드포인트만 있고 등록된 도구가 없어요. 조회 계층·GET API·MCP 도구는 아직 구현되지 않았어요.
+현재는 MCP 엔드포인트만 있고 등록된 도구가 없어요. 문서 원본·조회 계층·GET API·MCP 도구는 아직 구현되지 않았어요. 구현할 때는 [원격 MCP 규격](mcp-spec.md)을 따라요.
