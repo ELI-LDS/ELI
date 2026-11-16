@@ -1,10 +1,16 @@
-# ELI
+<div align="center">
+
+<img src=".github/assets/eli-mascot.png" alt="ELI 이름표를 달고 펜을 든 채 생각에 잠긴 디자이너 엘리" width="260">
+
+<h1><img src=".github/assets/eli-logo.png" alt="ELI" width="220"></h1>
 
 **천재 디자이너 엘리를 팀에 합류시키세요.**
 
-디자이너가 없어도, 디자인을 몰라도 괜찮아요. 엘리는 AI 에이전트 안에서 일하는 디자이너예요. 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요. 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
+공식 문서 보기 (준비 중) · [컴포넌트 사용 예시](packages/ui/README.md) · [기여 방법](#함께-개발해요)
 
-[컴포넌트 보기 (Storybook)](https://eli-storybook.jihong.dev) · [컴포넌트 사용 예시](packages/ui/README.md) · [기여 방법](#함께-개발해요)
+</div>
+
+디자이너가 없어도, 디자인을 몰라도 괜찮아요. 엘리는 AI 에이전트 안에서 일하는 디자이너예요. 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요. 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 
 ## 시작하는 방법은 한 줄이에요
 
@@ -206,7 +212,7 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 - Vite와 Next.js App Router의 빌드·SSR·hydration을 실제 패키지 tarball로 확인해요.
 - React를 패키지에 중복해서 넣지 않고 소비 앱의 React를 peer dependency로 공유해요.
 
-구현된 컴포넌트와 상태는 [Storybook](https://eli-storybook.jihong.dev)에서 확인할 수 있어요.
+컴포넌트의 모양과 사용법은 공식 문서에서 안내할 예정이에요. 공식 문서는 아직 준비 중이에요.
 
 ### 설치 명령은 npm 게시 후 사용할 수 있어요
 
@@ -246,7 +252,7 @@ export function SaveButton() {
 
 ### 제공하는 컴포넌트
 
-공개 import 경로는 다음과 같아요. 각 경로의 최신 props와 디자인 상태는 Storybook과 에디터의 JSDoc에서 확인해요.
+공개 import 경로는 다음과 같아요. 각 경로의 최신 props는 에디터의 JSDoc에서 확인해요. 공식 문서가 열리면 그곳에서도 안내해요.
 
 | 가져오는 경로 | 컴포넌트 |
 | --- | --- |
