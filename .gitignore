@@ -12,3 +12,4 @@ storybook-static/
 !.env.example
 .next/
 next-env.d.ts
+packages/ui/harness/

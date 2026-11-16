@@ -227,7 +227,7 @@
 
 ### `get_versions`
 
-- **설명:** `게시된 @eli-design/ui와 ELI 하네스의 최신 버전을 돌려줘요. 프로젝트가 쓰는 버전이 최신인지 확인할 때 써요.`
+- **설명:** `게시된 @eli-design/ui의 최신 버전과 이 서버가 지원하는 가장 낮은 스킬 버전을 돌려줘요. 프로젝트가 쓰는 버전이 최신인지 확인할 때 써요.`
 - **GET API:** `/api/v1/versions`
 
 입력은 없어요.
@@ -235,7 +235,7 @@
 ```json
 {
   "ui": { "latest": "0.2.0", "docs": "0.2.0" },
-  "harness": { "latest": "0.3.1", "minimum": "0.3.0" }
+  "harness": { "minimum": "0.1.0" }
 }
 ```
 
@@ -243,11 +243,11 @@
 | --- | --- | --- |
 | `ui.latest` | npm에 게시된 `@eli-design/ui`의 최신 버전 | 빌드할 때의 `packages/ui/package.json`의 `version` |
 | `ui.docs` | 이 서버의 문서가 설명하는 `@eli-design/ui`의 버전 | 같은 값. 문서를 버전별로 제공하게 되면 달라질 수 있어요 |
-| `harness.latest` | 하네스의 최신 버전 | `packages/harness/skills/eli/VERSION` |
-| `harness.minimum` | 이 서버와 함께 쓸 수 있는 가장 낮은 하네스 버전 | `content/`에 직접 적어요 |
+| `harness.minimum` | 이 서버와 함께 쓸 수 있는 가장 낮은 스킬 버전 | `content/`에 직접 적어요 |
 
-- 서버는 버전만 알려줘요. 내려받을 주소나 설치 명령을 응답에 담지 않아요. 하네스는 원격이 알려준 주소에서 코드를 받지 않고, 저장소 README의 설치 안내를 따라요.
-- 도구 이름, 입력, 응답 형식, 섹션 키, 가이드 주제를 호환되지 않게 바꾸면 `harness.minimum`을 그 변경을 지원하는 하네스 버전으로 올려요.
+- 스킬과 훅은 `@eli-design/ui` 패키지에 함께 들어 있어서 버전이 같아요. 그래서 하네스의 최신 버전은 따로 없고 `ui.latest`가 곧 최신 스킬 버전이에요.
+- 서버는 버전만 알려줘요. 내려받을 주소나 설치 명령을 응답에 담지 않아요. 하네스는 원격이 알려준 주소에서 코드를 받지 않고, 설치된 패키지 안의 파일을 복사해요.
+- 도구 이름, 입력, 응답 형식, 섹션 키, 가이드 주제를 호환되지 않게 바꾸면 `harness.minimum`을 그 변경을 지원하는 `@eli-design/ui` 버전으로 올려요.
 - 아직 npm에 게시하지 않은 버전을 `ui.latest`로 내보내지 않아요. 게시한 뒤에 문서 앱을 배포해요.
 - 값은 빌드할 때 정해져요. 실행 중에 npm에 묻지 않아요.
 
@@ -288,7 +288,7 @@
 | 주제 | 읽는 명령 | 담아야 하는 것 |
 | --- | --- | --- |
 | `install` | 기본 동작, `/eli-design-system`, `/eli-doctor` | 지원하는 프레임워크와 버전, 패키지 매니저별 설치 명령, 필요한 peer dependency, 별도 CSS import가 필요 없다는 것, 설치가 끝났는지 확인하는 방법 |
-| `font` | `/eli-design-system` | ELI 컴포넌트의 글꼴을 프로젝트가 고른 글꼴로 바꾸는 방법(`--eli-font-family-sans`), ELI가 쓰는 굵기와 그 글꼴이 갖춰야 하는 조건. 어떤 글꼴을 고를지는 하네스의 `fonts.md`가 다뤄요 |
+| `font` | `/eli-design-system`, `/eli-doctor` | Pretendard 공식 안내의 가변 다이나믹 서브셋을 프레임워크별로 연결하는 방법, `next/font/local`을 쓰지 않는 이유, 전역 진입점에 한 번만 연결한다는 것, 이미 연결되어 있는지 확인하는 방법. 글꼴은 Pretendard로 고정이에요 |
 | `design-system-page` | `/eli-design-system`, `/eli-setup` | 페이지의 구역과 순서, 구역마다 보여줄 것, 토큰과 컴포넌트를 보여주는 방식 |
 | `verify` | `/eli-verify` | 점검 규칙과 예외, 네이티브 요소와 ELI 컴포넌트의 대응 표, 하네스의 기본 기준보다 엄격하게 볼 값 |
 | `icon` | `/eli-icon` | 커스텀 아이콘의 캔버스, 선 굵기, 모서리, 색 규칙. `ICON.md` 초안의 기본값보다 먼저 적용돼요 |
@@ -315,10 +315,10 @@
 | 하네스가 쓰는 곳 | 의존하는 것 |
 | --- | --- |
 | 세션 시작 훅, `eli` 스킬 | 서버 이름 `eli-docs`, 도구 이름 일곱 개, 섹션 키 `when-to-use`·`examples` |
-| `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page`, CSS 변수 `--eli-font-family-sans` |
+| `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page` |
 | `/eli-verify` | `list_components`, `get_tokens`, 섹션 `do-dont`, 가이드 `verify` |
-| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`, `get_versions` |
-| `/eli-update`, `/eli-setup` | `get_versions`의 `ui.latest`·`ui.docs`·`harness.latest`·`harness.minimum`, 가이드 `install` |
+| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`·`font`, `get_versions` |
+| `/eli-update`, `/eli-setup` | `get_versions`의 `ui.latest`·`ui.docs`·`harness.minimum`, 가이드 `install` |
 | `/eli-icon` | `search`, 가이드 `icon` |
 
 ## 버전 알림의 흐름
@@ -338,7 +338,7 @@ sequenceDiagram
   Agent->>User: "버전을 확인한 지 오래됐다고 알려요"
   Agent->>Design: "기록된 버전을 읽어요"
   Agent->>Server: "get_versions"
-  Server-->>Agent: "ui.latest, ui.docs, harness.latest, harness.minimum"
+  Server-->>Agent: "ui.latest, ui.docs, harness.minimum"
   Agent->>User: "지금 버전과 최신 버전을 비교해 보여주고 올릴지 물어요"
   User-->>Agent: "올려요 / 나중에 해요"
   Agent->>Design: "설치된 버전과 오늘 날짜를 적어요"
@@ -348,11 +348,11 @@ sequenceDiagram
 
 | 단계 | 맡는 곳 | 하는 일 |
 | --- | --- | --- |
-| 기록 | 소비 프로젝트의 `DESIGN.md` | `## 버전`에 쓰는 `@eli-design/ui` 버전, 하네스 버전, 마지막으로 확인한 날짜를 적어요 |
-| 알림 | 세션 시작 훅 | 날짜만 읽어요. 14일이 지났거나 기록이 없으면 에이전트에게 알려요. 네트워크를 쓰지 않아요 |
+| 기록 | 소비 프로젝트의 `DESIGN.md` | `## 버전`에 쓰는 `@eli-design/ui` 버전, 복사한 스킬의 버전, 마지막으로 확인한 날짜를 적어요 |
+| 알림 | 세션 시작 훅 | 날짜를 읽어 14일이 지났거나 기록이 없으면 알려요. 설치된 패키지와 복사한 스킬의 버전이 다른 것도 알려요. 네트워크를 쓰지 않아요 |
 | 확인 | `/eli-update` | `get_versions`를 불러 설치된 버전과 비교해요 |
 | 답 | 원격 MCP | 최신 버전과 최소 하네스 버전을 돌려줘요 |
-| 올리기 | `/eli-update` | 사용자에게 확인받은 뒤 패키지 매니저와 저장소의 설치 안내로 올려요 |
+| 올리기 | `/eli-update` | 사용자에게 확인받은 뒤 패키지 매니저로 `@eli-design/ui`를 올리고, 패키지 안의 스킬과 훅을 프로젝트로 다시 복사해요 |
 
 서버는 알림을 보내지 않아요. 푸시, 웹훅, 구독 같은 기능을 만들지 않아요. 알림은 로컬의 훅이 날짜를 보고 시작하고, 서버는 물어봤을 때 답하기만 해요.
 
@@ -365,21 +365,20 @@ sequenceDiagram
 | 설치된 `@eli-design/ui`가 `ui.latest`와 같아요 | 최신이에요. 날짜만 갱신해요 |
 | 설치된 `@eli-design/ui`가 `ui.latest`보다 낮아요 | 새 버전이 있어요. 올릴지 물어요 |
 | 설치된 `@eli-design/ui`가 `ui.docs`와 달라요 | 문서의 props가 설치된 버전과 다를 수 있어요 |
-| 설치된 하네스가 `harness.latest`보다 낮아요 | 하네스의 새 버전이 있어요. 올릴지 물어요 |
-| 설치된 하네스가 `harness.minimum`보다 낮아요 | 반드시 올려야 해요. 다른 작업보다 먼저 올리자고 해요 |
+| 복사한 스킬이 `harness.minimum`보다 낮아요 | 반드시 올려야 해요. 다른 작업보다 먼저 올리자고 해요 |
 | 서버에 연결할 수 없거나 오류가 돌아와요 | 확인하지 못했어요. 날짜를 갱신하지 않아요 |
 
-버전은 SemVer로 비교해요. 그래서 네 값은 모두 `1.2.3` 형식의 온전한 버전이어야 해요. `latest`, `^0.2.0`, `v0.2.0` 같은 값을 돌려주지 않아요.
+버전은 SemVer로 비교해요. 그래서 세 값은 모두 `1.2.3` 형식의 온전한 버전이어야 해요. `latest`, `^0.2.0`, `v0.2.0` 같은 값을 돌려주지 않아요.
 
 ### 서버가 지켜야 하는 것
 
 - **게시한 뒤에 배포해요.** `ui.latest`에는 npm에 실제로 게시된 버전만 내보내요. 게시 전에 문서 앱을 먼저 배포하면 하네스가 설치할 수 없는 버전을 올리라고 안내해요. 릴리스 순서는 npm 게시, 그다음 문서 앱 배포예요.
-- **값을 빌드할 때 정해요.** `ui.latest`는 `packages/ui/package.json`, `harness.latest`는 `packages/harness/skills/eli/VERSION`에서 읽어요. 실행 중에 npm이나 GitHub에 묻지 않아요. 외부 서비스가 느리거나 죽어도 답할 수 있어야 해요.
+- **값을 빌드할 때 정해요.** `ui.latest`는 `packages/ui/package.json`에서 읽어요. 실행 중에 npm이나 GitHub에 묻지 않아요. 외부 서비스가 느리거나 죽어도 답할 수 있어야 해요.
 - **`harness.minimum`은 사람이 올려요.** 도구 이름, 입력, 응답 형식, 섹션 키, 가이드 주제를 예전 하네스가 쓸 수 없게 바꿀 때만 올려요. 호환되는 추가(새 선택 필드, 새 가이드 주제)에는 올리지 않아요. 필요 없이 올리면 모든 사용자에게 "반드시 올려야 해요"가 나가요.
-- **`harness.minimum`은 `harness.latest`보다 높을 수 없어요.** 빌드할 때 검사해서 어기면 빌드를 실패시켜요.
+- **`harness.minimum`은 `ui.latest`보다 높을 수 없어요.** 빌드할 때 검사해서 어기면 빌드를 실패시켜요.
 - **응답에 주소나 명령을 담지 않아요.** 내려받을 주소, 설치 명령, 스크립트를 넣지 않아요. 하네스는 서버가 알려준 곳에서 코드를 받지 않아요. 서버나 도메인이 뚫려도 사용자의 컴퓨터에서 코드가 실행되는 통로가 되지 않게 하기 위해서예요.
 - **입력 없이 항상 같은 형식으로 답해요.** 이 도구는 프로젝트의 버전을 받지 않아요. 비교는 하네스가 해요. 서버가 사용자의 버전을 알 필요가 없고, 기록하지도 않아요.
-- **예전 하네스도 이 도구를 부를 수 있어야 해요.** `get_versions`의 이름과 네 필드는 바꾸지 않아요. 이 도구가 깨지면 예전 하네스는 자신이 낡았다는 것을 알 방법이 없어요. 필드를 더할 수는 있지만 빼거나 이름을 바꾸지 않아요.
+- **예전 하네스도 이 도구를 부를 수 있어야 해요.** `get_versions`의 이름과 세 필드는 바꾸지 않아요. 이 도구가 깨지면 예전 하네스는 자신이 낡았다는 것을 알 방법이 없어요. 필드를 더할 수는 있지만 빼거나 이름을 바꾸지 않아요.
 
 ### 확인하는 간격
 
@@ -391,10 +390,9 @@ sequenceDiagram
 
 ### 구현할 때 확인해요
 
-- `get_versions`가 네 필드를 모두 온전한 SemVer 문자열로 돌려줘요.
+- `get_versions`가 세 필드를 모두 온전한 SemVer 문자열로 돌려줘요.
 - `packages/ui/package.json`의 버전을 올리고 다시 빌드하면 `ui.latest`가 바뀌어요.
-- `packages/harness/skills/eli/VERSION`을 올리고 다시 빌드하면 `harness.latest`가 바뀌어요.
-- `harness.minimum`이 `harness.latest`보다 높으면 빌드가 실패해요.
+- `harness.minimum`이 `ui.latest`보다 높으면 빌드가 실패해요.
 - GET API `/api/v1/versions`가 같은 내용을 돌려줘요.
 - 하네스의 `/eli-update`로 "최신이에요", "새 버전이 있어요", "반드시 올려야 해요" 세 경우를 실제로 확인해요.
 

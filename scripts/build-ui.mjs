@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, rm } from 'node:fs/promises';
+import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +20,13 @@ export async function buildUi(directory = join(root, 'packages/ui')) {
     }
   }
   await copyAssets(join(directory, 'src'), join(directory, 'dist'));
+
+  // 엘리의 스킬과 훅을 패키지에 함께 넣어요. 컴포넌트와 스킬이 항상 같은 버전으로 설치돼요.
+  const harness = join(directory, 'harness');
+  await rm(harness, { recursive: true, force: true });
+  await cp(join(root, 'packages/harness'), harness, { recursive: true });
+  const { version } = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
+  await writeFile(join(harness, 'skills/eli/VERSION'), `${version}\n`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await buildUi();

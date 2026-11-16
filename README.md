@@ -34,7 +34,6 @@ AI는 매번 처음부터 다시 정해요. 그래서 가장 흔한 선택을 �
 | --- | --- |
 | 화면마다 색과 간격이 달라요 | 디자인 토큰을 먼저 만들고, 모든 화면이 토큰만 쓰게 해요 |
 | 어디서 본 듯한 디자인이에요 | 서비스의 기획과 닮고 싶은 제품을 듣고 `DESIGN.md`에 방향을 정해요 |
-| 어디서나 보는 기본 글꼴이에요 | 상업적으로 쓸 수 있고 흔하지 않은 글꼴 후보를 화면으로 보여주고 고르게 해요 |
 | 버튼마다 말투가 달라요 | `UX-WRITING.md`에 말투와 용어를 정하고 모든 문구가 따르게 해요 |
 | 아이콘이 제각각이고 너무 많아요 | `ICON.md`에 스타일을 정하고, 꼭 필요한 자리에만 만들어요 |
 | 버튼과 입력창을 매번 새로 만들어요 | 검증된 컴포넌트 `@eli-design/ui`를 문서를 읽고 정확하게 써요 |
@@ -45,7 +44,7 @@ AI는 매번 처음부터 다시 정해요. 그래서 가장 흔한 선택을 �
 ```mermaid
 flowchart TD
   Start["에이전트에게 설치를 요청해요"] --> Ask["1. 엘리가 서비스 기획과 디자인 레퍼런스를 물어요"]
-  Ask --> Make["2. DESIGN.md, UX-WRITING.md, ICON.md를 만들고 글꼴, 토큰, 디자인 시스템을 만들어요"]
+  Ask --> Make["2. DESIGN.md, UX-WRITING.md, ICON.md를 만들고 토큰과 디자인 시스템을 만들어요"]
   Make --> Show["디자인 시스템 페이지를 내 컴퓨터에서 띄워 보여줘요"]
   Show --> Feedback["3. 피드백을 받아 고쳐요"]
   Feedback -->|"더 고칠 게 있어요"| Show
@@ -57,7 +56,7 @@ flowchart TD
 
 ### 새로 시작하는 프로젝트
 
-엘리가 두 가지만 물어요. 어떤 서비스인지, 그리고 당근이나 토스처럼 닮고 싶은 제품이 무엇인지예요. 답을 바탕으로 디자인 방향, 문구 규칙, 아이콘 스타일을 정하고, 서비스에 맞는 글꼴을 골라 적용하고, 디자인 토큰을 만들어요. 그리고 한 페이지에 모아 내 컴퓨터에서 보여줘요. 보고 고칠 점을 말하면 문서부터 고쳐서 다시 보여줘요.
+엘리가 두 가지만 물어요. 어떤 서비스인지, 그리고 당근이나 토스처럼 닮고 싶은 제품이 무엇인지예요. 답을 바탕으로 디자인 방향, 문구 규칙, 아이콘 스타일을 정하고, 디자인 토큰을 만들어요. 그리고 한 페이지에 모아 내 컴퓨터에서 보여줘요. 보고 고칠 점을 말하면 문서부터 고쳐서 다시 보여줘요.
 
 ### 이미 진행 중인 프로젝트
 
@@ -78,7 +77,7 @@ flowchart TD
 | `/eli-setup` | 처음 셋업해요. 묻고, 만들고, 다듬고, 기존 화면을 옮겨요 |
 | `/eli-doctor` | 설치와 설정이 올바른지 점검하고 다음에 할 일을 알려줘요 |
 | `/eli-design-md` | 서비스 기획과 디자인 방향을 `DESIGN.md`에 정리해요 |
-| `/eli-design-system` | 글꼴을 고르고, 디자인 토큰을 만들고, 디자인 시스템 페이지를 띄워 보여줘요 |
+| `/eli-design-system` | 글꼴을 연결하고, 디자인 토큰을 만들고, 디자인 시스템 페이지를 띄워 보여줘요 |
 | `/eli-verify` | 기준을 따르지 않는 코드와 깨지기 쉬운 화면을 찾아 고쳐요 |
 | `/eli-ux-writing` | 문구 규칙을 정하고 화면의 문구를 다듬어요 |
 | `/eli-update` | 쓰는 버전을 확인하고, 새 버전이 있으면 알린 뒤 올려요 |
@@ -96,7 +95,7 @@ flowchart TD
 
 | 기능 | 상태 |
 | --- | --- |
-| 스킬과 훅 설치 | 돼요 |
+| 스킬과 훅 설치 | 돼요. npm 게시 전에는 저장소를 받아서 설치해요 |
 | `DESIGN.md`, `UX-WRITING.md`, `ICON.md` 만들기 | 돼요 |
 | CSS, 접근성, React 코드 기준 지키기 | 돼요 |
 | 문구 다듬기, 커스텀 아이콘 만들기 | 돼요 |
@@ -111,105 +110,27 @@ flowchart TD
 
 ## AI 에이전트가 읽는 설치 안내
 
-이 섹션은 사용자가 이 저장소의 링크를 주고 설치를 요청했을 때 AI 에이전트가 읽고 실행해요. 순서대로 진행하고, 건너뛴 단계는 마지막 보고에 적어요.
+이 섹션은 사용자가 이 저장소의 링크를 주고 설치를 요청했을 때 AI 에이전트가 읽고 실행해요. 엘리의 스킬과 훅은 `@eli-design/ui` 패키지에 함께 들어 있어요.
 
-### 1. 프로젝트를 확인해요
+1. 지금 폴더가 사용자의 프로젝트 루트인지 확인해요. `package.json`이 없으면 어디에 설치할지 물어요.
+2. 프로젝트의 패키지 매니저로 `@eli-design/ui`를 설치해요. 이미 설치되어 있으면 건너뛰어요.
+3. `node_modules/@eli-design/ui/harness/INSTALL.md`를 읽고 그 순서대로 진행해요. 스킬 복사, 훅 등록, 셋업 시작이 모두 그 문서에 있어요.
+4. 설치한 것, 건너뛴 단계와 그 이유, 확인하지 못한 것을 사용자에게 알려요.
 
-- 지금 폴더가 사용자의 프로젝트 루트인지 확인해요. `package.json`이 없으면 어디에 설치할지 물어요.
-- 어떤 에이전트로 실행 중인지 확인해요. 설치 위치가 달라요.
-- Node.js가 있는지 확인해요. 훅이 Node.js로 실행돼요.
-
-### 2. 저장소를 임시 폴더에 받아요
+**2번이 실패하면:** `@eli-design/ui`는 아직 npm에 게시하지 않았어요. 설치할 수 없으면 사용자에게 알리고, 계속할지 물어요. 계속하면 저장소를 사용자의 프로젝트 밖 임시 폴더에 받아 `packages/harness/INSTALL.md`를 따라요. 이 경우 스킬과 훅만 설치되고 컴포넌트는 설치되지 않아요.
 
 ```bash
 git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 ```
 
-사용자의 프로젝트 안에 받지 않아요. 설치가 끝나면 임시 폴더를 지워요.
-
-### 3. 스킬을 복사해요
-
-`<임시 폴더>/eli/packages/harness/skills/` 안의 폴더를 모두 통째로 복사해요. 폴더 안의 `template.md`와 `references/`도 함께 복사해요. 스킬끼리 서로의 파일을 읽으므로 일부만 복사하지 않아요.
-
-| 에이전트 | 복사할 위치 |
-| --- | --- |
-| Claude Code | `<프로젝트>/.claude/skills/` |
-| Codex | `<프로젝트>/.agents/skills/` |
-
-같은 이름의 폴더가 이미 있으면 덮어쓰기 전에 사용자에게 물어요.
-
-### 4. 훅을 등록해요
-
-훅은 사용자의 컴퓨터에서 명령을 실행해요. 등록하기 전에 무엇을 등록하는지 사용자에게 알려요.
-
-| 훅 | 하는 일 |
-| --- | --- |
-| `session-start.mjs` | 세션을 시작할 때 프로젝트가 ELI를 쓰면 짧은 지침을 알려줘요. 파일을 바꾸지 않아요 |
-| `post-edit.mjs` | 화면 파일을 고친 뒤 직접 쓴 색상 값이 있으면 알려줘요. 파일을 바꾸지 않아요 |
-
-**Claude Code:** `<임시 폴더>/eli/packages/harness/hooks/`의 두 파일을 `<프로젝트>/.claude/hooks/eli/`에 복사하고, `<프로젝트>/.claude/settings.json`에 아래 내용을 합쳐요. 파일이 이미 있으면 기존 설정을 지우지 않고 `hooks` 안에 더해요.
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          { "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/eli/session-start.mjs", "timeout": 10 }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          { "type": "command", "command": "node \"$CLAUDE_PROJECT_DIR\"/.claude/hooks/eli/post-edit.mjs", "timeout": 10 }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**Codex:** `session-start.mjs`만 `<프로젝트>/.codex/hooks/eli/`에 복사하고, `<프로젝트>/.codex/hooks.json`에 아래 내용을 합쳐요. `post-edit.mjs`는 Codex의 입력 형식을 아직 지원하지 않아서 등록하지 않아요. 등록한 뒤 사용자에게 `/hooks`에서 이 훅을 확인하고 신뢰해 달라고 안내해요. 신뢰하기 전에는 실행되지 않아요.
-
-```json
-{
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          { "type": "command", "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/eli/session-start.mjs\"", "timeout": 10 }
-        ]
-      }
-    ]
-  }
-}
-```
-
-### 5. 컴포넌트 문서 서버를 연결해요
-
-원격 MCP 서버 `eli-docs`는 아직 공개 주소가 없어요. 이 단계는 건너뛰고 사용자에게 알려요. 주소가 정해지면 이 문서와 `eli` 스킬의 연결 방법을 갱신할 예정이에요.
-
-### 6. `@eli-design/ui`를 설치해요
-
-`@eli-design/ui`는 아직 npm에 게시하지 않았어요. 이 단계는 건너뛰고 사용자에게 알려요. 저장소의 소스를 프로젝트에 복사하거나 다른 방법으로 대신 설치하지 않아요.
-
-### 7. 정리하고 셋업을 시작해요
-
-1. 임시 폴더를 지워요.
-2. Claude Code에서 `.claude/skills` 폴더를 이번에 새로 만들었으면 사용자에게 `/reload-skills`를 실행해 달라고 안내해요.
-3. `eli-setup` 스킬을 읽고 그대로 진행해요. 프로젝트에 화면 코드가 이미 있으면 4단계(기존 화면 전체 옮기기)까지 진행해요.
-
-### 8. 보고해요
-
-설치한 스킬과 훅, 바꾼 설정 파일, 건너뛴 단계와 그 이유, 확인하지 못한 것을 사용자에게 알려요. 설치하지 않은 것을 설치했다고 적지 않아요.
+저장소의 소스를 프로젝트에 복사해서 컴포넌트를 대신 설치하지 않아요. 설치하지 않은 것을 설치했다고 적지 않아요.
 
 ## 컴포넌트 라이브러리 `@eli-design/ui`
 
 엘리가 화면을 만들 때 쓰는 React 컴포넌트예요. 에이전트 없이 직접 써도 돼요.
 
 - 컴포넌트만 import하면 기본 CSS와 디자인 토큰이 함께 연결돼요.
+- 엘리의 스킬과 훅이 패키지에 함께 들어 있어요. 컴포넌트와 항상 같은 버전이에요.
 - `@eli-design/ui/button`처럼 역할별 경로에서 필요한 컴포넌트를 가져와요.
 - `className`과 `style`로 일반 CSS, CSS Modules, Tailwind CSS, Emotion, vanilla-extract 스타일을 적용할 수 있어요.
 - Vite와 Next.js App Router의 빌드·SSR·hydration을 실제 패키지 tarball로 확인해요.
@@ -284,7 +205,19 @@ Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 확
 
 ### 폰트
 
-`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. 엘리와 함께 쓰면 서비스에 맞는 글꼴을 골라 이 변수를 그 글꼴로 바꿔요.
+`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요.
+
+[Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. 엘리와 함께 쓰면 엘리가 연결해 줘요.
+
+```bash
+npm i pretendard
+```
+
+```ts
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+```
+
+Next.js의 `next/font/local`로 불러오면 글꼴이 다른 이름으로 등록돼서 ELI 컴포넌트에 적용되지 않아요. 위의 CSS import를 써요.
 
 ### 지원 환경
 
@@ -325,7 +258,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm dev` | Storybook 개발 서버를 실행해요 |
 | `pnpm dev:docs` | 문서·랜딩 페이지 Next.js 개발 서버를 실행해요 |
 | `pnpm build:docs` | 문서·랜딩 페이지를 프로덕션 빌드해요 |
-| `pnpm build` | ESM·타입·CSS 배포 파일을 만들어요 |
+| `pnpm build` | ESM·타입·CSS 배포 파일을 만들고 하네스를 패키지에 복사해요 |
 | `pnpm typecheck` | TypeScript 타입을 확인해요 |
 | `pnpm lint` | 코드 규칙을 확인해요 |
 | `pnpm test:harness` | 하네스의 훅 출력과 스킬 형식을 확인해요 |
@@ -348,12 +281,12 @@ ELI/
 ├── apps/docs/          # 문서·랜딩 페이지와 원격 MCP를 제공할 Next.js 앱
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
 ├── packages/ui/        # 배포할 @eli-design/ui 소스
-├── packages/harness/   # 엘리의 스킬과 훅
+├── packages/harness/   # 엘리의 스킬과 훅. 빌드할 때 @eli-design/ui에 함께 들어가요
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
 ```
 
-`packages/ui`만 `@eli-design/ui`로 배포해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
+`packages/ui`를 `@eli-design/ui`로 배포하고, `packages/harness`의 스킬과 훅이 그 패키지에 함께 들어가요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
 
 ## 로드맵
 
