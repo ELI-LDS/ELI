@@ -27,6 +27,8 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 | --- | --- | --- |
 | 원격 연결 | `eli-docs` MCP에 연결되어 있는지 | `list_components`를 호출해요 |
 | 설치 | `@eli-design/ui`가 `package.json`에 있고 실제로 설치되어 있는지 | `package.json`과 `node_modules/@eli-design/ui/package.json` |
+| 버전 기록 | `DESIGN.md`의 `## 버전`이 실제로 설치된 `@eli-design/ui`·하네스(`eli` 스킬 폴더의 `VERSION`)와 같은지, 마지막으로 확인한 날짜가 14일 안인지 | `DESIGN.md`, `node_modules/@eli-design/ui/package.json` |
+| 최신 버전 | 설치된 버전이 최신인지, 하네스가 서버의 최소 버전 이상인지 | `get_versions` |
 | 버전 호환 | 설치된 React가 `@eli-design/ui`의 `peerDependencies`를 만족하는지 | 설치된 두 패키지의 `package.json` |
 | React 중복 | React가 두 벌 설치되어 있지 않은지 | 패키지 매니저의 의존성 조회 명령 |
 | 설치 방법 | 문서의 설치 단계를 모두 따랐는지, 문서에 없는 설정을 추가하지 않았는지 | `get_guide`의 `install` |
@@ -66,6 +68,7 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 | `DESIGN.md`만 없어요 | `/eli-design-md` |
 | 토큰 파일이 없어요 | `/eli-design-system` |
 | `UX-WRITING.md`가 없어요 | `/eli-ux-writing` |
+| 새 버전이 있거나 확인한 지 14일이 지났어요 | `/eli-update` |
 | 화면 코드가 이미 있어요 | `/eli-verify` |
 | 모두 준비됐어요 | 만들고 싶은 화면을 말해 달라고 해요 |
 

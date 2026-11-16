@@ -59,7 +59,7 @@
 
 ## 도구
 
-도구는 여섯 개예요. 도구 설명도 에이전트의 컨텍스트를 차지하므로 늘리지 않아요. 새 기능은 기존 도구의 파라미터로 먼저 검토해요.
+도구는 일곱 개예요. 도구 설명도 에이전트의 컨텍스트를 차지하므로 늘리지 않아요. 새 기능은 기존 도구의 파라미터로 먼저 검토해요.
 
 `description`은 아래 문구를 그대로 등록해요. 에이전트는 이 문구를 보고 어느 도구를 부를지 정해요.
 
@@ -225,6 +225,32 @@
 - `body`는 원본 마크다운 그대로예요.
 - 가이드는 통째로 줘요. 한 가이드가 한 번에 읽기에 길어지면 주제를 나눠요.
 
+### `get_versions`
+
+- **설명:** `게시된 @eli-design/ui와 ELI 하네스의 최신 버전을 돌려줘요. 프로젝트가 쓰는 버전이 최신인지 확인할 때 써요.`
+- **GET API:** `/api/v1/versions`
+
+입력은 없어요.
+
+```json
+{
+  "ui": { "latest": "0.2.0", "docs": "0.2.0" },
+  "harness": { "latest": "0.3.1", "minimum": "0.3.0" }
+}
+```
+
+| 필드 | 뜻 | 가져오는 곳 |
+| --- | --- | --- |
+| `ui.latest` | npm에 게시된 `@eli-design/ui`의 최신 버전 | 빌드할 때의 `packages/ui/package.json`의 `version` |
+| `ui.docs` | 이 서버의 문서가 설명하는 `@eli-design/ui`의 버전 | 같은 값. 문서를 버전별로 제공하게 되면 달라질 수 있어요 |
+| `harness.latest` | 하네스의 최신 버전 | `packages/harness/skills/eli/VERSION` |
+| `harness.minimum` | 이 서버와 함께 쓸 수 있는 가장 낮은 하네스 버전 | `content/`에 직접 적어요 |
+
+- 서버는 버전만 알려줘요. 내려받을 주소나 설치 명령을 응답에 담지 않아요. 하네스는 원격이 알려준 주소에서 코드를 받지 않고, 저장소 README의 설치 안내를 따라요.
+- 도구 이름, 입력, 응답 형식, 섹션 키, 가이드 주제를 호환되지 않게 바꾸면 `harness.minimum`을 그 변경을 지원하는 하네스 버전으로 올려요.
+- 아직 npm에 게시하지 않은 버전을 `ui.latest`로 내보내지 않아요. 게시한 뒤에 문서 앱을 배포해요.
+- 값은 빌드할 때 정해져요. 실행 중에 npm에 묻지 않아요.
+
 ## 콘텐츠
 
 도구가 돌려주는 내용의 형식이에요. 원본은 `apps/docs/content/source/`에 마크다운으로 써요.
@@ -288,10 +314,11 @@
 
 | 하네스가 쓰는 곳 | 의존하는 것 |
 | --- | --- |
-| 세션 시작 훅, `eli` 스킬 | 서버 이름 `eli-docs`, 도구 이름 여섯 개, 섹션 키 `when-to-use`·`examples` |
+| 세션 시작 훅, `eli` 스킬 | 서버 이름 `eli-docs`, 도구 이름 일곱 개, 섹션 키 `when-to-use`·`examples` |
 | `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page`, CSS 변수 `--eli-font-family-sans` |
 | `/eli-verify` | `list_components`, `get_tokens`, 섹션 `do-dont`, 가이드 `verify` |
-| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install` |
+| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`, `get_versions` |
+| `/eli-update`, `/eli-setup` | `get_versions`의 `ui.latest`·`ui.docs`·`harness.latest`·`harness.minimum`, 가이드 `install` |
 | `/eli-icon` | `search`, 가이드 `icon` |
 
 ## 구현 순서
@@ -300,13 +327,13 @@
 2. 빌드 스크립트: 마크다운 파싱과 검증, props 추출, 토큰 추출, 검색 색인
 3. `content/query.ts`: 목록, 단건, 섹션, props, 토큰, 가이드, 검색 조회 함수
 4. GET API: `app/api/v1/`의 Route Handler. 빌드할 때 정적으로 만들어요
-5. MCP 도구: `backend/mcp/server.ts`에 여섯 개 등록
+5. MCP 도구: `backend/mcp/server.ts`에 일곱 개 등록
 6. 문서 원본: 가이드 `install`·`font`와 컴포넌트 문서 하나로 시작해요
 7. Cloudflare 배포와 도메인 연결
 
 ### 완료 기준
 
-- 도구 여섯 개가 이 문서의 입력과 응답 형식대로 동작해요.
+- 도구 일곱 개가 이 문서의 입력과 응답 형식대로 동작해요.
 - 없는 이름과 허용하지 않는 값에 `allowed`가 담긴 오류를 돌려줘요.
 - 같은 조회에 MCP 도구와 GET API가 같은 내용을 돌려줘요.
 - 빌드 검증이 위의 다섯 경우를 실패시켜요.
@@ -318,6 +345,6 @@
 
 - **도메인:** 정해지면 이 문서와 `packages/harness/skills/eli/SKILL.md`의 주소를 함께 고쳐요.
 - **버전별 문서:** npm 배포 전이라 최신 문서 하나만 제공해요. 배포를 시작하면 버전별 조회가 필요한지 검토해요.
-- **변경 내역 도구:** 버전을 올릴 때 바뀐 API를 알려주는 도구는 첫 배포 뒤에 검토해요.
+- **변경 내역 도구:** 버전 사이에 바뀐 props와 토큰을 알려주는 도구는 첫 배포 뒤에 검토해요. 그 전에는 `/eli-update`가 패키지의 변경 내역과 타입 검사로 확인해요.
 - **압축 응답 형식:** 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **사용량 제한:** 인증이 없으므로 남용을 막을 방법이 필요할 수 있어요. 배포할 때 Cloudflare의 설정으로 검토해요.
