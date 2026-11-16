@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { cpSync, mkdtempSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -124,8 +124,29 @@ test('버전을 확인한 지 14일이 지나면 확인하라고 알려요', () 
   assert.match(runHook(pkg, true), /버전 기록이 없어요/);
 });
 
-test('하네스 버전 파일이 있고 초안이 버전을 기록해요', () => {
-  assert.match(readFileSync(join(harness, 'skills/eli/VERSION'), 'utf8'), /^\d+\.\d+\.\d+\n$/);
+test('초안이 버전을 기록하고 원본에는 버전 파일을 두지 않아요', () => {
+  // VERSION은 빌드가 packages/ui/package.json의 version으로 만들어요.
+  assert.ok(!readdirSync(join(harness, 'skills/eli')).includes('VERSION'));
   const template = readFileSync(join(harness, 'skills/eli-design-md/template.md'), 'utf8');
   assert.match(template, /^\| 마지막으로 확인한 날짜 \| /m);
+  assert.match(readFileSync(join(harness, 'INSTALL.md'), 'utf8'), /^## 2\. 스킬을 복사해요$/m);
+});
+
+test('설치된 패키지와 복사한 스킬의 버전이 다르면 알려요', () => {
+  const setup = (packageVersion, skillVersion) => {
+    const dir = mkdtempSync(join(tmpdir(), 'eli-harness-'));
+    writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { '@eli-design/ui': packageVersion } }));
+    writeFileSync(join(dir, 'DESIGN.md'), `| 마지막으로 확인한 날짜 | ${new Date().toISOString().slice(0, 10)} |`);
+    for (const [path, text] of [
+      ['node_modules/@eli-design/ui/package.json', JSON.stringify({ version: packageVersion })],
+      ['.claude/skills/eli/VERSION', `${skillVersion}\n`],
+    ]) {
+      mkdirSync(join(dir, path, '..'), { recursive: true });
+      writeFileSync(join(dir, path), text);
+    }
+    return execFileSync(process.execPath, [hook], { cwd: dir, encoding: 'utf8' });
+  };
+
+  assert.match(setup('0.2.0', '0.1.0'), /설치된 @eli-design\/ui는 0\.2\.0인데 프로젝트에 복사된 스킬은 0\.1\.0/);
+  assert.doesNotMatch(setup('0.2.0', '0.2.0'), /복사된 스킬/);
 });

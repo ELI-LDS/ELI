@@ -16,7 +16,7 @@ export async function validatePackage(directory, info) {
   assert.equal(Object.keys(manifest.dependencies ?? {}).length, 0, '실행 의존성 추가 이유와 용량 검토 후 이 기준을 갱신해요.');
   const paths = new Set(info.files.map(file => file.path));
   for (const path of paths) {
-    assert.match(path, /^(dist\/|package\.json$|README\.md$|LICENSE(?:\..*)?$)/);
+    assert.match(path, /^(dist\/|harness\/|package\.json$|README\.md$|LICENSE(?:\..*)?$)/);
     assert.doesNotMatch(path, /(\.stories\.|\.test\.|__tests__|node_modules)/);
   }
   function checkExport(value) {
@@ -24,6 +24,9 @@ export async function validatePackage(directory, info) {
     else for (const child of Object.values(value)) checkExport(child);
   }
   checkExport(manifest.exports);
+  for (const required of ['harness/INSTALL.md', 'harness/skills/eli/SKILL.md', 'harness/skills/eli/VERSION', 'harness/hooks/session-start.mjs']) {
+    assert.ok(paths.has(required), `하네스 파일이 없어요: ${required}`);
+  }
   assert.ok(info.size > 0 && info.unpackedSize > 0 && info.files.length > 0);
 }
 

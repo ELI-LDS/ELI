@@ -10,6 +10,18 @@ React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storyboo
 
 같은 tarball을 npm 11.19.0, pnpm 12.8.1, Yarn Classic 1.22.22, Yarn Modern 4.18.1의 `node-modules`·strict PnP, Bun 1.4.4에서 설치해 타입 검사와 Vite 빌드를 자동 검증해요. 저장소 개발과 lockfile 관리는 pnpm만 사용해요.
 
+## 엘리의 스킬과 훅이 함께 들어 있어요
+
+이 패키지의 `harness/` 폴더에는 AI 에이전트(Claude Code, Codex)가 ELI의 디자인 기준을 지키며 일하게 하는 스킬과 훅이 들어 있어요. 컴포넌트와 항상 같은 버전이에요.
+
+쓰고 있는 에이전트에게 이렇게 말하면 설치해요.
+
+```text
+node_modules/@eli-design/ui/harness/INSTALL.md를 읽고 엘리를 설치해줘
+```
+
+`harness/`의 파일은 컴포넌트 코드가 불러오지 않아요. 앱의 번들에 들어가지 않아요.
+
 ## 컴포넌트 스타일을 바꿔요
 
 ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 덮어쓸 수 있어요. 일반 CSS, CSS Modules, Tailwind CSS, Emotion과 vanilla-extract처럼 최종적으로 클래스 이름을 만드는 방식이라면 같은 API를 사용해요. 별도 ELI 플러그인이나 스타일 도구 의존성은 필요하지 않아요.

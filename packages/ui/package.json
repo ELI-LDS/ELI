@@ -4,7 +4,7 @@
   "description": "ELI React 디자인 컴포넌트 라이브러리",
   "type": "module",
   "license": "MIT",
-  "files": ["dist", "README.md", "LICENSE"],
+  "files": ["dist", "harness", "README.md", "LICENSE"],
   "exports": {
     "./alert": { "types": "./dist/alert/index.d.ts", "import": "./dist/alert/index.js" },
     "./badge": { "types": "./dist/badge/index.d.ts", "import": "./dist/badge/index.js" },

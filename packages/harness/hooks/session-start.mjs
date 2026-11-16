@@ -43,6 +43,28 @@ function versionNotice(designMd, now = Date.now()) {
   return `- ELI 버전을 마지막으로 확인한 지 ${days}일 지났어요(${date}). 사용자에게 알리고 /eli-update로 새 버전이 있는지 확인해요.`;
 }
 
+// 스킬은 패키지에서 프로젝트로 복사해 써요. 패키지를 올린 뒤 스킬을 다시 복사하지 않았으면 알려요.
+function skillsNotice(dir) {
+  const read = (path) => {
+    try {
+      return readFileSync(join(dir, path), 'utf8');
+    } catch {
+      return null;
+    }
+  };
+  const manifest = read('node_modules/@eli-design/ui/package.json');
+  const copied = (read('.claude/skills/eli/VERSION') ?? read('.agents/skills/eli/VERSION'))?.trim();
+  if (!manifest || !copied) return '';
+  let installed;
+  try {
+    installed = JSON.parse(manifest).version;
+  } catch {
+    return '';
+  }
+  if (installed === copied) return '';
+  return `- 설치된 @eli-design/ui는 ${installed}인데 프로젝트에 복사된 스킬은 ${copied}예요. /eli-update로 스킬과 훅을 다시 복사해요.`;
+}
+
 if (installedInProject || usesEli(dir)) {
   let designMd = null;
   try {
@@ -50,6 +72,6 @@ if (installedInProject || usesEli(dir)) {
   } catch {
     // DESIGN.md가 없으면 아직 셋업하지 않은 프로젝트예요.
   }
-  const extra = designMd === null ? NOT_SET_UP : versionNotice(designMd);
-  process.stdout.write(`${INSTRUCTIONS}${extra ? `\n${extra}` : ''}\n`);
+  const extra = [designMd === null ? NOT_SET_UP : versionNotice(designMd), skillsNotice(dir)].filter(Boolean);
+  process.stdout.write(`${[INSTRUCTIONS, ...extra].join('\n')}\n`);
 }
