@@ -11,7 +11,7 @@ const postEdit = join(harness, 'hooks/post-edit.mjs');
 
 function runHook(packageJson, designMd = false) {
   const dir = mkdtempSync(join(tmpdir(), 'eli-harness-'));
-  if (designMd) writeFileSync(join(dir, 'DESIGN.md'), '# 디자인 방향');
+  if (designMd) writeFileSync(join(dir, 'DESIGN.md'), designMd === true ? '# 디자인 방향' : designMd);
   if (packageJson !== undefined) writeFileSync(join(dir, 'package.json'), packageJson);
   return execFileSync(process.execPath, [hook], { cwd: dir, encoding: 'utf8' });
 }
@@ -111,4 +111,21 @@ test('글꼴 안내가 있고 디자인 시스템 스킬이 가리켜요', () =>
   const fonts = readFileSync(join(harness, 'skills/eli-design-system/fonts.md'), 'utf8');
   assert.match(fonts, /^## 쓰지 않는 글꼴$/m);
   assert.match(readFileSync(join(harness, 'skills/eli-design-system/SKILL.md'), 'utf8'), /fonts\.md/);
+});
+
+test('버전을 확인한 지 14일이 지나면 확인하라고 알려요', () => {
+  const pkg = JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } });
+  const daysAgo = (days) => new Date(Date.now() - days * 86_400_000).toISOString().slice(0, 10);
+  const designMd = (date) => `## 버전\n\n| 항목 | 값 |\n| --- | --- |\n| 마지막으로 확인한 날짜 | ${date} |\n`;
+
+  assert.match(runHook(pkg, designMd(daysAgo(30))), /30일 지났어요/);
+  assert.doesNotMatch(runHook(pkg, designMd(daysAgo(3))), /지났어요|버전 기록이 없어요/);
+  assert.match(runHook(pkg, designMd('확인 전')), /버전 기록이 없어요/);
+  assert.match(runHook(pkg, true), /버전 기록이 없어요/);
+});
+
+test('하네스 버전 파일이 있고 초안이 버전을 기록해요', () => {
+  assert.match(readFileSync(join(harness, 'skills/eli/VERSION'), 'utf8'), /^\d+\.\d+\.\d+\n$/);
+  const template = readFileSync(join(harness, 'skills/eli-design-md/template.md'), 'utf8');
+  assert.match(template, /^\| 마지막으로 확인한 날짜 \| /m);
 });
