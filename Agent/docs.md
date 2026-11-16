@@ -81,11 +81,11 @@ frontmatter 필드는 모두 필수예요.
 | --- | --- | --- |
 | `install` | 프레임워크·패키지 매니저별 설치 방법 | 기본 동작, `/eli-design-system`, `/eli-doctor` |
 | `font` | Pretendard 연결 방법 | 기본 동작, `/eli-design-system`, `/eli-doctor` |
-| `design-md` | `DESIGN.md` 질문 목록과 템플릿 | `/eli-design-md` |
 | `design-system-page` | 디자인 시스템 페이지의 구성과 순서 | `/eli-design-system` |
 | `verify` | 점검 규칙, 예외, 네이티브 요소와 ELI 컴포넌트의 대응, 화면 품질 기준(터치 영역 크기 등) | `/eli-verify` |
-| `ux-writing` | `UX-WRITING.md` 질문 목록과 템플릿 | `/eli-ux-writing` |
-| `icon` | 커스텀 아이콘의 그리드·선 굵기·모서리·색 규칙 | `/eli-icon` |
+| `icon` | 커스텀 아이콘의 그리드·선 굵기·모서리·색 규칙. `ICON.md` 초안의 기본값보다 먼저 적용해요 | `/eli-icon` |
+
+`DESIGN.md`, `ICON.md`, `UX-WRITING.md`의 초안은 원격 가이드가 아니라 하네스의 스킬 폴더에 있어요. 원격에는 ELI 자체의 정보만 둬요.
 
 `icon` 가이드는 디자이너에게 규칙을 전달받은 뒤에 써요. 가이드 주제를 추가하거나 이름을 바꾸면 [하네스](harness.md)의 스킬도 함께 고쳐요.
 
