@@ -1,6 +1,12 @@
 import { useRef } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useArgs } from 'storybook/preview-api';
+import {
+  StoryCase,
+  StoryDeviceFrame,
+  StoryOverview,
+  StoryPreviewLayout,
+} from '../components/StoryDeviceFrame.js';
 import { FabMenu } from '@/packages/ui/src/fab/FabMenu/FabMenu.js';
 import type { FabMenuItem } from '@/packages/ui/src/fab/FabMenu/FabMenu.types.js';
 import './FabMenu.stories.css';
@@ -11,20 +17,7 @@ const createItems = (count: number): FabMenuItem[] =>
     label: `${index + 1}번째 액션`,
   }));
 
-function ExampleContent() {
-  return (
-    <div className="eli-fab-story__content" aria-hidden="true">
-      <strong>제목을 입력하세요</strong>
-      <span>서브타이틀입니다</span>
-      <p>
-        FAB는 화면의 주요 액션을 실행하거나 관련된 여러 액션을 펼쳐요.
-        우측 아래 버튼을 눌러 메뉴가 열리고 닫히는 모습을 확인해요.
-      </p>
-    </div>
-  );
-}
-
-function ExampleScreen({
+function FabMenuPreview({
   expanded,
   items,
   label,
@@ -38,8 +31,7 @@ function ExampleScreen({
   showLabel: boolean;
 }) {
   return (
-    <div className="eli-fab-story__screen">
-      <ExampleContent />
+    <>
       <div
         aria-hidden="true"
         className="eli-fab-story__dim"
@@ -53,14 +45,21 @@ function ExampleScreen({
         showLabel={showLabel}
         {...(onExpandedChange === undefined ? {} : { onExpandedChange })}
       />
-    </div>
+    </>
+  );
+}
+
+function ExampleScreen(props: Parameters<typeof FabMenuPreview>[0]) {
+  return (
+    <StoryDeviceFrame label="FAB Menu 미리보기">
+      <FabMenuPreview {...props} />
+    </StoryDeviceFrame>
   );
 }
 
 const meta = {
   title: '컴포넌트/FabMenu',
   component: FabMenu,
-  parameters: { layout: 'centered' },
   args: {
     expanded: false,
     items: createItems(1),
@@ -108,26 +107,24 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="eli-fab-story__overview">
-      <div className="eli-fab-story__case">
-        <strong>닫힘</strong>
+    <StoryOverview description="닫힘과 열림 상태를 각각 모바일 화면의 우측 하단에서 확인해요.">
+      <StoryCase title="닫힘">
         <ExampleScreen
           expanded={false}
           items={createItems(3)}
           label="버튼"
           showLabel={false}
         />
-      </div>
-      <div className="eli-fab-story__case">
-        <strong>열림</strong>
+      </StoryCase>
+      <StoryCase title="열림">
         <ExampleScreen
           expanded
           items={createItems(3)}
           label="버튼"
           showLabel={false}
         />
-      </div>
-    </div>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 
@@ -160,9 +157,8 @@ export const Playground: Story = {
       updateArgs({ items: args.items.filter(item => item.id !== id) });
     };
 
-    return (
-      <div className="eli-fab-story__playground">
-        <div className="eli-fab-story__editor">
+    const editor = (
+      <div className="eli-fab-story__editor">
           <label>
             <span>기본 버튼 이름</span>
             <input
@@ -200,9 +196,12 @@ export const Playground: Story = {
             ))}
             <button onClick={addItem} type="button">메뉴 항목 추가</button>
           </div>
-        </div>
+      </div>
+    );
 
-        <ExampleScreen
+    return (
+      <StoryPreviewLayout device="mobile" editor={editor} label="FAB Menu 직접 바꿔보기">
+        <FabMenuPreview
           expanded={expanded}
           items={args.items}
           label={label}
@@ -212,7 +211,7 @@ export const Playground: Story = {
           }}
           showLabel={showLabel}
         />
-      </div>
+      </StoryPreviewLayout>
     );
   },
 };

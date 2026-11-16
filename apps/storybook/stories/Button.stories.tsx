@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Button } from '@/packages/ui/src/button/Button/Button.js';
 
 const colors = ['brand', 'neutral'] as const;
@@ -29,21 +30,10 @@ interface ButtonGalleryProps {
 
 function ButtonGallery({ description, disabled = false, title }: ButtonGalleryProps) {
   return (
-    <div
-      style={{
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 32,
-        minWidth: 560,
-      }}
-    >
-      <div style={{ display: 'grid', gap: 8 }}>
-        <h2 style={{ fontSize: 24, margin: 0 }}>{title}</h2>
-        <p style={{ color: '#4b5668', margin: 0 }}>{description}</p>
-      </div>
-
-      {colors.map(color => (
-        <section key={color} style={{ display: 'grid', gap: 20 }}>
+    <StoryCase description={description} title={title}>
+      <div style={{ display: 'grid', gap: 32, minWidth: 560 }}>
+        {colors.map(color => (
+          <section key={color} style={{ display: 'grid', gap: 20 }}>
           <h2 style={{ fontSize: 20, margin: 0 }}>{colorNames[color]}</h2>
 
           {sizes.map(size => (
@@ -75,16 +65,16 @@ function ButtonGallery({ description, disabled = false, title }: ButtonGalleryPr
               </div>
             </div>
           ))}
-        </section>
-      ))}
-    </div>
+          </section>
+        ))}
+      </div>
+    </StoryCase>
   );
 }
 
 const meta = {
   title: '컴포넌트/Button',
   component: Button,
-  parameters: { layout: 'centered' },
   args: {
     children: '버튼',
     color: 'brand',
@@ -161,16 +151,13 @@ export const Variants: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 64 }}>
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        색상·형태·크기의 사용 기준은 디자이너와 합의 중이며, 이 화면에서는 정의된 디자인 조합만 비교해요.
-      </p>
+    <StoryOverview description="색상·형태·크기의 사용 기준은 디자이너와 합의 중이며, 이 화면에서는 정의된 디자인 조합만 비교해요.">
       <ButtonGallery
         description="버튼 위에 마우스를 올리거나 누른 채로 Hover와 Pressed 상태를 확인해요."
         title="기본 상태"
       />
       <ButtonGallery description="전체 디자인 조합의 비활성화 상태예요." disabled title="비활성화" />
-    </div>
+    </StoryOverview>
   ),
 };
 

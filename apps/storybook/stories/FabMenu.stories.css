@@ -1,60 +1,31 @@
-.eli-fab-story__screen {
-  position: relative;
-  box-sizing: border-box;
-  width: min(375px, calc(100vw - 48px));
-  height: 620px;
-  overflow: hidden;
-  border: 1px solid #eaf0f9;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(75, 86, 104, 0.2);
-}
-
-.eli-fab-story__content {
-  display: flex;
-  padding: 56px 16px 24px;
-  flex-direction: column;
-  gap: 8px;
-  color: #020812;
-  font-family: var(--eli-font-family-sans, "Pretendard Variable");
-}
-
-.eli-fab-story__content > strong {
-  font-size: 24px;
-}
-
-.eli-fab-story__content > span {
-  color: #8b98aa;
-  font-size: 14px;
-}
-
-.eli-fab-story__content > p {
-  margin: 24px 0 0;
-  color: #4b5668;
-  font-size: 16px;
-  line-height: 1.5;
-}
-
 .eli-fab-story__dim {
+  --_fab-open-duration: 200ms;
+  --_fab-close-duration: 150ms;
+  --_fab-open-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --_fab-close-easing: cubic-bezier(0.4, 0, 1, 1);
   position: absolute;
   z-index: 1;
   inset: 0;
   background: var(--eli-effect-dim, rgba(2, 8, 18, 0.4));
   backdrop-filter: blur(1px);
 
-  /* 항상 렌더링하고 opacity로 페이드 */
+  /* 메뉴의 닫기 모션과 같은 시간으로 Dim을 서서히 걷어내요. */
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   transition:
-    opacity 0ms,
-    visibility 0s linear 50ms;
+    opacity var(--_fab-close-duration) var(--_fab-close-easing),
+    visibility 0s linear var(--_fab-close-duration);
 }
 
 .eli-fab-story__dim[data-visible="true"] {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transition-delay: 0s;
+  /* 메뉴가 펼쳐지는 200ms 동안 Dim도 같은 easing으로 나타나요. */
+  transition:
+    opacity var(--_fab-open-duration) var(--_fab-open-easing),
+    visibility 0s linear 0s;
 }
 
 .eli-fab-story__menu {
@@ -62,18 +33,6 @@
   z-index: 2;
   right: 16px;
   bottom: 24px;
-}
-
-.eli-fab-story__overview,
-.eli-fab-story__playground {
-  display: flex;
-  gap: 32px;
-  align-items: flex-start;
-}
-
-.eli-fab-story__case {
-  display: grid;
-  gap: 12px;
 }
 
 .eli-fab-story__editor {
@@ -130,14 +89,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .eli-fab-story__dim {
-    transition-duration: 0.01ms;
-    transition-delay: 0s;
-  }
-}
-
-@media (max-width: 900px) {
-  .eli-fab-story__overview,
-  .eli-fab-story__playground {
-    flex-direction: column;
+    --_fab-open-duration: 0.01ms;
+    --_fab-close-duration: 0.01ms;
   }
 }

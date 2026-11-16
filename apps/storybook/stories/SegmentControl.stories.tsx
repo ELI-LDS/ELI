@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { SegmentControl } from '@/packages/ui/src/segment-control/SegmentControl/SegmentControl.js';
 import type {
   SegmentControlOptions,
@@ -43,7 +44,6 @@ function SegmentControlPreview(props: SegmentControlProps) {
 const meta = {
   title: '컴포넌트/SegmentControl',
   component: SegmentControl,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '보기 방식',
     options: twoOptions,
@@ -86,9 +86,10 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 56 }}>
+    <StoryOverview>
       {[twoOptions, threeOptions, fourOptions].map(options => (
-        <div key={options.length} style={{ display: 'grid', gap: 16 }}>
+        <StoryCase key={options.length} title={`${options.length}개 항목`}>
+          <div style={{ display: 'grid', gap: 16 }}>
           {options.map(option => (
             <SegmentControl
               aria-label={`${options.length}개 Segment`}
@@ -97,9 +98,10 @@ export const Overview: Story = {
               options={options}
             />
           ))}
-        </div>
+          </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

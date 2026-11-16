@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { FilterChip } from '@/packages/ui/src/chip/FilterChip/FilterChip.js';
 
 const options = [
@@ -10,7 +11,6 @@ const options = [
 const meta = {
   title: '컴포넌트/Chip/FilterChip',
   component: FilterChip,
-  parameters: { layout: 'centered' },
   args: {
     disabled: false,
     label: '컬러',
@@ -55,11 +55,13 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div style={{ display: 'flex', gap: 24 }}>
-      <FilterChip {...args} selectedValues={[]} />
-      <FilterChip {...args} selectedValues={['white']} />
-      <FilterChip {...args} selectedValues={['navy', 'black', 'white']} />
-    </div>
+    <StoryOverview>
+      <StoryCase title="선택 전"><FilterChip {...args} selectedValues={[]} /></StoryCase>
+      <StoryCase title="1개 선택"><FilterChip {...args} selectedValues={['white']} /></StoryCase>
+      <StoryCase title="여러 개 선택">
+        <FilterChip {...args} selectedValues={['navy', 'black', 'white']} />
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

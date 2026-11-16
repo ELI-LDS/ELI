@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Toggle } from '@/packages/ui/src/toggle/Toggle/Toggle.js';
 
 const meta = {
   title: '컴포넌트/Toggle',
   component: Toggle,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '토글',
     defaultChecked: false,
@@ -37,10 +37,10 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ alignItems: 'center', display: 'flex', gap: 24 }}>
-      <Toggle aria-label="Off 토글" />
-      <Toggle aria-label="On 토글" defaultChecked />
-    </div>
+    <StoryOverview>
+      <StoryCase title="Off"><Toggle aria-label="Off 토글" /></StoryCase>
+      <StoryCase title="On"><Toggle aria-label="On 토글" defaultChecked /></StoryCase>
+    </StoryOverview>
   ),
 };
 

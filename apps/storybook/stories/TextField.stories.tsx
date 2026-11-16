@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { TextField } from '@/packages/ui/src/text/TextField/TextField.js';
 
 const meta = {
   title: '컴포넌트/TextField',
   component: TextField,
-  parameters: { layout: 'centered' },
   args: {
     label: '라벨',
     placeholder: '내용을 입력하세요',
@@ -35,29 +35,18 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: args => (
-    <div
-      style={{
-        display: 'grid',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 24,
-      }}
-    >
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        기본 입력창에 마우스를 올리거나 선택해 Hover와 Focus 상태를 확인해요.
-      </p>
-
+    <StoryOverview description="기본 입력창에 마우스를 올리거나 선택해 Hover와 Focus 상태를 확인해요.">
       {([
         ['기본', 'default'],
         ['오류', 'error'],
         ['성공', 'success'],
         ['비활성화', 'disabled'],
       ] as const).map(([name, state]) => (
-        <div key={state} style={{ display: 'grid', gap: 8 }}>
-          <strong>{name}</strong>
+        <StoryCase key={state} title={name}>
           <TextField {...args} state={state} />
-        </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 

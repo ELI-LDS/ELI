@@ -1,4 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import {
+  StoryCase,
+  StoryDeviceFrame,
+  StoryOverview,
+} from '../components/StoryDeviceFrame.js';
 import { HomeFilledIcon } from '@/packages/ui/src/icon/HomeFilledIcon.js';
 import { HomeOutlinedIcon } from '@/packages/ui/src/icon/HomeOutlinedIcon.js';
 import { NavigationBarItem } from '@/packages/ui/src/navigation/NavigationBarItem/NavigationBarItem.js';
@@ -6,7 +11,6 @@ import { NavigationBarItem } from '@/packages/ui/src/navigation/NavigationBarIte
 const meta = {
   title: '컴포넌트/NavigationBarItem',
   component: NavigationBarItem,
-  parameters: { layout: 'centered' },
   args: {
     active: false,
     filledIcon: <HomeFilledIcon />,
@@ -39,6 +43,11 @@ const meta = {
       table: { disable: true },
     },
   },
+  render: args => (
+    <StoryDeviceFrame label="Navigation Bar Item 직접 바꿔보기">
+      <NavigationBarItem {...args} />
+    </StoryDeviceFrame>
+  ),
 } satisfies Meta<typeof NavigationBarItem>;
 
 export default meta;
@@ -49,30 +58,27 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div style={{ display: 'grid', gap: 16 }}>
-      <p style={{ color: '#4b5668', margin: 0 }}>
-        비활성 항목에 마우스를 올리거나 누른 채로 Hover와 Pressed를 확인해요.
-      </p>
-      <div style={{ display: 'flex', gap: 16 }}>
-        <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-          <span>Default</span>
+    <StoryOverview description="비활성 항목에 마우스를 올리거나 누른 채로 Hover와 Pressed를 확인해요.">
+      <StoryCase title="Default">
+        <StoryDeviceFrame label="기본 Navigation Bar Item 미리보기">
           <NavigationBarItem
             filledIcon={<HomeFilledIcon />}
             label="라벨"
             outlinedIcon={<HomeOutlinedIcon />}
           />
-        </div>
-        <div style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-          <span>Active</span>
+        </StoryDeviceFrame>
+      </StoryCase>
+      <StoryCase title="Active">
+        <StoryDeviceFrame label="활성 Navigation Bar Item 미리보기">
           <NavigationBarItem
             active
             filledIcon={<HomeFilledIcon />}
             label="라벨"
             outlinedIcon={<HomeOutlinedIcon />}
           />
-        </div>
-      </div>
-    </div>
+        </StoryDeviceFrame>
+      </StoryCase>
+    </StoryOverview>
   ),
 };
 

@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Checkbox } from '@/packages/ui/src/checkbox/Checkbox/Checkbox.js';
 
 const states = [
@@ -9,7 +10,6 @@ const states = [
 const meta = {
   title: '컴포넌트/Checkbox',
   component: Checkbox,
-  parameters: { layout: 'centered' },
   args: {
     'aria-label': '동의',
     defaultChecked: false,
@@ -46,20 +46,13 @@ export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
-    <div
-      style={{
-        display: 'flex',
-        fontFamily: 'var(--eli-font-family-sans, "Pretendard Variable")',
-        gap: 32,
-      }}
-    >
+    <StoryOverview>
       {states.map(state => (
-        <div key={state.name} style={{ display: 'grid', gap: 8, justifyItems: 'center' }}>
-          <span style={{ color: '#6c788a', fontSize: 12 }}>{state.name}</span>
+        <StoryCase key={state.name} title={state.name}>
           <Checkbox aria-label={state.name} defaultChecked={state.checked} />
-        </div>
+        </StoryCase>
       ))}
-    </div>
+    </StoryOverview>
   ),
 };
 
