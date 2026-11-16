@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { execFileSync, spawnSync } from 'node:child_process';
-import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
+import { cpSync, mkdtempSync, readFileSync, readdirSync, realpathSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
@@ -97,4 +97,18 @@ test('eli 스킬이 가리키는 참고 문서가 있어요', () => {
   const refs = [...skill.matchAll(/`(references\/[\w-]+\.md)`/g)].map((match) => match[1]);
   assert.ok(refs.length >= 3);
   for (const ref of refs) readFileSync(join(harness, 'skills/eli', ref), 'utf8');
+});
+
+test('프로젝트 안에 설치한 훅은 @eli/ui가 없어도 지침을 출력해요', () => {
+  const dir = realpathSync(mkdtempSync(join(tmpdir(), 'eli-harness-')));
+  const installed = join(dir, '.claude/hooks/eli/session-start.mjs');
+  cpSync(hook, installed);
+  writeFileSync(join(dir, 'package.json'), JSON.stringify({ dependencies: { react: '19.3.0' } }));
+  assert.match(execFileSync(process.execPath, [installed], { cwd: dir, encoding: 'utf8' }), /\/eli-setup/);
+});
+
+test('글꼴 안내가 있고 디자인 시스템 스킬이 가리켜요', () => {
+  const fonts = readFileSync(join(harness, 'skills/eli-design-system/fonts.md'), 'utf8');
+  assert.match(fonts, /^## 쓰지 않는 글꼴$/m);
+  assert.match(readFileSync(join(harness, 'skills/eli-design-system/SKILL.md'), 'utf8'), /fonts\.md/);
 });
