@@ -68,7 +68,7 @@ ELI를 쓰는 것만으로 좋은 화면이 되지 않아요. 프로젝트가 �
 
 - 전역 글꼴은 Pretendard예요. 다른 글꼴을 추가하거나 제안하지 않아요. `--eli-font-family-sans`를 다시 정하지 않아요.
 - ELI의 글자 크기, 굵기, 줄 높이, 자간은 Pretendard에 맞춰져 있어요. 글꼴을 바꾸면 자간과 정렬이 깨져요.
-- 화면 코드에서 `font-family`를 직접 쓰지 않아요. 자간(`letter-spacing`)만 따로 바꾸지 않아요. 타이포그래피 토큰을 한 묶음으로 써요.
+- 전역 스타일의 `body`에만 `font-family: var(--eli-font-family-sans)`를 두고, 그 밖의 화면 코드에서는 `font-family`를 직접 쓰지 않아요. 자간(`letter-spacing`)만 따로 바꾸지 않아요. 타이포그래피 토큰을 한 묶음으로 써요.
 - 사용자가 다른 글꼴을 원하면 고정인 이유를 알리고, 굵기, 크기, 색, 여백으로 조절하자고 제안해요.
 - Pretendard를 불러오고 있지 않으면 화면을 만들기 전에 `/eli-design-system`으로 연결하자고 안내해요.
 

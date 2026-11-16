@@ -205,7 +205,19 @@ Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 확
 
 ### 폰트
 
-`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요. 엘리와 함께 쓰면 Pretendard를 프로젝트에 연결해 줘요.
+`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요.
+
+[Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. 엘리와 함께 쓰면 엘리가 연결해 줘요.
+
+```bash
+npm i pretendard
+```
+
+```ts
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+```
+
+Next.js의 `next/font/local`로 불러오면 글꼴이 다른 이름으로 등록돼서 ELI 컴포넌트에 적용되지 않아요. 위의 CSS import를 써요.
 
 ### 지원 환경
 

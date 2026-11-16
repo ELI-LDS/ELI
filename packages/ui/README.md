@@ -2,7 +2,7 @@
 
 ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 현재 공개 경로는 `package.json`의 `exports`, 구현된 컴포넌트와 사용 예시는 아래 문서에서 확인할 수 있어요.
 
-이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 초기 설정 도구가 구현되기 전까지 소비 프로젝트에서 Pretendard를 직접 불러와야 해요.
+이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 소비 프로젝트에서 [Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. `npm i pretendard`로 설치하고 `import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css'`를 추가해요. `next/font/local`은 글꼴을 다른 이름으로 등록해서 ELI 컴포넌트에 적용되지 않아요.
 
 모든 공개 컴포넌트는 서버에서 초기 HTML을 만들 수 있도록 검증해요. 클릭·입력·선택 이벤트를 제공하는 컴포넌트는 배포 파일에 `'use client'` 경계를 유지하고, 표시 전용 Alert·Badge·Divider·LoadingIndicator·ProgressIndicator·Tooltip은 서버 컴포넌트에서도 사용할 수 있어요. 브라우저 API는 사용자 상호작용이 일어날 때만 사용해요. Next.js App Router는 실제 tarball 소비 앱의 프로덕션 빌드·서버 렌더링·hydration·상호작용을 별도로 검증해요.
 

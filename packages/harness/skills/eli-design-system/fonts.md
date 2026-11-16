@@ -20,22 +20,61 @@ ELI의 타이포그래피 토큰은 글자 크기, 굵기, 줄 높이, 자간이
 
 ## 연결하는 방법
 
-Pretendard Variable을 전역 진입점에서 한 번 불러와요. 자세한 방법은 `get_guide`의 `font` 가이드를 따라요. 원격에 연결할 수 없으면 아래를 따르고, 설치하기 전에 Pretendard 공식 저장소에서 경로가 지금도 맞는지 확인해요.
+[Pretendard 공식 저장소](https://github.com/orioncactus/pretendard)의 안내를 따라요. 공식 안내의 여러 방식 중 **가변 다이나믹 서브셋**을 써요. 글꼴 이름이 `"Pretendard Variable"`로 등록되고, 화면에 쓰인 글자의 조각만 받아요. `get_guide`의 `font` 가이드에 다른 안내가 있으면 그 안내를 따라요.
 
-| 환경 | 방법 |
+아래는 `1.3.9` 기준이에요. 설치하기 전에 공식 저장소에서 최신 버전을 확인하고, 버전을 고정해서 써요.
+
+### 번들러를 쓰는 프로젝트 (Next.js, Vite 등)
+
+1. 프로젝트의 패키지 매니저로 `pretendard`를 설치해요.
+
+```bash
+npm i pretendard
+```
+
+2. 전역 진입점에서 가변 다이나믹 서브셋 CSS를 한 번 import해요.
+
+```ts
+import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+```
+
+| 프레임워크 | 전역 진입점 |
 | --- | --- |
-| Next.js, Vite 같은 번들러 | npm 패키지 `pretendard`를 프로젝트의 패키지 매니저로 설치하고, 가변 글꼴의 동적 서브셋 CSS를 전역 진입점에서 한 번 import해요 |
-| 프레임워크가 정해지지 않은 HTML | Pretendard 공식 저장소가 안내하는 CDN의 가변 글꼴 동적 서브셋 CSS를 `<link>`로 불러와요 |
+| Next.js App Router | 루트 `app/layout.tsx` |
+| Vite | `src/main.tsx` 같은 진입 파일 |
+| 그 밖 | 전역 스타일을 불러오는 파일. 프로젝트의 구조를 따라요 |
 
-- 동적 서브셋을 써요. 한글 글꼴은 파일이 커서, 화면에 쓰인 글자의 조각만 받아야 해요.
-- 가변 글꼴(Pretendard Variable)을 써요. ELI의 글꼴 변수가 가장 먼저 찾는 이름이에요.
-- 이미 불러오고 있으면 다시 추가하지 않아요. 두 번 불러오지 않아요.
+### 프레임워크가 정해지지 않은 HTML
+
+`<head>`에 공식 CDN 링크를 넣어요.
+
+```html
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+```
+
+### Next.js에서 `next/font/local`을 쓰지 않아요
+
+공식 저장소는 Next.js에서 `next/font/local`로 불러오는 방법도 안내해요. ELI와 함께 쓸 때는 이 방법을 쓰지 않아요. `next/font`는 글꼴을 자동으로 만든 다른 이름으로 등록해요. ELI는 `"Pretendard Variable"`이라는 이름으로 글꼴을 찾기 때문에, 이름이 달라지면 ELI 컴포넌트가 대체 글꼴로 보여요.
+
+### 지켜요
+
+- 전역 스타일의 `body`에 한 번만 글꼴을 지정해요. ELI 컴포넌트는 스스로 Pretendard를 쓰지만, 프로젝트가 직접 쓴 글자는 `body`에 지정해야 Pretendard로 보여요.
+
+```css
+body {
+  font-family: var(--eli-font-family-sans);
+}
+```
+
+- 글꼴 목록을 직접 적지 않아요. `--eli-font-family-sans`가 공식 안내의 글꼴 목록(`"Pretendard Variable", Pretendard, ...`)을 이미 갖고 있어요.
+- 전역 진입점에서 한 번만 불러와요. 이미 불러오고 있으면 다시 추가하지 않아요.
+- 가변이 아닌 Pretendard나 다이나믹 서브셋이 아닌 CSS가 이미 연결되어 있으면 사용자에게 알리고, 가변 다이나믹 서브셋으로 바꿀지 물어요.
 - 화면이 실제로 Pretendard로 보이는지 확인해요. 브라우저 도구가 있으면 계산된 글꼴을 봐요. 불러오기에 실패하면 조용히 대체 글꼴로 보여요.
 - Pretendard는 SIL OFL 1.1이에요. 상업적 사용과 웹 글꼴로 올리기가 허용돼요.
 
 ## 코드에서 지켜요
 
-- `font-family`를 직접 쓰지 않아요. 전역 글꼴이 그대로 적용되게 둬요. 꼭 지정해야 하면 `var(--eli-font-family-sans)`를 가리키는 프로젝트 토큰을 써요.
+- 전역 스타일의 `body` 밖에서는 `font-family`를 직접 쓰지 않아요. `body`의 글꼴이 그대로 내려오게 둬요.
 - 입력창과 버튼처럼 브라우저가 글꼴을 따로 주는 요소에는 `font: inherit`를 줘요. ELI 컴포넌트에는 이미 적용되어 있어요.
 - 글자 크기, 굵기, 줄 높이, 자간은 ELI의 타이포그래피 토큰을 한 묶음으로 써요. `get_tokens`의 `typography`에서 확인해요.
 - 자간(`letter-spacing`)만 따로 바꾸지 않아요. 글자 크기를 바꾸면 그 크기에 맞는 토큰 묶음으로 바꿔요.

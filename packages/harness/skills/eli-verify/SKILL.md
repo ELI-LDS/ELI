@@ -30,7 +30,7 @@ description: >
 | --- | --- |
 | 값 직접 쓰기 | 토큰 파일 밖에서 직접 쓴 색상, 간격, 글자, 모서리, 그림자 값 |
 | 단위 기준과 다름 | `DESIGN.md`의 `## 단위` 표와 다른 단위. 예: `px`로 쓴 글자 크기, `px`로 고정한 너비 |
-| 글꼴 | 직접 쓴 `font-family`, Pretendard가 아닌 글꼴, 다시 정한 `--eli-font-family-sans`, 타이포그래피 토큰 없이 따로 쓴 `letter-spacing` |
+| 글꼴 | 전역 `body` 밖에서 직접 쓴 `font-family`, Pretendard가 아닌 글꼴, 다시 정한 `--eli-font-family-sans`, 타이포그래피 토큰 없이 따로 쓴 `letter-spacing` |
 | 토큰 건너뛰기 | 토큰 파일 밖의 화면 코드에서 직접 쓴 `--eli-` 변수 |
 | 쓰지 않는 토큰 | 토큰 파일에 있지만 어디에서도 쓰지 않는 토큰 |
 | 컴포넌트 직접 만들기 | ELI에 맞는 컴포넌트가 있는데 네이티브 요소나 자체 구현을 쓴 곳 |

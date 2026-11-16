@@ -41,7 +41,8 @@ description: >
 
 - 전역 글꼴은 Pretendard로 고정이에요. 다른 글꼴을 제안하거나 고르게 하지 않아요.
 - ELI의 타이포그래피 토큰은 자간과 줄 높이가 Pretendard에 맞춰져 있어요. 글꼴을 바꾸면 자간과 정렬이 깨져요.
-- Pretendard Variable을 전역 진입점에서 한 번 불러와요. 이미 불러오고 있으면 다시 추가하지 않아요.
+- Pretendard 공식 안내의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러오고, 전역 스타일의 `body`에 `font-family: var(--eli-font-family-sans)`를 둬요. 이미 되어 있으면 다시 추가하지 않아요.
+- Next.js에서도 `next/font/local`을 쓰지 않아요. 글꼴이 다른 이름으로 등록돼서 ELI 컴포넌트에 적용되지 않아요.
 - `--eli-font-family-sans`를 다시 정하지 않아요.
 - 프로젝트에 이미 다른 글꼴이 연결되어 있으면 사용자에게 알리고, Pretendard로 바꿀지 확인받은 뒤 지워요.
 - `DESIGN.md`의 `## 글꼴`에 불러오는 방법을 적어요.
