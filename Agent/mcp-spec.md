@@ -262,7 +262,7 @@
 | 주제 | 읽는 명령 | 담아야 하는 것 |
 | --- | --- | --- |
 | `install` | 기본 동작, `/eli-design-system`, `/eli-doctor` | 지원하는 프레임워크와 버전, 패키지 매니저별 설치 명령, 필요한 peer dependency, 별도 CSS import가 필요 없다는 것, 설치가 끝났는지 확인하는 방법 |
-| `font` | 기본 동작, `/eli-design-system`, `/eli-doctor` | Pretendard를 프레임워크별로 연결하는 방법, 전역 진입점에 한 번만 연결한다는 것, 이미 연결되어 있는지 확인하는 방법 |
+| `font` | `/eli-design-system` | ELI 컴포넌트의 글꼴을 프로젝트가 고른 글꼴로 바꾸는 방법(`--eli-font-family-sans`), ELI가 쓰는 굵기와 그 글꼴이 갖춰야 하는 조건. 어떤 글꼴을 고를지는 하네스의 `fonts.md`가 다뤄요 |
 | `design-system-page` | `/eli-design-system`, `/eli-setup` | 페이지의 구역과 순서, 구역마다 보여줄 것, 토큰과 컴포넌트를 보여주는 방식 |
 | `verify` | `/eli-verify` | 점검 규칙과 예외, 네이티브 요소와 ELI 컴포넌트의 대응 표, 하네스의 기본 기준보다 엄격하게 볼 값 |
 | `icon` | `/eli-icon` | 커스텀 아이콘의 캔버스, 선 굵기, 모서리, 색 규칙. `ICON.md` 초안의 기본값보다 먼저 적용돼요 |
@@ -289,9 +289,9 @@
 | 하네스가 쓰는 곳 | 의존하는 것 |
 | --- | --- |
 | 세션 시작 훅, `eli` 스킬 | 서버 이름 `eli-docs`, 도구 이름 여섯 개, 섹션 키 `when-to-use`·`examples` |
-| `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page` |
+| `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page`, CSS 변수 `--eli-font-family-sans` |
 | `/eli-verify` | `list_components`, `get_tokens`, 섹션 `do-dont`, 가이드 `verify` |
-| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`·`font` |
+| `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install` |
 | `/eli-icon` | `search`, 가이드 `icon` |
 
 ## 구현 순서
