@@ -1,7 +1,7 @@
 ---
 name: eli-doctor
 description: >
-  ELI(@eli/ui) 설치와 설정이 올바른지 점검하고 다음에 쓸 명령을 안내해요. 코드를
+  ELI(@eli-design/ui) 설치와 설정이 올바른지 점검하고 다음에 쓸 명령을 안내해요. 코드를
   바꾸지 않아요. "ELI 잘 설치됐는지 봐줘", "셋업 진단해줘", "ELI가 안 돼요",
   "뭐부터 해야 해?", /eli-doctor 요청에 사용해요.
 ---
@@ -26,8 +26,8 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 | 항목 | 확인하는 것 | 방법 |
 | --- | --- | --- |
 | 원격 연결 | `eli-docs` MCP에 연결되어 있는지 | `list_components`를 호출해요 |
-| 설치 | `@eli/ui`가 `package.json`에 있고 실제로 설치되어 있는지 | `package.json`과 `node_modules/@eli/ui/package.json` |
-| 버전 호환 | 설치된 React가 `@eli/ui`의 `peerDependencies`를 만족하는지 | 설치된 두 패키지의 `package.json` |
+| 설치 | `@eli-design/ui`가 `package.json`에 있고 실제로 설치되어 있는지 | `package.json`과 `node_modules/@eli-design/ui/package.json` |
+| 버전 호환 | 설치된 React가 `@eli-design/ui`의 `peerDependencies`를 만족하는지 | 설치된 두 패키지의 `package.json` |
 | React 중복 | React가 두 벌 설치되어 있지 않은지 | 패키지 매니저의 의존성 조회 명령 |
 | 설치 방법 | 문서의 설치 단계를 모두 따랐는지, 문서에 없는 설정을 추가하지 않았는지 | `get_guide`의 `install` |
 | 글꼴 | `DESIGN.md`의 `## 글꼴`에 적힌 글꼴을 전역 진입점에서 한 번 불러오는지, 글꼴 토큰과 `--eli-font-family-sans`가 그 글꼴을 가리키는지, 주 글꼴이 기본 글꼴이나 시스템 글꼴이 아닌지 | `DESIGN.md`, 진입점 파일, 토큰 파일 |
@@ -37,7 +37,7 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 | ICON.md | 커스텀 아이콘이 있는 프로젝트에 `ICON.md`가 있는지 | 프로젝트 루트 |
 
 - 원격 연결이 실패하면 원격 문서가 필요한 항목은 "확인 못함"으로 적고 나머지를 계속 점검해요.
-- 모노레포면 `@eli/ui`를 쓰는 워크스페이스마다 따로 점검해요.
+- 모노레포면 `@eli-design/ui`를 쓰는 워크스페이스마다 따로 점검해요.
 - 설치나 수정 명령을 실행하지 않아요.
 
 ## 2. 보고해요

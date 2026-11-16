@@ -18,7 +18,7 @@ await mkdir(join(consumer, 'app'), { recursive: true });
 // 실제 배포 tarball을 풀어 Next.js가 npm 배포 결과와 같은 파일을 읽게 해요.
 const info = packInfo(join(root, 'packages/ui'), work);
 await validatePackage(join(root, 'packages/ui'), info);
-const installedUi = join(consumer, 'node_modules/@eli/ui');
+const installedUi = join(consumer, 'node_modules/@eli-design/ui');
 await mkdir(installedUi, { recursive: true });
 execFileSync('tar', [
   '-xzf',
@@ -45,7 +45,7 @@ await writeFile(
     private: true,
     scripts: { build: 'next build', start: 'next start' },
     dependencies: {
-      '@eli/ui': `file:../${info.filename}`,
+      '@eli-design/ui': `file:../${info.filename}`,
       next: '16.4.3',
       react: '19.3.0',
       'react-dom': '19.3.0',
@@ -89,13 +89,13 @@ await writeFile(
   `'use client';
 
 import { useState } from 'react';
-import { Button } from '@eli/ui/button';
-import { RemovableChip } from '@eli/ui/chip';
-import { FabMenu } from '@eli/ui/fab';
-import { NavigationBarGlass } from '@eli/ui/navigation';
-import { Select } from '@eli/ui/select';
-import { Slider } from '@eli/ui/slider';
-import { Tab } from '@eli/ui/tab';
+import { Button } from '@eli-design/ui/button';
+import { RemovableChip } from '@eli-design/ui/chip';
+import { FabMenu } from '@eli-design/ui/fab';
+import { NavigationBarGlass } from '@eli-design/ui/navigation';
+import { Select } from '@eli-design/ui/select';
+import { Slider } from '@eli-design/ui/slider';
+import { Tab } from '@eli-design/ui/tab';
 
 export function ClientExample() {
   const [count, setCount] = useState(0);
@@ -144,25 +144,25 @@ export function ClientExample() {
 );
 await writeFile(
   join(consumer, 'app/page.tsx'),
-  `import { Alert } from '@eli/ui/alert';
-import { Badge } from '@eli/ui/badge';
-import { Button, IconButton } from '@eli/ui/button';
-import { Checkbox } from '@eli/ui/checkbox';
-import { Chip, FilterChip } from '@eli/ui/chip';
-import { Divider } from '@eli/ui/divider';
-import { Fab } from '@eli/ui/fab';
-import { LoadingIndicator, ProgressIndicator } from '@eli/ui/loading';
-import { MenuItem } from '@eli/ui/menu';
-import { Modal } from '@eli/ui/modal';
-import { Radio } from '@eli/ui/radio';
-import { Select } from '@eli/ui/select';
-import { SegmentControl } from '@eli/ui/segment-control';
-import { SnackBar } from '@eli/ui/snackbar';
-import { Slider } from '@eli/ui/slider';
-import { Tab } from '@eli/ui/tab';
-import { TextArea, TextField } from '@eli/ui/text';
-import { Toggle } from '@eli/ui/toggle';
-import { Tooltip } from '@eli/ui/tooltip';
+  `import { Alert } from '@eli-design/ui/alert';
+import { Badge } from '@eli-design/ui/badge';
+import { Button, IconButton } from '@eli-design/ui/button';
+import { Checkbox } from '@eli-design/ui/checkbox';
+import { Chip, FilterChip } from '@eli-design/ui/chip';
+import { Divider } from '@eli-design/ui/divider';
+import { Fab } from '@eli-design/ui/fab';
+import { LoadingIndicator, ProgressIndicator } from '@eli-design/ui/loading';
+import { MenuItem } from '@eli-design/ui/menu';
+import { Modal } from '@eli-design/ui/modal';
+import { Radio } from '@eli-design/ui/radio';
+import { Select } from '@eli-design/ui/select';
+import { SegmentControl } from '@eli-design/ui/segment-control';
+import { SnackBar } from '@eli-design/ui/snackbar';
+import { Slider } from '@eli-design/ui/slider';
+import { Tab } from '@eli-design/ui/tab';
+import { TextArea, TextField } from '@eli-design/ui/text';
+import { Toggle } from '@eli-design/ui/toggle';
+import { Tooltip } from '@eli-design/ui/tooltip';
 import { ClientExample } from './client-example';
 
 export default function Page() {

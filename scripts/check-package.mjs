@@ -12,7 +12,7 @@ export function packInfo(directory, destination) {
 
 export async function validatePackage(directory, info) {
   const manifest = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
-  assert.equal(manifest.name, '@eli/ui');
+  assert.equal(manifest.name, '@eli-design/ui');
   assert.equal(Object.keys(manifest.dependencies ?? {}).length, 0, '실행 의존성 추가 이유와 용량 검토 후 이 기준을 갱신해요.');
   const paths = new Set(info.files.map(file => file.path));
   for (const path of paths) {

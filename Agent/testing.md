@@ -88,14 +88,14 @@ Node.js·React·브라우저 지원 범위를 늘릴 때는 새 조합을 검증
 
 배포 코드·CSS·의존성·빌드 설정이 바뀌면 `pnpm size`를 실행해요. 최신 빌드에 대해 `npm pack --dry-run --json`으로 측정해요.
 
-- 압축 패키지 크기: 사용자가 받는 `@eli/ui` tarball 자체의 크기예요.
+- 압축 패키지 크기: 사용자가 받는 `@eli-design/ui` tarball 자체의 크기예요.
 - 압축 해제 크기: 이 패키지 파일의 합계예요. 파일 시스템이나 전체 node_modules 크기는 아니에요.
 - 포함 파일 수: 개발 파일이 섞이지 않았는지 확인해요.
 
 결과는 `.artifacts/package-size.json`과 `.artifacts/package-size.txt`에 저장해요. 이 파일은 Git에서 제외하므로 PR에 수치를 직접 기록해요. 용량 측정 실패는 검증 실패예요.
 
 ```text
-패키지: @eli/ui@버전
+패키지: @eli-design/ui@버전
 압축 크기: 실제 측정값 B
 압축 해제 크기: 실제 측정값 B
 포함 파일: 실제 측정값 개

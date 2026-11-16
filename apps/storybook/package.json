@@ -7,7 +7,7 @@
     "build": "storybook build --disable-telemetry"
   },
   "devDependencies": {
-    "@eli/ui": "workspace:*",
+    "@eli-design/ui": "workspace:*",
     "@storybook/react-vite": "10.6.1",
     "storybook": "10.6.1",
     "react": "19.3.0",

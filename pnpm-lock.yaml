@@ -236,7 +236,7 @@ importers:
 
   apps/storybook:
     devDependencies:
-      '@eli/ui':
+      '@eli-design/ui':
         specifier: workspace:*
         version: link:../../packages/ui
       '@storybook/react-vite':

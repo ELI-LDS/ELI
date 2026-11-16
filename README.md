@@ -22,7 +22,7 @@ https://github.com/ELI-LDS/ELI 를 읽고 이 프로젝트에 ELI를 설치해�
 
 나머지는 에이전트가 이 문서의 [설치 안내](#ai-에이전트가-읽는-설치-안내)를 읽고 진행해요. 엘리가 서비스에 대해 두 가지를 물어보면 답하고, 만들어 준 디자인 시스템을 보고 마음에 들 때까지 고쳐 달라고 하면 돼요.
 
-> **개발 중이에요.** 엘리의 스킬과 훅은 지금 설치해서 쓸 수 있어요. 컴포넌트 패키지 `@eli/ui`의 npm 게시와 컴포넌트 문서 서버는 아직 준비 중이라, 지금은 일부 단계까지만 진행돼요. 어디까지 되는지는 [지금 되는 것](#지금-되는-것)에 적어 뒀어요.
+> **개발 중이에요.** 엘리의 스킬과 훅은 지금 설치해서 쓸 수 있어요. 컴포넌트 패키지 `@eli-design/ui`의 npm 게시와 컴포넌트 문서 서버는 아직 준비 중이라, 지금은 일부 단계까지만 진행돼요. 어디까지 되는지는 [지금 되는 것](#지금-되는-것)에 적어 뒀어요.
 
 ## 왜 AI가 만든 화면은 티가 날까요
 
@@ -37,7 +37,7 @@ AI는 매번 처음부터 다시 정해요. 그래서 가장 흔한 선택을 �
 | 어디서나 보는 기본 글꼴이에요 | 상업적으로 쓸 수 있고 흔하지 않은 글꼴 후보를 화면으로 보여주고 고르게 해요 |
 | 버튼마다 말투가 달라요 | `UX-WRITING.md`에 말투와 용어를 정하고 모든 문구가 따르게 해요 |
 | 아이콘이 제각각이고 너무 많아요 | `ICON.md`에 스타일을 정하고, 꼭 필요한 자리에만 만들어요 |
-| 버튼과 입력창을 매번 새로 만들어요 | 검증된 컴포넌트 `@eli/ui`를 문서를 읽고 정확하게 써요 |
+| 버튼과 입력창을 매번 새로 만들어요 | 검증된 컴포넌트 `@eli-design/ui`를 문서를 읽고 정확하게 써요 |
 | 모바일에서 깨지고 넘쳐요 | CSS 단위, 레이아웃, 접근성 기준을 지키고 스스로 점검해요 |
 
 ## 엘리가 합류하면 이렇게 진행돼요
@@ -100,7 +100,7 @@ flowchart TD
 | CSS, 접근성, React 코드 기준 지키기 | 돼요 |
 | 문구 다듬기, 커스텀 아이콘 만들기 | 돼요 |
 | 직접 쓴 색상 값을 고칠 때마다 알려주기 (Claude Code) | 돼요 |
-| `@eli/ui` 컴포넌트 설치 | 준비 중이에요. npm에 아직 게시하지 않았어요 |
+| `@eli-design/ui` 컴포넌트 설치 | 준비 중이에요. npm에 아직 게시하지 않았어요 |
 | 컴포넌트 문서와 토큰 조회 (원격 MCP) | 준비 중이에요. 규격만 정해져 있어요 |
 | 디자인 토큰 만들기, 디자인 시스템 페이지, 코드 점검, 기존 화면 옮기기 | 위 두 가지가 준비되면 돼요 |
 
@@ -188,9 +188,9 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 원격 MCP 서버 `eli-docs`는 아직 공개 주소가 없어요. 이 단계는 건너뛰고 사용자에게 알려요. 주소가 정해지면 이 문서와 `eli` 스킬의 연결 방법을 갱신할 예정이에요.
 
-### 6. `@eli/ui`를 설치해요
+### 6. `@eli-design/ui`를 설치해요
 
-`@eli/ui`는 아직 npm에 게시하지 않았어요. 이 단계는 건너뛰고 사용자에게 알려요. 저장소의 소스를 프로젝트에 복사하거나 다른 방법으로 대신 설치하지 않아요.
+`@eli-design/ui`는 아직 npm에 게시하지 않았어요. 이 단계는 건너뛰고 사용자에게 알려요. 저장소의 소스를 프로젝트에 복사하거나 다른 방법으로 대신 설치하지 않아요.
 
 ### 7. 정리하고 셋업을 시작해요
 
@@ -202,12 +202,12 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 설치한 스킬과 훅, 바꾼 설정 파일, 건너뛴 단계와 그 이유, 확인하지 못한 것을 사용자에게 알려요. 설치하지 않은 것을 설치했다고 적지 않아요.
 
-## 컴포넌트 라이브러리 `@eli/ui`
+## 컴포넌트 라이브러리 `@eli-design/ui`
 
 엘리가 화면을 만들 때 쓰는 React 컴포넌트예요. 에이전트 없이 직접 써도 돼요.
 
 - 컴포넌트만 import하면 기본 CSS와 디자인 토큰이 함께 연결돼요.
-- `@eli/ui/button`처럼 역할별 경로에서 필요한 컴포넌트를 가져와요.
+- `@eli-design/ui/button`처럼 역할별 경로에서 필요한 컴포넌트를 가져와요.
 - `className`과 `style`로 일반 CSS, CSS Modules, Tailwind CSS, Emotion, vanilla-extract 스타일을 적용할 수 있어요.
 - Vite와 Next.js App Router의 빌드·SSR·hydration을 실제 패키지 tarball로 확인해요.
 - React를 패키지에 중복해서 넣지 않고 소비 앱의 React를 peer dependency로 공유해요.
@@ -216,20 +216,20 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 ### 설치 명령은 npm 게시 후 사용할 수 있어요
 
-현재 버전은 `0.1.0`이며 npm에는 아직 게시하지 않았어요. 라이선스와 npm scope 소유권을 확정하기 전까지 외부 서비스의 프로덕션 의존성으로 사용하지 않아요. 게시하면 사용하는 패키지 매니저에 맞춰 하나의 명령만 실행해요.
+현재 버전은 `0.0.0`이며 npm에는 아직 게시하지 않았어요. 게시하면 사용하는 패키지 매니저에 맞춰 하나의 명령만 실행해요.
 
 ```bash
 # npm
-npm install @eli/ui
+npm install @eli-design/ui
 
 # pnpm
-pnpm add @eli/ui
+pnpm add @eli-design/ui
 
 # Yarn
-yarn add @eli/ui
+yarn add @eli-design/ui
 
 # Bun
-bun add @eli/ui
+bun add @eli-design/ui
 ```
 
 ELI는 React `^19.3.0`을 peer dependency로 사용해요. 기존 React 프로젝트라면 React를 다시 설치할 필요가 없어요.
@@ -237,7 +237,7 @@ ELI는 React `^19.3.0`을 peer dependency로 사용해요. 기존 React 프로�
 ### 컴포넌트를 사용해요
 
 ```tsx
-import { Button } from '@eli/ui/button';
+import { Button } from '@eli-design/ui/button';
 
 export function SaveButton() {
   return (
@@ -248,7 +248,7 @@ export function SaveButton() {
 }
 ```
 
-별도의 ELI CSS 파일을 import하지 않아도 Button의 기본 스타일과 공통 토큰이 함께 연결돼요. 스타일을 덮어쓰는 방법과 더 많은 예시는 [`@eli/ui` 패키지 안내](packages/ui/README.md)에서 확인해요.
+별도의 ELI CSS 파일을 import하지 않아도 Button의 기본 스타일과 공통 토큰이 함께 연결돼요. 스타일을 덮어쓰는 방법과 더 많은 예시는 [`@eli-design/ui` 패키지 안내](packages/ui/README.md)에서 확인해요.
 
 ### 제공하는 컴포넌트
 
@@ -256,32 +256,32 @@ export function SaveButton() {
 
 | 가져오는 경로 | 컴포넌트 |
 | --- | --- |
-| `@eli/ui/alert` | `Alert` |
-| `@eli/ui/badge` | `Badge` |
-| `@eli/ui/button` | `Button`, `IconButton` |
-| `@eli/ui/checkbox` | `Checkbox` |
-| `@eli/ui/chip` | `Chip`, `FilterChip`, `RemovableChip` |
-| `@eli/ui/divider` | `Divider` |
-| `@eli/ui/fab` | `Fab`, `FabMenu`, `FabMenuSegment` |
-| `@eli/ui/loading` | `LoadingIndicator`, `ProgressIndicator` |
-| `@eli/ui/menu` | `MenuItem` |
-| `@eli/ui/modal` | `Modal` |
-| `@eli/ui/navigation` | `NavigationBar`, `NavigationBarItem`, `NavigationBarGlass`, `NavigationBarGlassItem`, `NavigationDrawer`, `NavigationDrawerCategory`, `NavigationDrawerMenu`, `NavigationDrawerItem` |
-| `@eli/ui/radio` | `Radio` |
-| `@eli/ui/segment-control` | `SegmentControl` |
-| `@eli/ui/select` | `Select` |
-| `@eli/ui/slider` | `Slider` |
-| `@eli/ui/snackbar` | `SnackBar` |
-| `@eli/ui/tab` | `Tab` |
-| `@eli/ui/text` | `TextField`, `TextArea` |
-| `@eli/ui/toggle` | `Toggle` |
-| `@eli/ui/tooltip` | `Tooltip` |
+| `@eli-design/ui/alert` | `Alert` |
+| `@eli-design/ui/badge` | `Badge` |
+| `@eli-design/ui/button` | `Button`, `IconButton` |
+| `@eli-design/ui/checkbox` | `Checkbox` |
+| `@eli-design/ui/chip` | `Chip`, `FilterChip`, `RemovableChip` |
+| `@eli-design/ui/divider` | `Divider` |
+| `@eli-design/ui/fab` | `Fab`, `FabMenu`, `FabMenuSegment` |
+| `@eli-design/ui/loading` | `LoadingIndicator`, `ProgressIndicator` |
+| `@eli-design/ui/menu` | `MenuItem` |
+| `@eli-design/ui/modal` | `Modal` |
+| `@eli-design/ui/navigation` | `NavigationBar`, `NavigationBarItem`, `NavigationBarGlass`, `NavigationBarGlassItem`, `NavigationDrawer`, `NavigationDrawerCategory`, `NavigationDrawerMenu`, `NavigationDrawerItem` |
+| `@eli-design/ui/radio` | `Radio` |
+| `@eli-design/ui/segment-control` | `SegmentControl` |
+| `@eli-design/ui/select` | `Select` |
+| `@eli-design/ui/slider` | `Slider` |
+| `@eli-design/ui/snackbar` | `SnackBar` |
+| `@eli-design/ui/tab` | `Tab` |
+| `@eli-design/ui/text` | `TextField`, `TextArea` |
+| `@eli-design/ui/toggle` | `Toggle` |
+| `@eli-design/ui/tooltip` | `Tooltip` |
 
 Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 확정되지 않은 값을 임의로 공개 계약으로 만들지 않아요.
 
 ### 폰트
 
-`@eli/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. 엘리와 함께 쓰면 서비스에 맞는 글꼴을 골라 이 변수를 그 글꼴로 바꿔요.
+`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. 엘리와 함께 쓰면 서비스에 맞는 글꼴을 골라 이 변수를 그 글꼴로 바꿔요.
 
 ### 지원 환경
 
@@ -344,19 +344,19 @@ ELI/
 ├── handbook/           # 협업 가이드와 점검 기록
 ├── apps/docs/          # 문서·랜딩 페이지와 원격 MCP를 제공할 Next.js 앱
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
-├── packages/ui/        # 배포할 @eli/ui 소스
+├── packages/ui/        # 배포할 @eli-design/ui 소스
 ├── packages/harness/   # 엘리의 스킬과 훅
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
 ```
 
-`packages/ui`만 `@eli/ui`로 배포해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
+`packages/ui`만 `@eli-design/ui`로 배포해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
 
 ## 로드맵
 
 다음 기능은 아직 구현되지 않았어요.
 
-- `@eli/ui`의 npm 게시와 자동 배포
+- `@eli-design/ui`의 npm 게시와 자동 배포
 - 컴포넌트 문서와 토큰을 제공하는 원격 MCP 서버
 - 사용자용 문서 사이트와 한글 가이드
 - 원하는 컴포넌트와 필요한 토큰만 소스로 추가하는 레지스트리·CLI
@@ -375,4 +375,6 @@ ELI/
 
 ## 라이선스
 
-현재 `UNLICENSED`예요. 공개 라이선스를 확정하기 전에는 npm에 게시하지 않아요.
+ELI의 코드와 문서는 [MIT 라이선스](LICENSE)예요. 상업적 사용, 수정, 재배포가 모두 가능해요.
+
+ELI의 이름, 로고, 마스코트 캐릭터 "엘리"는 MIT 라이선스의 대상이 아니에요. 사용 기준은 [브랜드 사용 안내](TRADEMARKS.md)에서 확인해요.
