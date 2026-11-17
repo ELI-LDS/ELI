@@ -4,7 +4,7 @@ import net from 'node:net';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import AxeBuilder from '@axe-core/playwright';
-import { chromium, devices, firefox, webkit } from '@playwright/test';
+import { chromium, devices, expect, firefox, webkit } from '@playwright/test';
 
 const targetName = process.argv.find(argument => argument.startsWith('--target='))?.split('=')[1] ?? 'chromium';
 const targets = {
@@ -73,9 +73,11 @@ try {
   assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(124, 58, 237)');
   if (target.desktop) {
     await customButton.hover();
-    assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(109, 40, 217)');
+    // Figma의 Hover 전환이 끝난 뒤 소비자 외부 CSS의 최종 계산값을 확인해요.
+    await expect(customButton).toHaveCSS('background-color', 'rgb(109, 40, 217)');
     await page.mouse.down();
-    assert.equal(await customButton.evaluate(element => getComputedStyle(element).backgroundColor), 'rgb(91, 33, 182)');
+    // Pressed 전환은 100ms이므로 중간 보간값이 아닌 최종 상태를 비교해요.
+    await expect(customButton).toHaveCSS('background-color', 'rgb(91, 33, 182)');
     await page.mouse.up();
   } else {
     await customButton.tap();
@@ -98,6 +100,12 @@ try {
   else await backendRadio.tap();
   assert.equal(await frontendRadio.isChecked(), false);
   assert.equal(await backendRadio.isChecked(), true);
+  const backendRadioIndicator = backendRadio.locator('xpath=following-sibling::*');
+  await expect(backendRadioIndicator).toHaveCSS('opacity', '1');
+  assert.equal(
+    await backendRadio.evaluate(element => getComputedStyle(element).transitionDuration),
+    '0.1s',
+  );
 
   const toggle = page.getByRole('switch', { name: '알림 설정' });
   assert.equal(await toggle.getAttribute('aria-checked'), 'true');
@@ -141,12 +149,21 @@ try {
   const drawerHome = navigationDrawer.getByRole('button', { name: 'Drawer 홈' });
   const drawerSettings = navigationDrawer.getByRole('button', { name: 'Drawer 설정' });
   assert.equal(await drawerHome.getAttribute('aria-expanded'), 'true');
+  const drawerSubItems = navigationDrawer.locator(
+    '.eli-navigation-drawer-item__sub-items',
+  ).first();
+  assert.equal(
+    await drawerSubItems.evaluate(element => getComputedStyle(element).transitionDuration),
+    '0.2s, 0.2s, 0.2s, 0s',
+  );
   if (target.desktop) await drawerHome.click();
   else await drawerHome.tap();
   assert.equal(await drawerHome.getAttribute('aria-expanded'), 'false');
+  assert.equal(await drawerSubItems.getAttribute('aria-hidden'), 'true');
   if (target.desktop) await drawerHome.click();
   else await drawerHome.tap();
   assert.equal(await drawerHome.getAttribute('aria-expanded'), 'true');
+  assert.equal(await drawerSubItems.getAttribute('aria-hidden'), 'false');
   if (target.desktop) await drawerSettings.click();
   else await drawerSettings.tap();
   assert.equal(await drawerSettings.getAttribute('aria-current'), 'page');
@@ -189,6 +206,8 @@ try {
   if (target.desktop) await tab.click();
   else await tab.tap();
   assert.equal(await tab.getAttribute('aria-selected'), 'true');
+  // Tab의 150ms 상태 전환이 끝난 뒤 최종 색상으로 접근성 기준선을 측정해요.
+  await expect(tab).toHaveCSS('color', 'rgb(2, 8, 18)');
 
   // 색상 대비 기준선은 엔진별 계산 차이와 무관하게 한 환경에서만 추적해요.
   if (targetName === 'chromium') {
@@ -200,10 +219,11 @@ try {
       .analyze();
     assert.equal(contrast.violations.length, 1);
     assert.equal(contrast.violations[0]?.id, 'color-contrast');
+    const contrastTargets = contrast.violations[0]?.nodes.map(node => node.target.join(' ')) ?? [];
     assert.equal(
       contrast.violations[0]?.nodes.length,
       14,
-      '디자이너와 합의할 기존 색상 대비 기준선보다 위반이 늘거나 줄면 기준을 다시 검토해야 해요.',
+      `디자이너와 합의할 기존 색상 대비 기준선보다 위반이 늘거나 줄면 기준을 다시 검토해야 해요.\n${contrastTargets.join('\n')}`,
     );
   }
 
