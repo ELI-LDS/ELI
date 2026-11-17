@@ -17,6 +17,10 @@
   background: var(--eli-background-default, #fff);
   color: var(--eli-foreground-default, #4b5668);
   font: inherit;
+  transition:
+    color 100ms ease-out,
+    border-color 100ms ease-out,
+    background-color 100ms ease-out;
 }
 
 /* 아이콘이 있는 특수 Chip은 더 넓게 표시해요. */
@@ -93,4 +97,12 @@ button.eli-chip__body,
 .eli-chip--filter[data-selected='true'] .eli-chip__icon {
   color: var(--eli-foreground-brand, #3584fb);
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-chip {
+      transition-duration: 0.01ms;
+    }
+  }
 }

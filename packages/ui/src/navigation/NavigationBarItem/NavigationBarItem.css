@@ -14,6 +14,14 @@
   background: transparent;
   color: var(--eli-foreground-subtle, #8b98aa);
   cursor: pointer;
+  transition:
+    color 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+.eli-navigation-bar-item:active {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* 아이콘과 라벨 묶음 */
@@ -71,4 +79,12 @@
 .eli-navigation-bar-item[data-active='false']:active {
   background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-navigation-bar-item {
+      transition-duration: 0.01ms;
+    }
+  }
 }

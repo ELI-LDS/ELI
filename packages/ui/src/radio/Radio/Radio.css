@@ -21,15 +21,42 @@
     appearance: none;
     background: var(--eli-background-default, #fff);
     cursor: pointer;
+    transition: border-color 100ms ease-out;
   }
 
-  /* On: Figma에서 전달한 선택 상태 이미지를 그대로 사용해요. */
+  /* On: 테두리와 선택 원이 Figma의 상태 전환 시간에 맞춰 나타나요. */
   .eli-radio__input:checked {
-    border: 0;
-    background: url('./state-on.svg') center / 24px 24px no-repeat;
+    border-color: var(--eli-border-brand, #3584fb);
+  }
+
+  .eli-radio__indicator {
+    position: absolute;
+    inset: 5px;
+    border-radius: var(--eli-layout-scale-999, 999px);
+    background: var(--eli-background-interaction-brand-default, #3584fb);
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0);
+    transition:
+      opacity 100ms ease-out,
+      transform 100ms ease-out;
+  }
+
+  .eli-radio__input:checked + .eli-radio__indicator {
+    opacity: 1;
+    transform: scale(1);
   }
 
   .eli-radio__input:disabled {
     cursor: not-allowed;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-radio__input,
+    .eli-radio__indicator {
+      transition-duration: 0.01ms;
+    }
   }
 }

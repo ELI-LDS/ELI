@@ -35,6 +35,9 @@
   border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
   border-radius: var(--eli-layout-scale-2, 8px);
   background: var(--eli-background-default, #fff);
+  transition:
+    border-color 150ms ease-in,
+    background-color 150ms ease-in;
 }
 
 /* 입력 텍스트 */
@@ -55,6 +58,7 @@
 .eli-text-field__input::placeholder {
   color: var(--eli-foreground-disabled, rgba(75, 86, 104, 0.3));
   opacity: 1;
+  transition: color 150ms ease-in;
 }
 
 /* 오른쪽 X 아이콘 */
@@ -72,8 +76,16 @@
 }
 
 /* Focus */
+.eli-text-field__container:focus-within {
+  border-color: var(--eli-border-interaction-focused, #4b5668);
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
 .eli-text-field__container:focus-within .eli-text-field__input::placeholder {
   color: var(--eli-foreground-strong, #020812);
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* Error */
@@ -97,4 +109,13 @@
   border-color: var(--eli-border-interaction-disabled, #c4cedc);
   background: var(--eli-background-interaction-neutral-disabled, rgba(234, 240, 249, 0.7));
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-text-field__container,
+    .eli-text-field__input::placeholder {
+      transition-duration: 0.01ms;
+    }
+  }
 }

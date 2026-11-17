@@ -53,7 +53,27 @@ export function LoadingIndicator(props: LoadingIndicatorProps) {
       role="progressbar"
     >
       {isDeterminate ? (
-        <span aria-hidden="true" className="eli-loading-indicator__determinate" />
+        <svg
+          aria-hidden="true"
+          className="eli-loading-indicator__determinate"
+          viewBox="0 0 40 40"
+        >
+          <circle
+            className="eli-loading-indicator__determinate-track"
+            cx="20"
+            cy="20"
+            pathLength="100"
+            r="17"
+          />
+          <circle
+            className="eli-loading-indicator__determinate-active"
+            cx="20"
+            cy="20"
+            pathLength="100"
+            r="17"
+            style={{ strokeDashoffset: 100 - progress }}
+          />
+        </svg>
       ) : (
         <>
           <span aria-hidden="true" className="eli-loading-indicator__track" />

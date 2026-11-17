@@ -15,6 +15,12 @@
   color: var(--eli-foreground-strong, #020812);
   cursor: pointer;
   text-align: left;
+  transition: background-color 150ms ease-in;
+}
+
+.eli-menu-item:active:not(:disabled) {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* Text */
@@ -75,4 +81,12 @@
 .eli-menu-item:active:not(:disabled) {
   background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-menu-item {
+      transition-duration: 0.01ms;
+    }
+  }
 }
