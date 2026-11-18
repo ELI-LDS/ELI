@@ -38,7 +38,7 @@
 
 도입 순서는 격리 설치, 패키지 매니저 호환성, 브라우저 상호작용과 계산 스타일, 상호작용 성능 기준선, Next.js 소비 예제, 접근성, 시각 회귀, Node.js·React·브라우저 행렬 순으로 잡아요. npm·pnpm·Yarn·Bun은 초기 배포 지원 범위로 합의했으므로 패키지 매니저 호환성 검사를 릴리스 전에 완료해요. 새 테스트 도구는 실행 의존성이 아니라 개발 의존성으로 검토하고, 해결하는 문제와 설치 용량·유지 비용을 PR에 기록해요.
 
-2026년 10월 28일에는 SHA-256 `a171f469c0814211b71ed4a7fabefa14ff2aeed2bd1d6480c343b3812e69ae3e`인 같은 tarball을 저장소 밖 새 임시 소비 앱에 설치해 패키지 매니저 행렬을 수동으로 통과했어요. 2026년 11월 2일에는 같은 범위를 `.github/workflows/package-manager-compatibility.yml`과 `tests/package-managers/`로 자동화했어요. 강제 설치나 peer dependency 완화 옵션은 사용하지 않아요. Next.js 16.4.3 프로덕션 앱에서는 브라우저 hydration 후 Button·Select 상호작용과 콘솔 오류를 자동 확인해요. Storybook 기준 화면과 VoiceOver 수동 검토는 별도 항목으로 남겨요.
+2026년 10월 28일에는 SHA-256 `a171f469c0814211b71ed4a7fabefa14ff2aeed2bd1d6480c343b3812e69ae3e`인 같은 tarball을 저장소 밖 새 임시 소비 앱에 설치해 패키지 매니저 행렬을 수동으로 통과했어요. 2026년 11월 2일에는 같은 범위를 `.github/workflows/package-manager-compatibility.yml`과 `tests/package-managers/`로 자동화했어요. 강제 설치나 peer dependency 완화 옵션은 사용하지 않아요. Next.js 16.4.6 프로덕션 앱에서는 브라우저 hydration 후 Button·Select 상호작용과 콘솔 오류를 자동 확인해요. Storybook 기준 화면과 VoiceOver 수동 검토는 별도 항목으로 남겨요.
 
 같은 날 `tests/performance/`에 Select 125개·250개와 Checkbox 100개를 프로덕션 빌드·4배 CPU 제한·3회 중앙값으로 측정하는 기준선 도구를 추가했어요. 아직 기기 간 비교 환경과 회귀 허용 범위를 확정하지 않았으므로 수치로 PR을 실패시키지 않고, 안정된 기준을 합의한 뒤 완료로 승격해요.
 

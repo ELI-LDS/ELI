@@ -26,7 +26,7 @@
 
 같은 tarball을 SSR용으로 번들하고 모든 공개 컴포넌트를 `react-dom/server`로 렌더링해 브라우저 전역 없이 초기 HTML을 만들 수 있는지 확인해요. Hook이나 사용자 이벤트가 있는 컴포넌트는 배포 JS 첫 줄에 `'use client'`가 유지되는지도 확인해요. 이 검증은 공통 SSR 안전성을 확인하며 Next.js·Remix 같은 프레임워크별 통합 테스트를 대신하지 않아요.
 
-`pnpm test:next`는 실제 tarball을 Next.js 16.4.3 App Router 소비 앱에 풀어 프로덕션 빌드를 실행해요. Server Component에서 ELI의 정적·클라이언트 컴포넌트를 그룹 경로로 직접 가져오고, 별도 Client Component에서는 이벤트와 상태를 연결해 클라이언트 경계를 확인해요. 빌드된 CSS와 서버 HTML뿐 아니라 Chromium에서 hydration 이후 Button·Select 상호작용과 콘솔 오류도 확인해요. Next.js나 React 버전을 바꿀 때는 소비 앱의 고정 버전도 함께 갱신하고 결과를 기록해요.
+`pnpm test:next`는 실제 tarball을 Next.js 16.4.6 App Router 소비 앱에 풀어 프로덕션 빌드를 실행해요. Server Component에서 ELI의 정적·클라이언트 컴포넌트를 그룹 경로로 직접 가져오고, 별도 Client Component에서는 이벤트와 상태를 연결해 클라이언트 경계를 확인해요. 빌드된 CSS와 서버 HTML뿐 아니라 Chromium에서 hydration 이후 Button·Select 상호작용과 콘솔 오류도 확인해요. Next.js나 React 버전을 바꿀 때는 소비 앱의 고정 버전도 함께 갱신하고 결과를 기록해요.
 
 검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 사용해요. React 버전별 독립 설치나 프레임워크별 라우팅·RSC·hydration 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
 

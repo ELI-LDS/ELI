@@ -46,7 +46,7 @@ await writeFile(
     scripts: { build: 'next build', start: 'next start' },
     dependencies: {
       '@eli-design/ui': `file:../${info.filename}`,
-      next: '16.4.3',
+      next: '16.4.6',
       react: '19.3.0',
       'react-dom': '19.3.0',
     },
