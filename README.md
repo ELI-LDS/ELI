@@ -174,6 +174,12 @@ export function SaveButton() {
 
 별도의 ELI CSS 파일을 import하지 않아도 Button의 기본 스타일과 공통 토큰이 함께 연결돼요. 스타일을 덮어쓰는 방법과 더 많은 예시는 [`@eli-design/ui` 패키지 안내](packages/ui/README.md)에서 확인해요.
 
+### 원하는 컴포넌트의 소스만 받는 방식도 준비하고 있어요
+
+기존 npm 설치는 전체 라이브러리를 받아요. 선택 설치는 제작 중인 CLI가 필요한 컴포넌트와 토큰·아이콘·하위 컴포넌트만 받아 프로젝트 소스로 추가하는 방식이에요. 예를 들어 Modal을 선택하면 Button과 Dim도 함께 필요하지만, 관계없는 UI와 하네스는 받지 않아요. 복사한 소스는 로컬 경로로 가져와 사용해요.
+
+현재는 컴포넌트별 레지스트리 JSON 생성기와 소비 검증을 구현했어요. CLI 연동과 GitHub Release 게시가 남아 있어 아직 사용자 설치 명령을 제공하지 않아요. CLI 개발자가 사용할 데이터 규격은 [레지스트리 지침](Agent/registry.md)에 있어요. 하네스는 별도 선택 항목으로 연결할 예정이며 설치 구현은 다른 담당 영역이에요.
+
 ### 제공하는 컴포넌트
 
 공개 import 경로는 다음과 같아요. 각 경로의 최신 props는 에디터의 JSDoc에서 확인해요. 공식 문서가 열리면 그곳에서도 안내해요.
@@ -268,6 +274,8 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm test:next` | Next.js App Router 소비 환경을 확인해요 |
 | `pnpm test:package-managers` | 지원 패키지 매니저의 설치와 소비 빌드를 확인해요 |
 | `pnpm size` | 패키지 압축 크기·압축 해제 크기·파일 수를 기록해요 |
+| `pnpm build:registry` | 선택 설치용 목록·항목별 JSON을 생성해요 |
+| `pnpm test:registry` | JSON 규격·의존 파일·선택 설치 소스의 소비 빌드를 검증해요 |
 | `pnpm check` | 일상 핵심 검증을 순서대로 실행해요 |
 
 전체 검사 범위와 실행 기준은 [검증 지침](Agent/testing.md)에서 확인해요.
@@ -281,6 +289,7 @@ ELI/
 ├── apps/docs/          # 문서·랜딩 페이지와 원격 MCP를 제공할 Next.js 앱
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
 ├── packages/ui/        # 배포할 @eli-design/ui 소스
+├── packages/registry/  # 선택 설치 데이터의 생성 정책·JSON 규격
 ├── packages/harness/   # 엘리의 스킬과 훅. 빌드할 때 @eli-design/ui에 함께 들어가요
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
@@ -295,7 +304,7 @@ ELI/
 - `@eli-design/ui`의 npm 게시와 자동 배포
 - 컴포넌트 문서와 토큰을 제공하는 원격 MCP 서버
 - 사용자용 문서 사이트와 한글 가이드
-- 원하는 컴포넌트와 필요한 토큰만 소스로 추가하는 레지스트리·CLI
+- 선택 설치용 레지스트리의 GitHub Release 게시와 CLI 연동
 - 버전을 올릴 때 바뀐 API를 찾아 주는 업그레이드 안내
 
 예정된 기능을 현재 사용할 수 있는 기능처럼 안내하지 않아요. 논의 중인 개선안은 [개선 제안](handbook/improvements.md)에서 확인할 수 있어요.

@@ -1,0 +1,5 @@
+{
+  "schemaVersion": 1,
+  "reservedKinds": ["harness"],
+  "shared": [{ "id": "tokens", "directory": "tokens" }]
+}

@@ -1,0 +1,34 @@
+name: Verify component registry
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/registry.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'tsconfig.base.json'
+      - 'packages/ui/**'
+      - 'packages/registry/**'
+      - 'scripts/build-registry.mjs'
+      - 'tests/registry/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm test:registry

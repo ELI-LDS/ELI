@@ -34,6 +34,18 @@
 
 `pnpm test:browser`는 `test:packaging`이 만든 실제 tarball 소비 앱을 Chromium에서 열어요. Checkbox·Toggle·Select·SegmentControl·TextField·TextArea·Tab의 클릭·입력·선택·키보드·포커스, 브라우저 콘솔 오류, axe의 자동 접근성 위반을 확인해요. 외부 Button 클래스의 Default·Hover·Pressed·Disabled 계산 스타일도 읽어 ELI 기본 스타일보다 우선하는지 검증해요. Modal의 포커스 계약과 Tooltip 트리거처럼 명세가 확정되지 않은 동작, VoiceOver 수동 검토와 모든 컴포넌트의 전체 키보드 조합을 대신하지 않아요.
 
+## 선택 설치 데이터를 확인해요
+
+UI 소스·공개 exports·레지스트리 규격·생성기를 바꾸면 `pnpm test:registry`를 실행해요. 일반 `pnpm check`의 tarball 검사와 대상이 다르며 관련 PR의 별도 레지스트리 CI에서도 확인해요. 전체 npm 설치 검사는 그대로 유지해요.
+
+- `pnpm build:registry`로 생성하고 목록·상세 JSON Schema, 파일과 항목의 SHA-256, 릴리스 버전, 실제 참조 경로를 확인해요.
+- Button만 선택했을 때 형제 컴포넌트·Modal·하네스가 없고 조합 컴포넌트에는 필요한 하위 컴포넌트가 있는지 확인해요.
+- 파일 소유권과 공통 토큰 중복, 누락 파일·미선언 외부 의존성·개발 파일·잘못된 경로를 검사해요.
+- 생성 JSON만 복원한 소비 앱에서 모든 공개 컴포넌트의 타입·Vite 빌드·CSS 연결을 확인해요. 대표 Next.js 앱에서는 빌드·SSR·hydration·Button/Select 상호작용을 확인해요. 소비 앱에 `@eli-design/ui`를 설치하지 않아요.
+- 하네스는 종류 예약만 검사해요. 하네스 설치와 CLI의 다운로드·파일 충돌·훅 병합을 검증했다고 표현하지 않아요.
+
+배포 JSON의 규격과 릴리스 절차는 [레지스트리 지침](registry.md)에서 관리해요. 생성물의 크기는 같은 작업 폴더의 소스 기준으로 측정하고 npm tarball 크기와 구분해요.
+
 ## 브라우저와 모바일 환경을 구분해 확인해요
 
 데스크톱 지원 목표는 최신 안정 Chrome·Edge·Safari와 Firefox예요. GitHub Actions의 브라우저 행렬은 실제 Chrome·Edge 채널과 Playwright가 고정한 Chromium·Firefox·WebKit에서 같은 tarball 소비 검사를 실행해요. `pnpm test:browsers`는 로컬에서 Chromium·Firefox·WebKit과 Android Chromium·iOS WebKit 기기 조건을 순서대로 확인하고, 일상 `pnpm check`는 실행 비용을 고려해 Chromium 대표 검사만 실행해요.

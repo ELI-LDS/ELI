@@ -8,6 +8,8 @@
     "preinstall": "node scripts/check-environment.mjs",
     "dev": "pnpm --filter @eli/storybook dev",
     "build": "pnpm --filter @eli-design/ui build",
+    "build:registry": "node scripts/build-registry.mjs",
+    "test:registry": "pnpm build:registry && node --test tests/registry/check.test.mjs && node tests/registry/consumer.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "build:storybook": "pnpm --filter @eli/storybook build",

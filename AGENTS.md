@@ -31,6 +31,7 @@ ELI는 누구나 쉽게 쓰는 React 디자인 컴포넌트 라이브러리와, 
 | 한국어 문서 작성 | [글쓰기](Agent/writing.md) |
 | 구현 확인·리뷰 | [검증](Agent/testing.md) |
 | 소비자 패키지 매니저·설치 명령 | [패키지 매니저](Agent/package-managers.md) |
+| 컴포넌트 선택 설치·배포 JSON·CLI 연동 | [레지스트리](Agent/registry.md), [검증](Agent/testing.md) |
 | 공개 API 변경·릴리스 준비 | [버전](Agent/versioning.md) |
 | 브랜치·커밋·PR | [Git 규칙](Agent/branch.md) |
 
