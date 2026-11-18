@@ -1,6 +1,8 @@
 # @eli-design/ui
 
-ELI의 React 디자인 컴포넌트 패키지예요. 아직 npm에 게시하지 않았어요. 현재 공개 경로는 `package.json`의 `exports`, 구현된 컴포넌트와 사용 예시는 아래 문서에서 확인할 수 있어요.
+ELI의 React 디자인 컴포넌트 패키지예요. npm에서 `@eli-design/ui`로 설치할 수 있어요. 현재 공개 경로는 `package.json`의 `exports`, 구현된 컴포넌트와 사용 예시는 아래 문서에서 확인할 수 있어요.
+
+공식 홍보 전에는 `0.x`로 배포하고, 공식 홍보를 시작할 때 `1.0.0`으로 전환해요. `0.x`의 MINOR 업데이트에는 사용법이 바뀌는 변경이 포함될 수 있어요. 업데이트 전에 변경 내역과 이전 방법을 확인해요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 소비 프로젝트에서 [Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. `npm i pretendard`로 설치하고 `import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css'`를 추가해요. `next/font/local`은 글꼴을 다른 이름으로 등록해서 ELI 컴포넌트에 적용되지 않아요.
 
