@@ -28,7 +28,7 @@
 
 `pnpm test:next`는 실제 tarball을 Next.js 16.4.6 App Router 소비 앱에 풀어 프로덕션 빌드를 실행해요. Server Component에서 ELI의 정적·클라이언트 컴포넌트를 그룹 경로로 직접 가져오고, 별도 Client Component에서는 이벤트와 상태를 연결해 클라이언트 경계를 확인해요. 빌드된 CSS와 서버 HTML뿐 아니라 Chromium에서 hydration 이후 Button·Select 상호작용과 콘솔 오류도 확인해요. Next.js나 React 버전을 바꿀 때는 소비 앱의 고정 버전도 함께 갱신하고 결과를 기록해요.
 
-검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 사용해요. React 버전별 독립 설치나 프레임워크별 라우팅·RSC·hydration 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
+Vite 검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 사용해요. React 버전별 독립 설치나 `test:next`가 맡는 Next.js의 RSC·hydration 검증을 대신하지 않아요. 테스트·Storybook이 실제 tarball에 들어가면 실패해요.
 
 `pnpm dev`로 Storybook을 열어 모든 공개 컴포넌트의 디자인 조합·상태와 `직접 바꿔보기`의 Controls 반영을 확인해요. Story 구성과 확인 방법은 [컴포넌트 구현 규칙](components.md#storybook을-함께-확인해요)을 따라요.
 
@@ -56,7 +56,7 @@ Android와 iOS 자동 검사는 Playwright의 Pixel·iPhone 기기 설정으로 
 
 axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상을 기준선으로 따로 고정해요. 기준선보다 늘거나 줄면 테스트를 실패시키고 [컴포넌트 감사 보고서](../handbook/audits/2026-11-component-audit.md#자동-접근성-기준선)를 갱신할지 확인해요. 색상 값을 임의로 바꾸지 않으며, 색상 대비를 제외한 axe 규칙은 예외 없이 통과해야 해요.
 
-`pnpm test:packaging`은 외부 `className`이 루트 요소에 전달되고 상태별 CSS가 최종 번들에 포함되는지 확인하고, 실제 계산 스타일은 `test:browser`가 맡아요. Storybook에 스타일 도구별 전용 Story를 추가하지 않아요. 현재 `pnpm check`는 소스 단위의 `.test.tsx`를 실행하지 않으며, 실제 tarball 소비 관점의 통합 검사를 우선해요. `.storybook`의 설정 파일은 통합 타입 검사에 포함해요.
+`pnpm test:packaging`은 외부 `className`이 루트 요소에 전달되고 상태별 CSS가 최종 번들에 포함되는지 확인하고, 실제 계산 스타일은 `test:browser`가 맡아요. Storybook에 스타일 도구별 전용 Story를 추가하지 않아요. 현재 `pnpm check`는 소스 단위의 `.test.tsx`를 실행하지 않으며, 실제 tarball 소비 관점의 통합 검사를 우선해요. `apps/storybook`의 설정 파일은 통합 타입 검사에 포함해요.
 
 ## 상호작용 성능을 별도로 확인해요
 
@@ -78,7 +78,7 @@ axe 색상 대비 검사는 디자이너와 함께 수정할 기존 14개 대상
 
 ## 실제 배포 전 검증을 완성해요
 
-실제 npm 배포 전에는 저장소 안에서 빌드되는지만 확인하지 않고, 생성한 tarball을 사용자가 쓰는 조건에 가까운 환경에서 확인해야 해요. 아직 자동화하지 않은 검사는 통과한 것으로 기록하지 않고 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 도입 상태를 관리해요.
+매 npm 릴리스 전에는 저장소 안에서 빌드되는지만 확인하지 않고, 생성한 tarball을 사용자가 쓰는 조건에 가까운 환경에서 확인해야 해요. `0.x` 배포와 공식 홍보용 `1.0.0`에도 같은 원칙을 적용해요. npm 게시 완료와 검증 완료는 별개예요. 아직 자동화하지 않은 검사는 통과한 것으로 기록하지 않고 [개선 제안](../handbook/improvements.md#배포-안정성-검사를-보완해요)에서 도입 상태를 관리해요.
 
 아래 검사는 자동화하거나 같은 범위를 수동으로 확인한 근거를 릴리스 PR에 남긴 뒤 배포해요.
 
@@ -117,7 +117,9 @@ Node.js·React·브라우저 지원 범위를 늘릴 때는 새 조합을 검증
 
 React·추가 의존성까지 합친 다운로드 크기나 브라우저 번들 크기로 표현하지 않아요. 최초 빈 패키지 크기를 완성된 라이브러리 크기로 안내하지 않아요. 임의의 상한은 두지 않고 증가 이유를 검토해요. 이전 릴리스 자동 비교와 Storybook 용량 표시는 후속 작업이에요.
 
-실제 npm 배포 전에는 `pnpm test:packaging`으로 생성한 원본 tarball도 확인해요. npm 게시와 배포 자동화는 현재 설정하지 않아요.
+매 npm 릴리스 전에는 `pnpm test:packaging`으로 생성한 원본 tarball도 확인해요. 게시 후에는 npm의 게시 버전·배포 태그·integrity와 실제 설치 결과를 확인하고 릴리스 기록에 남겨요. 저장소에는 npm 게시 자동화가 없으며, Storybook 배포만으로 npm에 게시되지 않아요.
+
+기존 검사 명령은 자체 tarball을 만들어요. 실제 게시할 최종 파일을 고정한 뒤 수행하는 설치·무결성 확인은 별도 릴리스 검증이며, 앞의 검사 결과만으로 대신하지 않아요. 최종 후보와 실행 기록·배포 후 확인 순서는 [릴리스 절차](../handbook/releasing.md)를 따라요.
 
 ## Storybook 배포를 확인해요
 

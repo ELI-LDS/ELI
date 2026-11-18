@@ -2,7 +2,7 @@
 
 ## 하나의 패키지를 배포해요
 
-`packages/ui`만 `@eli-design/ui`로 배포해요. 공통 토큰도 이 패키지에 포함해요. `apps/storybook`과 `apps/docs`는 비공개 앱이에요.
+`packages/ui`는 npm에 게시된 `@eli-design/ui`의 배포 소스예요. 공통 토큰과 하네스를 이 패키지에 포함해요. `apps/storybook`과 `apps/docs`는 비공개 앱이에요. npm 배포 단계와 공식 홍보 시점의 버전 전환은 [버전 규칙](versioning.md)에서 관리해요.
 
 공개 컴포넌트는 `packages/ui/src/{그룹}/{컴포넌트}/`에서 관리하고 그룹의 `index.ts`로 내보내요. 사용자는 `@eli-design/ui/{그룹}`에서 가져와요. 실제 공개 경로는 `packages/ui/package.json`의 `exports`를 기준으로 확인해요.
 

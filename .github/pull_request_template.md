@@ -8,6 +8,7 @@
 
 - [ ] 변경 범위에 맞는 검증을 완료했어요.
 - [ ] 변경된 사용법이 있다면 문서와 Storybook을 함께 수정했어요.
+- [ ] 사용자 영향이 있는 변경은 `CHANGELOG.md`의 `Unreleased`에 기록했어요. 해당하지 않으면 이유를 적어요.
 
 ## UI 확인
 
@@ -26,6 +27,12 @@
 - 포함 파일:
 - 실행 의존성 변경:
 - 예상 버전 변경 유형:
+- 판단 기준: 현재 배포 단계와 호환성 영향 ([버전 규칙](../Agent/versioning.md))
+
+<!-- 릴리스 준비 PR일 때만 아래 항목을 남기고 handbook/releasing.md에 따라 채워주세요. 일반 PR 병합은 npm 게시가 아니에요. -->
+
+- 릴리스 준비 PR: 대상 버전 / 기존 npm latest / CHANGELOG 구역 / 검증 계획
+- 게시 후 기록: 배포 SHA·태그·Release 링크 / tarball integrity / 실제 설치 확인
 
 ## 호환성
 
