@@ -74,14 +74,12 @@
   box-sizing: border-box;
   display: flex;
   width: max-content;
-  max-width: 100%;
+  /* 중앙 정렬 루트가 콘텐츠만큼 늘어나도 Canvas 너비를 넘지 않게 해요. */
+  max-width: min(100%, calc(100vw - 32px));
   align-items: flex-start;
   gap: 32px;
-}
-
-/* 모바일 편집 화면은 설정과 미리보기를 항상 좌우로 비교해요. */
-.eli-story-preview-layout[data-device='mobile'] {
-  max-width: none;
+  /* 편집은 왼쪽, 미리보기는 오른쪽에 유지하고 좁으면 가로로 스크롤해요. */
+  overflow-x: auto;
 }
 
 .eli-story-preview-layout__editor {
@@ -94,6 +92,7 @@
 
 .eli-story-preview-layout__preview {
   display: flex;
+  flex: 0 0 auto;
   min-width: 0;
   align-items: flex-start;
   justify-content: center;
@@ -151,19 +150,6 @@
   min-width: 0;
 }
 
-@media (max-width: 1279px) {
-  .eli-story-preview-layout:not([data-device='mobile']) {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .eli-story-preview-layout:not([data-device='mobile'])
-    .eli-story-preview-layout__editor {
-    flex-basis: auto;
-    max-height: none;
-  }
-}
-
 @media (max-width: 639px) {
   .eli-story-device,
   .eli-story-overview {
@@ -172,10 +158,5 @@
 
   .eli-story-device__surface {
     padding: 24px 16px;
-  }
-
-  .eli-story-preview-layout:not([data-device='mobile'])
-    .eli-story-preview-layout__editor {
-    width: 100%;
   }
 }
