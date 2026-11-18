@@ -1,7 +1,6 @@
 'use client';
 
 import './NavigationDrawerItem.css';
-import { ExpandLessIcon } from '../../icon/ExpandLessIcon.js';
 import { ExpandMoreIcon } from '../../icon/ExpandMoreIcon.js';
 import type { NavigationDrawerItemProps } from './NavigationDrawerItem.types.js';
 import { useNavigationDrawerItem } from './useNavigationDrawerItem.js';
@@ -96,19 +95,25 @@ export function NavigationDrawerItem(props: NavigationDrawerItemProps) {
         </span>
 
         {canExpand ? (
-          <span className="eli-navigation-drawer-item__right-icon">
-            {isExpanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+          <span
+            className="eli-navigation-drawer-item__right-icon"
+            data-expanded={isExpanded}
+          >
+            <ExpandMoreIcon />
           </span>
         ) : null}
       </button>
 
       {hasSubItems ? (
         <div
+          aria-hidden={!isExpanded}
           className="eli-navigation-drawer-item__sub-items"
-          hidden={!isExpanded}
+          data-expanded={isExpanded}
           id={subItemsId}
         >
-          {subItems}
+          <div className="eli-navigation-drawer-item__sub-items-inner">
+            {subItems}
+          </div>
         </div>
       ) : null}
     </>

@@ -43,6 +43,16 @@
   background: var(--eli-background-default, #fff);
   color: var(--eli-foreground-default, #4b5668);
   text-align: left;
+  transition:
+    color 150ms ease-in,
+    border-color 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+.eli-select__trigger:active,
+.eli-select[data-open='true'] .eli-select__trigger {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* Hover와 펼침 */
@@ -76,10 +86,13 @@
   align-items: center;
   justify-content: center;
   color: var(--eli-foreground-subtle, #8b98aa);
+  transition: transform 150ms ease-in;
 }
 
 .eli-select[data-open='true'] .eli-select__arrow {
   transform: rotate(180deg);
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* 옵션 목록 */
@@ -97,5 +110,29 @@
   border-radius: var(--eli-layout-scale-2, 8px);
   background: var(--eli-background-default, #fff);
   box-shadow: 0 3px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
+  animation: eli-select-menu-enter 100ms ease-out;
 }
+}
+
+@keyframes eli-select-menu-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-select__trigger,
+    .eli-select__arrow {
+      transition-duration: 0.01ms;
+    }
+
+    .eli-select__menu {
+      animation-duration: 0.01ms;
+    }
+  }
 }

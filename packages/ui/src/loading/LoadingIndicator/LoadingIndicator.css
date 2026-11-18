@@ -53,29 +53,32 @@
     display: block;
   }
 
-  /* 퍼센트별 원형 이미지 */
+  /* 진행률 변경 시 Figma의 Determinate Smart Animate처럼 원형 선을 이어서 그려요. */
   .eli-loading-indicator__determinate {
-    background: url('./progress-0.svg') center / 40px 40px no-repeat;
+    transform: rotate(-90deg);
   }
 
-  .eli-loading-indicator[data-progress='10'] .eli-loading-indicator__determinate {
-    background-image: url('./progress-10.svg');
+  .eli-loading-indicator__determinate-track,
+  .eli-loading-indicator__determinate-active {
+    fill: none;
+    stroke-width: 6;
   }
 
-  .eli-loading-indicator[data-progress='30'] .eli-loading-indicator__determinate {
-    background-image: url('./progress-30.svg');
+  .eli-loading-indicator__determinate-track {
+    stroke: var(--eli-background-subtle, #eaf0f9);
   }
 
-  .eli-loading-indicator[data-progress='50'] .eli-loading-indicator__determinate {
-    background-image: url('./progress-50.svg');
+  .eli-loading-indicator__determinate-active {
+    stroke: var(--eli-background-strong, #c4cedc);
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.022094s ease-out;
   }
 
-  .eli-loading-indicator[data-progress='80'] .eli-loading-indicator__determinate {
-    background-image: url('./progress-80.svg');
-  }
-
-  .eli-loading-indicator[data-progress='100'] .eli-loading-indicator__determinate {
-    background-image: url('./progress-100.svg');
+  /* 0%에서는 둥근 선 끝이 점처럼 보이지 않도록 Active Indicator를 숨겨요. */
+  .eli-loading-indicator[data-progress='0'] .eli-loading-indicator__determinate-active {
+    visibility: hidden;
   }
 
   /* Indeterminate Track */
@@ -113,6 +116,10 @@
       transform: rotate(0rad);
       animation: none;
       will-change: auto;
+    }
+
+    .eli-loading-indicator__determinate-active {
+      transition-duration: 0.01ms;
     }
   }
 }

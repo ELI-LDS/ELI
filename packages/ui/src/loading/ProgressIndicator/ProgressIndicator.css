@@ -53,6 +53,10 @@
     background: var(--eli-background-strong, #c4cedc);
   }
 
+  .eli-progress-indicator[data-state='determinate'] .eli-progress-indicator__active {
+    transition: width 1.022094s ease-out;
+  }
+
   /* Figma의 퍼센트별 너비 */
   .eli-progress-indicator[data-state='determinate'] .eli-progress-indicator__active {
     width: 0;
@@ -95,6 +99,10 @@
       translate: 0 0;
       animation: none;
       will-change: auto;
+    }
+
+    .eli-progress-indicator[data-state='determinate'] .eli-progress-indicator__active {
+      transition-duration: 0.01ms;
     }
   }
 }

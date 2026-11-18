@@ -21,6 +21,9 @@
   appearance: none;
   background: var(--eli-background-default, #fff);
   cursor: pointer;
+  transition:
+    border-color 150ms ease-out,
+    background-color 150ms ease-out;
 }
 
 /* Native Checkbox / On */
@@ -37,11 +40,21 @@
   justify-content: center;
   align-items: center;
   color: var(--eli-foreground-inverse, #fff);
+  opacity: 0;
   pointer-events: none;
-  visibility: hidden;
+  transition: opacity 150ms ease-out;
 }
 
 .eli-checkbox__input:checked + .eli-checkbox__icon {
-  visibility: visible;
+  opacity: 1;
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-checkbox__input,
+    .eli-checkbox__icon {
+      transition-duration: 0.01ms;
+    }
+  }
 }

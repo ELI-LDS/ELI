@@ -1,6 +1,7 @@
 'use client';
 
 import './SegmentControl.css';
+import type { CSSProperties } from 'react';
 import type { SegmentControlProps } from './SegmentControl.types.js';
 import { useSegmentControl } from './useSegmentControl.js';
 
@@ -29,6 +30,7 @@ export function SegmentControl(props: SegmentControlProps) {
     defaultValue,
     onValueChange,
     options,
+    style,
     value,
     ...segmentControlProps
   } = props;
@@ -38,13 +40,26 @@ export function SegmentControl(props: SegmentControlProps) {
   const segmentControlClassName = ['eli-segment-control', className]
     .filter(Boolean)
     .join(' ');
+  const selectedIndex = Math.max(
+    options.findIndex(option => option.value === selectedValue),
+    0,
+  );
+  const segmentControlStyle = {
+    ...style,
+    '--eli-segment-count': options.length,
+    '--eli-segment-index': selectedIndex,
+  } as CSSProperties;
 
   return (
     <div
       {...segmentControlProps}
       className={segmentControlClassName}
       role="radiogroup"
+      style={segmentControlStyle}
     >
+      {options.length > 0 ? (
+        <span aria-hidden="true" className="eli-segment-control__indicator" />
+      ) : null}
       {options.map((option, index) => {
         const isSelected = option.value === selectedValue;
 

@@ -37,6 +37,7 @@ export function Radio(props: RadioProps) {
   return (
     <span className={radioClassName} style={style}>
       <input {...inputProps} className="eli-radio__input" type="radio" />
+      <span aria-hidden="true" className="eli-radio__indicator" />
     </span>
   );
 }

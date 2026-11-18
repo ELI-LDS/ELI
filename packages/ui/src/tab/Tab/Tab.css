@@ -17,6 +17,9 @@
   background: transparent;
   color: var(--eli-foreground-subtle, #8b98aa);
   cursor: pointer;
+  transition:
+    color 150ms ease-in,
+    background-color 150ms ease-in;
 }
 
 /* 비활성 Tab의 1px 하단 선 */
@@ -28,6 +31,15 @@
   height: 1px;
   background: var(--eli-border-subtle, #c4cedc);
   content: '';
+  transition:
+    height 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+.eli-tab:active:not(:disabled),
+.eli-tab:active:not(:disabled)::after {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* 선택된 Tab */
@@ -58,4 +70,13 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-tab,
+    .eli-tab::after {
+      transition-duration: 0.01ms;
+    }
+  }
 }

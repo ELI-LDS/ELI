@@ -11,6 +11,17 @@
   padding: 0;
   border: 0;
   border-radius: var(--eli-layout-scale-2, 8px);
+  transition:
+    color 150ms ease-in,
+    border-color 150ms ease-in,
+    background-color 150ms ease-in,
+    box-shadow 150ms ease-in;
+}
+
+/* Figma의 Pressed 전환은 Hover보다 빠르게 반응해요. */
+.eli-icon-button:active:not(:disabled) {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
 }
 
 /* Size / Large */
@@ -164,4 +175,12 @@
   border-color: var(--eli-border-interaction-disabled, #c4cedc);
   background: var(--eli-background-default, #fff);
 }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-icon-button {
+      transition-duration: 0.01ms;
+    }
+  }
 }
