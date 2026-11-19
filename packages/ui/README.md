@@ -2,6 +2,8 @@
 
 ELI의 React 디자인 컴포넌트 패키지예요. npm에서 `@eli-design/ui`로 설치할 수 있어요. 현재 공개 경로는 `package.json`의 `exports`, 구현된 컴포넌트와 사용 예시는 아래 문서에서 확인할 수 있어요.
 
+현재는 외부 사용자가 없는 실험 단계로 패키지명·역할·배포 방식이 바뀔 수 있어요. 필요한 컴포넌트 소스만 추가하고 전체는 명시적으로 선택하는 배포 방식을 준비하고 있어요. 목표 설치 도구 `eli-design`은 아직 구현·게시되지 않았으며, 이 패키지를 설치하는 명령은 현재 전체 설치 방식이에요.
+
 공식 홍보 전에는 `0.x`로 배포하고, 공식 홍보를 시작할 때 `1.0.0`으로 전환해요. `0.x`의 MINOR 업데이트에는 사용법이 바뀌는 변경이 포함될 수 있어요. 업데이트 전에 변경 내역과 이전 방법을 확인해요.
 
 이 패키지는 Pretendard 폰트 파일이나 폰트 패키지를 포함하지 않아요. 소비 프로젝트에서 [Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. `npm i pretendard`로 설치하고 `import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css'`를 추가해요. `next/font/local`은 글꼴을 다른 이름으로 등록해서 ELI 컴포넌트에 적용되지 않아요.
@@ -14,7 +16,7 @@ React는 사용자 앱과 공유하는 peer dependency예요. 개발용 Storyboo
 
 ## 엘리의 스킬과 훅이 함께 들어 있어요
 
-이 패키지의 `harness/` 폴더에는 AI 에이전트(Claude Code, Codex)가 ELI의 디자인 기준을 지키며 일하게 하는 스킬과 훅이 들어 있어요. 컴포넌트와 항상 같은 버전이에요.
+현재 실험 패키지의 `harness/` 폴더에는 AI 에이전트(Claude Code, Codex)가 ELI의 디자인 기준을 지키며 일하게 하는 스킬과 훅이 들어 있어요. 현재 빌드에서는 컴포넌트와 같은 버전이지만 미래의 소스 설치에도 하네스가 자동으로 포함되거나 같은 버전이어야 한다는 뜻은 아니에요.
 
 쓰고 있는 에이전트에게 이렇게 말하면 설치해요.
 
