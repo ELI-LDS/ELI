@@ -8,4 +8,4 @@
 - 검증: `pnpm test:registry`
 - 결과: 루트 `.artifacts/registry/`
 
-CLI·하네스 담당자가 연결할 필드와 파일 경로·버전·해시 계약은 [레지스트리 지침](../../Agent/registry.md)에 있어요. CLI 연동과 GitHub Release 게시는 아직 준비 중이에요.
+기본 배포 방향은 [프로젝트 구조](../../Agent/architecture.md#소스-설치를-기본으로-준비해요), 설치 도구의 목표 이름과 명령은 [패키지 매니저 지침](../../Agent/package-managers.md#소스-추가를-기본-소비-방식으로-준비해요)을 따라요. 필드·파일·버전·해시와 하네스 호출 계약은 [레지스트리 지침](../../Agent/registry.md)에서 관리해요. 설치 도구 연동·전체 소스 추가·GitHub Release 게시는 아직 준비 중이에요.

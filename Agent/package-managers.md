@@ -8,7 +8,7 @@ ELI 저장소의 개발·lockfile·스크립트 실행은 루트 `packageManager
 
 ## 라이브러리는 프로젝트 의존성으로 설치해요
 
-`@eli-design/ui`는 사용자의 `package.json`과 lockfile에 기록되어야 하므로 각 패키지 매니저의 의존성 추가 명령을 안내해요.
+패키지 방식을 선택하면 `@eli-design/ui`를 사용자의 `package.json`과 lockfile에 기록하도록 각 패키지 매니저의 의존성 추가 명령을 안내해요. 아래 명령은 현재 제공하는 전체 패키지 설치이며 선택한 소스만 추가하는 명령이 아니에요.
 
 ```bash
 # npm
@@ -26,22 +26,22 @@ bun add @eli-design/ui
 
 `npx`, `pnpm dlx`, `yarn dlx`, `bunx`는 패키지 실행 파일을 임시로 내려받아 실행하는 명령이에요. `@eli-design/ui` 설치 방법으로 안내하지 않아요. 특히 `yarn dlx`는 프로젝트 의존성을 기록하지 않으므로 `yarn add` 대신 사용하지 않아요.
 
-선택 설치용 JSON 생성기는 준비되어 있고, CLI 구현·연동은 진행 중이에요. 데이터의 기준은 [레지스트리 지침](registry.md)이에요. 추후 초기 설정과 선택 컴포넌트 설치 CLI를 구현하면 라이브러리 설치와 구분해 아래 형식으로 안내해요. 실제 CLI 패키지명과 명령은 구현 전까지 예시로 공개하지 않아요.
+## 소스 추가를 기본 소비 방식으로 준비해요
+
+목표 설치 진입점의 npm 이름은 `eli-design`으로 확정해요. 아래는 앞으로 구현할 사용 형태이며 현재 실행 가능한 명령이 아니에요. 패키지 생성·npm 게시·레지스트리 연결은 아직 하지 않았어요.
 
 ```text
-npx {CLI 패키지} init
-pnpm dlx {CLI 패키지} init
-yarn dlx {CLI 패키지} init
-bunx {CLI 패키지} init
-
-# 원하는 컴포넌트 소스만 추가하는 예시
-npx {CLI 패키지} add button
-pnpm dlx {CLI 패키지} add button
-yarn dlx {CLI 패키지} add button
-bunx {CLI 패키지} add button
+npx eli-design@latest init
+npx eli-design@latest add button
+npx eli-design@latest add button modal
+npx eli-design@latest add --all
 ```
 
-CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 확인하고 같은 도구로 필요한 외부 의존성을 설치해야 해요. 패키지 방식을 선택한 경우에만 `@eli-design/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli-design/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#두-가지-소비-방식을-제공해요)에서 관리해요.
+공개 전에 같은 설치 도구의 실행을 npm은 `npx`, pnpm은 `pnpm dlx`, Yarn Modern은 `yarn dlx`, Bun은 `bunx`에서 검증해요. [Yarn Classic](https://classic.yarnpkg.com/en/docs/cli/)에는 `dlx`가 없으므로 `npx` 등 검증한 실행 경로를 안내하고 프로젝트 의존성은 계속 Yarn으로 관리해요. [Yarn Modern의 dlx](https://yarnpkg.com/cli/dlx)를 Classic 명령으로 안내하지 않아요.
+
+실행 도구를 내려받는 범위와 UI 소스·추가 의존성을 받는 범위를 구분해요. 소스 추가의 구조 기준은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-준비해요), 설치 기록과 비대화형 호출 계약은 [레지스트리 지침](registry.md#하네스가-설치-도구를-호출할-수-있게-준비해요)을 따라요. 기능이 구현되기 전에는 전체 소스 추가나 하네스 호출까지 검증됐다고 안내하지 않아요.
+
+CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 확인하고 같은 도구로 필요한 외부 의존성을 설치해야 해요. 패키지 방식을 선택한 경우에만 `@eli-design/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli-design/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-준비해요)에서 관리해요.
 
 ## 초기 지원 행렬을 고정해요
 
