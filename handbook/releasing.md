@@ -4,6 +4,14 @@
 
 지침 작성·일반 PR 병합·Storybook 배포만으로 npm에 게시하지 않아요. 실제 릴리스 요청이 있을 때 아래 절차를 실행해요. 이번 지침을 추가했다고 릴리스 자동화나 이미 게시된 버전의 기록이 복구되는 것은 아니에요.
 
+## npm 게시만 위임할 수 있게 준비해요
+
+릴리스 준비자는 아래 최종 파일 생성·사전 검사·GitHub 콘텐츠 게시·공개 콘텐츠 소비와 GitHub의 파일 전달을 맡아요. npm 담당자는 전달받은 tarball의 무결성을 확인하고 npm 게시·배포 태그 변경만 수행해요. 담당자에게 UI 빌드·레지스트리 생성·Git 태그·GitHub 업로드를 다시 요구하지 않아요.
+
+설치 도구의 `cli-v{버전}` GitHub Release에 검증한 tarball·`SHA256SUMS`·원본 SHA와 integrity를 담은 `release.json`을 제공해요. UI 소스 콘텐츠의 `v{버전}` Release에는 개별 JSON을 제공해요. 파일 전달은 npm 게시 완료와 구분하고, 이미 고정한 파일을 담당자의 환경에서 다시 빌드하지 않아요.
+
+npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 공개 명령을 검사하고 결과를 전달해요. 통과한 뒤 담당자가 `latest`로 승격해요. 단계별 담당·명령·중단 기준은 [npm 담당자 안내](npm-publishing.md)를 따라요. 기존 `@eli-design/ui`의 삭제·사용 중단은 하네스 담당자와 별도로 결정하며 이번 CLI 게시에 묶지 않아요.
+
 ## CLI와 UI 소스 콘텐츠를 배포해요
 
 `packages/cli`의 설치 도구와 `packages/registry`의 생성기·소비 검사는 구현되어 있어요. 준비 PR을 병합했다고 npm·GitHub에 게시된 것으로 기록하지 않아요. 설치 도구에 전체 UI·하네스를 담거나 소스 설치를 위해 전체 UI 패키지를 먼저 게시·설치하는 조건을 두지 않아요.
@@ -35,7 +43,7 @@ node tests/cli/package-managers.mjs --prepare
 
 이 준비 명령이 `.artifacts/cli-package-managers/`에 도구 tarball·`candidate.json`·`registry/` 스냅샷을 만들어요. `candidate.json`의 파일명·버전·SHA-256·크기와 스냅샷의 콘텐츠 버전·규격·모든 파일 해시를 확인해요. source SHA도 결과 기록에 함께 남겨요.
 
-최종 tarball은 폴더를 다시 빌드해 게시하지 않고 이 파일을 그대로 사용해요. 고정한 후보로 아래 행렬을 실행하고, 실제 설치한 bin으로 같은 레지스트리 스냅샷의 Next.js SSR·hydration도 확인해요. 현재 `test:cli:consumer`는 작업 폴더의 CLI를 빌드해 검사하므로 최종 tarball 자체의 Next.js 검증을 완료한 것으로 표시하지 않아요.
+최종 tarball은 폴더를 다시 빌드해 게시하지 않고 이 파일을 그대로 사용해요. 고정한 후보로 아래 행렬을 실행하고, 실제 설치한 bin으로 같은 레지스트리 스냅샷의 Next.js SSR·hydration도 확인해요. `pnpm test:cli:consumer`는 작업 폴더의 CLI를 다시 빌드하므로 최종 파일 검사에는 사용하지 않아요. 최종 tarball을 저장소 밖 도구 폴더에 설치한 뒤 `ELI_CLI_BINARY`를 실제 설치한 `dist/cli.mjs`의 절대 경로로 지정하고 `node tests/registry/consumer.mjs --cli`를 실행해요. 공개 콘텐츠 검증은 같은 명령에 `ELI_REGISTRY_URL`을 게시한 `registry.json` URL로 지정해요. 받은 소스는 로컬 스냅샷과 대조해요.
 
 ```bash
 node tests/cli/package-managers.mjs --all

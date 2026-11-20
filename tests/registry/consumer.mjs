@@ -21,9 +21,10 @@ async function materialize(source, destination, requested) {
   const project = dirname(destination);
   await mkdir(project, { recursive: true });
   await writeFile(join(project, 'package.json'), JSON.stringify({ private: true, type: 'module', dependencies: { react: manifest.devDependencies.react } }));
-  const cli = join(root, 'packages/cli/dist/cli.mjs');
+  // 릴리스 검증에서는 다시 빌드하지 않고 최종 tarball에 든 실행 파일과 공개 콘텐츠를 그대로 사용해요.
+  const cli = process.env.ELI_CLI_BINARY ?? join(root, 'packages/cli/dist/cli.mjs');
   for (const args of [
-    ['init', '--registry', source, '--dir', 'eli'],
+    ['init', '--registry', process.env.ELI_REGISTRY_URL ?? source, '--dir', 'eli'],
     ['add', ...requested],
   ]) execFileSync(process.execPath, [cli, ...args, '--cwd', project, '--json'], { stdio: 'pipe' });
   const selected = await selectFiles(source, requested);

@@ -1,6 +1,19 @@
 # eli-design
 
-필요한 ELI 컴포넌트 소스와 의존 파일만 기존 React 프로젝트에 추가하는 설치 도구예요. 전체 ELI 패키지·UI 소스·하네스를 실행 도구에 담지 않아요. 아직 npm 게시와 GitHub Release 콘텐츠 배포를 진행하지 않았어요.
+필요한 ELI 컴포넌트 소스와 의존 파일만 기존 React 프로젝트에 추가하는 설치 도구예요. 전체 ELI 패키지·UI 소스·하네스를 실행 도구에 담지 않아요. npm 게시 버전과 GitHub의 UI 콘텐츠 버전은 각각 관리해요.
+
+## 공개된 버전으로 실행해요
+
+npm에 게시되고 GitHub 콘텐츠가 공개된 버전에서 사용할 수 있어요. `@latest`는 설치 도구의 버전이며 이미 추가한 UI를 자동으로 업데이트하지 않아요.
+
+```bash
+npx eli-design@latest init
+npx eli-design@latest add button
+npx eli-design@latest add modal select
+npx eli-design@latest add --all
+```
+
+`npm view eli-design versions dist-tags --json`과 [콘텐츠 Release](https://github.com/ELI-LDS/ELI/releases)에서 실제 공개 상태를 확인해요. 준비 브랜치의 버전 숫자만으로 게시를 완료했다고 판단하지 않아요.
 
 ## 저장소에서 실행해요
 
@@ -18,7 +31,7 @@ node packages/cli/dist/cli.mjs add --all --cwd <프로젝트>
 node packages/cli/dist/cli.mjs status --cwd <프로젝트>
 ```
 
-게시 후의 실행 진입점은 `npx eli-design@latest`예요. 현재는 이 명령으로 이번 코드를 받을 수 있다고 안내하지 않아요. Node.js 24.21.0으로 개발·검증해요.
+Node.js 24.21.0으로 개발·검증해요. npm·GitHub에 아직 게시하지 않은 후보는 위 로컬 명령으로 확인해요.
 
 ## 설정과 설치 기록
 
