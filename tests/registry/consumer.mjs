@@ -2,11 +2,11 @@ import assert from 'node:assert/strict';
 import { execFileSync, spawn } from 'node:child_process';
 import { mkdir, readFile, readdir, realpath, rm, symlink, writeFile } from 'node:fs/promises';
 import net from 'node:net';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 import { chromium } from '@playwright/test';
-import { materialize } from './fixtures.mjs';
+import { materialize as restoreFiles, selectFiles } from './fixtures.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const registry = join(root, '.artifacts/registry');
@@ -14,6 +14,22 @@ const work = join(root, '.artifacts/registry-consumer');
 const manifest = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
 const index = JSON.parse(await readFile(join(registry, 'registry.json'), 'utf8'));
 await rm(work, { recursive: true, force: true });
+
+/** 같은 소비 시나리오를 JSON 복원과 실제 설치 도구 양쪽에 적용해요. */
+async function materialize(source, destination, requested) {
+  if (!process.argv.includes('--cli')) return restoreFiles(source, destination, requested);
+  const project = dirname(destination);
+  await mkdir(project, { recursive: true });
+  await writeFile(join(project, 'package.json'), JSON.stringify({ private: true, type: 'module', dependencies: { react: manifest.devDependencies.react } }));
+  const cli = join(root, 'packages/cli/dist/cli.mjs');
+  for (const args of [
+    ['init', '--registry', source, '--dir', 'eli'],
+    ['add', ...requested],
+  ]) execFileSync(process.execPath, [cli, ...args, '--cwd', project, '--json'], { stdio: 'pipe' });
+  const selected = await selectFiles(source, requested);
+  for (const [path, content] of selected.files) assert.equal(await readFile(join(destination, path), 'utf8'), content);
+  return selected;
+}
 
 // 소비 프로젝트는 JSON에 든 소스만 복원하고 @eli-design/ui를 설치하지 않아요.
 const vite = join(work, 'vite');
