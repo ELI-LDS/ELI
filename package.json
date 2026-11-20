@@ -20,6 +20,7 @@
     "dev:docs": "pnpm --filter @eli/docs dev",
     "build:docs": "pnpm --filter @eli/docs build",
     "size": "pnpm build && node scripts/check-package.mjs",
+    "size:cli": "pnpm build:registry && pnpm build:cli && node tests/cli/download-size.mjs",
     "test:packaging": "pnpm build && node tests/packaging/check.mjs",
     "test:package-managers": "pnpm build && node tests/package-managers/prepare.mjs && node tests/package-managers/check.mjs --all",
     "test:performance": "pnpm build && node tests/performance/check.mjs",

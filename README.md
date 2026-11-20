@@ -278,6 +278,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm test:next` | Next.js App Router 소비 환경을 확인해요 |
 | `pnpm test:package-managers` | 지원 패키지 매니저의 설치와 소비 빌드를 확인해요 |
 | `pnpm size` | 패키지 압축 크기·압축 해제 크기·파일 수를 기록해요 |
+| `pnpm size:cli` | 격리된 HTTP 서버에서 CLI 설치 흐름의 콜드·재실행 응답 본문 크기를 측정해요 |
 | `pnpm build:registry` | 선택 설치용 목록·항목별 JSON을 생성해요 |
 | `pnpm build:cli` | UI 콘텐츠를 포함하지 않는 설치 도구를 빌드해요 |
 | `pnpm test:cli` | 설치 도구 tarball·선택 다운로드·파일 보호를 확인해요 |

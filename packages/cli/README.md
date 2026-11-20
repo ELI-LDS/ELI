@@ -75,4 +75,6 @@ node packages/cli/dist/cli.mjs status --cwd <프로젝트> --json
 
 `pnpm test:cli:package-managers`는 같은 tarball로 npm·pnpm·Yarn Classic·Yarn Modern node-modules·strict PnP·Bun의 임시 실행을 검사해요. 앱의 package.json·lockfile·PnP 설정 보존과 소스 타입·Vite·CSS·SSR도 확인해요. 고정 도구 준비와 개별 행 재실행은 [CLI 실행 행렬](../../Agent/package-managers.md#cli-실행-행렬도-구분해요)을 따라요. 현재 로컬 macOS arm64에서 여섯 행이 통과했으며 Linux CI의 실제 실행 결과는 PR에서 따로 확인해요. 실제 npm 이름·버전으로 받는 공개 명령은 게시 후 별도 확인 항목이에요. 기존 UI tarball 검사는 유지해요.
 
+`pnpm size:cli`는 Button·조합 컴포넌트·연속 추가·전체 추가를 빈 npm 캐시와 재실행 조건으로 측정해요. 격리된 로컬 HTTP 서버에서 CLI를 실제 실행해 도구·semver·npm 메타데이터·UI JSON 응답 본문을 기록하고 identity/gzip 조건을 비교해요. 공개 CDN·HTTP 헤더·TLS·기존 React 다운로드를 포함한 수치는 아니에요. 결과는 `.artifacts/cli-download-size/report.json`과 `report.md`, 정확한 범위는 [측정 지침](../../Agent/testing.md#소스-설치의-전체-다운로드량을-확인해요)에서 확인해요.
+
 규격은 [레지스트리 지침](../../Agent/registry.md), 버전과 배포는 [버전 지침](../../Agent/versioning.md)을 따라요.
