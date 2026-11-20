@@ -146,7 +146,7 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 설치 진입점은 `eli-design`이에요. 개별·다중·전체 추가와 설치 상태 조회를 구현했으며 [CLI 사용법](packages/cli/README.md)에 따라 저장소에서 실행할 수 있어요. 아직 npm 게시와 GitHub Release 콘텐츠 게시를 하지 않아 `npx eli-design@latest`를 공개 설치 명령으로 안내하지 않아요.
 
-레지스트리 JSON 생성기·CLI·소비 검사는 구현되어 있어요. 패키지 매니저별 CLI 실행 행렬·공개 배포·게시 후 공개 명령 확인·하네스 연결은 남아 있어요. 현재 CLI는 기존 React 프로젝트의 설치 버전을 확인하고 소스만 추가해요. React·폰트·하네스를 자동으로 설치하지 않아요. 데이터와 담당 범위는 [레지스트리 지침](Agent/registry.md)에서 확인해요.
+레지스트리 JSON 생성기·CLI·소비 검사와 로컬 tarball의 패키지 매니저별 실행 행렬은 구현되어 있어요. 공개 배포·게시 후 공개 명령 확인·하네스 연결은 남아 있어요. 현재 CLI는 기존 React 프로젝트의 설치 버전을 확인하고 소스만 추가해요. React·폰트·하네스를 자동으로 설치하지 않아요. 데이터와 담당 범위는 [레지스트리 지침](Agent/registry.md)에서 확인해요.
 
 ### 패키지 매니저로 설치해요
 
@@ -282,6 +282,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm build:cli` | UI 콘텐츠를 포함하지 않는 설치 도구를 빌드해요 |
 | `pnpm test:cli` | 설치 도구 tarball·선택 다운로드·파일 보호를 확인해요 |
 | `pnpm test:cli:consumer` | CLI로 추가한 소스의 타입·Vite·Next.js 소비를 확인해요 |
+| `pnpm test:cli:package-managers` | 여섯 패키지 매니저 환경의 CLI 실행·소스 소비·lockfile 보존을 확인해요 |
 | `pnpm test:registry` | JSON 규격·의존 파일·선택 설치 소스의 소비 빌드를 검증해요 |
 | `pnpm check` | 일상 핵심 검증을 순서대로 실행해요 |
 

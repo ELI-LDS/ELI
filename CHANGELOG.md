@@ -20,6 +20,7 @@
 
 ### 개발 환경
 
+- 같은 CLI tarball을 여섯 패키지 매니저 환경에서 임시 실행하고 로컬 소스의 타입·Vite·CSS·SSR과 package.json·lockfile·PnP 설정 보존을 확인하는 행렬을 추가했어요. Linux CI 설정과 로컬 실행 결과는 구분해요.
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-LDS/ELI/pull/73)
 

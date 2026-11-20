@@ -46,7 +46,7 @@ UI 소스·공개 exports·레지스트리 규격·생성기를 바꾸면 `pnpm 
 
 배포 JSON의 규격과 릴리스 절차는 [레지스트리 지침](registry.md)에서 관리해요. 생성물의 크기는 같은 작업 폴더의 소스 기준으로 측정하고 npm tarball 크기와 구분해요.
 
-설치 도구를 바꾸면 `pnpm test:cli`로 tarball 실행·선택 다운로드·파일 보호·설정·기록·구조화된 결과를 확인해요. `pnpm test:cli:consumer`는 실제 CLI로 추가한 소스의 타입·Vite·CSS·Next.js SSR·hydration을 확인해요. 레지스트리 CI에 두 명령을 연결해요. 패키지 매니저별 CLI 실행 행렬은 별도 후속 검증이에요.
+설치 도구를 바꾸면 `pnpm test:cli`로 실제 tarball 설치·다운로드·파일 쓰기·설정·기록·해시·경로·충돌 보호·구조화된 결과를 확인해요. `pnpm test:cli:consumer`는 실제 CLI로 소스를 추가한 뒤 전체 공개 컴포넌트의 타입·Vite·CSS와 대표 Next.js SSR·hydration을 검사해요. 레지스트리 CI에 두 명령을 연결해요. 별도 `pnpm test:cli:package-managers`는 같은 CLI 후보를 여섯 소비 환경의 임시 실행 도구로 호출해 앱 의존성·lockfile 보존과 소스 소비를 검사해요. [CLI 실행 행렬](package-managers.md#cli-실행-행렬도-구분해요)의 로컬 tarball 결과와 실제 게시 후 공개 명령 확인을 구분해요. 기존 UI tarball 행렬이 CLI까지 검증한 것은 아니에요.
 
 - 개별·다중 선택은 필요한 항목만 받고 전체 소스 추가는 명시적인 선택일 때만 수행하는지 확인해요. 전체 소스에도 하네스가 자동으로 포함되지 않아야 해요.
 - 같은 파일의 중복 추가, 사용자 수정 파일 덮어쓰기, 다른 릴리스의 공유 파일 혼합을 막는지 확인해요.

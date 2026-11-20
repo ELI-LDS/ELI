@@ -12,6 +12,7 @@
     "build:cli": "pnpm --filter eli-design build",
     "test:cli": "pnpm build:registry && pnpm build:cli && node --test tests/cli/check.test.mjs",
     "test:cli:consumer": "pnpm build:registry && pnpm build:cli && node tests/registry/consumer.mjs --cli",
+    "test:cli:package-managers": "pnpm build:registry && pnpm build:cli && node tests/cli/package-managers.mjs --prepare && node tests/cli/package-managers.mjs --all",
     "test:registry": "pnpm build:registry && node --test tests/registry/check.test.mjs && node tests/registry/consumer.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
