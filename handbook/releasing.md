@@ -24,7 +24,10 @@ npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 
 npm view eli-design versions dist-tags --json
 npm view @eli-design/ui versions dist-tags --json
 gh release list
+gh repo view ELI-LDS/ELI --json visibility
 ```
+
+콘텐츠를 일반 사용자에게 제공할 저장소는 공개되어 있어야 해요. 인증된 `gh`에서 Release를 확인한 것만으로 공개 다운로드가 된다고 판단하지 않아요. 인증 정보가 없는 CLI에서 목록 API와 개별 asset을 실제로 받아 확인해요. 비공개 저장소라면 전체 원본을 임의로 공개하거나 토큰을 CLI에 넣지 않고 공개 배포 위치부터 합의해요.
 
 설치 도구는 `packages/cli/package.json`, 현재 콘텐츠는 `packages/ui/package.json`에서 버전을 정해요. 번호를 억지로 맞추지 않으며 콘텐츠 버전 변경만으로 기존 전체 UI 패키지를 npm에 게시하지 않아요. 고정된 pnpm으로 lockfile을 동기화하고, 실제 릴리스 대상만 CHANGELOG의 준비 중인 구역으로 옮겨요. 게시 날짜·최종 원본 SHA·게시 후 검사 결과를 미리 채우지 않아요.
 
