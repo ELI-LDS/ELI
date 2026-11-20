@@ -1,0 +1,16 @@
+{
+  "name": "eli-design",
+  "version": "0.1.0",
+  "description": "필요한 ELI 컴포넌트 소스만 프로젝트에 추가해요.",
+  "type": "module",
+  "license": "MIT",
+  "bin": { "eli-design": "dist/cli.mjs" },
+  "files": ["dist", "README.md", "LICENSE"],
+  "engines": { "node": ">=24.21.0 <25 || >=26" },
+  "repository": { "type": "git", "url": "https://github.com/ELI-LDS/ELI.git", "directory": "packages/cli" },
+  "scripts": {
+    "build": "node ../../scripts/build-cli.mjs",
+    "prepack": "npm run build"
+  },
+  "dependencies": { "semver": "7.8.6" }
+}

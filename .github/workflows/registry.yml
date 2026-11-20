@@ -9,8 +9,11 @@ on:
       - 'tsconfig.base.json'
       - 'packages/ui/**'
       - 'packages/registry/**'
+      - 'packages/cli/**'
       - 'scripts/build-registry.mjs'
+      - 'scripts/build-cli.mjs'
       - 'tests/registry/**'
+      - 'tests/cli/**'
   workflow_dispatch:
 
 permissions:
@@ -32,3 +35,15 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: pnpm test:registry
+      - run: pnpm test:cli
+      - run: pnpm test:cli:consumer
+      - run: pnpm size:cli
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eli-cli-download-size
+          path: |
+            .artifacts/cli-download-size/report.json
+            .artifacts/cli-download-size/report.md
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

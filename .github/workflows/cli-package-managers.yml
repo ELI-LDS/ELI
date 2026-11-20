@@ -1,0 +1,89 @@
+name: Verify CLI package managers
+
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/cli-package-managers.yml'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'packages/cli/**'
+      - 'packages/registry/**'
+      - 'packages/ui/**'
+      - 'scripts/build-cli.mjs'
+      - 'scripts/build-registry.mjs'
+      - 'tests/cli/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:registry && pnpm build:cli
+      - run: node tests/cli/package-managers.mjs --prepare
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eli-cli-candidate
+          path: .artifacts/cli-package-managers
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 1
+
+  consumer:
+    needs: candidate
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        manager: [npm, pnpm, yarn-classic, yarn-modern-node-modules, yarn-modern-pnp, bun]
+    name: ${{ matrix.manager }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.21.0
+      # Classic 앱의 실행 도구와 PnP 앱의 추가 실행 경로에도 같은 npm을 사용해요.
+      - run: |
+          npm install --prefix "$RUNNER_TEMP/eli-npm" --ignore-scripts --no-audit --no-fund npm@11.19.0
+          echo "ELI_NPM_BINARY=$RUNNER_TEMP/eli-npm/node_modules/.bin/npm" >> "$GITHUB_ENV"
+      - if: matrix.manager == 'pnpm'
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.8.1
+          run_install: false
+      - if: matrix.manager == 'yarn-classic'
+        run: |
+          npm install --prefix "$RUNNER_TEMP/eli-yarn" --ignore-scripts --no-audit --no-fund yarn@1.22.22
+          echo "ELI_YARN_CLASSIC_BINARY=$RUNNER_TEMP/eli-yarn/node_modules/.bin/yarn" >> "$GITHUB_ENV"
+      - if: startsWith(matrix.manager, 'yarn-modern')
+        run: |
+          npm install --prefix "$RUNNER_TEMP/eli-yarn" --ignore-scripts --no-audit --no-fund @yarnpkg/cli-dist@4.18.1
+          echo "ELI_YARN_MODERN_BINARY=$RUNNER_TEMP/eli-yarn/node_modules/.bin/yarn" >> "$GITHUB_ENV"
+      - if: matrix.manager == 'bun'
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+      - uses: actions/download-artifact@v4
+        with:
+          name: eli-cli-candidate
+          path: .artifacts/cli-package-managers
+      - run: node tests/cli/package-managers.mjs --manager ${{ matrix.manager }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: eli-cli-result-${{ matrix.manager }}
+          path: .artifacts/cli-package-managers/reports/${{ matrix.manager }}.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7

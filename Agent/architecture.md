@@ -22,7 +22,7 @@
 
 ELI의 기본 소비 방식은 shadcn/ui처럼 필요한 컴포넌트 소스를 소비 프로젝트에 추가하는 방향으로 준비해요. 전체를 원하면 같은 소스 설치 흐름에서 모든 공개 컴포넌트를 명시적으로 선택할 수 있어야 해요. UI 원본은 `packages/ui/src` 한 곳에서 관리하고 배포 방식별로 구현을 복제하지 않아요.
 
-- **소스 방식 — 기본 목표:** 필요한 컴포넌트 하나·여러 개 또는 전체와 공통 토큰·실제 의존 파일을 소비 프로젝트에 추가해요. 설치된 로컬 파일에서 import하고 사용자가 직접 수정해요. `packages/registry`와 생성기는 준비되어 있지만 설치 도구 연결과 GitHub Release 게시가 남아 있어 아직 사용자에게 제공하지 않아요. 데이터와 연동 계약은 [레지스트리 지침](registry.md)에서 관리해요.
+- **소스 방식 — 기본 목표:** 필요한 컴포넌트 하나·여러 개 또는 전체와 공통 토큰·실제 의존 파일을 소비 프로젝트에 추가해요. 설치된 로컬 파일에서 import하고 사용자가 직접 수정해요. `packages/registry`의 생성기와 `packages/cli`의 설치 도구는 저장소에서 실행할 수 있어요. 로컬 tarball의 소비·실행 행렬은 검사하며 CLI npm 게시·GitHub Release 콘텐츠 게시·게시 후 공개 명령 확인은 남아 있어 정식 설치 경로로 안내하지 않아요. 데이터와 연동 계약은 [레지스트리 지침](registry.md)에서 관리해요.
 - **패키지 방식 — 현재 실험:** npm에 게시된 `@eli-design/ui`와 그룹 경로 import가 현재 구현이에요. 이 방식을 계속 제공하거나 소스 방식과 병행해야 한다는 조건은 없어요. 패키지명 변경·역할 변경·배포 중단 여부는 새 배포 구조를 확정할 때 정해요. 전체 소스를 프로젝트에 복사하는 것과는 다른 방식이에요.
 
 `@eli-design/ui/button` 같은 하위 경로 import는 소비 앱의 번들 분리에 도움을 줄 수 있지만, npm tarball에서 Button 파일만 다운로드한다는 뜻은 아니에요. 실제로 한 컴포넌트만 내려받으려면 shadcn/ui처럼 CLI가 레지스트리 항목의 소스와 필요한 파일을 소비 프로젝트에 복사하는 별도 배포 경로가 필요해요.
@@ -67,4 +67,4 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`는 문서·랜딩 페이지용 Next.js App Router 앱의 초기 셋업만 있고 아직 내용과 배포는 없어요. 문서 원본·API·MCP 구조는 [문서 앱 지침](docs.md)에서 관리해요. 선택 설치용 레지스트리 생성기와 검사는 구현되어 있어요. CLI 연결·레지스트리 게시, 폰트 초기 설정 도구, MCP, npm 배포 자동화는 아직 없어요.
+색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`는 문서·랜딩 페이지용 Next.js App Router 앱의 초기 셋업만 있고 아직 내용과 배포는 없어요. 문서 원본·API·MCP 구조는 [문서 앱 지침](docs.md)에서 관리해요. 선택 설치용 레지스트리·CLI와 소비 검사는 구현되어 있어요. CLI·레지스트리 게시, 폰트 초기 설정 도구, MCP, npm 배포 자동화는 아직 없어요.

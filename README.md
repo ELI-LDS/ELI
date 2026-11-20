@@ -144,9 +144,9 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 소스 설치에는 현재 제공 중인 `@eli-design/ui` 전체 패키지가 필요하지 않도록 준비해요. UI 원본은 하나로 유지하고, 하네스가 필요한 항목·의존 관계·설치 위치·사용 경로를 확인할 수 있도록 연결할 예정이에요. 하네스는 UI 소스에 자동으로 따라오지 않아요.
 
-목표 설치 진입점은 `eli-design`이에요. 개별·다중·전체 추가의 목표 명령은 [설치 지침](Agent/package-managers.md#소스-추가를-기본-소비-방식으로-준비해요)에 정리했어요. 아직 CLI를 구현·게시하지 않아 현재 사용할 수 있는 명령은 아니에요.
+설치 진입점은 `eli-design`이에요. 개별·다중·전체 추가와 설치 상태 조회를 구현했으며 [CLI 사용법](packages/cli/README.md)에 따라 저장소에서 실행할 수 있어요. 아직 npm 게시와 GitHub Release 콘텐츠 게시를 하지 않아 `npx eli-design@latest`를 공개 설치 명령으로 안내하지 않아요.
 
-현재는 레지스트리 JSON 생성기와 소비 검증까지 구현되어 있어요. 실제 설치 도구 연결·GitHub Release 게시·전체 소스 추가 기능·하네스 연결은 아직 완료하지 않았어요. 하네스는 사용할 UI와 설치 결과·실제 사용 경로를 같은 기준으로 확인하도록 준비해요. 데이터와 담당 범위는 [레지스트리 지침](Agent/registry.md)에서 확인해요.
+레지스트리 JSON 생성기·CLI·소비 검사와 로컬 tarball의 패키지 매니저별 실행 행렬은 구현되어 있어요. 공개 배포·게시 후 공개 명령 확인·하네스 연결은 남아 있어요. 현재 CLI는 기존 React 프로젝트의 설치 버전을 확인하고 소스만 추가해요. React·폰트·하네스를 자동으로 설치하지 않아요. 데이터와 담당 범위는 [레지스트리 지침](Agent/registry.md)에서 확인해요.
 
 ### 패키지 매니저로 설치해요
 
@@ -278,7 +278,12 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm test:next` | Next.js App Router 소비 환경을 확인해요 |
 | `pnpm test:package-managers` | 지원 패키지 매니저의 설치와 소비 빌드를 확인해요 |
 | `pnpm size` | 패키지 압축 크기·압축 해제 크기·파일 수를 기록해요 |
+| `pnpm size:cli` | 격리된 HTTP 서버에서 CLI 설치 흐름의 콜드·재실행 응답 본문 크기를 측정해요 |
 | `pnpm build:registry` | 선택 설치용 목록·항목별 JSON을 생성해요 |
+| `pnpm build:cli` | UI 콘텐츠를 포함하지 않는 설치 도구를 빌드해요 |
+| `pnpm test:cli` | 설치 도구 tarball·선택 다운로드·파일 보호를 확인해요 |
+| `pnpm test:cli:consumer` | CLI로 추가한 소스의 타입·Vite·Next.js 소비를 확인해요 |
+| `pnpm test:cli:package-managers` | 여섯 패키지 매니저 환경의 CLI 실행·소스 소비·lockfile 보존을 확인해요 |
 | `pnpm test:registry` | JSON 규격·의존 파일·선택 설치 소스의 소비 빌드를 검증해요 |
 | `pnpm check` | 일상 핵심 검증을 순서대로 실행해요 |
 
@@ -294,6 +299,7 @@ ELI/
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
 ├── packages/ui/        # npm에 배포하는 @eli-design/ui 소스
 ├── packages/registry/  # 선택 설치 데이터의 생성 정책·JSON 규격
+├── packages/cli/       # 선택한 UI 소스를 추가하는 eli-design 실행 도구
 ├── packages/harness/   # 엘리의 스킬과 훅. 빌드할 때 @eli-design/ui에 함께 들어가요
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
@@ -308,7 +314,7 @@ ELI/
 - `@eli-design/ui`의 npm 게시 자동화
 - 컴포넌트 문서와 토큰을 제공하는 원격 MCP 서버
 - 사용자용 문서 사이트와 한글 가이드
-- 선택 설치용 레지스트리의 GitHub Release 게시, 설치 도구 연결과 전체 소스 추가
+- eli-design npm 게시, 선택 설치 레지스트리의 GitHub Release 게시와 게시 후 공개 명령 확인
 - 버전을 올릴 때 바뀐 API를 찾아 주는 업그레이드 안내
 
 예정된 기능을 현재 사용할 수 있는 기능처럼 안내하지 않아요. 논의 중인 개선안은 [개선 제안](handbook/improvements.md)에서 확인할 수 있어요.

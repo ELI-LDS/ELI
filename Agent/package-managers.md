@@ -28,7 +28,7 @@ bun add @eli-design/ui
 
 ## 소스 추가를 기본 소비 방식으로 준비해요
 
-목표 설치 진입점의 npm 이름은 `eli-design`으로 확정해요. 아래는 앞으로 구현할 사용 형태이며 현재 실행 가능한 명령이 아니에요. 패키지 생성·npm 게시·레지스트리 연결은 아직 하지 않았어요.
+설치 진입점의 npm 이름은 `eli-design`이에요. `packages/cli`의 실행 파일과 레지스트리 연결은 구현되어 있어요. 아래는 게시 후 사용할 명령이며 npm 게시와 GitHub Release 콘텐츠 게시가 끝나기 전에는 실행 가능한 공개 명령으로 안내하지 않아요. 현재 저장소에서 실행하는 방법은 [CLI 사용법](../packages/cli/README.md)을 따라요.
 
 ```text
 npx eli-design@latest init
@@ -37,11 +37,11 @@ npx eli-design@latest add button modal
 npx eli-design@latest add --all
 ```
 
-공개 전에 같은 설치 도구의 실행을 npm은 `npx`, pnpm은 `pnpm dlx`, Yarn Modern은 `yarn dlx`, Bun은 `bunx`에서 검증해요. [Yarn Classic](https://classic.yarnpkg.com/en/docs/cli/)에는 `dlx`가 없으므로 `npx` 등 검증한 실행 경로를 안내하고 프로젝트 의존성은 계속 Yarn으로 관리해요. [Yarn Modern의 dlx](https://yarnpkg.com/cli/dlx)를 Classic 명령으로 안내하지 않아요.
+같은 설치 도구 tarball을 npm은 `npm exec`(npx와 같은 실행 계열), pnpm은 `pnpm dlx`, Yarn Modern은 `yarn dlx`, Bun은 `bun x`(bunx)에서 검증해요. [Yarn Classic](https://classic.yarnpkg.com/en/docs/cli/)에는 `dlx`가 없으므로 npm exec로 도구를 실행하고 앱 의존성은 계속 Yarn으로 관리해요. [Yarn Modern의 dlx](https://yarnpkg.com/cli/dlx)를 Classic 명령으로 안내하지 않아요. 로컬 tarball 검증과 게시된 이름·버전의 실행 확인을 구분하고 실제 게시 후 공개 명령도 확인해요.
 
 실행 도구를 내려받는 범위와 UI 소스·추가 의존성을 받는 범위를 구분해요. 소스 추가의 구조 기준은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-준비해요), 설치 기록과 비대화형 호출 계약은 [레지스트리 지침](registry.md#하네스가-설치-도구를-호출할-수-있게-준비해요)을 따라요. 기능이 구현되기 전에는 전체 소스 추가나 하네스 호출까지 검증됐다고 안내하지 않아요.
 
-CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 확인하고 같은 도구로 필요한 외부 의존성을 설치해야 해요. 패키지 방식을 선택한 경우에만 `@eli-design/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli-design/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-준비해요)에서 관리해요.
+CLI는 실행 도구를 받은 방식보다 소비 프로젝트의 `packageManager`와 lockfile을 기준으로 판단해요. 현재 CLI는 이미 설치한 React의 버전을 확인하고, 누락·호환 오류를 안내하며 package.json이나 lockfile을 수정하지 않아요. 의존성 자동 설치를 추가할 때도 같은 패키지 매니저를 사용하고 기존 React를 임의로 교체하지 않아요. 패키지 방식을 선택한 경우에만 `@eli-design/ui`를 설치해요. 선택 설치 방식에서는 공통 `tokens/`와 요청한 컴포넌트 폴더, 그 컴포넌트가 실제로 참조하는 파일만 추가하고 `@eli-design/ui` 전체 패키지는 설치하지 않아요. 다른 패키지 매니저의 lockfile을 만들거나 전역 설치를 요구하지 않아요. 두 소비 방식의 구조 기준은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-준비해요)에서 관리해요.
 
 ## 초기 지원 행렬을 고정해요
 
@@ -73,6 +73,29 @@ CLI는 현재 프로젝트의 lockfile과 실행 중인 패키지 매니저를 �
 `--force`, `--legacy-peer-deps`, peer dependency 검사 해제 옵션은 사용하지 않아요. 한 행렬이라도 실패하면 초기 배포 준비가 끝난 것으로 보지 않아요.
 
 패키지 원본의 파일 목록·JSDoc·CSS 레이어 검사는 tarball을 직접 풀어 한 번 확인해요. 소비 환경 검사에서는 `node_modules/@eli-design/ui` 같은 설치 경로를 직접 읽지 않고 각 패키지 매니저의 해석 방식으로 import·타입 검사·빌드를 실행해요.
+
+## CLI 실행 행렬도 구분해요
+
+`pnpm test:cli:package-managers`는 위에 고정한 여섯 환경에 같은 CLI tarball과 레지스트리 스냅샷을 전달해요. 앱은 저장소 밖 임시 폴더에서 각 도구로 실제 설치하고, CLI는 앱 의존성으로 추가하지 않고 임시 실행 경로로 호출해요. tarball의 SHA-256을 모든 행에서 확인하고 결과는 `.artifacts/cli-package-managers/reports`에 남겨요.
+
+- 초기 설정·개별 추가·조합 컴포넌트 의존성·공유 파일 재사용·상태·미리보기와 JSON 결과를 확인해요.
+- CLI 실행 전후에 package.json·lockfile·PnP 설정과 설치 상태 파일의 해시를 비교해요. 다른 도구의 lockfile이 새로 생겨도 실패해요.
+- 복사한 로컬 소스의 타입 검사·Vite 빌드·CSS 자동 연결·일반 SSR을 확인해요. Next.js 소비 검사는 `pnpm test:cli:consumer`에서 따로 확인해요.
+- strict PnP는 Yarn dlx뿐 아니라 npm exec에서 CLI를 실행해도 소비 앱의 React를 해석하는지 확인해요.
+- `.github/workflows/cli-package-managers.yml`이 후보를 한 번 생성하고 각 행에 전달해요. 이 설정을 작성한 것과 원격 CI 통과를 구분해요.
+
+로컬에서 전체 행렬을 실행하려면 고정한 도구가 준비되어 있어야 해요. `ELI_NPM_BINARY`, `ELI_PNPM_BINARY`, `ELI_YARN_CLASSIC_BINARY`, `ELI_YARN_MODERN_BINARY`, `ELI_BUN_BINARY`로 임시 설치한 실행 파일을 지정할 수 있어요. 개인 전역 버전이나 홈 설정을 바꾸지 않아요. CI는 각 행에 필요한 도구만 임시 경로에 준비해요.
+
+특정 행만 다시 확인할 때는 같은 후보를 사용해요. `--prepare`는 기존 후보와 보고서를 새로 만들므로, 소스나 패키지를 바꾸지 않았다면 다시 실행하지 않아요.
+
+```bash
+pnpm build:registry
+pnpm build:cli
+node tests/cli/package-managers.mjs --prepare
+node tests/cli/package-managers.mjs --manager yarn-modern-pnp
+```
+
+이 검사는 로컬 tarball의 실행 호환성이며 실제 npm 이름·배포 태그·공개 레지스트리 서버까지 검증한 결과는 아니에요. CLI·콘텐츠 게시 후 같은 버전의 공개 명령을 확인해요.
 
 ## Yarn PnP를 별도로 검증해요
 
