@@ -35,7 +35,10 @@ npx eli-design@latest init
 npx eli-design@latest add button
 npx eli-design@latest add button modal
 npx eli-design@latest add --all
+npx eli-design@latest harness --agent claude
 ```
+
+`harness`는 Claude Code·Codex 또는 둘 모두를 명시적으로 선택하는 별도 명령이에요. UI의 `add --all`에는 하네스가 포함되지 않아요. 하네스 설치는 앱의 React·package.json·lockfile을 바꾸지 않고 UI init 없이도 실행돼요. 상세 경로·설정 병합·사용자 신뢰는 [하네스 지침](harness.md)을 따라요.
 
 같은 설치 도구 tarball을 npm은 `npm exec`(npx와 같은 실행 계열), pnpm은 `pnpm dlx`, Yarn Modern은 `yarn dlx`, Bun은 `bun x`(bunx)에서 검증해요. [Yarn Classic](https://classic.yarnpkg.com/en/docs/cli/)에는 `dlx`가 없으므로 npm exec로 도구를 실행하고 앱 의존성은 계속 Yarn으로 관리해요. [Yarn Modern의 dlx](https://yarnpkg.com/cli/dlx)를 Classic 명령으로 안내하지 않아요. 로컬 tarball 검증과 게시된 이름·버전의 실행 확인을 구분하고 실제 게시 후 공개 명령도 확인해요.
 

@@ -37,11 +37,12 @@ async function prepare() {
   await mkdir(output, { recursive: true });
   const packed = JSON.parse(execute(tools.npm, ['pack', '--ignore-scripts', '--json', '--pack-destination', output], join(root, 'packages/cli'), process.env, true))[0];
   assert.ok(packed.files.every(file => ['package.json', 'README.md', 'LICENSE'].includes(file.path) || file.path.startsWith('dist/')));
-  assert.ok(!packed.files.some(file => /harness|\.tsx|tokens\//.test(file.path)));
+  assert.ok(!packed.files.some(file => /^(harness|skills|hooks)\/|\.tsx|tokens\//.test(file.path)));
   const sha256 = digest(await readFile(join(output, packed.filename)));
   const filename = packed.filename.replace(/\.tgz$/, `-${sha256.slice(0, 12)}.tgz`);
   await rename(join(output, packed.filename), join(output, filename));
   await cp(join(root, '.artifacts/registry'), join(output, 'registry'), { recursive: true });
+  await cp(join(root, '.artifacts/harness'), join(output, 'harness'), { recursive: true });
   await writeFile(join(output, 'candidate.json'), serialize({ filename, sha256, toolVersion: packed.version, size: packed.size, unpackedSize: packed.unpackedSize, files: packed.files.length }));
   console.log(`CLI 행렬의 공통 후보: ${filename} (${sha256})`);
 }
@@ -153,6 +154,10 @@ console.log('CLI 소스의 SSR을 통과했어요.');
     assert.ok(repeated.files.every(file => file.action === 'reuse'));
     const status = invoke(['status']);
     assert.ok(status.files.every(file => file.state === 'unchanged'));
+    const harness = invoke(['harness', '--registry', join(output, 'harness'), '--agent', 'all']);
+    assert.deepEqual(harness.agents, ['claude', 'codex']);
+    assert.ok(invoke(['harness', '--registry', join(output, 'harness'), '--agent', 'all']).files.every(file => file.action === 'reuse'));
+    assert.ok(invoke(['status']).harness.files.every(file => file.state === 'unchanged'));
     if (manager.endsWith('pnp')) {
       assert.equal(invoke(['add', 'button', '--dry-run'], 'npm').requirements[0].version, '19.3.0');
     }
@@ -163,7 +168,7 @@ console.log('CLI 소스의 SSR을 통과했어요.');
     const record = JSON.parse(await readFile(join(work, 'eli.lock.json'), 'utf8'));
     for (const file of record.files) assert.equal(digest(await readFile(join(work, file.path))), file.sha256);
     assert.deepEqual(await snapshot(work), baseline, '소비 검사 후 프로젝트 설정이 달라졌어요.');
-    const report = { manager, version: actualVersion, node: process.versions.node, platform: process.platform, arch: process.arch, tarball: candidate.filename, sha256: candidate.sha256, passed: true, checks: ['ephemeral-bin', 'init', 'dry-run', 'button', 'composite-dependencies', 'shared-reuse', 'status', 'metadata-preserved', 'typecheck', 'vite-css', 'ssr'] };
+    const report = { manager, version: actualVersion, node: process.versions.node, platform: process.platform, arch: process.arch, tarball: candidate.filename, sha256: candidate.sha256, passed: true, checks: ['ephemeral-bin', 'init', 'dry-run', 'button', 'composite-dependencies', 'shared-reuse', 'status', 'harness-agents', 'harness-reuse', 'harness-status', 'metadata-preserved', 'typecheck', 'vite-css', 'ssr'] };
     await mkdir(join(output, 'reports'), { recursive: true });
     await writeFile(join(output, 'reports', `${manager}.json`), serialize(report));
     console.log(`${manager} ${actualVersion}: 동일 CLI tarball의 실행·소스 설치·lockfile 보존·타입·Vite·CSS·SSR을 통과했어요.`);

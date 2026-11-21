@@ -16,27 +16,27 @@ export function parseJson(text, label) {
 }
 
 /** 설치 파일·설정·기록의 경로는 프로젝트 안에만 둘 수 있어요. */
-export function safePath(path) {
+export function safePath(path, agentPaths = false) {
   ensure(typeof path === 'string' && path.length > 0 && !/[\\:\x00-\x1f]/.test(path), 'UNSAFE_PATH', '올바른 상대 경로가 필요해요.', { path });
-  ensure(path.split('/').every(part => /^[a-zA-Z0-9_][a-zA-Z0-9_.-]*$/.test(part) && !['node_modules', 'harness', '__tests__'].includes(part) && !part.endsWith('.')), 'UNSAFE_PATH', '프로젝트 내부의 소스 경로만 사용할 수 있어요.', { path });
+  ensure(path.split('/').every((part, index) => (agentPaths && index === 0 && ['.claude', '.agents', '.codex'].includes(part)) || (/^[a-zA-Z0-9_][a-zA-Z0-9_.-]*$/.test(part) && !['node_modules', 'harness', '__tests__'].includes(part) && !part.endsWith('.'))), 'UNSAFE_PATH', '프로젝트 내부의 소스 경로만 사용할 수 있어요.', { path });
   ensure(!path.split('/').some(part => /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part)), 'UNSAFE_PATH', '운영체제 예약 경로는 사용할 수 없어요.', { path });
   return path;
 }
 
-export function registryUrl(input, cwd) {
+export function registryUrl(input, cwd, filename = 'registry.json') {
   if (/^https?:\/\//.test(input)) {
     const url = new URL(input);
     ensure(url.protocol === 'https:' || ['127.0.0.1', '[::1]', 'localhost'].includes(url.hostname), 'UNSAFE_REGISTRY', '원격 레지스트리는 HTTPS를 사용해요.');
-    ensure(!url.username && !url.password && !url.search && !url.hash && url.pathname.endsWith('/registry.json'), 'UNSAFE_REGISTRY', 'registry.json의 주소를 입력해요.');
+    ensure(!url.username && !url.password && !url.search && !url.hash && url.pathname.endsWith(`/${filename}`), 'UNSAFE_REGISTRY', `${filename}의 주소를 입력해요.`);
     return url.href;
   }
   if (input.startsWith('file:')) return new URL(input).href;
   const path = resolve(cwd, input);
-  return pathToFileURL(path.endsWith(`${sep}registry.json`) ? path : resolve(path, 'registry.json')).href;
+  return pathToFileURL(path.endsWith(`${sep}${filename}`) ? path : resolve(path, filename)).href;
 }
 
 /** 응답 크기와 시간을 제한하고 압축 해제된 JSON 바이트를 해시에 사용해요. */
-async function readResource(url, downloads) {
+export async function readResource(url, downloads) {
   let bytes;
   if (url.startsWith('file:')) bytes = await readFile(fileURLToPath(url));
   else {
@@ -78,13 +78,18 @@ export function releaseRegistry(version) {
 }
 
 export async function latestRegistry(downloads) {
+  return latestRelease(downloads, 'v', 'registry.json');
+}
+
+/** UI·하네스·도구의 Release를 태그와 asset 이름으로 구분해 잘못된 콘텐츠를 선택하지 않아요. */
+export async function latestRelease(downloads, prefix, filename) {
   const bytes = await readResource('https://api.github.com/repos/ELI-LDS/ELI/releases?per_page=100', downloads);
   const releases = parseJson(bytes.toString('utf8'), 'GitHub Release');
   ensure(Array.isArray(releases), 'INVALID_DATA', 'GitHub Release 목록이 올바르지 않아요.');
   // 설치 도구의 별도 Release를 콘텐츠 릴리스로 잘못 선택하지 않아요.
-  const release = releases.find(item => !item.draft && !item.prerelease && /^v\d+\.\d+\.\d+$/.test(item.tag_name) && item.assets?.some(asset => asset.name === 'registry.json'));
-  ensure(release, 'REGISTRY_UNAVAILABLE', '게시된 UI 레지스트리가 없어요. 개발 검증에는 --registry 경로를 지정해요.');
-  return releaseRegistry(release.tag_name.slice(1));
+  const release = releases.find(item => !item.draft && !item.prerelease && typeof item.tag_name === 'string' && item.tag_name.startsWith(prefix) && /^\d+\.\d+\.\d+$/.test(item.tag_name.slice(prefix.length)) && item.assets?.some(asset => asset.name === filename));
+  ensure(release, 'REGISTRY_UNAVAILABLE', '게시된 레지스트리가 없어요. 개발 검증에는 --registry 경로를 지정해요.');
+  return `https://github.com/ELI-LDS/ELI/releases/download/${release.tag_name}/${filename}`;
 }
 
 export async function loadRegistry(url, expected = {}) {

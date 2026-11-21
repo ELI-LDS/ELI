@@ -1,12 +1,14 @@
 ---
 name: eli-doctor
 description: >
-  ELI(@eli-design/ui) 설치와 설정이 올바른지 점검하고 다음에 쓸 명령을 안내해요. 코드를
+  ELI의 UI 소스·하네스 또는 기존 npm 패키지 설치와 설정을 점검하고 다음에 쓸 명령을 안내해요. 코드를
   바꾸지 않아요. "ELI 잘 설치됐는지 봐줘", "셋업 진단해줘", "ELI가 안 돼요",
   "뭐부터 해야 해?", /eli-doctor 요청에 사용해요.
 ---
 
 # 설정 점검하기
+
+먼저 `../eli/references/installation.md`를 읽어요. 소스 방식이면 `eli.json`·`eli.lock.json`·`eli.harness.json`과 `npx eli-design@latest status --json`을 대조해요. 실제 로컬 진입 파일·하네스 버전·modified/missing 상태·에이전트 훅 설정과 신뢰 여부를 확인해요. UI 버전과 하네스 버전은 달라도 정상이에요. 원격 미연결은 별도 결과로 적어요. 아래 표의 npm 패키지·node_modules 점검은 실제 패키지 방식인 경우에만 적용해요.
 
 ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 고치지 않아요. 코드가 디자인 시스템을 따르는지는 `/eli-verify`가 봐요.
 

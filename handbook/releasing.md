@@ -1,6 +1,6 @@
 # 릴리스 절차
 
-기본 소스 배포는 **npm의 `eli-design` 설치 도구와 GitHub Release의 UI 콘텐츠**로 나눠 진행해요. 기존 전체 패키지 `@eli-design/ui`의 npm 게시 절차는 아래에 별도로 남겨요. 버전·태그 이름은 [버전 규칙](../Agent/versioning.md#설치-도구와-콘텐츠-버전을-구분해요), 검사 범위는 [검증 기준](../Agent/testing.md), 선택 설치 데이터는 [레지스트리 지침](../Agent/registry.md)을 따라요.
+기본 소스 배포는 **npm의 `eli-design` 설치 도구와 GitHub Release의 UI·하네스 콘텐츠**로 나눠 진행해요. 기존 전체 패키지 `@eli-design/ui`의 npm 게시 절차는 아래에 별도로 남겨요. 버전·태그 이름은 [버전 규칙](../Agent/versioning.md#설치-도구와-콘텐츠-버전을-구분해요), 검사 범위는 [검증 기준](../Agent/testing.md), 선택 설치 데이터는 [레지스트리 지침](../Agent/registry.md)을 따라요.
 
 지침 작성·일반 PR 병합·Storybook 배포만으로 npm에 게시하지 않아요. 실제 릴리스 요청이 있을 때 아래 절차를 실행해요. 이번 지침을 추가했다고 릴리스 자동화나 이미 게시된 버전의 기록이 복구되는 것은 아니에요.
 
@@ -8,7 +8,7 @@
 
 릴리스 준비자는 아래 최종 파일 생성·사전 검사·GitHub 콘텐츠 게시·공개 콘텐츠 소비와 GitHub의 파일 전달을 맡아요. npm 담당자는 전달받은 tarball의 무결성을 확인하고 npm 게시·배포 태그 변경만 수행해요. 담당자에게 UI 빌드·레지스트리 생성·Git 태그·GitHub 업로드를 다시 요구하지 않아요.
 
-설치 도구의 `cli-v{버전}` GitHub Release에 검증한 tarball·`SHA256SUMS`·원본 SHA와 integrity를 담은 `release.json`을 제공해요. UI 소스 콘텐츠의 `v{버전}` Release에는 개별 JSON을 제공해요. 파일 전달은 npm 게시 완료와 구분하고, 이미 고정한 파일을 담당자의 환경에서 다시 빌드하지 않아요.
+설치 도구의 `cli-v{버전}` GitHub Release에 검증한 tarball·`SHA256SUMS`·원본 SHA와 integrity를 담은 `release.json`을 제공해요. UI 소스 콘텐츠의 `v{버전}` Release에는 개별 JSON, 하네스의 `harness-v{버전}` Release에는 `harness.json`을 제공해요. 파일 전달은 npm 게시 완료와 구분하고, 이미 고정한 파일을 담당자의 환경에서 다시 빌드하지 않아요.
 
 npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 공개 명령을 검사하고 결과를 전달해요. 통과한 뒤 담당자가 `latest`로 승격해요. 단계별 담당·명령·중단 기준은 [npm 담당자 안내](npm-publishing.md)를 따라요. 기존 `@eli-design/ui`의 삭제·사용 중단은 하네스 담당자와 별도로 결정하며 이번 CLI 게시에 묶지 않아요.
 
@@ -29,9 +29,9 @@ gh repo view ELI-LDS/ELI --json visibility
 
 콘텐츠를 일반 사용자에게 제공할 저장소는 공개되어 있어야 해요. 인증된 `gh`에서 Release를 확인한 것만으로 공개 다운로드가 된다고 판단하지 않아요. 인증 정보가 없는 CLI에서 목록 API와 개별 asset을 실제로 받아 확인해요. 비공개 저장소라면 전체 원본을 임의로 공개하거나 토큰을 CLI에 넣지 않고 공개 배포 위치부터 합의해요.
 
-설치 도구는 `packages/cli/package.json`, 현재 콘텐츠는 `packages/ui/package.json`에서 버전을 정해요. 번호를 억지로 맞추지 않으며 콘텐츠 버전 변경만으로 기존 전체 UI 패키지를 npm에 게시하지 않아요. 고정된 pnpm으로 lockfile을 동기화하고, 실제 릴리스 대상만 CHANGELOG의 준비 중인 구역으로 옮겨요. 게시 날짜·최종 원본 SHA·게시 후 검사 결과를 미리 채우지 않아요.
+설치 도구는 `packages/cli/package.json`, UI 콘텐츠는 `packages/ui/package.json`, 하네스는 `packages/harness/package.json`에서 버전을 정해요. 번호를 억지로 맞추지 않으며 콘텐츠 버전 변경만으로 기존 전체 UI 패키지를 npm에 게시하지 않아요. 고정된 pnpm으로 lockfile을 동기화하고, 실제 릴리스 대상만 CHANGELOG의 준비 중인 구역으로 옮겨요. 게시 날짜·최종 원본 SHA·게시 후 검사 결과를 미리 채우지 않아요.
 
-초기 CLI는 레지스트리 규격 v1과 같은 프로젝트 내 단일 콘텐츠 버전을 지원해요. 업데이트·강제 덮어쓰기·React/폰트 자동 설치·MCP/하네스 연결을 제공한다고 안내하지 않아요. 기존 수정 파일을 보존하는 제한도 릴리스 노트에 남겨요.
+초기 CLI는 레지스트리 규격 v1과 같은 프로젝트 내 단일 콘텐츠 버전을 지원해요. UI·하네스 업데이트·강제 덮어쓰기·React/폰트 자동 설치·원격 MCP 연결을 제공한다고 안내하지 않아요. 하네스는 명시적 선택 설치와 같은 버전 재사용만 지원해요. 기존 수정 파일을 보존하는 제한도 릴리스 노트에 남겨요.
 
 ### 2. 최종 후보를 한 번 만들고 고정해요
 
@@ -40,11 +40,12 @@ gh repo view ELI-LDS/ELI --json visibility
 ```bash
 pnpm install --frozen-lockfile
 pnpm build:registry
+pnpm build:harness
 pnpm build:cli
 node tests/cli/package-managers.mjs --prepare
 ```
 
-이 준비 명령이 `.artifacts/cli-package-managers/`에 도구 tarball·`candidate.json`·`registry/` 스냅샷을 만들어요. `candidate.json`의 파일명·버전·SHA-256·크기와 스냅샷의 콘텐츠 버전·규격·모든 파일 해시를 확인해요. source SHA도 결과 기록에 함께 남겨요.
+이 준비 명령이 `.artifacts/cli-package-managers/`에 도구 tarball·`candidate.json`·`registry/`·`harness/` 스냅샷을 만들어요. `candidate.json`의 파일명·버전·SHA-256·크기와 스냅샷의 콘텐츠 버전·규격·모든 파일 해시를 확인해요. source SHA도 결과 기록에 함께 남겨요.
 
 최종 tarball은 폴더를 다시 빌드해 게시하지 않고 이 파일을 그대로 사용해요. 고정한 후보로 아래 행렬을 실행하고, 실제 설치한 bin으로 같은 레지스트리 스냅샷의 Next.js SSR·hydration도 확인해요. `pnpm test:cli:consumer`는 작업 폴더의 CLI를 다시 빌드하므로 최종 파일 검사에는 사용하지 않아요. 최종 tarball을 저장소 밖 도구 폴더에 설치한 뒤 `ELI_CLI_BINARY`를 실제 설치한 `dist/cli.mjs`의 절대 경로로 지정하고 `node tests/registry/consumer.mjs --cli`를 실행해요. 공개 콘텐츠 검증은 같은 명령에 `ELI_REGISTRY_URL`을 게시한 `registry.json` URL로 지정해요. 받은 소스는 로컬 스냅샷과 대조해요.
 
@@ -55,6 +56,10 @@ node tests/cli/package-managers.mjs --all
 고정 도구 준비·개별 행 재실행은 [CLI 실행 행렬](../Agent/package-managers.md#cli-실행-행렬도-구분해요)을 따라요. `pnpm test:cli:package-managers`와 `--prepare`는 후보를 새로 만들기 때문에 고정 뒤에 다시 실행하지 않아요. `pnpm size:cli`도 자체 후보의 참고 측정이며 실제 npm/CDN 전송량이나 최종 파일 검증을 대신하지 않아요. 소스나 후보 파일이 달라졌다면 새 후보로 검증해요.
 
 ### 3. 콘텐츠를 먼저 공개하고 로컬 CLI로 받아봐요
+
+이미 공개된 UI 콘텐츠를 그대로 사용한다면 기존 `v{콘텐츠 버전}`과 JSON 해시를 확인해 재사용해요. CLI·하네스 번호를 맞추려고 UI를 다시 올리거나 기존 파일을 덮어쓰지 않아요. UI·CLI·하네스 원본 커밋이 다르면 각 SHA를 기록해요.
+
+하네스 선택 설치를 제공하는 릴리스는 `pnpm build:harness`로 고정한 `harness.json`도 별도의 `harness-v{버전}` 태그·Release에 제공해요. 공개 URL의 묶음·파일 해시를 대조하고 최종 로컬 CLI로 UI 없는 앱에 `harness --agent all`을 실행해 복사·설정 보존·재실행·status를 확인해요. 기존 UI 소스가 있는 앱에서도 실제 훅이 기록된 로컬 경로를 인식하는지 확인해요. 실제 에이전트의 신뢰·스킬 사용과 원격 MCP 미연결은 별도 상태로 남겨요.
 
 `v{콘텐츠 버전}` 태그를 해당 콘텐츠의 고정 SHA에 만들고 원격에 올려요. 같은 태그가 있으면 SHA와 기존 asset 해시를 확인하고 다른 내용이면 중단해요. 그 태그의 GitHub Release에 고정한 `registry/`의 **모든 JSON을 개별 asset**으로 올려요. zip 파일이나 저장소 전체를 받도록 바꾸지 않아요.
 
@@ -89,7 +94,7 @@ npx eli-design@next add --all
 
 CLI의 `cli-v{버전}` 태그도 고정한 도구 SHA를 가리키게 해요. CLI와 콘텐츠가 다른 커밋이라면 각 SHA와 지원하는 콘텐츠 버전·목록 해시를 따로 기록해요. CHANGELOG에는 실제 게시 시각과 완료 범위를 반영하며, 준비 중인 버전이 게시된 것으로 README를 미리 바꾸지 않아요. 이후 문서 기록 커밋이 생겨도 기존 배포 태그는 이동하지 않아요.
 
-하네스 독립 배포와 MCP 응답 변경은 해당 담당자와 지원 범위를 맞춘 뒤 연결해요. 이 항목을 작성한 것만으로 배포 패키지명·태그·설치 안내가 전환된 것은 아니에요.
+하네스 독립 배포는 `harness-v{버전}`으로 구분해요. MCP 응답 변경과 실제 에이전트 동작은 해당 담당자가 별도로 확인해요. 이 항목을 작성한 것만으로 배포 패키지명·태그·설치 안내가 전환된 것은 아니에요.
 
 ## 기존 전체 UI 패키지를 별도로 배포해요
 

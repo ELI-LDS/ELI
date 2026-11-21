@@ -126,7 +126,7 @@ test('버전을 확인한 지 14일이 지나면 확인하라고 알려요', () 
 });
 
 test('초안이 버전을 기록하고 원본에는 버전 파일을 두지 않아요', () => {
-  // VERSION은 빌드가 packages/ui/package.json의 version으로 만들어요.
+  // VERSION은 빌드가 독립 하네스 manifest의 version으로 만들어요.
   assert.ok(!readdirSync(join(harness, 'skills/eli')).includes('VERSION'));
   const template = readFileSync(join(harness, 'skills/eli-design-md/template.md'), 'utf8');
   assert.match(template, /^\| 마지막으로 확인한 날짜 \| /m);
@@ -150,4 +150,18 @@ test('설치된 패키지와 복사한 스킬의 버전이 다르면 알려요',
 
   assert.match(setup('0.2.0', '0.1.0'), /설치된 @eli-design\/ui는 0\.2\.0인데 프로젝트에 복사된 스킬은 0\.1\.0/);
   assert.doesNotMatch(setup('0.2.0', '0.2.0'), /복사된 스킬/);
+});
+
+test('기존 패키지에서도 UI와 하네스의 독립 버전을 구분해요', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'eli-harness-'));
+  for (const [path, text] of [
+    ['package.json', JSON.stringify({ dependencies: { '@eli-design/ui': '0.7.0' } })],
+    ['node_modules/@eli-design/ui/package.json', '{"version":"0.7.0"}'],
+    ['node_modules/@eli-design/ui/harness/skills/eli/VERSION', '0.1.0\n'],
+    ['.claude/skills/eli/VERSION', '0.1.0\n'],
+  ]) { mkdirSync(join(dir, path, '..'), { recursive: true }); writeFileSync(join(dir, path), text); }
+  const run = () => execFileSync(process.execPath, [hook], { cwd: dir, encoding: 'utf8' });
+  assert.doesNotMatch(run(), /복사된 스킬/);
+  writeFileSync(join(dir, 'node_modules/@eli-design/ui/harness/skills/eli/VERSION'), '0.2.0\n');
+  assert.match(run(), /패키지의 하네스는 0\.2\.0/);
 });

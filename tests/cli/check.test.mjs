@@ -25,7 +25,7 @@ before(async () => {
   const output = execFileSync('npm', ['pack', '--ignore-scripts', '--json', '--pack-destination', artifacts], { cwd: join(root, 'packages/cli'), encoding: 'utf8' });
   const packed = JSON.parse(output)[0];
   assert.ok(packed.files.every(file => ['package.json', 'README.md', 'LICENSE'].includes(file.path) || file.path.startsWith('dist/')));
-  assert.ok(!packed.files.some(file => /harness|\.tsx|tokens\//.test(file.path)));
+  assert.ok(!packed.files.some(file => /^(harness|skills|hooks)\/|\.tsx|tokens\//.test(file.path)));
   const installed = join(artifacts, 'tool');
   // 실제 tarball을 설치해 저장소의 우연한 상위 의존성 해석에 기대지 않는 실행 파일을 확인해요.
   execFileSync('npm', ['install', '--prefix', installed, '--ignore-scripts', '--no-audit', '--no-fund', '--no-package-lock', join(artifacts, packed.filename)], { stdio: 'pipe' });
@@ -71,7 +71,7 @@ const init = (path, source = base) => run(path, ['init', '--registry', source]);
 test('tarball의 실행 파일이 도움말·버전을 제공하고 잘못된 인자는 실패해요', async () => {
   const path = await fixture();
   assert.match((await run(path, ['--help'])).message, /add --all/);
-  assert.equal((await run(path, ['--version'])).version, '0.1.0');
+  assert.equal((await run(path, ['--version'])).version, JSON.parse(await readFile(join(root, 'packages/cli/package.json'), 'utf8')).version);
   assert.equal((await run(path, ['add', '--unknown'], 1)).error.code, 'INVALID_ARGUMENT');
 });
 

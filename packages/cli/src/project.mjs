@@ -1,4 +1,4 @@
-import { constants, existsSync, lstatSync, mkdirSync, openSync, closeSync, readFileSync, realpathSync, renameSync, rmSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
+import { constants, existsSync, fchmodSync, lstatSync, mkdirSync, openSync, closeSync, readFileSync, realpathSync, renameSync, rmSync, rmdirSync, unlinkSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -20,8 +20,8 @@ export function projectAt(cwd) {
 }
 
 /** 상위·하위 심볼릭 링크를 따라 프로젝트 밖에 쓰지 않도록 매번 확인해요. */
-export function targetPath(root, relative) {
-  safePath(relative);
+export function targetPath(root, relative, agentPaths = false) {
+  safePath(relative, agentPaths);
   let target = root;
   const parts = relative.split('/');
   for (const [index, part] of parts.entries()) {
@@ -35,8 +35,8 @@ export function targetPath(root, relative) {
   return target;
 }
 
-function bytesAt(root, path) {
-  const target = targetPath(root, path);
+export function bytesAt(root, path, agentPaths = false) {
+  const target = targetPath(root, path, agentPaths);
   try {
     ensure(lstatSync(target).isFile(), 'FILE_CONFLICT', '일반 파일만 읽을 수 있어요.', { path });
     return readFileSync(target);
@@ -137,51 +137,70 @@ export function createPlan(project, config, registry, selection, requested, prev
   return { files, entries, record };
 }
 
-function makeParents(root, relative, created) {
+function makeParents(root, relative, created, agentPaths) {
   const parts = relative.split('/').slice(0, -1);
   for (let index = 1; index <= parts.length; index++) {
     const path = parts.slice(0, index).join('/');
-    const target = targetPath(root, path);
+    const target = targetPath(root, path, agentPaths);
     if (!existsSync(target)) { mkdirSync(target); created.push(target); }
   }
 }
 
-function writeExclusive(root, path, content, directories) {
-  makeParents(root, path, directories);
-  const target = targetPath(root, path);
-  const fd = openSync(target, constants.O_CREAT | constants.O_EXCL | constants.O_WRONLY | (constants.O_NOFOLLOW ?? 0), 0o644);
-  try { writeFileSync(fd, content); }
+function writeExclusive(root, path, content, directories, agentPaths, mode = undefined) {
+  makeParents(root, path, directories, agentPaths);
+  const target = targetPath(root, path, agentPaths);
+  const fd = openSync(target, constants.O_CREAT | constants.O_EXCL | constants.O_WRONLY | (constants.O_NOFOLLOW ?? 0), mode ?? 0o644);
+  try {
+    // 기존 설정의 권한은 umask의 영향을 받지 않고 원래 값으로 유지해요.
+    if (mode !== undefined) fchmodSync(fd, mode);
+    writeFileSync(fd, content);
+  }
   catch (error) { closeSync(fd); unlinkSync(target); throw error; }
   closeSync(fd);
   return target;
 }
 
-/** 중간 실패 때 새로 만든 파일만 되돌려 설치 기록과 실제 파일이 어긋나지 않게 해요. */
-export function writeProject(project, changes, recordBefore = undefined, verify = () => {}) {
+/** 실패하면 이번 파일과 병합한 설정을 함께 되돌려 기록과 실제 설치가 어긋나지 않게 해요. */
+export function writeProject(project, changes, recordBefore = undefined, verify = () => {}, { replacements = new Map(), agentPaths = false } = {}) {
   const lock = join(project.root, LOCK);
   try { mkdirSync(lock); }
   catch { throw new CliError('PROJECT_BUSY', '다른 설치가 진행 중이에요. .eli-install.lock을 확인해요.'); }
   const created = [];
   const directories = [];
-  const temporary = 'eli.lock.pending.json';
+  const replaced = [];
+  const mutable = new Map(replacements);
+  if (recordBefore !== undefined) mutable.set(RECORD, recordBefore);
   try {
     verify();
     for (const [path, content] of changes) {
-      if (path === RECORD && recordBefore !== undefined) continue;
-      created.push(writeExclusive(project.root, path, content, directories));
+      if (mutable.has(path)) continue;
+      created.push(writeExclusive(project.root, path, content, directories, agentPaths));
     }
-    if (recordBefore !== undefined) {
-      const next = changes.get(RECORD);
-      const actual = bytesAt(project.root, RECORD);
-      ensure((actual === null && recordBefore === null) || (actual !== null && recordBefore !== null && actual.equals(recordBefore)), 'PROJECT_BUSY', '설치 중 기록이 변경됐어요.');
-      if (actual === null) created.push(writeExclusive(project.root, RECORD, next, directories));
+    for (const [path, before] of mutable) {
+      const next = changes.get(path);
+      ensure(next !== undefined, 'INVALID_RECORD', '교체할 파일의 내용이 없어요.', { path });
+      const actual = bytesAt(project.root, path, agentPaths);
+      ensure((actual === null && before === null) || (actual !== null && before !== null && actual.equals(before)), 'PROJECT_BUSY', '설치 중 설정이나 기록이 변경됐어요.', { path });
+      if (actual === null) created.push(writeExclusive(project.root, path, next, directories, agentPaths));
       else if (!actual.equals(Buffer.from(next))) {
-        created.push(writeExclusive(project.root, temporary, next, directories));
-        renameSync(targetPath(project.root, temporary), targetPath(project.root, RECORD));
+        const temporary = path === RECORD ? 'eli.lock.pending.json' : `${path}.eli-pending`;
+        const mode = lstatSync(targetPath(project.root, path, agentPaths)).mode & 0o777;
+        created.push(writeExclusive(project.root, temporary, next, directories, agentPaths, mode));
+        renameSync(targetPath(project.root, temporary, agentPaths), targetPath(project.root, path, agentPaths));
         created.pop();
+        replaced.push({ path, before, after: Buffer.from(next), mode });
       }
     }
   } catch (error) {
+    // 설정 여러 개를 병합하던 중 실패해도 이미 바꾼 파일과 새로 복사한 파일을 함께 되돌려요.
+    for (const { path, before, after, mode } of replaced.reverse()) {
+      const current = bytesAt(project.root, path, agentPaths);
+      ensure(current?.equals(after), 'PROJECT_BUSY', '복구 중 파일이 변경됐어요. 기존 변경을 확인해요.', { path });
+      const temporary = path === RECORD ? 'eli.lock.pending.json' : `${path}.eli-pending`;
+      created.push(writeExclusive(project.root, temporary, before, directories, agentPaths, mode));
+      renameSync(targetPath(project.root, temporary, agentPaths), targetPath(project.root, path, agentPaths));
+      created.pop();
+    }
     for (const path of created.reverse()) unlinkSync(path);
     for (const directory of directories.reverse()) rmdirSync(directory);
     throw error;

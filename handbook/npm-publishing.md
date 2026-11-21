@@ -1,6 +1,6 @@
 # npm 담당자 안내
 
-npm 담당자는 검증된 `eli-design` tarball의 게시와 배포 태그 변경만 맡아요. GitHub 콘텐츠·검증·파일 전달과 게시 후 동작 확인은 릴리스 준비자가 맡아요. 이번 대상은 CLI `eli-design`이며 `@eli-design/ui`를 다시 게시하거나 삭제하지 않아요.
+npm 담당자는 검증된 `eli-design` tarball의 게시와 배포 태그 변경만 맡아요. GitHub 콘텐츠·검증·파일 전달과 게시 후 동작 확인은 릴리스 준비자가 맡아요. 이번 게시 후보는 하네스 선택 설치를 포함한 CLI `eli-design@0.2.0`이며 `@eli-design/ui`를 다시 게시하거나 삭제하지 않아요.
 
 이전 `@eli-design/ui` 게시 절차의 대상 폴더를 그대로 사용하지 않아요. 새 npm 대상은 **`packages/cli/package.json`의 `name: eli-design`**이에요. `main` 병합만으로 기존 게시 도구의 대상이 자동 변경되지는 않아요. 아래의 고정 tarball을 게시해요.
 
@@ -12,13 +12,13 @@ npm 담당자는 검증된 `eli-design` tarball의 게시와 배포 태그 변�
 - `SHA256SUMS`: 파일의 SHA-256
 - `release.json`: 패키지·버전·고정 원본 SHA·SHA-512 integrity·콘텐츠 URL·검증 결과·미검증 범위
 
-CLI Release가 있는 것만으로 npm에 게시됐다고 판단하지 않아요. 전달 파일과 원본 SHA는 버전별 [릴리스 기록](releases/0.1.0.md)에서도 확인해요. 소스 폴더에서 `npm publish`하거나 파일을 다시 패키징하지 않아요.
+CLI Release가 있는 것만으로 npm에 게시됐다고 판단하지 않아요. 전달 파일과 원본 SHA는 버전별 [릴리스 기록](releases/0.2.0.md)에서도 확인해요. 소스 폴더에서 `npm publish`하거나 파일을 다시 패키징하지 않아요.
 
-저장소 공개 전환은 저장소 담당자가 맡아요. 공개 콘텐츠의 익명 다운로드 검사가 통과한 뒤 npm 게시를 진행해요. 비공개 저장소에서 파일 전달을 끝냈더라도 일반 사용자 준비 완료로 보지 않아요. 하네스의 새 설치 방식 연결은 [하네스 담당자의 완료 기준](../Agent/harness.md#새-설치-도구와-연결하는-완료-기준)으로 별도 확인해요. CLI 게시만으로 하네스가 연결되거나 설치되지는 않아요.
+저장소 공개 전환은 저장소 담당자가 맡아요. 공개 콘텐츠의 익명 다운로드 검사가 통과한 뒤 npm 게시를 진행해요. 비공개 저장소에서 파일 전달을 끝냈더라도 일반 사용자 준비 완료로 보지 않아요. 하네스 선택 설치의 코드·파일 검사와 실제 에이전트 동작은 [하네스 완료 기준](../Agent/harness.md#새-설치-도구와-연결하는-완료-기준)으로 별도 확인해요. 하네스는 별도 `harness` 명령으로만 설치되고 원격 MCP 연결은 따로 확인해요.
 
 ## 1. 받은 파일과 게시 계정을 확인해요
 
-아래는 첫 후보 `0.1.0`의 예시예요. 전달받은 실제 버전이 다르면 그 버전으로 실행해요. 파일을 받은 폴더에서 Node.js `24.21.0` 환경의 npm을 사용해요.
+아래는 이번 후보 `0.2.0`의 예시예요. 전달받은 실제 버전이 다르면 그 버전으로 실행해요. 파일을 받은 폴더에서 Node.js `24.21.0` 환경의 npm을 사용해요.
 
 ```bash
 shasum -a 256 -c SHA256SUMS
@@ -31,8 +31,8 @@ npm view eli-design versions dist-tags --json
 ## 2. 검증된 파일을 next로 게시해요
 
 ```bash
-npm publish ./eli-design-0.1.0.tgz --ignore-scripts --access public --tag next
-npm view eli-design@0.1.0 version dist.integrity --json
+npm publish ./eli-design-0.2.0.tgz --ignore-scripts --access public --tag next
+npm view eli-design@0.2.0 version dist.integrity --json
 npm view eli-design dist-tags --json
 ```
 
@@ -45,10 +45,10 @@ npm view eli-design dist-tags --json
 준비자의 공개 검증 통과 결과를 받은 뒤 실행해요. 실패했거나 결과를 받지 못했다면 기존 태그를 유지해요.
 
 ```bash
-npm dist-tag add eli-design@0.1.0 latest
+npm dist-tag add eli-design@0.2.0 latest
 npm view eli-design dist-tags --json
 ```
 
-최종 태그와 게시 시각을 준비자에게 전달하면 준비자가 README·CHANGELOG·릴리스 기록을 마무리해요. `@eli-design/ui`의 사용 중단·삭제는 별도 작업이에요. 새 CLI가 하네스를 자동 설치하지 않으므로 기존 하네스 경로를 확인하기 전에는 정리하지 않아요.
+최종 태그와 게시 시각을 준비자에게 전달하면 준비자가 README·CHANGELOG·릴리스 기록을 마무리해요. `@eli-design/ui`의 사용 중단·삭제는 별도 작업이에요. UI 추가 명령이 하네스를 자동 설치하지 않으므로 기존 하네스 경로를 확인하기 전에는 정리하지 않아요.
 
 전체 순서·검증 책임과 실패 후 처리는 [릴리스 절차](releasing.md)를 따라요.
