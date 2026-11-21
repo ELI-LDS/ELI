@@ -46,6 +46,12 @@ test('React·UI 없이 선택한 에이전트의 전체 하네스를 설치하�
   const first = install(project, 'claude');
   assert.equal(first.version, harnessVersion);
   assert.ok(first.files.every(file => file.path.startsWith('.claude/')));
+  // 터미널 기본 출력에서도 필요한 재로딩·신뢰 절차를 바로 볼 수 있어야 해요.
+  const terminal = execFileSync(process.execPath, [cli, 'harness', '--agent', 'all', '--registry', bundle, '--cwd', project, '--dry-run'], { encoding: 'utf8' });
+  assert.ok(terminal.includes(`하네스 ${harnessVersion}`));
+  assert.match(terminal, /\/reload-skills/);
+  assert.match(terminal, /\/hooks/);
+  assert.match(terminal, /MCP/);
   await assert.rejects(readFile(join(project, '.agents/skills/eli/SKILL.md')));
   const record = await readJson(project, 'eli.harness.json');
   assert.equal(record.installerVersion, toolVersion);

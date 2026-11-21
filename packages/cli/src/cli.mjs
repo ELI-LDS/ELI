@@ -102,10 +102,11 @@ try {
   else if (!result.command) process.stdout.write(`${result.version}\n`);
   else if (result.command === 'list') process.stdout.write(result.items.map(item => `${item.id}\t${item.description}`).join('\n') + '\n');
   else {
-    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (UI ${result.version ?? result.config.version})\n`);
+    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.version ?? result.config.version})\n`);
     for (const entry of result.entries ?? []) process.stdout.write(`${entry.export}: ${entry.path}\n`);
     const counts = result.files.reduce((sum, file) => { const state = file.action ?? file.state; sum[state] = (sum[state] ?? 0) + 1; return sum; }, {});
     process.stdout.write(`${JSON.stringify(counts)}\n`);
+    for (const step of result.nextSteps ?? []) process.stdout.write(`${step}\n`);
   }
 } catch (error) {
   const expected = error instanceof CliError;
