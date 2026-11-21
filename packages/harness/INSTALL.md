@@ -4,6 +4,12 @@
 
 ## 하네스 폴더
 
+CLI 0.2.0 후보부터는 `eli-design harness --agent claude`, `--agent codex` 또는 `--agent all`로 전체 스킬·훅 복사와 설정 병합을 함께 처리해요. 실제 npm·하네스 콘텐츠 게시 후 사용할 수 있어요. 저장소에서는 `pnpm build:harness`, `pnpm build:cli` 후 `node packages/cli/dist/cli.mjs harness --registry <ELI 저장소 절대 경로>/.artifacts/harness --agent <선택> --cwd <프로젝트>`로 확인해요. `--dry-run`으로 쓰기 전 계획을 볼 수 있어요.
+
+CLI로 설치했다면 `eli.harness.json`과 `eli-design status --json`으로 결과를 확인하고 아래 수동 복사를 반복하지 않아요. 스킬은 Claude Code의 `.claude/skills`, Codex의 `.agents/skills`에 있고 훅은 각 프로젝트의 `.claude/hooks/eli`, `.codex/hooks/eli`에 있어요. Codex 훅은 `/hooks`에서 사용자가 확인하고 신뢰해야 실행돼요. 원격 MCP 설정은 별도예요.
+
+아래 수동 절차는 기존 npm 패키지 또는 개발용 원본에서 직접 설치할 때 적용해요. 소스로 설치된 UI를 인식하는 기준은 `skills/eli/references/installation.md`를 따라요.
+
 이 문서가 들어 있는 폴더가 하네스 폴더예요. 아래에서 `<하네스 폴더>`라고 불러요.
 
 | 받은 방법 | 하네스 폴더 |
@@ -11,7 +17,7 @@
 | `@eli-design/ui`를 설치했어요 | `<프로젝트>/node_modules/@eli-design/ui/harness` |
 | 저장소를 임시 폴더에 받았어요 | `<임시 폴더>/eli/packages/harness` |
 
-패키지를 설치했으면 항상 패키지 안의 하네스 폴더를 써요. 설치된 컴포넌트와 같은 버전의 스킬이 들어 있어요.
+기존 패키지에서 받았으면 그 패키지 안의 하네스 폴더를 써요. 하네스 버전은 `skills/eli/VERSION`으로 확인하고 UI 버전과 같다고 가정하지 않아요.
 
 ## 1. 프로젝트를 확인해요
 
@@ -29,7 +35,7 @@
 | Codex | `<프로젝트>/.agents/skills/` |
 
 - 같은 이름의 폴더가 이미 있으면 프로젝트의 파일과 새 파일을 비교해요. 사용자가 고친 파일이 있으면 무엇이 사라지는지 보여주고 어떻게 할지 물어요. 고친 것이 없으면 덮어써요.
-- 저장소를 받아서 설치하는 경우에는 `skills/eli/VERSION` 파일이 없어요. 받은 저장소의 `packages/ui/package.json`에 있는 `version`을 한 줄로 적어 `eli` 스킬 폴더에 `VERSION` 파일로 만들어요.
+- 저장소를 받아서 설치하는 경우에는 `skills/eli/VERSION` 파일이 없어요. 받은 저장소의 `packages/harness/package.json`에 있는 `version`을 한 줄로 적어 `eli` 스킬 폴더에 `VERSION` 파일로 만들어요.
 
 ## 3. 훅을 등록해요
 
@@ -72,7 +78,7 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "node \"$(git rev-parse --show-toplevel)/.codex/hooks/eli/session-start.mjs\"", "timeout": 10 }
+          { "type": "command", "command": "node .codex/hooks/eli/session-start.mjs", "timeout": 10 }
         ]
       }
     ]
@@ -81,6 +87,8 @@
 ```
 
 훅 파일은 `node_modules` 안의 파일을 직접 가리키지 않고 프로젝트에 복사해서 써요. 의존성을 다시 설치하는 동안에도 훅이 깨지지 않아요.
+
+Codex 명령은 하네스를 설치한 프로젝트 루트에서 실행해요. CLI는 훅 파일 전체를 복사하지만 Codex에는 지원하는 SessionStart만 등록하고 PostToolUse는 등록하지 않아요.
 
 ## 4. 컴포넌트 문서 서버를 연결해요
 

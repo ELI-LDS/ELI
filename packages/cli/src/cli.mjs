@@ -4,6 +4,7 @@ import { parseArgs } from 'node:util';
 import { CliError, ensure } from './errors.mjs';
 import { json, latestRegistry, loadRegistry, registryUrl, releaseRegistry, safePath, selectItems } from './registry.mjs';
 import { CONFIG, RECORD, applyPlan, checkPeers, createPlan, defaultDirectory, loadConfig, loadRecord, projectAt, projectManager, statusOf, targetPath, writeProject } from './project.mjs';
+import { harnessStatus, installHarness } from './harness.mjs';
 
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
 const help = `필요한 ELI 컴포넌트 소스만 추가해요.
@@ -13,17 +14,20 @@ eli-design list                       추가할 수 있는 컴포넌트를 확�
 eli-design add button [modal ...]     선택한 UI와 필요한 파일만 추가해요
 eli-design add --all                   모든 공개 UI 소스를 추가해요
 eli-design status                     설치 경로·버전·사용자 수정을 확인해요
+eli-design harness --agent <선택>     claude / codex / all의 스킬·훅을 설치해요
 
 --cwd <폴더>                          현재 프로젝트 대신 사용할 폴더
---registry <주소 또는 폴더>           init/list에서 사용할 registry.json
+--registry <주소 또는 폴더>           UI의 registry.json 또는 하네스의 harness.json
+--harness-version <버전>              harness에서 사용할 독립 하네스 릴리스
 --content-version <버전>              init/list에서 사용할 GitHub 콘텐츠 릴리스
 --dir <상대 경로>                     init에서 사용할 소스 설치 폴더
---dry-run                             init/add의 변경 계획만 확인
+--dry-run                             init/add/harness의 변경 계획만 확인
 --json                                결과만 JSON으로 출력
 --help                                도움말
 --version                             설치 도구 버전
 
-기존 React 프로젝트에서 사용해요. React·폰트·하네스는 자동 설치하지 않아요.
+UI는 기존 React 프로젝트에서 사용해요. 하네스는 선택한 에이전트의 설정을 병합해요.
+React·폰트·MCP는 자동 설치하지 않아요. 하네스는 harness 명령으로만 설치해요.
 `;
 
 async function run() {
@@ -32,20 +36,29 @@ async function run() {
     parsed = parseArgs({ allowPositionals: true, options: {
       cwd: { type: 'string' }, registry: { type: 'string' }, 'content-version': { type: 'string' }, dir: { type: 'string' },
       all: { type: 'boolean' }, 'dry-run': { type: 'boolean' }, json: { type: 'boolean' }, help: { type: 'boolean', short: 'h' }, version: { type: 'boolean', short: 'v' },
+      agent: { type: 'string' }, 'harness-version': { type: 'string' },
     } });
   } catch (error) { throw new CliError('INVALID_ARGUMENT', error.message); }
   const { values, positionals: [command, ...ids] } = parsed;
-  for (const key of ['cwd', 'registry', 'content-version', 'dir']) ensure(values[key] === undefined || values[key].trim().length > 0, 'INVALID_ARGUMENT', `${key}에 비어 있지 않은 값을 입력해요.`);
+  for (const key of ['cwd', 'registry', 'content-version', 'dir', 'agent', 'harness-version']) ensure(values[key] === undefined || values[key].trim().length > 0, 'INVALID_ARGUMENT', `${key}에 비어 있지 않은 값을 입력해요.`);
   if (values.help || (!command && !values.version)) return { message: help };
   if (values.version) return { version: manifest.version };
-  ensure(['init', 'list', 'add', 'status'].includes(command), 'INVALID_ARGUMENT', 'init, list, add, status 중 하나를 사용해요.');
+  ensure(['init', 'list', 'add', 'status', 'harness'].includes(command), 'INVALID_ARGUMENT', 'init, list, add, status, harness 중 하나를 사용해요.');
   ensure(command === 'add' || (!ids.length && !values.all), 'INVALID_ARGUMENT', '컴포넌트 ID와 --all은 add에서만 사용해요.');
   ensure(command === 'init' || !values.dir, 'INVALID_ARGUMENT', '--dir은 init에서만 사용해요.');
-  ensure(['init', 'list'].includes(command) || (!values.registry && !values['content-version']), 'INVALID_ARGUMENT', '설치된 UI 버전은 eli.json에 고정돼요. add에서 레지스트리를 바꾸지 않아요.');
+  ensure(['init', 'list', 'harness'].includes(command) || (!values.registry && !values['content-version']), 'INVALID_ARGUMENT', '설치된 UI 버전은 eli.json에 고정돼요. add에서 레지스트리를 바꾸지 않아요.');
+  ensure(command === 'harness' || (!values.agent && !values['harness-version']), 'INVALID_ARGUMENT', '--agent와 --harness-version은 harness에서만 사용해요.');
+  ensure(command !== 'harness' || (!ids.length && !values['content-version'] && !values.all), 'INVALID_ARGUMENT', 'harness는 --agent와 --harness-version으로 선택해요.');
   ensure(!values.registry || !values['content-version'], 'INVALID_ARGUMENT', '--registry와 --content-version 중 하나만 지정해요.');
-  ensure(['init', 'add'].includes(command) || !values['dry-run'], 'INVALID_ARGUMENT', '--dry-run은 init/add에서 사용해요.');
+  ensure(!values.registry || !values['harness-version'], 'INVALID_ARGUMENT', '--registry와 --harness-version 중 하나만 지정해요.');
+  ensure(['init', 'add', 'harness'].includes(command) || !values['dry-run'], 'INVALID_ARGUMENT', '--dry-run은 init/add/harness에서 사용해요.');
   const project = projectAt(values.cwd ?? process.cwd());
-  if (command === 'status') return { command, ...statusOf(project, loadConfig(project)) };
+  if (command === 'harness') return installHarness(project, { ...values, installerVersion: manifest.version });
+  if (command === 'status') {
+    const harness = harnessStatus(project);
+    ensure(harness || existsSync(targetPath(project.root, CONFIG)), 'NOT_INITIALIZED', '먼저 init 또는 harness를 실행해요.');
+    return { command, ...(existsSync(targetPath(project.root, CONFIG)) ? statusOf(project, loadConfig(project)) : { version: null, entries: [], files: [] }), harness };
+  }
   let config;
   let url;
   const discovery = [];

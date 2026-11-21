@@ -1,6 +1,6 @@
 # eli-design
 
-필요한 ELI 컴포넌트 소스와 의존 파일만 기존 React 프로젝트에 추가하는 설치 도구예요. 전체 ELI 패키지·UI 소스·하네스를 실행 도구에 담지 않아요. npm 게시 버전과 GitHub의 UI 콘텐츠 버전은 각각 관리해요.
+필요한 UI 소스 또는 하네스를 선택해 프로젝트에 추가하는 설치 도구예요. 전체 ELI 패키지·UI 소스·스킬·훅 원본을 실행 도구에 담지 않아요. 도구·UI 콘텐츠·하네스 콘텐츠의 버전은 각각 관리해요. 현재 저장소는 하네스 선택 설치를 추가한 CLI 0.2.0 후보이며 실제 게시 여부는 아래 조회로 확인해요.
 
 ## 공개된 버전으로 실행해요
 
@@ -11,6 +11,8 @@ npx eli-design@latest init
 npx eli-design@latest add button
 npx eli-design@latest add modal select
 npx eli-design@latest add --all
+npx eli-design@latest harness --agent claude
+npx eli-design@latest harness --agent codex
 ```
 
 `npm view eli-design versions dist-tags --json`과 [콘텐츠 Release](https://github.com/ELI-LDS/ELI/releases)에서 실제 공개 상태를 확인해요. 준비 브랜치의 버전 숫자만으로 게시를 완료했다고 판단하지 않아요.
@@ -22,6 +24,7 @@ npx eli-design@latest add --all
 ```bash
 pnpm install --frozen-lockfile
 pnpm build:registry
+pnpm build:harness
 pnpm build:cli
 node packages/cli/dist/cli.mjs init --cwd <프로젝트> --registry <ELI 저장소 절대 경로>/.artifacts/registry
 node packages/cli/dist/cli.mjs list --cwd <프로젝트>
@@ -29,6 +32,7 @@ node packages/cli/dist/cli.mjs add button --cwd <프로젝트>
 node packages/cli/dist/cli.mjs add modal select --cwd <프로젝트>
 node packages/cli/dist/cli.mjs add --all --cwd <프로젝트>
 node packages/cli/dist/cli.mjs status --cwd <프로젝트>
+node packages/cli/dist/cli.mjs harness --agent all --cwd <프로젝트> --registry <ELI 저장소 절대 경로>/.artifacts/harness
 ```
 
 Node.js 24.21.0으로 개발·검증해요. npm·GitHub에 아직 게시하지 않은 후보는 위 로컬 명령으로 확인해요.
@@ -53,13 +57,28 @@ import { Button } from './components/eli/button/Button/Button';
 
 ## 원격 레지스트리
 
+### 하네스를 선택 설치해요
+
+`harness --agent claude|codex|all`은 선택한 에이전트의 전체 스킬과 훅을 복사하고 기존 설정에 훅을 병합해요. UI 추가와 독립적이라 UI init·React가 없는 프로젝트에서도 사용할 수 있어요. `add --all`은 UI만 추가해요.
+
+- Claude Code: `.claude/skills/`·`.claude/hooks/eli/`와 `.claude/settings.json`
+- Codex: `.agents/skills/`·`.codex/hooks/eli/`와 `.codex/hooks.json`. 프로젝트 루트에서 훅을 실행하고 `/hooks`에서 사용자가 확인·신뢰해야 해요.
+- 두 에이전트에 전체 훅 파일을 복사하지만 Codex에는 SessionStart만 등록해요. 원격 MCP는 별도 연결이며 자동으로 설정하지 않아요.
+- `eli.harness.json`에 하네스 버전·설치 CLI 버전·주소·묶음 해시·선택 에이전트·파일 해시를 남겨요. `status --json`의 `harness`에서 수정·누락을 확인해요. UI 기록과 별도로 함께 버전 관리해요.
+- `--dry-run`은 복사·설정 병합 계획만 반환해요. 같은 버전의 재설치는 재사용하고 수정된 스킬·훅과 다른 버전은 덮어쓰지 않아요. 기존 훅과 다른 설정을 보존하며 같은 훅을 중복 등록하지 않아요.
+- 기본 다운로드는 `harness-v<버전>` Release의 `harness.json`이에요. `--harness-version`으로 정확한 버전을 고르거나 개발 검증에 `--registry <harness.json 주소 또는 폴더>`를 지정해요. 재실행은 기록된 같은 묶음을 사용해요.
+
+CLI의 파일 설치·훅 명령 실행 검사와 실제 에이전트가 스킬을 따르는지는 구분해요. 하네스 업데이트와 사용자 수정 파일의 자동 마이그레이션은 아직 지원하지 않아요.
+
+### UI 소스를 선택 설치해요
+
 `init --content-version <버전>`은 `ELI-LDS/ELI`의 `v<버전>` Release에 있는 `registry.json`을 사용해요. 인자 없이 실행하면 최근 100개 GitHub Release 중 정식 콘텐츠 목록 asset을 가진 첫 릴리스를 선택해 고정해요. 도구 전용 릴리스와 사전 릴리스는 제외해요. 아직 콘텐츠를 게시하지 않았다면 오류로 중단해요.
 
-`init --registry https://.../registry.json` 또는 로컬 폴더로 별도 레지스트리를 지정할 수 있어요. HTTPS를 사용하며 HTTP는 로컬 검증용 loopback만 허용해요. GitHub Release의 지정된 asset CDN 외 리디렉션은 거부해요. 해시는 변경 감지 수단이며 배포 출처 인증을 대신하지 않아요. 업데이트·버전 혼합·파일 덮어쓰기 옵션·하네스 설치는 제공하지 않아요.
+`init --registry https://.../registry.json` 또는 로컬 폴더로 별도 레지스트리를 지정할 수 있어요. HTTPS를 사용하며 HTTP는 로컬 검증용 loopback만 허용해요. GitHub Release의 지정된 asset CDN 외 리디렉션은 거부해요. 해시는 변경 감지 수단이며 배포 출처 인증을 대신하지 않아요. UI 업데이트·버전 혼합·파일 덮어쓰기 옵션은 제공하지 않아요.
 
 ## 에이전트가 실행해요
 
-모든 명령은 필수 입력이 있으면 질문 없이 실행해요. `--dry-run`은 `init`과 `add`의 변경 계획만 조회하고, `--json`은 표준 출력에 결과 JSON 하나만 출력해요. 파일 충돌이나 부족한 조건은 실패로 반환해요. 설치 계획 단계에서도 React 호환성을 확인해요.
+모든 명령은 필수 입력이 있으면 질문 없이 실행해요. `--dry-run`은 `init`·`add`·`harness`의 변경 계획만 조회하고, `--json`은 표준 출력에 결과 JSON 하나만 출력해요. 파일 충돌이나 부족한 조건은 실패로 반환해요. UI 설치 계획 단계에서는 React 호환성을 확인해요.
 
 ```bash
 node packages/cli/dist/cli.mjs add button --cwd <프로젝트> --dry-run --json
@@ -69,6 +88,7 @@ node packages/cli/dist/cli.mjs status --cwd <프로젝트> --json
 - 성공: 종료 코드 `0`, `ok: true`. add는 `version`, `requested`, `resolved`, `entries`, `files`, `requirements`, `manager`, `downloads`를 반환해요.
 - 실패: 종료 코드 `1`, `ok: false`, `error: { code, message, details }`를 반환해요. 사람이 읽는 모드의 오류는 표준 오류에 출력해요.
 - 파일: add의 `action`은 `add` 또는 `reuse`, status의 `state`는 `unchanged`, `modified`, `missing`이에요. 진입 경로는 프로젝트 루트 기준이에요.
+- 하네스: `version`, `agents`, `registry`, `record`, `files`, `downloads`, `nextSteps`를 반환해요. 설정 파일의 action에는 `merge`도 있어요. status의 `harness`는 미설치면 `null`이고, 하네스만 설치한 앱의 UI `version`은 `null`, `entries`·`files`는 빈 배열이에요.
 - 다운로드: `downloads[].bytes`는 읽은 JSON의 압축 해제 후 바이트예요. HTTP 압축 전송량·CLI/semver npm 다운로드·브라우저 번들 크기가 아니에요. 별도 영구 캐시는 아직 없어요.
 
 | 오류 코드 | 대응 |

@@ -1,8 +1,30 @@
 #!/usr/bin/env node
 // SessionStart 훅: 프로젝트가 ELI를 쓰면 짧은 지침을 표준 출력으로 내보내요.
 // 에이전트는 이 출력을 세션 컨텍스트에 넣어요. 쓰지 않는 프로젝트에서는 아무것도 출력하지 않아요.
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { lstatSync, readFileSync } from 'node:fs';
+import { join, resolve, sep } from 'node:path';
+
+/** 소스 설치는 npm 의존성 대신 설정·설치 기록의 실제 진입 파일로 확인해요. 네트워크는 사용하지 않아요. */
+function sourceState(dir) {
+  let config;
+  try { config = JSON.parse(readFileSync(join(dir, 'eli.json'), 'utf8')); } catch { return null; }
+  try {
+    const record = JSON.parse(readFileSync(join(dir, 'eli.lock.json'), 'utf8'));
+    if (config.schemaVersion !== 1 || record.schemaVersion !== 1 || record.mode !== 'source' || record.version !== config.version || record.registry !== config.registry || record.registrySha256 !== config.registrySha256 || record.directory !== config.directory || !/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(record.version) || !Array.isArray(record.entries) || !Array.isArray(record.files)) throw new Error('invalid source record');
+    const root = resolve(dir);
+    const paths = new Set(record.files.map(file => file.path));
+    for (const entry of record.entries) {
+      if (typeof entry.path !== 'string' || !entry.path.startsWith(`${config.directory}/`) || !entry.path.split('/').every(part => /^[a-zA-Z0-9_][a-zA-Z0-9_.-]*$/.test(part) && !part.endsWith('.')) || !resolve(root, entry.path).startsWith(`${root}${sep}`) || !paths.has(entry.path)) throw new Error('invalid source entry');
+      let file = root;
+      for (const part of entry.path.split('/')) {
+        file = join(file, part);
+        if (lstatSync(file).isSymbolicLink()) throw new Error('symlink source entry');
+      }
+      if (!lstatSync(file).isFile()) throw new Error('missing source entry');
+    }
+    return { version: record.version, valid: true };
+  } catch { return { valid: false }; }
+}
 
 const INSTRUCTIONS = `ELI 하네스: 이 프로젝트는 ELI를 써요.
 - UI나 디자인을 만들거나 고치기 전에 eli-docs MCP에서 해당 컴포넌트 문서를 읽어요. list_components로 찾고 get_component로 필요한 섹션만 읽어요.
@@ -17,6 +39,7 @@ const INSTRUCTIONS = `ELI 하네스: 이 프로젝트는 ELI를 써요.
 
 // shortcut: 루트 package.json만 확인해요. 모노레포의 하위 워크스페이스만 @eli-design/ui를 쓰는 경우가 생기면 워크스페이스도 확인해요.
 function usesEli(dir) {
+  if (sourceState(dir)) return true;
   try {
     const pkg = JSON.parse(readFileSync(join(dir, 'package.json'), 'utf8'));
     return ['dependencies', 'devDependencies', 'peerDependencies'].some(
@@ -31,7 +54,7 @@ const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어�
 
 const dir = process.cwd();
 // 훅이 프로젝트 안에 설치되어 있으면 @eli-design/ui를 아직 설치하지 못했어도 ELI를 쓰는 프로젝트예요.
-const installedInProject = import.meta.dirname.startsWith(dir);
+const installedInProject = import.meta.dirname.startsWith(`${dir}${sep}`);
 
 const STALE_DAYS = 14;
 
@@ -53,16 +76,32 @@ function skillsNotice(dir) {
       return null;
     }
   };
+  const harness = read('eli.harness.json');
+  if (harness) {
+    try {
+      const record = JSON.parse(harness);
+      if (record.schemaVersion !== 1 || record.kind !== 'harness' || !/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(record.version) || !Array.isArray(record.agents)) throw new Error('invalid harness record');
+      const notices = [];
+      for (const agent of record.agents) {
+        const path = agent === 'claude' ? '.claude/skills/eli/VERSION' : agent === 'codex' ? '.agents/skills/eli/VERSION' : null;
+        if (!path) throw new Error('invalid agent');
+        if (read(path)?.trim() !== record.version) notices.push(`- ${agent} 하네스의 버전 파일이 설치 기록과 달라요. eli-design status로 확인해요.`);
+      }
+      return notices.join('\n');
+    } catch { return '- 하네스 설치 기록을 읽을 수 없어요. eli-design status로 확인해요.'; }
+  }
   const manifest = read('node_modules/@eli-design/ui/package.json');
   const copied = (read('.claude/skills/eli/VERSION') ?? read('.agents/skills/eli/VERSION'))?.trim();
   if (!manifest || !copied) return '';
   let installed;
+  const packagedSkills = read('node_modules/@eli-design/ui/harness/skills/eli/VERSION')?.trim();
   try {
-    installed = JSON.parse(manifest).version;
+    installed = packagedSkills ?? JSON.parse(manifest).version;
   } catch {
     return '';
   }
   if (installed === copied) return '';
+  if (packagedSkills) return `- 패키지의 하네스는 ${installed}인데 프로젝트에 복사된 스킬은 ${copied}예요. /eli-update로 확인해요.`;
   return `- 설치된 @eli-design/ui는 ${installed}인데 프로젝트에 복사된 스킬은 ${copied}예요. /eli-update로 스킬과 훅을 다시 복사해요.`;
 }
 
@@ -73,6 +112,10 @@ if (installedInProject || usesEli(dir)) {
   } catch {
     // DESIGN.md가 없으면 아직 셋업하지 않은 프로젝트예요.
   }
-  const extra = [designMd === null ? NOT_SET_UP : versionNotice(designMd), skillsNotice(dir)].filter(Boolean);
+  const source = sourceState(dir);
+  const sourceNotice = source ? source.valid
+    ? `- UI는 소스 방식으로 설치되어 있어요(콘텐츠 ${source.version}). eli.lock.json의 entries에서 실제 로컬 import를 확인하고 eli-design status로 파일 상태를 확인해요. 전체 @eli-design/ui를 추가하지 않아요.`
+    : '- UI 소스 설정은 있지만 설치 기록이나 진입 파일을 확인하지 못했어요. eli-design status로 확인하고 설치를 완료했다고 추측하지 않아요.' : '';
+  const extra = [sourceNotice, designMd === null ? NOT_SET_UP : versionNotice(designMd), skillsNotice(dir)].filter(Boolean);
   process.stdout.write(`${[INSTRUCTIONS, ...extra].join('\n')}\n`);
 }

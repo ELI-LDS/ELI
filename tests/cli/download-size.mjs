@@ -34,7 +34,7 @@ await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 const packed = JSON.parse((await execFile(npm, ['pack', '--ignore-scripts', '--json', '--pack-destination', output], { cwd: join(root, 'packages/cli'), env: baseEnv })).stdout)[0];
 assert.ok(packed.files.every(file => ['package.json', 'README.md', 'LICENSE'].includes(file.path) || file.path.startsWith('dist/')));
-assert.ok(!packed.files.some(file => /harness|\.tsx|tokens\//.test(file.path)));
+assert.ok(!packed.files.some(file => /^(harness|skills|hooks)\/|\.tsx|tokens\//.test(file.path)));
 const toolTarball = await readFile(join(output, packed.filename));
 const toolHash = digest(toolTarball);
 

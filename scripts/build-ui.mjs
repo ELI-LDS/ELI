@@ -21,11 +21,11 @@ export async function buildUi(directory = join(root, 'packages/ui')) {
   }
   await copyAssets(join(directory, 'src'), join(directory, 'dist'));
 
-  // 엘리의 스킬과 훅을 패키지에 함께 넣어요. 컴포넌트와 스킬이 항상 같은 버전으로 설치돼요.
+  // 기존 전체 UI 배포에도 하네스를 남기되 하네스 버전은 독립 manifest에서 읽어요.
   const harness = join(directory, 'harness');
   await rm(harness, { recursive: true, force: true });
-  await cp(join(root, 'packages/harness'), harness, { recursive: true });
-  const { version } = JSON.parse(await readFile(join(directory, 'package.json'), 'utf8'));
+  await cp(join(root, 'packages/harness'), harness, { recursive: true, filter: source => !['package.json', 'schema.json'].some(name => source === join(root, 'packages/harness', name)) });
+  const { version } = JSON.parse(await readFile(join(root, 'packages/harness/package.json'), 'utf8'));
   await writeFile(join(harness, 'skills/eli/VERSION'), `${version}\n`);
 }
 

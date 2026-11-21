@@ -110,7 +110,9 @@ flowchart TD
 
 ## AI 에이전트가 읽는 설치 안내
 
-이 섹션은 현재 실험 패키지의 하네스 설치 안내예요. 엘리의 스킬과 훅은 지금 `@eli-design/ui`에 함께 들어 있어요. 아래 절차를 UI 소스 선택 설치가 구현됐다는 뜻으로 사용하지 않아요. UI만 요청한 경우 하네스까지 설치하는 것으로 간주하지 않아요.
+새 소스·하네스 설치는 [CLI 사용법](packages/cli/README.md)을 따라요. CLI 0.2.0과 하네스 콘텐츠 게시 후 필요한 UI와 원하는 에이전트를 각각 선택해요. 게시 전에는 사용할 수 없는 공개 명령을 실행했다고 안내하지 않아요.
+
+아래는 기존 전체 패키지 방식을 명시적으로 선택한 경우의 하네스 설치 안내예요. 기존 `@eli-design/ui`에는 스킬과 훅이 함께 들어 있어요. UI 소스만 요청했다면 전체 패키지나 하네스를 자동으로 추가하지 않아요.
 
 1. 지금 폴더가 사용자의 프로젝트 루트인지 확인해요. `package.json`이 없으면 어디에 설치할지 물어요.
 2. 프로젝트의 패키지 매니저로 `@eli-design/ui`를 설치해요. 이미 설치되어 있으면 건너뛰어요.
@@ -130,7 +132,7 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 엘리가 화면을 만들 때 쓰는 React 컴포넌트예요. 에이전트 없이 직접 써도 돼요.
 
 - 컴포넌트만 import하면 기본 CSS와 디자인 토큰이 함께 연결돼요.
-- 현재 실험 패키지에는 엘리의 스킬과 훅이 함께 들어 있고 같은 버전으로 빌드돼요. 목표 소스 배포에서의 하네스 연결은 별도로 준비해요.
+- 현재 실험 패키지에도 하네스를 남겨요. 새 소스 설치에서는 같은 CLI의 별도 명령으로 하네스를 선택하며 UI·도구·하네스 버전은 구분해요.
 - `@eli-design/ui/button`처럼 역할별 경로에서 필요한 컴포넌트를 가져와요.
 - `className`과 `style`로 일반 CSS, CSS Modules, Tailwind CSS, Emotion, vanilla-extract 스타일을 적용할 수 있어요.
 - Vite와 Next.js App Router의 빌드·SSR·hydration을 실제 패키지 tarball로 확인해요.
@@ -142,11 +144,11 @@ git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
 
 앞으로는 필요한 컴포넌트 하나 또는 여러 개와 토큰·아이콘·하위 컴포넌트 같은 실제 의존 파일만 프로젝트에 추가하는 방식을 기본으로 제공할 예정이에요. 전체를 원하면 같은 흐름에서 모든 공개 컴포넌트 소스를 선택할 수 있게 해요. 복사된 파일은 로컬 경로로 가져오고 직접 수정할 수 있어요.
 
-소스 설치에는 현재 제공 중인 `@eli-design/ui` 전체 패키지가 필요하지 않도록 준비해요. UI 원본은 하나로 유지하고, 하네스가 필요한 항목·의존 관계·설치 위치·사용 경로를 확인할 수 있도록 연결할 예정이에요. 하네스는 UI 소스에 자동으로 따라오지 않아요.
+소스 설치에는 `@eli-design/ui` 전체 패키지가 필요하지 않아요. UI 원본은 하나로 유지하고 하네스가 설치 기록으로 실제 로컬 경로를 확인해요. UI 추가 명령에는 하네스가 자동으로 따라오지 않아요.
 
-설치 진입점은 `eli-design`이에요. 개별·다중·전체 추가와 설치 상태 조회를 구현했으며 [CLI 사용법](packages/cli/README.md)에 따라 저장소에서 실행할 수 있어요. 아직 npm 게시와 GitHub Release 콘텐츠 게시를 하지 않아 `npx eli-design@latest`를 공개 설치 명령으로 안내하지 않아요.
+설치 진입점은 `eli-design`이에요. 개별·다중·전체 UI 추가와 `harness --agent claude|codex|all`을 구현했으며 [CLI 사용법](packages/cli/README.md)에 따라 저장소에서 실행할 수 있어요. UI 콘텐츠 0.1.0은 GitHub에 공개됐고 하네스 선택 설치 CLI 0.2.0은 새 게시 후보예요. npm·하네스 콘텐츠 게시 전에는 이 명령을 사용할 수 있는 공개 기능으로 안내하지 않아요.
 
-레지스트리 JSON 생성기·CLI·소비 검사와 로컬 tarball의 패키지 매니저별 실행 행렬은 구현되어 있어요. 공개 배포·게시 후 공개 명령 확인·하네스 연결은 남아 있어요. 현재 CLI는 기존 React 프로젝트의 설치 버전을 확인하고 소스만 추가해요. React·폰트·하네스를 자동으로 설치하지 않아요. 데이터와 담당 범위는 [레지스트리 지침](Agent/registry.md)에서 확인해요.
+레지스트리·하네스 데이터 생성기와 실제 tarball 소비 검사를 제공해요. 하네스를 선택하면 전체 스킬·훅을 받고 기존 설정에 중복 없이 등록해요. 수정 파일은 덮어쓰지 않으며 설치 도구·UI·하네스를 따로 기록해요. React·폰트·원격 MCP는 자동으로 설치하지 않아요. 실제 에이전트의 스킬 사용과 MCP 연결은 별도 검증 범위예요. 데이터는 [레지스트리 지침](Agent/registry.md), 하네스는 [하네스 지침](Agent/harness.md)에서 확인해요.
 
 ### 패키지 매니저로 설치해요
 
@@ -280,6 +282,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm size` | 패키지 압축 크기·압축 해제 크기·파일 수를 기록해요 |
 | `pnpm size:cli` | 격리된 HTTP 서버에서 CLI 설치 흐름의 콜드·재실행 응답 본문 크기를 측정해요 |
 | `pnpm build:registry` | 선택 설치용 목록·항목별 JSON을 생성해요 |
+| `pnpm build:harness` | UI와 별도의 전체 스킬·훅 JSON을 생성해요 |
 | `pnpm build:cli` | UI 콘텐츠를 포함하지 않는 설치 도구를 빌드해요 |
 | `pnpm test:cli` | 설치 도구 tarball·선택 다운로드·파일 보호를 확인해요 |
 | `pnpm test:cli:consumer` | CLI로 추가한 소스의 타입·Vite·Next.js 소비를 확인해요 |
@@ -300,12 +303,12 @@ ELI/
 ├── packages/ui/        # npm에 배포하는 @eli-design/ui 소스
 ├── packages/registry/  # 선택 설치 데이터의 생성 정책·JSON 규격
 ├── packages/cli/       # 선택한 UI 소스를 추가하는 eli-design 실행 도구
-├── packages/harness/   # 엘리의 스킬과 훅. 빌드할 때 @eli-design/ui에 함께 들어가요
+├── packages/harness/   # 독립 버전의 스킬·훅과 선택 설치 JSON 규격
 ├── scripts/            # 빌드와 패키지 검사 도구
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
 ```
 
-`packages/ui`를 `@eli-design/ui`로 배포하고, `packages/harness`의 스킬과 훅이 그 패키지에 함께 들어가요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
+기존 전체 UI 패키지와 필요한 소스만 추가하는 CLI를 구분해요. 하네스는 독립 콘텐츠로 선택 설치하고 기존 전체 패키지에도 남겨요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
 
 ## 로드맵
 
@@ -328,7 +331,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. CLI·UI 소스 콘텐츠의 첫 후보는 [0.1.0 준비 기록](handbook/releases/0.1.0.md)에서 확인해요. 아직 공개 게시를 완료한 상태는 아니에요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 이번 UI·하네스 통합 후보는 [CLI 0.2.0 준비 기록](handbook/releases/0.2.0.md)에서 확인해요. 기존 UI 콘텐츠 0.1.0은 재사용하고 새 CLI·하네스의 게시 상태는 별도로 확인해요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 

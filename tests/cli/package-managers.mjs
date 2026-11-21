@@ -37,7 +37,7 @@ async function prepare() {
   await mkdir(output, { recursive: true });
   const packed = JSON.parse(execute(tools.npm, ['pack', '--ignore-scripts', '--json', '--pack-destination', output], join(root, 'packages/cli'), process.env, true))[0];
   assert.ok(packed.files.every(file => ['package.json', 'README.md', 'LICENSE'].includes(file.path) || file.path.startsWith('dist/')));
-  assert.ok(!packed.files.some(file => /harness|\.tsx|tokens\//.test(file.path)));
+  assert.ok(!packed.files.some(file => /^(harness|skills|hooks)\/|\.tsx|tokens\//.test(file.path)));
   const sha256 = digest(await readFile(join(output, packed.filename)));
   const filename = packed.filename.replace(/\.tgz$/, `-${sha256.slice(0, 12)}.tgz`);
   await rename(join(output, packed.filename), join(output, filename));
