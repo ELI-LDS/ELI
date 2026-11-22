@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import { mkdir, rm, writeFile } from 'node:fs/promises';
-import { dirname, join, relative, resolve } from 'node:path';
+import { dirname, join, posix, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 
@@ -39,33 +39,40 @@ function resolveLocal(sourceRoot, from, specifier) {
 }
 
 /** import type·재수출·동적 import·CSS·이미지를 같은 파일 그래프에서 확인해요. */
-function readReferences(path, content) {
+function readReferences(path, content, rewrite) {
   const references = new Set();
   const edits = [];
+  const addReference = (value, start, end, kind = 'module') => {
+    references.add(value);
+    const text = rewrite(value, kind);
+    if (text !== content.slice(start, end)) edits.push({ start, end, text });
+  };
   if (/\.tsx?$/.test(path)) {
     const source = ts.createSourceFile(path, content, ts.ScriptTarget.Latest, true);
-    const addLiteral = node => {
+    const addLiteral = (node, kind = 'module') => {
       assert.ok(node && ts.isStringLiteralLike(node), `정적 분석이 불가능한 파일 참조: ${path}`);
-      references.add(node.text);
-      // npm 출력용 .js 경로는 복사된 TS 소스에서도 해석되는 확장자 없는 경로로 바꿔요.
-      if (node.text.startsWith('.') && node.text.endsWith('.js')) edits.push({ start: node.getStart(source) + 1, end: node.end - 1, text: node.text.slice(0, -3) });
+      addReference(node.text, node.getStart(source) + 1, node.end - 1, kind);
     };
     function visit(node) {
       if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) addLiteral(node.moduleSpecifier);
       if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument)) addLiteral(node.argument.literal);
       if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) addLiteral(node.moduleReference.expression);
       if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || (ts.isIdentifier(node.expression) && node.expression.text === 'require'))) addLiteral(node.arguments[0]);
-      if (ts.isNewExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'URL') addLiteral(node.arguments?.[0]);
+      if (ts.isNewExpression(node) && ts.isIdentifier(node.expression) && node.expression.text === 'URL') addLiteral(node.arguments?.[0], 'asset');
       ts.forEachChild(node, visit);
     }
     visit(source);
-    for (const ref of source.referencedFiles) references.add(ref.fileName.startsWith('.') ? ref.fileName : `./${ref.fileName}`);
-    for (const ref of source.typeReferenceDirectives) references.add(ref.fileName);
+    for (const ref of source.referencedFiles) addReference(ref.fileName.startsWith('.') ? ref.fileName : `./${ref.fileName}`, ref.pos, ref.end, 'path');
+    for (const ref of source.typeReferenceDirectives) addReference(ref.fileName, ref.pos, ref.end, 'path');
   } else if (path.endsWith('.css')) {
-    const css = content.replace(/\/\*[\s\S]*?\*\//g, '');
+    // 주석을 가릴 때 길이를 유지해야 실제 원문의 경로 위치를 정확히 바꿀 수 있어요.
+    const css = content.replace(/\/\*[\s\S]*?\*\//g, match => ' '.repeat(match.length));
     for (const match of css.matchAll(/@import\s+['"]([^'"]+)['"]|url\(\s*(?:['"]([^'"]+)['"]|([^\s)]+))\s*\)/g)) {
       const value = match[1] ?? match[2] ?? match[3];
-      if (!value.startsWith('data:') && !value.startsWith('#')) references.add(value.startsWith('.') || /^(?:https?:|\/)/.test(value) ? value : `./${value}`);
+      if (!value.startsWith('data:') && !value.startsWith('#')) {
+        const start = match.index + match[0].indexOf(value);
+        addReference(value.startsWith('.') || /^(?:https?:|\/)/.test(value) ? value : `./${value}`, start, start + value.length, 'asset');
+      }
     }
   }
   for (const edit of edits.sort((a, b) => b.start - a.start)) content = content.slice(0, edit.start) + edit.text + content.slice(edit.end);
@@ -80,6 +87,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
   const items = new Map();
   const owners = new Map();
   const publicDirectories = new Map();
+  const publicEntries = new Map();
   const queue = [];
   const makeItem = (id, kind, name, description, entry = null) => {
     assert.match(id, /^(?:_[a-z0-9-]+|[a-z][a-z0-9-]*)$/);
@@ -109,6 +117,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
         makeItem(id, 'component', name, description, { path, export: name });
         assert.ok(!publicDirectories.has(dirname(path)), `같은 폴더의 컴포넌트 소유 범위를 분리해요: ${path}`);
         publicDirectories.set(dirname(path), id);
+        publicEntries.set(path, id);
         queue.push(path);
       }
     }
@@ -118,6 +127,18 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     assertSourcePath(`${shared.directory}/index.css`);
     makeItem(shared.id, 'shared', shared.id, '여러 컴포넌트가 함께 사용하는 디자인 토큰이에요.');
   }
+
+  // 공개 구현은 button.tsx처럼 설치 루트에 두고 스타일·타입·Hook은 button/에 모아요.
+  // 원본의 그룹 폴더와 컴포넌트 폴더를 사용자 경로에 반복해서 노출하지 않아요.
+  const installPath = path => {
+    if (publicEntries.has(path)) return `${publicEntries.get(path)}.tsx`;
+    for (const [directory, id] of publicDirectories) {
+      if (path.startsWith(`${directory}/`)) return `${id}/${path.slice(directory.length + 1)}`;
+    }
+    return path;
+  };
+  const sources = new Map();
+  const portablePaths = new Set();
 
   const ownerOf = path => {
     if (owners.has(path)) return owners.get(path);
@@ -139,8 +160,22 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     assertSourcePath(path);
     const item = items.get(ownerOf(path));
     const content = readFileSync(join(sourceRoot, path), 'utf8');
-    const prepared = readReferences(path, content);
-    item.files.set(path, { path, content: prepared.content, sha256: sha256(prepared.content) });
+    const target = installPath(path);
+    assertSourcePath(target);
+    assert.ok(!portablePaths.has(target.toLowerCase()), `설치 파일 경로가 충돌해요: ${target}`);
+    portablePaths.add(target.toLowerCase());
+    sources.set(target, path);
+    const prepared = readReferences(path, content, (specifier, kind) => {
+      if (!specifier.startsWith('.')) return specifier;
+      const clean = specifier.split(/[?#]/)[0];
+      const dependency = installPath(resolveLocal(sourceRoot, path, specifier));
+      let rewritten = posix.relative(posix.dirname(target), dependency);
+      // TypeScript 소스는 Next.js에서도 해석되는 확장자 없는 모듈 경로로 연결해요.
+      if (kind === 'module') rewritten = rewritten.replace(/\.tsx?$/, '');
+      if (!rewritten.startsWith('.')) rewritten = `./${rewritten}`;
+      return rewritten + specifier.slice(clean.length);
+    });
+    item.files.set(path, { path: target, content: prepared.content, sha256: sha256(prepared.content) });
     for (const specifier of prepared.references) {
       if (!specifier.startsWith('.')) {
         const packageName = specifier.startsWith('@') ? specifier.split('/').slice(0, 2).join('/') : specifier.split('/')[0];
@@ -165,7 +200,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
   const index = { schemaVersion: 1, version: manifest.version, license: manifest.license, reservedKinds: catalog.reservedKinds, items: [] };
   for (const item of [...items.values()].sort((a, b) => a.id.localeCompare(b.id, 'en'))) {
     assert.ok(item.files.size, `파일이 없는 항목: ${item.id}`);
-    const data = { ...item, dependencies: [...item.dependencies].sort(), files: [...item.files.values()].sort((a, b) => a.path.localeCompare(b.path, 'en')) };
+    const data = { ...item, entry: item.entry ? { ...item.entry, path: installPath(item.entry.path) } : null, dependencies: [...item.dependencies].sort(), files: [...item.files.values()].sort((a, b) => a.path.localeCompare(b.path, 'en')) };
     for (const dependency of data.dependencies) assert.ok(items.has(dependency), `없는 의존 항목: ${dependency}`);
     const filename = `${item.id}.json`;
     const content = serialize(data);
@@ -173,7 +208,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     index.items.push({ id: item.id, kind: item.kind, name: item.name, description: item.description, filename, sha256: sha256(content) });
   }
   artifacts.set('registry.json', serialize(index));
-  return { index, artifacts };
+  return { index, artifacts, sources };
 }
 
 export async function buildRegistry() {

@@ -11,7 +11,7 @@ npx eli-design@latest add button
 
 여러 개는 `add button modal`, 전체는 명시적으로 `add --all`을 사용해요. 예시의 컴포넌트 ID는 `list`에서 확인하고 필요한 컴포넌트를 먼저 추가해요. [CLI 사용법](https://github.com/ELI-LDS/ELI/blob/main/packages/cli/README.md)에 지원 환경·경로 설정·하네스 선택 설치를 안내해요.
 
-아래 import는 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 실제 설치 경로나 사용하는 파일 위치가 다르면 설치 결과의 로컬 진입 경로에 맞춰요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
+아래 import는 다음 CLI·UI 콘텐츠 릴리스에서 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 기존 설치 소스는 자동으로 이동하지 않으며 실제 설치 기록의 경로를 사용해요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
 
 기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. Pretendard 폰트는 소비 앱에서 직접 불러와요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
 
@@ -24,7 +24,7 @@ ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 �
 Tailwind CSS에서는 평소 사용하는 utility class를 그대로 입력해요. 배경처럼 상태가 있는 스타일을 바꿀 때는 Hover·Pressed·Disabled도 함께 지정해요.
 
 ```tsx
-import { Button } from './components/eli/button/Button/Button';
+import { Button } from './components/eli/button';
 
 export function PurpleButton() {
   return (
@@ -71,7 +71,7 @@ export const customButton = style({
 Badge는 짧은 상태나 분류를 표시해요. `type`으로 의미 색상을, `size`로 크기를 정해요.
 
 ```tsx
-import { Badge } from './components/eli/badge/Badge/Badge';
+import { Badge } from './components/eli/badge';
 
 export function Label() {
   return <Badge size="medium" type="success">완료</Badge>;
@@ -81,7 +81,7 @@ export function Label() {
 Tooltip은 요소를 이해하는 데 필요한 짧은 설명을 표시해요. 최대 너비는 200px이며, 위치 계산과 열고 닫는 동작은 Tooltip을 사용하는 화면에서 연결해요.
 
 ```tsx
-import { Tooltip } from './components/eli/tooltip/Tooltip/Tooltip';
+import { Tooltip } from './components/eli/tooltip';
 
 export function SaveDescription() {
   return <Tooltip>버튼을 누르면 파일을 저장해요.</Tooltip>;
@@ -92,8 +92,8 @@ LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `prog
 LoadingIndicator의 `continuous`는 일정하게 회전하고, `cycle`은 Figma의 2초 가감속 모션을 반복해요.
 
 ```tsx
-import { LoadingIndicator } from './components/eli/loading/LoadingIndicator/LoadingIndicator';
-import { ProgressIndicator } from './components/eli/loading/ProgressIndicator/ProgressIndicator';
+import { LoadingIndicator } from './components/eli/loading-indicator';
+import { ProgressIndicator } from './components/eli/progress-indicator';
 
 <LoadingIndicator aria-label="프로필 불러오는 중" />
 <LoadingIndicator aria-label="동기화하는 중" variant="cycle" />
@@ -103,7 +103,7 @@ import { ProgressIndicator } from './components/eli/loading/ProgressIndicator/Pr
 Alert는 `status`에 맞는 색상과 아이콘으로 제목과 본문을 표시해요. 화면에 띄우는 Toast 동작은 포함하지 않아요.
 
 ```tsx
-import { Alert } from './components/eli/alert/Alert/Alert';
+import { Alert } from './components/eli/alert';
 
 export function DeleteResult() {
   return <Alert message="삭제된 파일은 30일 동안 휴지통에 보관돼요." status="success" title="파일을 삭제했어요." />;
@@ -113,7 +113,7 @@ export function DeleteResult() {
 Button은 아래 경로에서 가져와요.
 
 ```tsx
-import { Button } from './components/eli/button/Button/Button';
+import { Button } from './components/eli/button';
 
 export function Example() {
   return <Button>버튼</Button>;
@@ -123,7 +123,7 @@ export function Example() {
 IconButton은 텍스트 없이 아이콘만 표시하므로 `aria-label`을 반드시 전달해요. `icon`을 생략하면 Plus 아이콘을 표시해요.
 
 ```tsx
-import { IconButton } from './components/eli/button/IconButton/IconButton';
+import { IconButton } from './components/eli/icon-button';
 
 export function AddButton() {
   return <IconButton aria-label="추가" variant="outline" />;
@@ -133,8 +133,8 @@ export function AddButton() {
 Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요.
 
 ```tsx
-import { Fab } from './components/eli/fab/Fab/Fab';
-import { FabMenu } from './components/eli/fab/FabMenu/FabMenu';
+import { Fab } from './components/eli/fab';
+import { FabMenu } from './components/eli/fab-menu';
 
 export function FloatingActions() {
   return (
@@ -156,9 +156,9 @@ export function FloatingActions() {
 Chip은 선택, 삭제, 필터 진입 목적에 맞는 독립 컴포넌트를 사용해요. 상태와 목록 데이터는 부모에서 관리해요.
 
 ```tsx
-import { Chip } from './components/eli/chip/Chip/Chip';
-import { FilterChip } from './components/eli/chip/FilterChip/FilterChip';
-import { RemovableChip } from './components/eli/chip/RemovableChip/RemovableChip';
+import { Chip } from './components/eli/chip';
+import { FilterChip } from './components/eli/filter-chip';
+import { RemovableChip } from './components/eli/removable-chip';
 
 const colorOptions = [
   { label: '블랙', value: 'black' },
@@ -184,7 +184,7 @@ export function Chips() {
 Checkbox는 네이티브 체크박스예요. 라벨 텍스트가 없으면 `aria-label`로 용도를 설명하거나 별도의 `label`을 연결해요.
 
 ```tsx
-import { Checkbox } from './components/eli/checkbox/Checkbox/Checkbox';
+import { Checkbox } from './components/eli/checkbox';
 
 export function Agreement() {
   return <Checkbox aria-label="약관 동의" defaultChecked />;
@@ -194,7 +194,7 @@ export function Agreement() {
 Radio는 여러 선택지 중 하나만 고를 때 사용해요. 같은 선택 묶음은 동일한 `name`을 전달해요.
 
 ```tsx
-import { Radio } from './components/eli/radio/Radio/Radio';
+import { Radio } from './components/eli/radio';
 
 export function CourseType() {
   return (
@@ -210,7 +210,7 @@ export function CourseType() {
 Divider는 부모 영역의 너비에 맞춰 표시돼요.
 
 ```tsx
-import { Divider } from './components/eli/divider/Divider/Divider';
+import { Divider } from './components/eli/divider';
 
 export function SectionDivider() {
   return <Divider />;
@@ -221,7 +221,7 @@ MenuItem은 텍스트와 선택적인 좌우 아이콘·단축키 안내를 받�
 표시하며 실제 키보드 동작은 별도로 연결해야 해요.
 
 ```tsx
-import { MenuItem } from './components/eli/menu/MenuItem/MenuItem';
+import { MenuItem } from './components/eli/menu-item';
 
 export function Menu() {
   return <MenuItem shortcut="⇧⌘P">명령 팔레트 열기</MenuItem>;
@@ -231,7 +231,7 @@ export function Menu() {
 NavigationBar는 3개부터 5개의 주요 화면 이동 항목을 표시해요. 기본 상태에는 outlined 아이콘을 사용하고, 활성 탭에만 filled 아이콘을 사용해요.
 
 ```tsx
-import { NavigationBar } from './components/eli/navigation/NavigationBar/NavigationBar';
+import { NavigationBar } from './components/eli/navigation-bar';
 import {
   HomeFilledIcon,
   HomeOutlinedIcon,
@@ -270,7 +270,7 @@ export function Example() {
 NavigationBarGlass는 아이콘만 표시하는 유리 효과의 모바일 탐색 영역이에요. 3개부터 5개 항목을 균등하게 배치하고, 탭·키보드·포인터 드래그로 활성 항목을 바꿔요. `label`은 화면에는 표시되지 않으며 화면 낭독기가 각 항목을 구분할 때 사용해요.
 
 ```tsx
-import { NavigationBarGlass } from './components/eli/navigation/NavigationBarGlass/NavigationBarGlass';
+import { NavigationBarGlass } from './components/eli/navigation-bar-glass';
 
 export function GlassNavigation() {
   return (
@@ -288,10 +288,10 @@ export function GlassNavigation() {
 NavigationDrawer는 카테고리, 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerCategory`는 클릭 동작 없이 메뉴 묶음의 이름을 표시하며, `label`로 카테고리명을 바꿀 수 있어요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
 
 ```tsx
-import { NavigationDrawer } from './components/eli/navigation/NavigationDrawer/NavigationDrawer';
-import { NavigationDrawerCategory } from './components/eli/navigation/NavigationDrawerCategory/NavigationDrawerCategory';
-import { NavigationDrawerMenu } from './components/eli/navigation/NavigationDrawerMenu/NavigationDrawerMenu';
-import { Divider } from './components/eli/divider/Divider/Divider';
+import { NavigationDrawer } from './components/eli/navigation-drawer';
+import { NavigationDrawerCategory } from './components/eli/navigation-drawer-category';
+import { NavigationDrawerMenu } from './components/eli/navigation-drawer-menu';
+import { Divider } from './components/eli/divider';
 import { HomeFilledIcon, HomeOutlinedIcon } from './icons';
 
 export function SideMenu() {
@@ -320,7 +320,7 @@ Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요. Dim·
 
 ```tsx
 import { useState } from 'react';
-import { Modal } from './components/eli/modal/Modal/Modal';
+import { Modal } from './components/eli/modal';
 
 export function ConfirmModal() {
   const [open, setOpen] = useState(false);
@@ -348,7 +348,7 @@ Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록�
 MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요.
 
 ```tsx
-import { Select } from './components/eli/select/Select/Select';
+import { Select } from './components/eli/select';
 
 const options = [
   { label: '옵션 1', value: 'option-1' },
@@ -363,7 +363,7 @@ export function CategorySelect() {
 SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요.
 
 ```tsx
-import { SegmentControl } from './components/eli/segment-control/SegmentControl/SegmentControl';
+import { SegmentControl } from './components/eli/segment-control';
 
 const viewOptions = [
   { label: '목록', value: 'list' },
@@ -378,7 +378,7 @@ export function ViewControl() {
 Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요.
 
 ```tsx
-import { Slider } from './components/eli/slider/Slider/Slider';
+import { Slider } from './components/eli/slider';
 
 <Slider aria-label="볼륨" defaultValue={60} />
 
@@ -393,7 +393,7 @@ Tab은 같은 화면 안의 콘텐츠를 전환하는 한 개의 선택 항목�
 
 ```tsx
 import { useState } from 'react';
-import { Tab } from './components/eli/tab/Tab/Tab';
+import { Tab } from './components/eli/tab';
 
 export function ProfileTabs() {
   const [activeTab, setActiveTab] = useState<'posts' | 'likes'>('posts');
@@ -420,7 +420,7 @@ TextField는 아래 경로에서 가져와요. 라벨과 Placeholder 문구를 �
 X 버튼은 입력을 지우고 기존 `onChange`에 빈 값을 전달한 뒤 입력창에 포커스를 돌려줘요. `value`로 제어하면 받은 값을 상태에 반영해요. `state="disabled"`·`readOnly`에서는 지울 수 없어요. 라벨은 `htmlFor`·`id`로 연결하며 `className`·`style`은 바깥 `div`에 적용해요.
 
 ```tsx
-import { TextField } from './components/eli/text/TextField/TextField';
+import { TextField } from './components/eli/text-field';
 
 export function SignUpField() {
   return <TextField label="이메일" placeholder="이메일을 입력하세요" state="default" />;
@@ -430,7 +430,7 @@ export function SignUpField() {
 TextArea도 같은 그룹 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
 
 ```tsx
-import { TextArea } from './components/eli/text/TextArea/TextArea';
+import { TextArea } from './components/eli/text-area';
 
 export function IntroductionField() {
   return <TextArea label="소개" placeholder="소개를 입력하세요" />;
@@ -440,7 +440,7 @@ export function IntroductionField() {
 SnackBar는 아래 경로에서 가져와요. 메시지, 버튼명과 버튼 색상을 바꿀 수 있어요.
 
 ```tsx
-import { SnackBar } from './components/eli/snackbar/SnackBar/SnackBar';
+import { SnackBar } from './components/eli/snack-bar';
 
 export function Example() {
   return (

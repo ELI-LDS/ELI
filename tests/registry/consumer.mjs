@@ -28,7 +28,7 @@ async function materialize(source, destination, requested) {
   // 릴리스 검증에서는 다시 빌드하지 않고 최종 tarball에 든 실행 파일과 공개 콘텐츠를 그대로 사용해요.
   const cli = process.env.ELI_CLI_BINARY ?? join(root, 'packages/cli/dist/cli.mjs');
   for (const args of [
-    ['init', '--registry', process.env.ELI_REGISTRY_URL ?? source, '--dir', 'eli'],
+    ['init', '--registry', process.env.ELI_REGISTRY_URL ?? source, '--dir', 'ui'],
     ['add', ...requested],
   ]) execFileSync(process.execPath, [cli, ...args, '--cwd', project, '--json'], { stdio: 'pipe' });
   const selected = await selectFiles(source, requested);
@@ -38,9 +38,9 @@ async function materialize(source, destination, requested) {
 
 // 소비 프로젝트는 JSON에 든 소스만 복원하고 @eli-design/ui를 설치하지 않아요.
 const vite = join(work, 'vite');
-const all = await materialize(registry, join(vite, 'eli'), index.items.filter(item => item.kind === 'component').map(item => item.id));
+const all = await materialize(registry, join(vite, 'ui'), index.items.filter(item => item.kind === 'component').map(item => item.id));
 await writeFile(join(vite, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
-const exports = [...all.selected.values()].filter(item => item.kind === 'component').map(item => `export { ${item.entry.export} } from './eli/${item.entry.path.replace(/\.tsx$/, '')}';`).join('\n');
+const exports = [...all.selected.values()].filter(item => item.kind === 'component').map(item => `export { ${item.entry.export} } from './ui/${item.entry.path.replace(/\.tsx$/, '')}';`).join('\n');
 await writeFile(join(vite, 'components.ts'), exports);
 await writeFile(join(vite, 'main.tsx'), `import * as components from './components';\ndocument.body.textContent = Object.keys(components).join(',');\n`);
 await writeFile(join(vite, 'index.html'), '<html lang="ko"><body><script type="module" src="./main.tsx"></script></body></html>');
@@ -54,7 +54,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'eli'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio']);
+await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -64,11 +64,11 @@ await writeFile(join(next, 'tsconfig.json'), JSON.stringify({ compilerOptions: {
 await writeFile(join(next, 'app/layout.tsx'), 'export const metadata = { title: "ELI 소스 소비 검증" }; export default function Layout({ children }: { children: React.ReactNode }) { return <html lang="ko"><body>{children}</body></html>; }');
 await writeFile(join(next, 'app/client.tsx'), `'use client';
 import { useState, useEffect } from 'react';
-import { Modal } from '../eli/modal/Modal/Modal';
-import { TextField } from '../eli/text/TextField/TextField';
-import { Button } from '../eli/button/Button/Button';
-import { Select } from '../eli/select/Select/Select';
-import { FabMenu } from '../eli/fab/FabMenu/FabMenu';
+import { Modal } from '../ui/modal';
+import { TextField } from '../ui/text-field';
+import { Button } from '../ui/button';
+import { Select } from '../ui/select';
+import { FabMenu } from '../ui/fab-menu';
 ${modalFixture}
 ${textFieldFixture}
 export function Client() {
@@ -81,13 +81,13 @@ export function Client() {
   return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
 }`);
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
-import { Badge } from '../eli/badge/Badge/Badge';
-import { Modal } from '../eli/modal/Modal/Modal';
-import { LoadingIndicator } from '../eli/loading/LoadingIndicator/LoadingIndicator';
-import { TextField } from '../eli/text/TextField/TextField';
-import { TextArea } from '../eli/text/TextArea/TextArea';
-import { Slider } from '../eli/slider/Slider/Slider';
-import { Radio } from '../eli/radio/Radio/Radio';
+import { Badge } from '../ui/badge';
+import { Modal } from '../ui/modal';
+import { LoadingIndicator } from '../ui/loading-indicator';
+import { TextField } from '../ui/text-field';
+import { TextArea } from '../ui/text-area';
+import { Slider } from '../ui/slider';
+import { Radio } from '../ui/radio';
 export default function Page() { return <main><h1>ELI 소스 설치 검증</h1><Badge>서버 배지</Badge><Modal open={false} title="소스 모달" style={{ display: 'none' }} /><LoadingIndicator aria-label="소스 진행" /><TextField /><TextArea /><Slider aria-label="소스 값" /><Radio aria-label="소스 라디오" value="first" /><Client /></main>; }`);
 const nextBin = join(root, 'node_modules/next/dist/bin/next');
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: '1' };

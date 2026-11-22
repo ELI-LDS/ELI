@@ -122,6 +122,15 @@ export function createPlan(project, config, registry, selection, requested, prev
   }
   ensure(conflicts.length === 0, 'FILE_CONFLICT', '기존 파일과 내용이 달라요. 사용자 수정 파일은 덮어쓰지 않아요.', { paths: conflicts });
   const entries = [...selection.selected.values()].filter(item => item.entry).map(item => ({ id: item.id, path: `${config.directory}/${item.entry.path}`, export: item.entry.export }));
+  // 같은 모듈명에 button.ts나 button/index.tsx가 있으면 짧은 import가 다른 구현을 가리킬 수 있어요.
+  for (const entry of entries) {
+    const modulePath = entry.path.replace(/\.tsx?$/, '');
+    const alternatives = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.mts', '.cts', '.cjs', '.json'].flatMap(extension => [`${modulePath}${extension}`, `${modulePath}/index${extension}`]);
+    for (const path of alternatives) {
+      if (path !== entry.path && (files.some(file => file.path === path) || bytesAt(project.root, path) !== null)) conflicts.push(path);
+    }
+  }
+  ensure(conflicts.length === 0, 'FILE_CONFLICT', '같은 import 경로에 기존 파일이 있어요. 기존 파일을 보존하고 중단해요.', { paths: conflicts });
   const newFiles = new Map(recorded);
   for (const { path, sha256, owner } of files) newFiles.set(path, { path, sha256, owner });
   const allEntries = new Map(previous.record?.entries.map(entry => [entry.id, entry]) ?? []);

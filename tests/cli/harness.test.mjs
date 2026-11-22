@@ -164,7 +164,7 @@ test('소스로 설치된 UI를 훅과 스킬이 인식하고 npm 패키지를 �
   assert.match(output, /eli\.lock\.json/);
   assert.match(output, /전체 @eli-design\/ui를 추가하지 않아요/);
   const status = run(project, ['status']);
-  assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/ui/button/Button/Button.tsx');
+  assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/ui/button.tsx');
   assert.equal(status.harness.version, harnessVersion);
   assert.equal(status.harness.installerVersion, toolVersion);
   await assert.rejects(readFile(join(project, 'node_modules/@eli-design/ui/package.json')));
