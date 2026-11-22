@@ -43,6 +43,7 @@ test('공개 항목과 공유 파일 전체가 규격·버전·해시를 지켜�
   assert.ok(!index.items.some(item => item.kind === 'harness'));
   assert.deepEqual(index.reservedKinds, ['harness']);
   const all = await selectFiles(directory, index.items.map(item => item.id));
+  const { sources } = generateRegistry();
   const owned = new Set();
   for (const item of all.selected.values()) {
     assert.ok(matches(item, schema), item.id);
@@ -51,14 +52,17 @@ test('공개 항목과 공유 파일 전체가 규격·버전·해시를 지켜�
       assert.ok(!owned.has(file.path), `파일 소유자가 둘이에요: ${file.path}`);
       owned.add(file.path);
       if (file.path !== 'LICENSE') {
-        const original = await readFile(join(root, 'packages/ui/src', file.path), 'utf8');
-        if (!/\.tsx?$/.test(file.path)) assert.equal(file.content, original);
+        const original = await readFile(join(root, 'packages/ui/src', sources.get(file.path)), 'utf8');
+        if (file.path.endsWith('.svg')) assert.equal(file.content, original);
         // 경로 보정이 주석과 클라이언트 경계를 훼손하면 안 돼요.
         for (const comment of original.matchAll(/\/\*[\s\S]*?\*\//g)) assert.ok(file.content.includes(comment[0]));
         if (original.startsWith("'use client';")) assert.ok(file.content.startsWith("'use client';"));
       }
     }
-    if (item.entry) assert.ok(all.files.has(item.entry.path));
+    if (item.entry) {
+      assert.equal(item.entry.path, `${item.id}.tsx`);
+      assert.ok(all.files.has(item.entry.path));
+    }
   }
   assert.ok(!matches({ ...index, version: 'latest' }, schema));
   assert.ok(!matches({ ...all.selected.get('button'), files: [] }, schema));
@@ -68,8 +72,11 @@ test('Button만 선택하면 형제 컴포넌트와 하네스가 없어요', asy
   const { selected, files } = await selectFiles(directory, ['button']);
   assert.ok(selected.has('button') && selected.has('tokens'));
   assert.ok(files.has('icon/PlusIcon.tsx'));
-  assert.match(files.get('button/Button/Button.tsx'), /^'use client';/);
-  assert.match(files.get('button/Button/Button.tsx'), /@example 빠른 사용/);
+  assert.match(files.get('button.tsx'), /^'use client';/);
+  assert.match(files.get('button.tsx'), /@example 빠른 사용/);
+  assert.match(files.get('button.tsx'), /import '\.\/button\/Button.css'/);
+  assert.match(files.get('button/Button.css'), /@import '\.\.\/tokens\/index.css'/);
+  assert.ok(![...files.keys()].some(path => path.includes('button/Button/')));
   assert.ok(![...files.keys()].some(path => /IconButton|modal\/|harness|stories|node_modules/.test(path)));
 });
 
@@ -83,13 +90,47 @@ test('조합 컴포넌트와 타입·CSS·SVG 의존 파일을 함께 제공해�
   assert.ok(fab.selected.has('fab') && fab.selected.has('fab-menu-segment'));
   const loading = await selectFiles(directory, ['loading-indicator']);
   assert.ok(loading.files.has('loading/loading.types.ts'));
-  assert.ok(loading.files.has('loading/LoadingIndicator/indeterminate-track.svg'));
+  assert.ok(loading.files.has('loading-indicator/indeterminate-track.svg'));
   const combined = await selectFiles(directory, ['button', 'modal', 'select']);
   assert.equal([...combined.selected.keys()].filter(id => id === 'tokens').length, 1);
 });
 
 test('같은 원본의 생성 결과는 바이트와 해시가 같아요', () => {
   assert.deepEqual(generateRegistry().artifacts, generateRegistry().artifacts);
+});
+
+test('소스 배치를 줄여도 타입 참조·재수출·URL·CSS 연결과 주석을 보존해요', async () => {
+  const fixture = await mkdtemp(join(tmpdir(), 'eli-registry-paths-'));
+  const sourceRoot = join(fixture, 'src');
+  await cp(join(root, 'packages/ui/src'), sourceRoot, { recursive: true });
+  const component = join(sourceRoot, 'button/Button');
+  const file = join(component, 'Button.tsx');
+  const original = await readFile(file, 'utf8');
+  await writeFile(file, `/// <reference path="./ambient.d.ts" />\n${original}\nexport type { Extra } from './extra.js';\nconst asset = new URL('./asset.svg?raw', import.meta.url);\n`);
+  await writeFile(join(component, 'ambient.d.ts'), 'declare const fixtureValue: string;\n');
+  await writeFile(join(component, 'extra.ts'), 'export type Extra = string;\n');
+  await writeFile(join(component, 'asset.svg'), '<svg xmlns="http://www.w3.org/2000/svg"/>');
+  const cssFile = join(component, 'Button.css');
+  await writeFile(cssFile, `${await readFile(cssFile, 'utf8')}\n/* url('./missing.svg')는 주석이라 참조하지 않아요. */\n.fixture { background: url('./asset.svg?v=1#icon'); }\n`);
+  const item = JSON.parse(generateRegistry({ sourceRoot }).artifacts.get('button.json'));
+  const main = item.files.find(file => file.path === 'button.tsx').content;
+  assert.ok(main.includes('path="./button/ambient.d.ts"'));
+  assert.ok(main.includes("from './button/extra'"));
+  assert.ok(main.includes("new URL('./button/asset.svg?raw'"));
+  const css = item.files.find(file => file.path === 'button/Button.css').content;
+  assert.ok(css.includes("@import '../tokens/index.css'"));
+  assert.ok(css.includes("url('./asset.svg?v=1#icon')"));
+  assert.ok(css.includes("/* url('./missing.svg')는 주석이라 참조하지 않아요. */"));
+});
+
+test('설치 위치로 변환한 두 원본 파일이 충돌하면 생성하지 않아요', async () => {
+  const fixture = await mkdtemp(join(tmpdir(), 'eli-registry-collision-'));
+  const sourceRoot = join(fixture, 'src');
+  await cp(join(root, 'packages/ui/src'), sourceRoot, { recursive: true });
+  const file = join(sourceRoot, 'button/Button/Button.tsx');
+  await writeFile(file, `${await readFile(file, 'utf8')}\nimport '../Button.types.js';\n`);
+  await writeFile(join(sourceRoot, 'button/Button.types.ts'), 'export {};\n');
+  assert.throws(() => generateRegistry({ sourceRoot }), /설치 파일 경로가 충돌/);
 });
 
 test('누락 참조·미선언 외부 의존성·개발 파일을 배포 후보로 만들지 않아요', async () => {

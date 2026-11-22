@@ -86,6 +86,50 @@ test('init 미리보기는 파일을 쓰지 않고 목록은 공개 컴포넌트
   assert.equal((await run(path, ['init', '--registry', base], 1)).error.code, 'FILE_CONFLICT');
 });
 
+test('기본 설치 경로는 src 유무만 따르고 기존 폴더 구조를 자동으로 변경하지 않아요', async () => {
+  for (const withSource of [true, false]) {
+    const path = await fixture();
+    if (!withSource) await rm(join(path, 'src'), { recursive: true });
+    await mkdir(join(path, withSource ? 'src/shared/ui' : 'shared/ui'), { recursive: true });
+    const directory = withSource ? 'src/components/ui' : 'components/ui';
+    const preview = await run(path, ['init', '--registry', base, '--dry-run']);
+    assert.equal(preview.config.directory, directory);
+    assert.ok(preview.nextSteps.includes(`UI 소스 설치 경로: ${directory}`));
+    const initialized = await init(path);
+    assert.equal(initialized.config.directory, directory);
+  }
+});
+
+test('사용자 지정 경로와 기존 별칭으로 설치 소스를 빌드하고 사용자 설정을 보존해요', async () => {
+  const path = await fixture();
+  await mkdir(join(path, 'src/shared/ui'), { recursive: true });
+  await mkdir(join(path, 'src/existing'), { recursive: true });
+  const originalFiles = new Map([
+    ['src/shared/ui/local.ts', 'export const local = "기존 UI";\n'],
+    ['src/existing/message.ts', 'export const message = "기존 별칭";\n'],
+    ['tsconfig.json', `// 기존 주석과 경로 별칭을 보존해요.\n${JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true, paths: { '@/*': ['./src/*'], '@existing/*': ['./src/existing/*'] } }, include: ['src'] }, null, 2)}\n`],
+    ['vite.config.mjs', "import { fileURLToPath } from 'node:url';\nexport default { resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), '@existing': fileURLToPath(new URL('./src/existing', import.meta.url)) } } };\n"],
+  ]);
+  for (const [file, content] of originalFiles) await writeFile(join(path, file), content);
+  const initialized = await run(path, ['init', '--registry', base, '--dir', 'src/shared/ui']);
+  assert.equal(initialized.config.directory, 'src/shared/ui');
+  const added = await run(path, ['add', 'button']);
+  assert.equal(added.entries.find(entry => entry.id === 'button').path, 'src/shared/ui/button.tsx');
+  assert.ok(added.files.every(file => file.path.startsWith('src/shared/ui/')));
+  for (const [file, content] of originalFiles) assert.equal(await readFile(join(path, file), 'utf8'), content);
+  assert.equal((await run(path, ['status'])).directory, 'src/shared/ui');
+
+  // CLI가 별칭을 만들지 않아도 앱이 이미 쓰는 별칭으로 타입과 CSS를 해석해야 해요.
+  await writeFile(join(path, 'src/main.ts'), "import { Button } from '@/shared/ui/button';\nimport { message } from '@existing/message';\ndocument.body.textContent = typeof Button + message;\n");
+  await writeFile(join(path, 'index.html'), '<html lang="ko"><body><script type="module" src="/src/main.ts"></script></body></html>');
+  await execFile(process.execPath, [join(root, 'node_modules/typescript/bin/tsc'), '-p', join(path, 'tsconfig.json')]);
+  const { build } = await import('vite');
+  await build({ root: path, logLevel: 'silent' });
+  const assets = join(path, 'dist/assets');
+  const css = (await Promise.all((await readdir(assets)).filter(file => file.endsWith('.css')).map(file => readFile(join(assets, file), 'utf8')))).join('\n');
+  assert.ok(css.includes('.eli-button') && css.includes('--eli-color-blue-500:'));
+});
+
 test('Button만 다운로드하고 미리보기·재실행·사용자 수정 상태를 구분해요', async () => {
   const path = await fixture();
   await init(path);
@@ -112,6 +156,20 @@ test('Button만 다운로드하고 미리보기·재실행·사용자 수정 상
   assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), before);
 });
 
+test('짧은 import와 충돌하는 기존 파일·폴더 구현을 덮어쓰거나 가리지 않아요', async () => {
+  for (const file of ['button.tsx', 'button.ts', 'button/index.tsx']) {
+    const path = await fixture();
+    await mkdir(join(path, 'src/components/ui/button'), { recursive: true });
+    const target = join(path, 'src/components/ui', file);
+    await writeFile(target, 'export const Button = "기존 구현";\n');
+    await init(path);
+    const result = await run(path, ['add', 'button'], 1);
+    assert.equal(result.error.code, 'FILE_CONFLICT');
+    assert.equal(await readFile(target, 'utf8'), 'export const Button = "기존 구현";\n');
+    assert.ok(!(await readdir(path)).includes('eli.lock.json'));
+  }
+});
+
 test('조합 컴포넌트·여러 개·전체 추가도 같은 원본과 공유 파일을 사용해요', async () => {
   const path = await fixture();
   await init(path);
@@ -136,10 +194,10 @@ test('모든 공개 컴포넌트를 각각 새 프로젝트에 단독 선택해 
     assert.deepEqual(added.requested, [component.id]);
     const expected = await selectFiles(registry, [component.id]);
     assert.deepEqual(added.resolved, [...expected.selected.keys()].sort());
-    assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/eli/${file}`).sort());
+    assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/ui/${file}`).sort());
     const entry = added.entries.find(item => item.id === component.id);
     assert.ok(entry, component.id);
-    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/eli', file), 'utf8'), content, `${component.id}: ${file}`);
+    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', file), 'utf8'), content, `${component.id}: ${file}`);
   }
 });
 
@@ -158,6 +216,28 @@ async function changedRegistry(change) {
   await writeFile(indexPath, JSON.stringify(index));
   return path;
 }
+
+test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 변경하지 않아요', async () => {
+  const content = 'export function Button() { return null; }\n';
+  const source = await changedRegistry((_, item) => {
+    item.entry.path = 'button/Button/Button.tsx';
+    item.dependencies = [];
+    item.files = [{ path: item.entry.path, content, sha256: digest(content) }];
+  });
+  const path = await fixture();
+  await run(path, ['init', '--registry', source, '--dir', 'src/components/eli']);
+  const config = await readFile(join(path, 'eli.json'), 'utf8');
+  await run(path, ['add', 'button']);
+  const record = await readFile(join(path, 'eli.lock.json'), 'utf8');
+  const repeated = await run(path, ['add', 'button']);
+  assert.ok(repeated.files.every(file => file.action === 'reuse'));
+  const status = await run(path, ['status']);
+  assert.equal(status.directory, 'src/components/eli');
+  assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/components/eli/button/Button/Button.tsx');
+  assert.equal(await readFile(join(path, 'eli.json'), 'utf8'), config);
+  assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), record);
+  assert.equal(await readFile(join(path, status.entries[0].path), 'utf8'), content);
+});
 
 test('경로 탈출·개발 파일·버전 혼합·순환 의존·내용 변조를 쓰기 전에 거부해요', async () => {
   for (const [mutate, expected] of [
@@ -228,7 +308,7 @@ test('설치 기록 교체에 실패하면 새 소스를 되돌리고 기존 기
   assert.equal((await run(path, ['add', 'modal'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), before);
   assert.equal(await readFile(join(path, 'eli.lock.pending.json'), 'utf8'), '기존 파일');
-  assert.ok(!(await readdir(join(path, 'src/components/eli'))).includes('modal'));
+  assert.ok(!(await readdir(join(path, 'src/components/ui'))).includes('modal'));
 });
 
 test('잘못된 인자·내부 항목 선택·설정 경로 탈출을 허용하지 않아요', async () => {
@@ -243,7 +323,7 @@ test('잘못된 인자·내부 항목 선택·설정 경로 탈출을 허용하�
   assert.equal((await run(path, ['init', '--registry', base, '--dry-run'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal((await run(path, ['add', 'tokens'], 1)).error.code, 'UNKNOWN_ITEM');
   assert.equal((await run(path, ['add', 'button', '--registry', base], 1)).error.code, 'INVALID_ARGUMENT');
-  await writeFile(join(path, 'eli.json'), config.replace('src/components/eli', '../escape'));
+  await writeFile(join(path, 'eli.json'), config.replace('src/components/ui', '../escape'));
   assert.equal((await run(path, ['status'], 1)).error.code, 'UNSAFE_PATH');
   assert.deepEqual(await readdir(join(path, 'src')), []);
 });
