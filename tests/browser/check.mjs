@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkTextField } from './text-field.mjs';
 import { checkModal } from './modal.mjs';
 import { spawn } from 'node:child_process';
 import net from 'node:net';
@@ -241,6 +242,7 @@ try {
   );
   assert.deepEqual(browserErrors, [], '브라우저 콘솔과 페이지 실행 오류가 없어야 해요.');
   await checkModal(page, url);
+  await checkTextField(page, url);
   assert.deepEqual(browserErrors, [], 'Modal에서도 브라우저 실행 오류가 없어야 해요.');
   await context.close();
 } finally {

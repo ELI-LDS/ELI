@@ -61,8 +61,11 @@
   transition: color 150ms ease-in;
 }
 
-/* 오른쪽 X 아이콘 */
+/* 입력 지우기 버튼: 기존 아이콘의 위치·색상·크기는 유지해요. */
 .eli-text-field__icon {
+  padding: 0;
+  border: 0;
+  background: transparent;
   display: inline-flex;
   flex: 0 0 auto;
   align-items: center;

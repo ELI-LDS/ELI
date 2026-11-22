@@ -6,6 +6,7 @@
 
 ### 추가
 
+- TextField의 X를 입력 지우기 버튼으로 연결했어요. onChange에 빈 값을 전달하고 포커스를 입력창으로 복원하며 readonly·disabled에서는 막아요. 라벨과 버튼의 올바른 연결을 위해 바깥 label을 div로 바꾸고 내부 label을 htmlFor/id로 연결했어요. 외형은 유지하고 UI 콘텐츠의 다음 MINOR 대상으로 기록해요.
 - Modal에 `open`, `defaultOpen`, `onOpenChange`와 Dim·Secondary·Esc 닫기를 추가했어요. Secondary는 콜백 후 닫고 preventDefault로 취소할 수 있으며, Positive는 자동으로 닫지 않아요. 포커스 순환·복귀와 배경 잠금·복원을 지원하고 기존 디자인·최대 너비는 유지해요.
 - UI 콘텐츠의 다음 MINOR 대상으로 기록해요. 기존 Secondary 클릭 뒤에도 모달을 유지하려면 콜백에서 preventDefault를 사용하거나 외부 open 제어를 적용해요. 공개된 0.1.0 JSON·npm 파일·태그는 변경하지 않았어요.
 

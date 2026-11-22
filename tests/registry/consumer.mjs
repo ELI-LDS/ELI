@@ -6,6 +6,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 import { chromium } from '@playwright/test';
+import { checkTextField } from '../browser/text-field.mjs';
+import { textFieldFixture } from '../browser/text-field-fixture.mjs';
 import { checkModal } from '../browser/modal.mjs';
 import { modalFixture } from '../browser/modal-fixture.mjs';
 import { materialize as restoreFiles, selectFiles } from './fixtures.mjs';
@@ -63,15 +65,19 @@ await writeFile(join(next, 'app/layout.tsx'), 'export const metadata = { title: 
 await writeFile(join(next, 'app/client.tsx'), `'use client';
 import { useState, useEffect } from 'react';
 import { Modal } from '../eli/modal/Modal/Modal';
+import { TextField } from '../eli/text/TextField/TextField';
 import { Button } from '../eli/button/Button/Button';
 import { Select } from '../eli/select/Select/Select';
 import { FabMenu } from '../eli/fab/FabMenu/FabMenu';
 ${modalFixture}
+${textFieldFixture}
 export function Client() {
   const [modalTest, setModalTest] = useState(false);
-  useEffect(() => setModalTest(location.search.includes('modal')), []);
+  const [textTest, setTextTest] = useState(false);
+  useEffect(() => { setModalTest(location.search.includes('modal')); setTextTest(location.search.includes('text-field')); }, []);
   const [count, setCount] = useState(0);
   if (modalTest) return <ModalFixture />;
+  if (textTest) return <TextFieldFixture />;
   return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
 }`);
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
@@ -132,6 +138,7 @@ try {
   await page.getByRole('option', { name: '소스 옵션' }).click();
   await page.getByRole('button', { name: /소스 선택 소스 옵션/ }).waitFor();
   await checkModal(page, url);
+  await checkTextField(page, url);
   assert.deepEqual(errors, []);
   console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select 상호작용·CSS 연결을 검증했어요.');
 } finally {

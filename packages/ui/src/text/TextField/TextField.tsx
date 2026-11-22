@@ -1,6 +1,8 @@
 'use client';
 
 import './TextField.css';
+import { useId } from 'react';
+import { useTextFieldClear } from './useTextFieldClear.js';
 import { XIcon } from '../../icon/XIcon.js';
 import type { TextFieldProps } from './TextField.types.js';
 
@@ -19,15 +21,19 @@ import type { TextFieldProps } from './TextField.types.js';
  * - `value`, `defaultValue`: 입력 값
  * - `onChange`: 입력 값이 바뀔 때 실행할 함수
  * - `type`: 표준 input 유형, 기본값은 `text`
+ * - X 버튼은 입력을 지우고 onChange로 빈 값을 전달한 뒤 입력창에 포커스를 돌려줘요.
+ * - disabled·readOnly에서는 지울 수 없어요.
  *
  * ### 스타일 변경
- * - `className`: 바깥 `label`에 외부 클래스를 전달해요.
- * - `style`: 바깥 `label`의 인라인 스타일을 바꿔요.
+ * - `className`: 바깥 `div`에 외부 클래스를 전달해요.
+ * - `style`: 바깥 `div`의 인라인 스타일을 바꿔요.
  */
 export function TextField(props: TextFieldProps) {
   const {
     'aria-invalid': ariaInvalid,
     className,
+    id,
+    readOnly,
     label = '라벨',
     placeholder = '내용을 입력하세요',
     state = 'default',
@@ -35,6 +41,9 @@ export function TextField(props: TextFieldProps) {
     type = 'text',
     ...inputProps
   } = props;
+  const generatedId = useId();
+  const inputId = id ?? generatedId;
+  const { clear, inputRef } = useTextFieldClear();
   const textFieldClassName = ['eli-text-field', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-field__input',
@@ -42,25 +51,35 @@ export function TextField(props: TextFieldProps) {
   ].join(' ');
 
   return (
-    <label
+    <div
       className={textFieldClassName}
       data-state={state}
       style={style}
     >
-      <span className="eli-text-field__label eli-typo-label-medium">{label}</span>
-      <span className="eli-text-field__container">
+      <label className="eli-text-field__label eli-typo-label-medium" htmlFor={inputId}>{label}</label>
+      <span className="eli-text-field__container" onClick={event => { if (event.target === event.currentTarget) inputRef.current?.focus(); }}>
         <input
           {...inputProps}
           aria-invalid={ariaInvalid ?? (state === 'error' || undefined)}
           className={inputClassName}
+          id={inputId}
+          readOnly={readOnly}
+          ref={inputRef}
           disabled={state === 'disabled'}
           placeholder={placeholder}
           type={type}
         />
-        <span className="eli-text-field__icon">
+        <button
+          aria-label="입력 내용 지우기"
+          className="eli-text-field__icon"
+          disabled={state === 'disabled' || readOnly}
+          onClick={clear}
+          onMouseDown={event => event.preventDefault()}
+          type="button"
+        >
           <XIcon />
-        </span>
+        </button>
       </span>
-    </label>
+    </div>
   );
 }
