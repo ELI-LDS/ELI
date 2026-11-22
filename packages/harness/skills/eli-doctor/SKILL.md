@@ -29,7 +29,7 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 | --- | --- | --- |
 | 원격 연결 | `eli-docs` MCP에 연결되어 있는지 | `list_components`를 호출해요 |
 | 설치 | `@eli-design/ui`가 `package.json`에 있고 실제로 설치되어 있는지 | `package.json`과 `node_modules/@eli-design/ui/package.json` |
-| 스킬 버전 | 프로젝트에 복사한 스킬(`eli` 스킬 폴더의 `VERSION`)이 설치된 `@eli-design/ui`와 같은 버전인지 | 두 파일을 비교해요. 원격 없이 확인해요 |
+| 스킬 버전 | 복사한 스킬의 `VERSION`이 설치된 패키지의 `harness/skills/eli/VERSION`과 같은지 | 패키지에 하네스 VERSION이 없는 이전 버전만 UI 패키지 버전과 비교해요. 원격 없이 확인해요 |
 | 버전 기록 | `DESIGN.md`의 `## 버전`이 실제로 설치된 버전과 같은지, 마지막으로 확인한 날짜가 14일 안인지 | `DESIGN.md`, `node_modules/@eli-design/ui/package.json` |
 | 최신 버전 | 설치된 버전이 최신인지, 복사한 스킬이 서버의 최소 버전 이상인지 | `get_versions` |
 | 버전 호환 | 설치된 React가 `@eli-design/ui`의 `peerDependencies`를 만족하는지 | 설치된 두 패키지의 `package.json` |
