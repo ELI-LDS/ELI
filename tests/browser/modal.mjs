@@ -18,6 +18,10 @@ export async function checkModal(page, url) {
   const confirm = dialog.getByRole('button', { name: '확인' });
   await expect(cancel).toBeFocused();
   assert.equal(await opener.evaluate(element => Boolean(element.closest('[inert]'))), true);
+  await page.keyboard.press('Tab');
+  await expect(confirm).toBeFocused();
+  await page.keyboard.press('Shift+Tab');
+  await expect(cancel).toBeFocused();
   await page.keyboard.press('Shift+Tab');
   await expect(confirm).toBeFocused();
   await page.keyboard.press('Tab');
