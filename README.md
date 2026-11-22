@@ -6,7 +6,7 @@
 
 **천재 디자이너 엘리를 팀에 합류시키세요.**
 
-공식 문서 보기 (준비 중) · [컴포넌트 사용 예시](packages/ui/README.md) · [기여 방법](#함께-개발해요)
+공식 문서 보기 (준비 중) · [컴포넌트 사용 예시](packages/cli/README.md#컴포넌트-사용하기) · [기여 방법](#함께-개발해요)
 
 </div>
 
@@ -22,7 +22,7 @@ https://github.com/ELI-LDS/ELI 를 읽고 이 프로젝트에 ELI를 설치해�
 
 나머지는 에이전트가 이 문서의 [설치 안내](#ai-에이전트가-읽는-설치-안내)를 읽고 진행해요. 엘리가 서비스에 대해 두 가지를 물어보면 답하고, 만들어 준 디자인 시스템을 보고 마음에 들 때까지 고쳐 달라고 하면 돼요.
 
-> **npm에서 설치할 수 있어요.** 컴포넌트와 엘리의 스킬·훅을 `@eli-design/ui`로 제공해요. 공식 홍보 전에는 `0.x`로 관리하고 공식 홍보를 시작할 때 `1.0.0`으로 전환해요. 컴포넌트 문서 서버는 아직 준비 중이에요. 어디까지 되는지는 [지금 되는 것](#지금-되는-것)에 적어 뒀어요.
+> **npm에서 설치할 수 있어요.** `eli-design`으로 필요한 컴포넌트 소스를 추가하고, 스킬·훅은 별도 명령으로 선택해요. 공식 홍보 전에는 `0.x`로 관리하고 공식 홍보를 시작할 때 `1.0.0`으로 전환해요. 컴포넌트 문서 서버는 아직 준비 중이에요. 어디까지 되는지는 [지금 되는 것](#지금-되는-것)에 적어 뒀어요.
 
 ## 왜 AI가 만든 화면은 티가 날까요
 
@@ -36,7 +36,7 @@ AI는 매번 처음부터 다시 정해요. 그래서 가장 흔한 선택을 �
 | 어디서 본 듯한 디자인이에요 | 서비스의 기획과 닮고 싶은 제품을 듣고 `DESIGN.md`에 방향을 정해요 |
 | 버튼마다 말투가 달라요 | `UX-WRITING.md`에 말투와 용어를 정하고 모든 문구가 따르게 해요 |
 | 아이콘이 제각각이고 너무 많아요 | `ICON.md`에 스타일을 정하고, 꼭 필요한 자리에만 만들어요 |
-| 버튼과 입력창을 매번 새로 만들어요 | 검증된 컴포넌트 `@eli-design/ui`를 문서를 읽고 정확하게 써요 |
+| 버튼과 입력창을 매번 새로 만들어요 | 필요한 컴포넌트 소스를 추가하고 설치된 로컬 경로에서 가져와요 |
 | 모바일에서 깨지고 넘쳐요 | CSS 단위, 레이아웃, 접근성 기준을 지키고 스스로 점검해요 |
 
 ## 엘리가 합류하면 이렇게 진행돼요
@@ -95,14 +95,14 @@ flowchart TD
 
 | 기능 | 상태 |
 | --- | --- |
-| 스킬과 훅 설치 | 돼요. npm 패키지에 함께 들어 있어요 |
+| 스킬과 훅 설치 | `eli-design harness`에서 에이전트를 선택해요 |
 | `DESIGN.md`, `UX-WRITING.md`, `ICON.md` 만들기 | 돼요 |
 | CSS, 접근성, React 코드 기준 지키기 | 돼요 |
 | 문구 다듬기, 커스텀 아이콘 만들기 | 돼요 |
 | 직접 쓴 색상 값을 고칠 때마다 알려주기 (Claude Code) | 돼요 |
 | 버전을 확인한 지 오래되면 알려주기 | 돼요 |
 | 새 버전 확인하고 올리기 (`/eli-update`) | 원격 MCP가 준비되면 돼요 |
-| `@eli-design/ui` 컴포넌트 설치 | 돼요. npm에 게시되어 있어요 |
+| 필요한 컴포넌트 소스 추가 | `eli-design add`로 하나·여러 개·전체를 선택해요 |
 | 컴포넌트 문서와 토큰 조회 (원격 MCP) | 준비 중이에요. 규격만 정해져 있어요 |
 | 디자인 토큰 만들기, 디자인 시스템 페이지, 코드 점검, 기존 화면 옮기기 | 원격 MCP의 문서·토큰 조회가 준비되면 전체 흐름을 사용할 수 있어요 |
 
@@ -110,116 +110,66 @@ flowchart TD
 
 ## AI 에이전트가 읽는 설치 안내
 
-새 소스·하네스 설치는 [CLI 사용법](packages/cli/README.md)을 따라요. UI·하네스 콘텐츠와 [CLI 0.2.0 전달 파일](https://github.com/ELI-LDS/ELI/releases/tag/cli-v0.2.0)은 공개했고 npm 게시를 기다리고 있어요. CLI npm 게시 후 필요한 UI와 원하는 에이전트를 각각 선택해요. 게시 전에는 사용할 수 없는 공개 npm 명령을 실행했다고 안내하지 않아요.
+기본 설치는 npm의 `eli-design`을 사용해요. [CLI 사용법](packages/cli/README.md)에 설치 명령과 옵션이 있어요.
 
-아래는 기존 전체 패키지 방식을 명시적으로 선택한 경우의 하네스 설치 안내예요. 기존 `@eli-design/ui`에는 스킬과 훅이 함께 들어 있어요. UI 소스만 요청했다면 전체 패키지나 하네스를 자동으로 추가하지 않아요.
+1. 사용자의 프로젝트 루트와 요청한 설치 범위를 확인해요. UI와 하네스는 각각 선택해요.
+2. UI는 React가 설치된 앱에서 `init` 후 요청한 컴포넌트만 `add`로 추가해요. 전체는 명시적으로 원할 때만 `add --all`을 사용해요.
+3. 하네스를 요청했다면 Claude Code·Codex 또는 둘 모두를 선택해 `harness --agent claude|codex|all`을 실행하고 출력된 후속 안내를 따라요. 하네스만 설치할 때 UI init이나 React는 필요하지 않아요.
+4. `status --json`과 실제 파일을 대조하고 설치한 것·건너뛴 단계·확인하지 못한 것을 알려요. 원격 MCP 연결은 별도예요.
 
-1. 지금 폴더가 사용자의 프로젝트 루트인지 확인해요. `package.json`이 없으면 어디에 설치할지 물어요.
-2. 프로젝트의 패키지 매니저로 `@eli-design/ui`를 설치해요. 이미 설치되어 있으면 건너뛰어요.
-3. `node_modules/@eli-design/ui/harness/INSTALL.md`를 읽고 그 순서대로 진행해요. 스킬 복사, 훅 등록, 셋업 시작이 모두 그 문서에 있어요.
-4. 설치한 것, 건너뛴 단계와 그 이유, 확인하지 못한 것을 사용자에게 알려요.
+기존 `@eli-design/ui` 전체 패키지는 종료 예정이에요. 신규 설치는 소스 방식으로 안내하고, 기존 프로젝트는 실제 import와 수정 파일을 확인한 뒤 이전해요. 기존 의존성을 임의로 제거하지 않아요.
 
-**2번이 실패하면:** npm 연결, 레지스트리 설정과 요청 버전을 확인하고 실제 오류를 알려요. 하네스만 설치하기로 사용자가 선택한 경우 저장소를 프로젝트 밖 임시 폴더에 받아 `packages/harness/INSTALL.md`를 따라요. 이 경우 스킬과 훅만 설치되고 컴포넌트는 설치되지 않아요.
+## 컴포넌트 사용하기
 
-```bash
-git clone --depth 1 https://github.com/ELI-LDS/ELI.git <임시 폴더>/eli
-```
-
-검증된 소스 설치 경로가 제공되기 전에는 저장소의 파일을 임의로 복사해 정식 설치를 대신하지 않아요. 설치하지 않은 것을 설치했다고 적지 않아요.
-
-## 컴포넌트 라이브러리 `@eli-design/ui`
-
-엘리가 화면을 만들 때 쓰는 React 컴포넌트예요. 에이전트 없이 직접 써도 돼요.
-
-- 컴포넌트만 import하면 기본 CSS와 디자인 토큰이 함께 연결돼요.
-- 현재 실험 패키지에도 하네스를 남겨요. 새 소스 설치에서는 같은 CLI의 별도 명령으로 하네스를 선택하며 UI·도구·하네스 버전은 구분해요.
-- `@eli-design/ui/button`처럼 역할별 경로에서 필요한 컴포넌트를 가져와요.
-- `className`과 `style`로 일반 CSS, CSS Modules, Tailwind CSS, Emotion, vanilla-extract 스타일을 적용할 수 있어요.
-- Vite와 Next.js App Router의 빌드·SSR·hydration을 실제 패키지 tarball로 확인해요.
-- React를 패키지에 중복해서 넣지 않고 소비 앱의 React를 peer dependency로 공유해요.
-
-컴포넌트의 모양과 사용법은 공식 문서에서 안내할 예정이에요. 공식 문서는 아직 준비 중이에요.
-
-### 필요한 소스만 추가하는 방식을 기본으로 준비해요
-
-앞으로는 필요한 컴포넌트 하나 또는 여러 개와 토큰·아이콘·하위 컴포넌트 같은 실제 의존 파일만 프로젝트에 추가하는 방식을 기본으로 제공할 예정이에요. 전체를 원하면 같은 흐름에서 모든 공개 컴포넌트 소스를 선택할 수 있게 해요. 복사된 파일은 로컬 경로로 가져오고 직접 수정할 수 있어요.
-
-소스 설치에는 `@eli-design/ui` 전체 패키지가 필요하지 않아요. UI 원본은 하나로 유지하고 하네스가 설치 기록으로 실제 로컬 경로를 확인해요. UI 추가 명령에는 하네스가 자동으로 따라오지 않아요.
-
-설치 진입점은 `eli-design`이에요. 개별·다중·전체 UI 추가와 `harness --agent claude|codex|all`을 구현했으며 [CLI 사용법](packages/cli/README.md)에 따라 저장소에서 실행할 수 있어요. UI 콘텐츠 0.1.0은 GitHub에 공개됐고 하네스 선택 설치 CLI 0.2.0은 새 게시 후보예요. npm·하네스 콘텐츠 게시 전에는 이 명령을 사용할 수 있는 공개 기능으로 안내하지 않아요.
-
-레지스트리·하네스 데이터 생성기와 실제 tarball 소비 검사를 제공해요. 하네스를 선택하면 전체 스킬·훅을 받고 기존 설정에 중복 없이 등록해요. 수정 파일은 덮어쓰지 않으며 설치 도구·UI·하네스를 따로 기록해요. React·폰트·원격 MCP는 자동으로 설치하지 않아요. 실제 에이전트의 스킬 사용과 MCP 연결은 별도 검증 범위예요. 데이터는 [레지스트리 지침](Agent/registry.md), 하네스는 [하네스 지침](Agent/harness.md)에서 확인해요.
-
-### 패키지 매니저로 설치해요
-
-현재 사용할 수 있는 방법은 실험용으로 npm에 게시한 `@eli-design/ui` 전체 패키지 설치예요. 소스 배포 구조를 잡는 과정에서 패키지명·역할·설치 방식이 바뀔 수 있어요. 사용하는 패키지 매니저에 맞춰 하나의 명령만 실행해요. 공식 홍보 전의 `0.x`에서는 MINOR 업데이트에도 사용법이 바뀔 수 있으므로 변경 내역을 확인해요. 단계별 기준은 [버전 규칙](Agent/versioning.md)에서 확인할 수 있어요.
+엘리 없이 직접 사용할 수도 있어요. 기존 React `^19.3.0` 프로젝트에서 실행해요.
 
 ```bash
-# npm
-npm install @eli-design/ui
-
-# pnpm
-pnpm add @eli-design/ui
-
-# Yarn
-yarn add @eli-design/ui
-
-# Bun
-bun add @eli-design/ui
+npx eli-design@latest init
+npx eli-design@latest add button
 ```
 
-ELI는 React `^19.3.0`을 peer dependency로 사용해요. 기존 React 프로젝트라면 React를 다시 설치할 필요가 없어요.
-
-### 컴포넌트를 사용해요
+기본 설치 경로는 `src` 폴더가 있으면 `src/components/eli`, 없으면 `components/eli`예요. 아래는 `src/App.tsx` 기준 예시이며, 실제 import 경로는 설치 결과를 확인해요.
 
 ```tsx
-import { Button } from '@eli-design/ui/button';
+import { Button } from './components/eli/button/Button/Button';
 
 export function SaveButton() {
-  return (
-    <Button icon={null} onClick={() => console.log('저장했어요')}>
-      저장하기
-    </Button>
-  );
+  return <Button icon={null} onClick={() => console.log('저장했어요')}>저장하기</Button>;
 }
 ```
 
-별도의 ELI CSS 파일을 import하지 않아도 Button의 기본 스타일과 공통 토큰이 함께 연결돼요. 스타일을 덮어쓰는 방법과 더 많은 예시는 [`@eli-design/ui` 패키지 안내](packages/ui/README.md)에서 확인해요.
+기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. React와 폰트는 소비 앱에서 준비해요.
 
-### 제공하는 컴포넌트
+### 필요한 컴포넌트 선택하기
 
-공개 import 경로는 다음과 같아요. 각 경로의 최신 props는 에디터의 JSDoc에서 확인해요. 공식 문서가 열리면 그곳에서도 안내해요.
+```bash
+npx eli-design@latest list
+npx eli-design@latest add modal select
+npx eli-design@latest add --all
+```
 
-| 가져오는 경로 | 컴포넌트 |
-| --- | --- |
-| `@eli-design/ui/alert` | `Alert` |
-| `@eli-design/ui/badge` | `Badge` |
-| `@eli-design/ui/button` | `Button`, `IconButton` |
-| `@eli-design/ui/checkbox` | `Checkbox` |
-| `@eli-design/ui/chip` | `Chip`, `FilterChip`, `RemovableChip` |
-| `@eli-design/ui/divider` | `Divider` |
-| `@eli-design/ui/fab` | `Fab`, `FabMenu`, `FabMenuSegment` |
-| `@eli-design/ui/loading` | `LoadingIndicator`, `ProgressIndicator` |
-| `@eli-design/ui/menu` | `MenuItem` |
-| `@eli-design/ui/modal` | `Modal` |
-| `@eli-design/ui/navigation` | `NavigationBar`, `NavigationBarItem`, `NavigationBarGlass`, `NavigationBarGlassItem`, `NavigationDrawer`, `NavigationDrawerCategory`, `NavigationDrawerMenu`, `NavigationDrawerItem` |
-| `@eli-design/ui/radio` | `Radio` |
-| `@eli-design/ui/segment-control` | `SegmentControl` |
-| `@eli-design/ui/select` | `Select` |
-| `@eli-design/ui/slider` | `Slider` |
-| `@eli-design/ui/snackbar` | `SnackBar` |
-| `@eli-design/ui/tab` | `Tab` |
-| `@eli-design/ui/text` | `TextField`, `TextArea` |
-| `@eli-design/ui/toggle` | `Toggle` |
-| `@eli-design/ui/tooltip` | `Tooltip` |
+`list`에서 공개 컴포넌트 ID를 확인해요. `add`는 선택한 컴포넌트와 필요한 토큰·아이콘·하위 컴포넌트만 추가하고 같은 공통 파일은 재사용해요. `--all`은 전체 UI 소스를 추가하며 하네스는 포함하지 않아요.
 
-Modal의 최종 최대 너비는 디자인 확정을 기다리고 있어요. 확정되지 않은 값을 임의로 공개 계약으로 만들지 않아요.
+### 하네스 선택하기
+
+```bash
+npx eli-design@latest harness --agent claude
+npx eli-design@latest harness --agent codex
+```
+
+둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
+
+CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-LDS/ELI/pull/84)에 있으며 아직 게시된 0.2.0에는 포함되지 않았어요.
+
+### 기존 전체 패키지에서 이전하기
+
+`@eli-design/ui`는 종료 예정이에요. 필요한 소스를 CLI로 추가하고 import를 설치된 로컬 파일로 변경해요. 기존 스타일 수정·기능·하네스 설정을 확인한 뒤 의존성을 정리해요. 단순 문서 수정만으로 기존 앱을 자동 전환하거나 npm 패키지를 삭제하지 않아요. [컴포넌트 예시](packages/ui/README.md)는 소스 설치 기준으로 제공해요.
 
 ### 폰트
 
-`@eli-design/ui`는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요.
+UI 소스와 기존 전체 패키지는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요.
 
-[Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. 엘리와 함께 쓰면 엘리가 연결해 줘요.
+[Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. CLI는 폰트를 자동 설치하지 않아요. 하네스의 셋업 절차로 연결하거나 앱에서 직접 불러와요.
 
 ```bash
 npm i pretendard
@@ -300,7 +250,7 @@ ELI/
 ├── handbook/           # 협업 가이드와 점검 기록
 ├── apps/docs/          # 문서·랜딩 페이지와 원격 MCP를 제공할 Next.js 앱
 ├── apps/storybook/     # 컴포넌트 개발·디자인 확인 앱
-├── packages/ui/        # npm에 배포하는 @eli-design/ui 소스
+├── packages/ui/        # 선택 설치·기존 전체 패키지가 공유하는 UI 원본
 ├── packages/registry/  # 선택 설치 데이터의 생성 정책·JSON 규격
 ├── packages/cli/       # 선택한 UI 소스를 추가하는 eli-design 실행 도구
 ├── packages/harness/   # 독립 버전의 스킬·훅과 선택 설치 JSON 규격
@@ -308,16 +258,15 @@ ELI/
 └── tests/              # 소비 환경·브라우저·성능·하네스 검사
 ```
 
-기존 전체 UI 패키지와 필요한 소스만 추가하는 CLI를 구분해요. 하네스는 독립 콘텐츠로 선택 설치하고 기존 전체 패키지에도 남겨요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
+사용자 배포는 CLI를 통한 소스 설치로 통일하며 기존 전체 UI 패키지는 종료 예정이에요. UI 원본과 현재 내부 workspace 연결은 유지하고 하네스는 독립 콘텐츠로 선택 설치해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
 
 ## 로드맵
 
 다음 기능은 아직 구현되지 않았어요.
 
-- `@eli-design/ui`의 npm 게시 자동화
+- npm 게시 자동화
 - 컴포넌트 문서와 토큰을 제공하는 원격 MCP 서버
 - 사용자용 문서 사이트와 한글 가이드
-- eli-design npm 게시, 선택 설치 레지스트리의 GitHub Release 게시와 게시 후 공개 명령 확인
 - 버전을 올릴 때 바뀐 API를 찾아 주는 업그레이드 안내
 
 예정된 기능을 현재 사용할 수 있는 기능처럼 안내하지 않아요. 논의 중인 개선안은 [개선 제안](handbook/improvements.md)에서 확인할 수 있어요.
@@ -331,7 +280,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 이번 UI·하네스 통합 후보는 [CLI 0.2.0 준비 기록](handbook/releases/0.2.0.md)에서 확인해요. 기존 UI 콘텐츠 0.1.0은 재사용하고 새 CLI·하네스의 게시 상태는 별도로 확인해요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 게시된 CLI 0.2.0과 UI·하네스 콘텐츠의 버전·무결성·검증 범위는 [릴리스 기록](handbook/releases/0.2.0.md)에서 확인해요. 다음 README·하네스 문서 변경은 아직 게시하지 않았어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 
