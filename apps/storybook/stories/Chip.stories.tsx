@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useArgs } from 'storybook/preview-api';
+import { fn } from 'storybook/test';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { Chip } from '@/packages/ui/src/chip/Chip/Chip.js';
@@ -27,6 +29,7 @@ const meta = {
     children: 'ELI 라이브러리',
     disabled: false,
     selected: false,
+    onSelectedChange: fn(),
   },
   argTypes: {
     children: {
@@ -55,20 +58,32 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/* Default와 Selected 디자인을 나란히 확인해요. */
+/* 초기 선택 상태를 비교하고 각 칩은 독립적으로 선택·해제해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
   parameters: { controls: { disable: true } },
   render: () => (
     <StoryOverview>
-      <StoryCase title="선택 전"><Chip selected={false}>ELI 라이브러리</Chip></StoryCase>
-      <StoryCase title="선택 후"><Chip selected>ELI 라이브러리</Chip></StoryCase>
+      <StoryCase title="선택 전"><ChipPreview selected={false}>ELI 라이브러리</ChipPreview></StoryCase>
+      <StoryCase title="선택 후"><ChipPreview selected>ELI 라이브러리</ChipPreview></StoryCase>
     </StoryOverview>
   ),
 };
 
-/* 직접 눌러 부모가 선택 상태를 갱신하는 흐름을 확인해요. */
+/* 클릭과 Controls가 같은 선택 상태를 사용해 서로 갱신하도록 연결해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  render: args => <ChipPreview key={String(args.selected)} {...args} />,
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+
+    return (
+      <Chip
+        {...args}
+        onSelectedChange={selected => {
+          args.onSelectedChange?.(selected);
+          updateArgs({ selected });
+        }}
+      />
+    );
+  },
 };
