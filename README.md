@@ -159,7 +159,7 @@ npx eli-design@latest harness --agent codex
 
 둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
 
-CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-LDS/ELI/pull/84)에 있으며 아직 게시된 0.2.0에는 포함되지 않았어요.
+CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-LDS/ELI/pull/84)로 병합했으며 CLI 0.2.1 릴리스 후보에 포함돼요. 게시된 0.2.0에는 포함되지 않았어요.
 
 ### 기존 전체 패키지에서 이전하기
 
