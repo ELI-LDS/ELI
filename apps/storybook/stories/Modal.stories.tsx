@@ -7,23 +7,34 @@ const meta = {
   title: '컴포넌트/Modal',
   component: Modal,
   args: {
-    open: true,
+    // 직접 바꿔보기는 열기 버튼부터 눌러 닫기와 재열기를 확인해요.
+    open: false,
     title: '제목',
     message: '내용을 작성합니다',
     subMessage: '내용을 작성합니다',
     positiveAction: '버튼',
-    secondaryAction: '버튼',
+    secondaryAction: '모달 닫기',
     width: '343px',
   },
   render: function Render(args) {
     const [, updateArgs] = useArgs();
-    return <>
-      <Button icon={null} onClick={() => updateArgs({ open: true })}>모달 열기</Button>
-      <Modal {...args} onOpenChange={open => { args.onOpenChange?.(open); updateArgs({ open }); }} />
-    </>;
+    return (
+      <>
+        <Button icon={null} onClick={() => updateArgs({ open: true })}>
+          모달 열기
+        </Button>
+        <Modal
+          {...args}
+          onOpenChange={open => {
+            args.onOpenChange?.(open);
+            updateArgs({ open });
+          }}
+        />
+      </>
+    );
   },
   argTypes: {
-    open: { name: '표시하기', control: 'boolean', description: 'Dim·취소·Esc로 닫은 뒤 버튼으로 다시 열 수 있어요.' },
+    open: { name: '표시하기', control: 'boolean', description: '열기 버튼으로 표시하고 Dim·모달 닫기·Esc로 닫아요. Controls에도 현재 표시 상태가 반영돼요.' },
     defaultOpen: { table: { disable: true } },
     onOpenChange: { table: { disable: true } },
     title: {
@@ -76,6 +87,7 @@ type Story = StoryObj<typeof meta>;
 /* 기본 텍스트와 두 버튼으로 구성된 Modal 전체 UI를 확인해요. */
 export const Overview: Story = {
   name: '한눈에 보기',
+  args: { open: true },
   parameters: { controls: { disable: true } },
 };
 
