@@ -110,3 +110,9 @@ Chip·FilterChip·RemovableChip·FabMenuSegment·Tooltip은 디자인에서 정�
 - npm·pnpm·Yarn Classic·Yarn Modern node-modules·Yarn PnP·Bun 설치 행렬의 최신 자동 검사 결과
 
 이 항목이 남아 있는 동안에는 중간 감사가 끝났다는 의미로만 사용하고, npm 공개 배포 준비가 완료됐다고 표현하지 않아요.
+
+## 후속 변경 — 2026-11-22 Modal
+
+위 표는 최초 감사 당시의 기록이에요. 이후 합의에 따라 기존 최대 너비 343px을 유지하고, open/defaultOpen/onOpenChange·Dim/Secondary/Esc 닫기·dialog 이름/설명·포커스 순환/복귀·배경 잠금/복원을 구현했어요. Positive는 자동으로 닫지 않고 Secondary는 preventDefault로 자동 닫기를 취소할 수 있어요. 중첩 Modal은 지원하지 않아요.
+
+실제 tarball과 선택 설치 소스에 같은 동작 검사를 연결하고, Modal을 통째로 제외했던 axe 검사 대신 열린 dialog를 별도로 확인해요. 기존 색상 대비 14개 기준선은 해결된 것으로 간주하지 않아요. 실제 기기·VoiceOver·디자이너 화면 승인은 별도 확인 항목으로 남아요.

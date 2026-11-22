@@ -1,6 +1,15 @@
 import type { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
 export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'title'> {
+  /** 표시 여부를 외부에서 관리해요. onOpenChange에서 새 값을 반영해요. */
+  open?: boolean;
+
+  /** 외부 제어를 하지 않을 때 처음 표시할지 정해요. 기본값은 true예요. */
+  defaultOpen?: boolean;
+
+  /** Dim·Secondary·Esc로 닫기를 요청하면 false를 받아요. Positive는 자동으로 닫지 않아요. */
+  onOpenChange?: (open: boolean) => void;
+
   /** Modal의 제목이에요. 생략하면 `제목`을 표시해요. */
   title?: ReactNode;
 
@@ -25,7 +34,7 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childr
   /** Positive 버튼을 선택했을 때 실행할 함수예요. */
   onPositiveAction?: MouseEventHandler<HTMLButtonElement>;
 
-  /** Secondary 버튼을 선택했을 때 실행할 함수예요. */
+  /** Secondary 버튼을 누르면 실행한 뒤 닫아요. event.preventDefault()로 자동 닫기를 취소해요. */
   onSecondaryAction?: MouseEventHandler<HTMLButtonElement>;
 
   /** 화면 전체를 덮는 Modal 루트에 전달할 클래스 이름이에요. 내부 콘텐츠에는 적용되지 않아요. */

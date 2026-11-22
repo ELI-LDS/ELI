@@ -6,6 +6,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 import { chromium } from '@playwright/test';
+import { checkModal } from '../browser/modal.mjs';
+import { modalFixture } from '../browser/modal-fixture.mjs';
 import { materialize as restoreFiles, selectFiles } from './fixtures.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
@@ -57,14 +59,19 @@ for (const dependency of ['react', 'react-dom', 'next']) await symlink(await rea
 await writeFile(join(next, 'package.json'), JSON.stringify({ private: true, dependencies: Object.fromEntries(['react', 'react-dom', 'next'].map(name => [name, manifest.devDependencies[name]])) }));
 await writeFile(join(next, 'next.config.mjs'), 'export default { reactStrictMode: true };\n');
 await writeFile(join(next, 'tsconfig.json'), JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['dom', 'esnext'], module: 'esnext', moduleResolution: 'bundler', jsx: 'react-jsx', strict: true, skipLibCheck: true, esModuleInterop: true, resolveJsonModule: true, isolatedModules: true, plugins: [{ name: 'next' }] }, include: ['**/*.ts', '**/*.tsx', '.next/types/**/*.ts'], exclude: ['node_modules'] }));
-await writeFile(join(next, 'app/layout.tsx'), 'export default function Layout({ children }: { children: React.ReactNode }) { return <html lang="ko"><body>{children}</body></html>; }');
+await writeFile(join(next, 'app/layout.tsx'), 'export const metadata = { title: "ELI 소스 소비 검증" }; export default function Layout({ children }: { children: React.ReactNode }) { return <html lang="ko"><body>{children}</body></html>; }');
 await writeFile(join(next, 'app/client.tsx'), `'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Modal } from '../eli/modal/Modal/Modal';
 import { Button } from '../eli/button/Button/Button';
 import { Select } from '../eli/select/Select/Select';
 import { FabMenu } from '../eli/fab/FabMenu/FabMenu';
+${modalFixture}
 export function Client() {
+  const [modalTest, setModalTest] = useState(false);
+  useEffect(() => setModalTest(location.search.includes('modal')), []);
   const [count, setCount] = useState(0);
+  if (modalTest) return <ModalFixture />;
   return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
 }`);
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
@@ -75,7 +82,7 @@ import { TextField } from '../eli/text/TextField/TextField';
 import { TextArea } from '../eli/text/TextArea/TextArea';
 import { Slider } from '../eli/slider/Slider/Slider';
 import { Radio } from '../eli/radio/Radio/Radio';
-export default function Page() { return <main><h1>ELI 소스 설치 검증</h1><Badge>서버 배지</Badge><Modal title="소스 모달" style={{ display: 'none' }} /><LoadingIndicator aria-label="소스 진행" /><TextField /><TextArea /><Slider aria-label="소스 값" /><Radio aria-label="소스 라디오" value="first" /><Client /></main>; }`);
+export default function Page() { return <main><h1>ELI 소스 설치 검증</h1><Badge>서버 배지</Badge><Modal open={false} title="소스 모달" style={{ display: 'none' }} /><LoadingIndicator aria-label="소스 진행" /><TextField /><TextArea /><Slider aria-label="소스 값" /><Radio aria-label="소스 라디오" value="first" /><Client /></main>; }`);
 const nextBin = join(root, 'node_modules/next/dist/bin/next');
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: '1' };
 execFileSync(process.execPath, [nextBin, 'build'], { cwd: next, env, stdio: 'inherit' });
@@ -111,9 +118,10 @@ try {
   }
   assert.ok(html, logs);
   assert.match(html, /서버 배지/);
-  assert.match(html, /소스 모달/);
+  assert.doesNotMatch(html, /class="eli-modal"/);
   browser = await chromium.launch({ headless: true });
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  const page = await context.newPage();
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error' && /hydration|Minified React error|didn't match|does not match/i.test(message.text())) errors.push(message.text()); });
@@ -123,6 +131,7 @@ try {
   await page.getByRole('button', { name: /소스 선택/ }).click();
   await page.getByRole('option', { name: '소스 옵션' }).click();
   await page.getByRole('button', { name: /소스 선택 소스 옵션/ }).waitFor();
+  await checkModal(page, url);
   assert.deepEqual(errors, []);
   console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select 상호작용·CSS 연결을 검증했어요.');
 } finally {

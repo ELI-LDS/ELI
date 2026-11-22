@@ -1,0 +1,68 @@
+import assert from 'node:assert/strict';
+import AxeBuilder from '@axe-core/playwright';
+import { expect } from '@playwright/test';
+
+/** 같은 시나리오를 실제 tarball과 선택 설치 소스에서 실행해요. */
+export async function checkModal(page, url) {
+  await page.goto(`${url}?modal`);
+  const opener = page.getByRole('button', { name: '모달 열기', exact: true });
+  const dialog = page.getByRole('dialog', { name: '동작 검증' });
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await page.evaluate(() => { document.body.style.overflow = 'auto'; document.body.style.paddingRight = '12px'; });
+  await opener.focus();
+  await opener.press('Enter');
+  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveAttribute('aria-modal', 'true');
+  await expect(dialog).toHaveAccessibleDescription('첫 문장 둘째 문장');
+  const cancel = dialog.getByRole('button', { name: '취소' });
+  const confirm = dialog.getByRole('button', { name: '확인' });
+  await expect(cancel).toBeFocused();
+  assert.equal(await opener.evaluate(element => Boolean(element.closest('[inert]'))), true);
+  await page.keyboard.press('Shift+Tab');
+  await expect(confirm).toBeFocused();
+  await page.keyboard.press('Tab');
+  await expect(cancel).toBeFocused();
+  await confirm.click();
+  await expect(page.getByTestId('positive-count')).toHaveText('1');
+  await expect(dialog).toBeVisible();
+  await dialog.getByText('첫 문장').click();
+  await expect(dialog).toBeVisible();
+  // 기존 색상은 유지하고 dialog의 의미·키보드 동작을 검증해요.
+  const a11y = await new AxeBuilder({ page }).disableRules(['color-contrast']).analyze();
+  assert.deepEqual(a11y.violations.map(v => v.id), []);
+  await page.keyboard.press('Escape');
+  await expect(dialog).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  assert.deepEqual(await page.evaluate(() => [document.body.style.overflow, document.body.style.paddingRight]), ['auto', '12px']);
+  assert.equal(await opener.evaluate(element => Boolean(element.closest('[inert]'))), false);
+  await opener.focus();
+  await opener.press('Enter');
+  await page.locator('.eli-dim').click({ position: { x: 1, y: 1 } });
+  await expect(dialog).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  await opener.focus();
+  await opener.press('Enter');
+  await cancel.click();
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByTestId('secondary-count')).toHaveText('1');
+  await page.getByRole('checkbox', { name: '취소 유지' }).check();
+  await opener.focus();
+  await opener.press('Enter');
+  await cancel.click();
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: '비제어 모달 열기' }).click();
+  await expect(page.getByRole('dialog', { name: '비제어 검증' })).toBeVisible();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await page.getByRole('button', { name: '외부값 유지 모달' }).focus();
+  await page.getByRole('button', { name: '외부값 유지 모달' }).press('Enter');
+  const fixed = page.getByRole('dialog', { name: '외부값 검증' });
+  await page.keyboard.press('Escape');
+  await expect(fixed).toBeVisible();
+  await fixed.getByRole('button', { name: '제거' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '외부값 유지 모달' })).toBeFocused();
+  assert.equal(await opener.evaluate(element => Boolean(element.closest('[inert]'))), false);
+  assert.equal(await page.evaluate(() => document.body.style.overflow), 'auto');
+}

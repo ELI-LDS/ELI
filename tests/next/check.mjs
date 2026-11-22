@@ -186,7 +186,7 @@ export default function Page() {
       <LoadingIndicator aria-label="서버 원형 진행" progress={50} />
       <ProgressIndicator aria-label="서버 막대 진행" />
       <MenuItem>서버 메뉴</MenuItem>
-      <Modal message="서버 안내" style={{ display: 'none' }} subMessage={null} />
+      <Modal open={false} message="서버 안내" style={{ display: 'none' }} subMessage={null} />
       <Radio aria-label="서버 Radio" name="server-radio" value="server" />
       <Select
         defaultValue="server"

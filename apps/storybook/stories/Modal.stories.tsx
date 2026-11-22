@@ -1,3 +1,5 @@
+import { useArgs } from 'storybook/preview-api';
+import { Button } from '@/packages/ui/src/button/Button/Button.js';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Modal } from '@/packages/ui/src/modal/Modal/Modal.js';
 
@@ -5,6 +7,7 @@ const meta = {
   title: '컴포넌트/Modal',
   component: Modal,
   args: {
+    open: true,
     title: '제목',
     message: '내용을 작성합니다',
     subMessage: '내용을 작성합니다',
@@ -12,7 +15,17 @@ const meta = {
     secondaryAction: '버튼',
     width: '343px',
   },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+    return <>
+      <Button icon={null} onClick={() => updateArgs({ open: true })}>모달 열기</Button>
+      <Modal {...args} onOpenChange={open => { args.onOpenChange?.(open); updateArgs({ open }); }} />
+    </>;
+  },
   argTypes: {
+    open: { name: '표시하기', control: 'boolean', description: 'Dim·취소·Esc로 닫은 뒤 버튼으로 다시 열 수 있어요.' },
+    defaultOpen: { table: { disable: true } },
+    onOpenChange: { table: { disable: true } },
     title: {
       name: '제목',
       control: 'text',
