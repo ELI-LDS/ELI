@@ -67,18 +67,16 @@ export function useModalFocus(
         event.preventDefault();
         closeRef.current();
       } else if (event.key === 'Tab') {
+        // Safari의 키보드 설정과 관계없이 dialog 안의 모든 조작 요소를 순환해요.
+        event.preventDefault();
         const elements = focusableElements(dialog);
-        const first = elements[0];
-        const last = elements.at(-1);
-        if (!first || !last) {
-          event.preventDefault();
-          dialog.focus();
-        } else if (event.shiftKey && (doc.activeElement === first || !elements.includes(doc.activeElement as HTMLElement))) {
-          event.preventDefault();
-          last.focus();
-        } else if (!event.shiftKey && (doc.activeElement === last || !elements.includes(doc.activeElement as HTMLElement))) {
-          event.preventDefault();
-          first.focus();
+        const index = elements.indexOf(doc.activeElement as HTMLElement);
+        if (elements.length === 0) dialog.focus();
+        else {
+          const next = event.shiftKey
+            ? (index <= 0 ? elements.length - 1 : index - 1)
+            : (index + 1) % elements.length;
+          elements[next]?.focus();
         }
       }
     };
