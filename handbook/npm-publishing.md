@@ -1,8 +1,10 @@
 # npm 담당자 안내
 
-npm 담당자는 검증된 `eli-design` tarball의 게시와 배포 태그 변경만 맡아요. GitHub 콘텐츠·검증·파일 전달과 게시 후 동작 확인은 릴리스 준비자가 맡아요. 이번 게시 후보는 하네스 선택 설치를 포함한 CLI `eli-design@0.2.0`이며 `@eli-design/ui`를 다시 게시하거나 삭제하지 않아요.
+npm 담당자는 검증된 `eli-design` tarball의 게시와 배포 태그 변경만 맡아요. GitHub 콘텐츠·검증·파일 전달과 게시 후 동작 확인은 릴리스 준비자가 맡아요. CLI `eli-design@0.2.0`은 이미 게시됐어요. 다음 릴리스도 설치 도구를 대상으로 하며 `@eli-design/ui`를 다시 게시하거나 삭제하지 않아요.
 
 이전 `@eli-design/ui` 게시 절차의 대상 폴더를 그대로 사용하지 않아요. 새 npm 대상은 **`packages/cli/package.json`의 `name: eli-design`**이에요. `main` 병합만으로 기존 게시 도구의 대상이 자동 변경되지는 않아요. 아래의 고정 tarball을 게시해요.
+
+현재 게시 사실과 고정 파일은 [0.2.0 릴리스 기록](releases/0.2.0.md)을 확인해요. 아래 절차는 다음 릴리스용이며 이미 게시한 0.2.0을 다시 게시하지 않아요.
 
 ## 전달받을 파일
 
@@ -18,7 +20,7 @@ CLI Release가 있는 것만으로 npm에 게시됐다고 판단하지 않아요
 
 ## 1. 받은 파일과 게시 계정을 확인해요
 
-아래는 이번 후보 `0.2.0`의 예시예요. 전달받은 실제 버전이 다르면 그 버전으로 실행해요. 파일을 받은 폴더에서 Node.js `24.21.0` 환경의 npm을 사용해요.
+아래 명령의 `<새 버전>`은 릴리스 기록에서 확정한 미게시 버전으로 바꿔요. 파일을 받은 폴더에서 Node.js `24.21.0` 환경의 npm을 사용해요.
 
 ```bash
 shasum -a 256 -c SHA256SUMS
@@ -31,8 +33,8 @@ npm view eli-design versions dist-tags --json
 ## 2. 검증된 파일을 next로 게시해요
 
 ```bash
-npm publish ./eli-design-0.2.0.tgz --ignore-scripts --access public --tag next
-npm view eli-design@0.2.0 version dist.integrity --json
+npm publish ./eli-design-<새 버전>.tgz --ignore-scripts --access public --tag next
+npm view eli-design@<새 버전> version dist.integrity --json
 npm view eli-design dist-tags --json
 ```
 
@@ -45,10 +47,10 @@ npm view eli-design dist-tags --json
 준비자의 공개 검증 통과 결과를 받은 뒤 실행해요. 실패했거나 결과를 받지 못했다면 기존 태그를 유지해요.
 
 ```bash
-npm dist-tag add eli-design@0.2.0 latest
+npm dist-tag add eli-design@<새 버전> latest
 npm view eli-design dist-tags --json
 ```
 
-최종 태그와 게시 시각을 준비자에게 전달하면 준비자가 README·CHANGELOG·릴리스 기록을 마무리해요. `@eli-design/ui`의 사용 중단·삭제는 별도 작업이에요. UI 추가 명령이 하네스를 자동 설치하지 않으므로 기존 하네스 경로를 확인하기 전에는 정리하지 않아요.
+최종 태그와 게시 시각을 준비자에게 전달하면 준비자가 README·CHANGELOG·릴리스 기록을 마무리해요. `@eli-design/ui`는 종료 예정이에요. 실제 npm deprecate·삭제와 내부 연결 정리는 별도 작업이에요. UI 추가 명령이 하네스를 자동 설치하지 않으므로 기존 하네스 경로를 확인하기 전에는 정리하지 않아요.
 
 전체 순서·검증 책임과 실패 후 처리는 [릴리스 절차](releasing.md)를 따라요.

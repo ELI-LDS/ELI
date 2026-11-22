@@ -8,4 +8,4 @@
 - 검증: `pnpm test:registry`
 - 결과: 루트 `.artifacts/registry/`
 
-기본 배포 방향은 [프로젝트 구조](../../Agent/architecture.md#소스-설치를-기본으로-준비해요), 설치 도구의 이름과 공개 명령은 [패키지 매니저 지침](../../Agent/package-managers.md#소스-추가를-기본-소비-방식으로-준비해요)을 따라요. 필드·파일·버전·해시와 하네스 호출 계약은 [레지스트리 지침](../../Agent/registry.md)에서 관리해요. [CLI](../cli/README.md)의 개별·다중·전체 소스 추가는 저장소에서 실행할 수 있고, CLI npm 게시와 GitHub Release 콘텐츠 게시는 아직 준비 중이에요.
+기본 배포 방향은 [프로젝트 구조](../../Agent/architecture.md#소스-설치를-기본으로-사용해요), 설치 도구의 이름과 공개 명령은 [패키지 매니저 지침](../../Agent/package-managers.md#소스-추가를-기본-소비-방식으로-사용해요)을 따라요. 필드·파일·버전·해시와 하네스 호출 계약은 [레지스트리 지침](../../Agent/registry.md)에서 관리해요. [CLI](../cli/README.md)는 npm에, UI·하네스 콘텐츠는 GitHub Release에 공개됐어요. 사용자 실행 방법은 CLI README, 실제 게시·검증 범위는 [릴리스 기록](../../handbook/releases/0.2.0.md)에서 확인해요.
