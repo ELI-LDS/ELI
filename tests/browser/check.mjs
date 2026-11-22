@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { checkModal } from './modal.mjs';
 import { spawn } from 'node:child_process';
 import net from 'node:net';
 import { join } from 'node:path';
@@ -212,8 +213,7 @@ try {
   // 색상 대비 기준선은 엔진별 계산 차이와 무관하게 한 환경에서만 추적해요.
   if (targetName === 'chromium') {
     const contrast = await new AxeBuilder({ page })
-      .exclude('.browser-modal')
-      // 상태 전환 검증을 위해 추가한 테스트 전용 항목은 기존 색상 기준선에서 제외해요.
+        // 상태 전환 검증을 위해 추가한 테스트 전용 항목은 기존 색상 기준선에서 제외해요.
       .exclude('.browser-drawer-settings')
       .withRules(['color-contrast'])
       .analyze();
@@ -228,7 +228,6 @@ try {
   }
 
   const accessibility = await new AxeBuilder({ page })
-    .exclude('.browser-modal')
     .disableRules(['color-contrast'])
     .analyze();
   const violations = accessibility.violations.map(violation => ({
@@ -241,6 +240,8 @@ try {
     '소비자 화면에 자동 검사 가능한 접근성 위반이 없어야 해요.',
   );
   assert.deepEqual(browserErrors, [], '브라우저 콘솔과 페이지 실행 오류가 없어야 해요.');
+  await checkModal(page, url);
+  assert.deepEqual(browserErrors, [], 'Modal에서도 브라우저 실행 오류가 없어야 해요.');
   await context.close();
 } finally {
   await browser.close();

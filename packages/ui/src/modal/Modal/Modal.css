@@ -1,7 +1,7 @@
 @import '../../tokens/index.css';
 
 @layer components {
-/* Overlay */
+/* 화면 전체 영역 */
 .eli-modal {
   box-sizing: border-box;
   position: fixed;
@@ -14,14 +14,16 @@
   align-items: center;
 }
 
-/* Content */
+/* 콘텐츠 */
 .eli-modal__content {
   box-sizing: border-box;
   position: relative;
   display: flex;
   width: 100%;
-  /* TODO: 디자이너가 Modal 최대 너비를 확정하면 아래 임시 값을 교체해요. */
+  /* 현재 최대 너비는 유지하고 작은 화면에서는 부모 너비에 맞춰요. */
   max-width: 343px;
+  max-height: 100%;
+  overflow-y: auto;
   padding: var(--eli-layout-scale-5, 20px) var(--eli-layout-scale-4, 16px)
     var(--eli-layout-scale-4, 16px);
   flex-direction: column;
@@ -31,7 +33,7 @@
   background: var(--eli-background-default, #fff);
 }
 
-/* Text */
+/* 텍스트 영역 */
 .eli-modal__text {
   display: flex;
   flex-direction: column;
@@ -41,14 +43,14 @@
   align-self: stretch;
 }
 
-/* Text / Title */
+/* 제목 */
 .eli-modal__title {
   align-self: stretch;
   color: var(--eli-foreground-strong, #020812);
   text-align: center;
 }
 
-/* Text / Descriptions */
+/* 본문 목록 */
 .eli-modal__descriptions {
   display: flex;
   flex-direction: column;
@@ -58,13 +60,13 @@
   text-align: center;
 }
 
-/* Text / Description */
+/* 본문 문장 */
 .eli-modal__description {
   width: 100%;
   overflow-wrap: break-word;
 }
 
-/* Actions */
+/* 버튼 영역 */
 .eli-modal__actions {
   display: flex;
   align-items: center;
