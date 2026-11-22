@@ -127,7 +127,7 @@ flowchart TB
 
 ## 컴포넌트 사용하기
 
-`components/ui` 기본 위치와 짧은 import 경로는 다음 CLI·UI 콘텐츠 릴리스에 반영할 변경이에요. 현재 게시된 콘텐츠나 기존 설치 파일이 자동으로 바뀌지는 않아요.
+아래는 준비 중인 CLI 0.3.0·UI 콘텐츠 0.2.0의 사용 예시예요. 아직 게시된 npm latest는 0.2.0이며 기존 설치 파일은 자동으로 바뀌지 않아요. [릴리스 준비 상태](handbook/releases/0.3.0.md)를 확인해요.
 
 엘리 없이 직접 사용할 수도 있어요. 기존 React `^19.3.0` 프로젝트에서 실행해요.
 
@@ -169,7 +169,7 @@ npx eli-design@latest harness --agent codex
 
 둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
 
-CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-LDS/ELI/pull/84)로 병합했으며 CLI 0.2.1 릴리스 후보에 포함돼요. 게시된 0.2.0에는 포함되지 않았어요.
+CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-LDS/ELI/pull/84)로 병합했으며 미게시 CLI 0.2.1 후보와 새 0.3.0 후보에 포함돼요. 게시된 0.2.0에는 포함되지 않았어요.
 
 ### 기존 전체 패키지에서 이전하기
 
@@ -290,7 +290,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 게시된 CLI 0.2.0과 UI·하네스 콘텐츠의 버전·무결성·검증 범위는 [릴리스 기록](handbook/releases/0.2.0.md)에서 확인해요. 다음 README·하네스 문서 변경은 아직 게시하지 않았어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 게시된 CLI 0.2.0과 UI·하네스 콘텐츠의 버전·무결성·검증 범위는 [릴리스 기록](handbook/releases/0.2.0.md)에서 확인해요. CLI 0.3.0·UI 콘텐츠 0.2.0은 [릴리스 준비 중](handbook/releases/0.3.0.md)이며 미배포 하네스 문서는 이번 후보에 포함하지 않아요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 
