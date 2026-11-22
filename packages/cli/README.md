@@ -97,8 +97,6 @@ npx eli-design@latest harness --agent all
 
 설치 기록은 `eli.harness.json`에 저장해요. `status --json`으로 수정·누락을 확인할 수 있고, 수정한 스킬·훅을 자동으로 덮어쓰거나 다른 버전으로 업데이트하지 않아요.
 
-CLI 0.2.0에서 하네스만 설치했다면 상태 조회에 `status --json`을 사용해요. 일반 출력 오류는 다음 패치에서 수정할 예정이에요.
-
 ## 자동화에서 사용하기
 
 `--json`을 붙이면 결과를 JSON으로 받아요. 성공은 종료 코드 `0`과 `ok: true`, 실패는 종료 코드 `1`과 `ok: false`로 구분해요.
