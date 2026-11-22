@@ -102,10 +102,12 @@ try {
   else if (!result.command) process.stdout.write(`${result.version}\n`);
   else if (result.command === 'list') process.stdout.write(result.items.map(item => `${item.id}\t${item.description}`).join('\n') + '\n');
   else {
-    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.version ?? result.config.version})\n`);
+    const counts = files => JSON.stringify(files.reduce((sum, file) => { const state = file.action ?? file.state; sum[state] = (sum[state] ?? 0) + 1; return sum; }, {}));
+    // 하네스만 설치한 프로젝트의 status에는 UI 버전과 config가 없어요.
+    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.version ?? result.config?.version ?? '없음'})\n`);
     for (const entry of result.entries ?? []) process.stdout.write(`${entry.export}: ${entry.path}\n`);
-    const counts = result.files.reduce((sum, file) => { const state = file.action ?? file.state; sum[state] = (sum[state] ?? 0) + 1; return sum; }, {});
-    process.stdout.write(`${JSON.stringify(counts)}\n`);
+    process.stdout.write(`${counts(result.files)}\n`);
+    if (result.command === 'status' && result.harness) process.stdout.write(`하네스 ${result.harness.version}\n${counts(result.harness.files)}\n`);
     for (const step of result.nextSteps ?? []) process.stdout.write(`${step}\n`);
   }
 } catch (error) {

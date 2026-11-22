@@ -96,6 +96,16 @@ test('dry-run은 설정·파일·설치 기록을 만들지 않고 계획과 신
   for (const path of ['eli.harness.json', '.claude/settings.json', '.codex/hooks.json']) await assert.rejects(readFile(join(project, path)));
 });
 
+test('하네스만 설치한 프로젝트의 status 기본 출력도 하네스 상태를 표시해요', async () => {
+  const project = await fixture();
+  install(project, 'claude');
+  const result = spawnSync(process.execPath, [cli, 'status', '--cwd', project], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.stderr, '');
+  assert.match(result.stdout, /UI 없음/);
+  assert.match(result.stdout, new RegExp(`하네스 ${harnessVersion.replaceAll('.', '\\.')}\\n\\{"unchanged":\\d+\\}`));
+});
+
 test('사용자 수정·누락은 status로 구분하고 수정 파일은 덮어쓰지 않아요', async () => {
   const project = await fixture();
   install(project, 'all');
