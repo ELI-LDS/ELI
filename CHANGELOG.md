@@ -16,13 +16,13 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-LDS/ELI/pull/73)
 
-## eli-design 0.2.0 — npm 게시 대기
+## eli-design 0.2.0 — 2026-11-21
 
-[GitHub 전달 파일](https://github.com/ELI-LDS/ELI/releases/tag/cli-v0.2.0)을 공개하고 익명 다운로드와 원본 바이트 일치를 확인했어요. npm에는 아직 게시하지 않았어요. 기존 UI 0.1.0 콘텐츠와 독립 하네스 0.1.0을 사용하며 [최종 SHA·검증 기록](handbook/releases/0.2.0.md)을 기준으로 담당자가 게시해요. [#81](https://github.com/ELI-LDS/ELI/pull/81), [#82](https://github.com/ELI-LDS/ELI/pull/82)
+[GitHub 전달 파일](https://github.com/ELI-LDS/ELI/releases/tag/cli-v0.2.0)을 공개하고 익명 다운로드와 원본 바이트 일치를 확인했어요. 2026-11-21에 npm에 게시됐고, 2026-11-22 조회에서 `latest`·`next`와 전달 파일의 integrity 일치를 확인했어요. 기존 UI 0.1.0 콘텐츠와 독립 하네스 0.1.0을 사용해요. [게시·검증 기록](handbook/releases/0.2.0.md)에서 수행한 범위를 구분해요. [#81](https://github.com/ELI-LDS/ELI/pull/81), [#82](https://github.com/ELI-LDS/ELI/pull/82)
 
 ### 추가
 
-- CLI 0.2.0 후보에 `harness --agent claude|codex|all`을 추가했어요. 하네스를 선택하면 전체 스킬·훅과 설치 기록을 받고 기존 에이전트 설정에 중복 없이 병합해요. UI 추가에는 하네스가 포함되지 않아요.
+- CLI 0.2.0에 `harness --agent claude|codex|all`을 추가했어요. 하네스를 선택하면 전체 스킬·훅과 설치 기록을 받고 기존 에이전트 설정에 중복 없이 병합해요. UI 추가에는 하네스가 포함되지 않아요.
 - 하네스 콘텐츠의 독립 버전·JSON 규격·생성기와 소스 설치 인식을 추가했어요. 설치 도구·UI 콘텐츠·하네스 버전을 따로 확인하고 스킬은 실제 로컬 진입 경로를 사용해요. 원격 MCP 응답 계약과 실제 에이전트의 스킬 수행은 별도예요.
 
 ### 수정
@@ -36,9 +36,9 @@
 
 ## eli-design 0.1.0 — 릴리스 준비 중
 
-UI 전용 초기 후보 기록이에요. 이번 게시 대상은 하네스 선택 설치를 포함한 CLI 0.2.0으로 준비하며 기존 0.1.0 전달 파일을 덮어쓰지 않아요.
+UI 전용 초기 후보의 과거 기록이에요. 이 후보는 npm에 게시하지 않았고, 이후 하네스 선택 설치를 포함한 CLI 0.2.0을 게시했어요. 기존 0.1.0 전달 파일은 보존해요.
 
-아직 npm에 게시하지 않았어요. 검증한 최종 tarball을 `next`로 게시하고 공개 설치 확인 후 `latest`로 전환할 예정이에요.
+아래는 당시 준비한 내용이에요. 현재 사용법과 게시 상태는 [CLI 안내](packages/cli/README.md)와 [0.2.0 기록](handbook/releases/0.2.0.md)을 따라요.
 
 - 초기 설정·공개 목록·34개 컴포넌트 각각의 선택 설치·다중/전체 추가·설치 상태·미리보기·JSON 결과를 제공해요. [#78](https://github.com/ELI-LDS/ELI/pull/78)
 - 필요한 하위 컴포넌트·공통 토큰·아이콘을 함께 추가하고, 수정 파일을 보존하며 버전·해시·경로를 기록해요.
