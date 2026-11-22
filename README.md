@@ -127,7 +127,7 @@ flowchart TB
 
 ## 컴포넌트 사용하기
 
-`components/eli` 기본 위치와 짧은 import 경로는 다음 CLI·UI 콘텐츠 릴리스에 반영할 변경이에요. 현재 게시된 콘텐츠나 기존 설치 파일이 자동으로 바뀌지는 않아요.
+`components/ui` 기본 위치와 짧은 import 경로는 다음 CLI·UI 콘텐츠 릴리스에 반영할 변경이에요. 현재 게시된 콘텐츠나 기존 설치 파일이 자동으로 바뀌지는 않아요.
 
 엘리 없이 직접 사용할 수도 있어요. 기존 React `^19.3.0` 프로젝트에서 실행해요.
 
@@ -136,10 +136,10 @@ npx eli-design@latest init
 npx eli-design@latest add button
 ```
 
-기본 설치 경로는 `src` 폴더가 있으면 `src/components/eli`, 없으면 `components/eli`예요. 아래는 `src/App.tsx` 기준 예시이며, 실제 import 경로는 설치 결과를 확인해요.
+기본 설치 경로는 `src` 폴더가 있으면 `src/components/ui`, 없으면 `components/ui`예요. 아래는 `src/App.tsx` 기준 예시이며, 실제 import 경로는 설치 결과를 확인해요.
 
 ```tsx
-import { Button } from './components/eli/button';
+import { Button } from './components/ui/button';
 
 export function SaveButton() {
   return <Button icon={null} onClick={() => console.log('저장했어요')}>저장하기</Button>;
@@ -148,7 +148,7 @@ export function SaveButton() {
 
 기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. React와 폰트는 소비 앱에서 준비해요.
 
-기존 `@/* → src/*` 별칭을 쓰는 앱에서는 `@/components/eli/button`으로 가져올 수도 있어요. 원하는 설치 위치는 초기화할 때 `--dir`로 지정해요. [CLI 사용법](packages/cli/README.md)을 참고해요.
+기존 `@/* → src/*` 별칭을 쓰는 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. 원하는 설치 위치는 초기화할 때 `--dir`로 지정해요. [CLI 사용법](packages/cli/README.md)을 참고해요.
 
 ### 필요한 컴포넌트 선택하기
 

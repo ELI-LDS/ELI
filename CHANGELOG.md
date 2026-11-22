@@ -6,6 +6,7 @@
 
 ### 추가
 
+- CLI 초기화 결과에 선택한 UI 소스 설치 경로를 표시해요. 새 초기화의 기본 위치는 `src/components/ui` 또는 `components/ui`이며 기존 `eli.json`의 위치와 별칭 설정은 유지해요. 기본 위치 변경은 다음 CLI MINOR 대상으로 기록해요.
 - 선택 설치의 공개 진입 파일을 `button/Button/Button.tsx`에서 `button.tsx`처럼 짧게 제공해요. 스타일·타입·Hook은 컴포넌트 보조 폴더로 모으고 TS·CSS 참조를 새 위치에 맞춰 연결해요. 같은 모듈명의 기존 파일·폴더 구현이 있으면 중단해요. 설치 파일과 import 경로 변경은 UI 콘텐츠의 다음 MINOR 대상이며, 기존 공개 JSON·태그·설치 기록은 변경하지 않아요. 기존 프로젝트의 소스는 자동으로 이동하지 않으며 새 콘텐츠 이전 전에는 기록된 경로를 계속 사용해요.
 - TextField의 X를 입력 지우기 버튼으로 연결했어요. onChange에 빈 값을 전달하고 포커스를 입력창으로 복원하며 readonly·disabled에서는 막아요. 라벨과 버튼의 올바른 연결을 위해 바깥 label을 div로 바꾸고 내부 label을 htmlFor/id로 연결했어요. 외형은 유지하고 UI 콘텐츠의 다음 MINOR 대상으로 기록해요.
 - Modal에 `open`, `defaultOpen`, `onOpenChange`와 Dim·Secondary·Esc 닫기를 추가했어요. Secondary는 콜백 후 닫고 preventDefault로 취소할 수 있으며, Positive는 자동으로 닫지 않아요. 포커스 순환·복귀와 배경 잠금·복원을 지원하고 기존 디자인·최대 너비는 유지해요.

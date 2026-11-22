@@ -78,7 +78,7 @@ async function run() {
     // 설정을 다시 만드는 init은 지원하지 않아요. 버전 변경은 별도 마이그레이션이 필요해요.
     const changes = new Map([[CONFIG, json(config)]]);
     if (!values['dry-run']) writeProject(project, changes);
-    return { command, dryRun: Boolean(values['dry-run']), config, manager, files: [{ path: CONFIG, action: 'add' }], downloads: registry.downloads };
+    return { command, dryRun: Boolean(values['dry-run']), config, manager, files: [{ path: CONFIG, action: 'add' }], downloads: registry.downloads, nextSteps: [`UI 소스 설치 경로: ${directory}`] };
   }
   ensure((values.all && ids.length === 0) || (!values.all && ids.length > 0), 'INVALID_ARGUMENT', '컴포넌트 ID 또는 --all 중 하나를 선택해요.');
   const requested = [...new Set(values.all ? components.map(item => item.id) : ids)].sort();

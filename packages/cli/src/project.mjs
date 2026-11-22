@@ -229,7 +229,7 @@ export function statusOf(project, config) {
 
 export function defaultDirectory(project) {
   const source = targetPath(project.root, 'src');
-  return existsSync(source) && lstatSync(source).isDirectory() ? 'src/components/eli' : 'components/eli';
+  return existsSync(source) && lstatSync(source).isDirectory() ? 'src/components/ui' : 'components/ui';
 }
 
 export function applyPlan(project, config, selection, plan, previous) {

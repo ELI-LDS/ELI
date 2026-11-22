@@ -2,7 +2,7 @@
 
 필요한 ELI React 컴포넌트만 프로젝트에 추가해요. 컴포넌트와 함께 필요한 토큰·아이콘도 가져오고, 추가한 코드는 직접 수정할 수 있어요.
 
-> 아래의 짧은 import 경로와 `components/eli` 기본 위치는 다음 CLI·UI 콘텐츠 릴리스에 반영할 변경이에요. 이미 설치한 소스는 `status`와 설치 기록의 경로를 사용해요.
+> 아래의 짧은 import 경로와 `components/ui` 기본 위치는 다음 CLI·UI 콘텐츠 릴리스에 반영할 변경이에요. 이미 설치한 소스는 `status`와 설치 기록의 경로를 사용해요.
 
 ## 시작하기
 
@@ -19,12 +19,12 @@ npx eli-design@latest add button
 
 ## 컴포넌트 사용하기
 
-기본 경로는 `src` 폴더가 있으면 `src/components/eli`, 없으면 `components/eli`예요. 설치가 끝나면 출력되는 파일 경로에서 import해요.
+기본 경로는 `src` 폴더가 있으면 `src/components/ui`, 없으면 `components/ui`예요. 설치가 끝나면 출력되는 파일 경로에서 import해요.
 
 아래는 `src/App.tsx`에서 Button을 사용하는 예시예요.
 
 ```tsx
-import { Button } from './components/eli/button';
+import { Button } from './components/ui/button';
 
 export default function App() {
   return <Button onClick={() => console.log('저장하기')}>저장하기</Button>;
@@ -33,7 +33,7 @@ export default function App() {
 
 기본 CSS와 토큰은 함께 연결돼 있어 별도로 import하지 않아도 돼요. Pretendard 폰트는 앱에서 직접 불러와요.
 
-기존 `@/* → src/*` 별칭이 설정된 앱에서는 `@/components/eli/button`으로 가져올 수도 있어요. CLI가 별칭이나 TypeScript·빌드 설정을 추가·변경하지 않아요.
+기존 `@/* → src/*` 별칭이 설정된 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. CLI가 별칭이나 TypeScript·빌드 설정을 추가·변경하지 않아요.
 
 ## 다른 컴포넌트 추가하기
 

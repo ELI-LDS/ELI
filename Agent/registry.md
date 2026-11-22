@@ -49,7 +49,7 @@ TypeScript의 import·재수출·타입 참조와 CSS의 `@import`·`url()`을 �
 1. 신뢰하는 ELI GitHub Release의 `registry.json`을 읽고 규격 버전을 확인해요. 선택한 항목과 의존 항목 JSON만 재귀적으로 받아요. 전체 tarball이나 저장소를 먼저 받지 않아요.
 2. 상세 JSON의 원본 UTF-8 바이트로 SHA-256을 확인해요. 파일의 해시는 **설치할 `content`의 UTF-8 바이트**를 기준으로 확인해요. 해시는 무결성 확인 수단이며 배포 출처 인증을 대신하지 않아요.
 3. 모든 JSON의 `version`·`schemaVersion`이 목록과 같은지 확인해요. `peerDependencies`는 소비 프로젝트의 도구로 확인하며 React나 다른 UI를 임의로 추가하지 않아요.
-4. `files.path`는 설정한 UI 설치 폴더를 기준으로 사용해요. 새 초기화의 기본 폴더는 `src`가 있으면 `src/components/eli`, 없으면 `components/eli`예요. 기존 `eli.json`의 폴더는 유지해요. 절대 경로·`..`·역슬래시·심볼릭 링크를 통한 설치 폴더 밖 쓰기를 허용하지 않아요. `LICENSE`도 같은 폴더에 전달해요.
+4. `files.path`는 설정한 UI 설치 폴더를 기준으로 사용해요. 새 초기화의 기본 폴더는 `src`가 있으면 `src/components/ui`, 없으면 `components/ui`예요. 기존 `eli.json`의 폴더는 유지해요. 절대 경로·`..`·역슬래시·심볼릭 링크를 통한 설치 폴더 밖 쓰기를 허용하지 않아요. `LICENSE`도 같은 폴더에 전달해요.
 5. 전체 의존 항목을 먼저 검증하고 같은 경로는 한 번만 써요. 경로가 같은데 내용이나 해시가 다르면 중단해요. 그룹 barrel 파일은 추가하지 않고 `entry.path`의 로컬 모듈에서 `entry.export`를 가져오는 예시를 안내해요.
 6. `eli.json`에 레지스트리 주소·해시·버전·설치 폴더를 고정하고 `eli.lock.json`에 소비 방식·요청/의존 항목·진입 경로·파일 소유 항목·해시를 기록해요. 같은 파일은 재사용하고 사용자 수정 파일은 덮어쓰지 않아요. 버전 변경·업데이트·강제 덮어쓰기는 아직 제공하지 않아요.
 

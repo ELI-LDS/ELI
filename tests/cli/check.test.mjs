@@ -91,9 +91,10 @@ test('기본 설치 경로는 src 유무만 따르고 기존 폴더 구조를 �
     const path = await fixture();
     if (!withSource) await rm(join(path, 'src'), { recursive: true });
     await mkdir(join(path, withSource ? 'src/shared/ui' : 'shared/ui'), { recursive: true });
-    const directory = withSource ? 'src/components/eli' : 'components/eli';
+    const directory = withSource ? 'src/components/ui' : 'components/ui';
     const preview = await run(path, ['init', '--registry', base, '--dry-run']);
     assert.equal(preview.config.directory, directory);
+    assert.ok(preview.nextSteps.includes(`UI 소스 설치 경로: ${directory}`));
     const initialized = await init(path);
     assert.equal(initialized.config.directory, directory);
   }
@@ -158,8 +159,8 @@ test('Button만 다운로드하고 미리보기·재실행·사용자 수정 상
 test('짧은 import와 충돌하는 기존 파일·폴더 구현을 덮어쓰거나 가리지 않아요', async () => {
   for (const file of ['button.tsx', 'button.ts', 'button/index.tsx']) {
     const path = await fixture();
-    await mkdir(join(path, 'src/components/eli/button'), { recursive: true });
-    const target = join(path, 'src/components/eli', file);
+    await mkdir(join(path, 'src/components/ui/button'), { recursive: true });
+    const target = join(path, 'src/components/ui', file);
     await writeFile(target, 'export const Button = "기존 구현";\n');
     await init(path);
     const result = await run(path, ['add', 'button'], 1);
@@ -193,10 +194,10 @@ test('모든 공개 컴포넌트를 각각 새 프로젝트에 단독 선택해 
     assert.deepEqual(added.requested, [component.id]);
     const expected = await selectFiles(registry, [component.id]);
     assert.deepEqual(added.resolved, [...expected.selected.keys()].sort());
-    assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/eli/${file}`).sort());
+    assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/ui/${file}`).sort());
     const entry = added.entries.find(item => item.id === component.id);
     assert.ok(entry, component.id);
-    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/eli', file), 'utf8'), content, `${component.id}: ${file}`);
+    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', file), 'utf8'), content, `${component.id}: ${file}`);
   }
 });
 
@@ -307,7 +308,7 @@ test('설치 기록 교체에 실패하면 새 소스를 되돌리고 기존 기
   assert.equal((await run(path, ['add', 'modal'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), before);
   assert.equal(await readFile(join(path, 'eli.lock.pending.json'), 'utf8'), '기존 파일');
-  assert.ok(!(await readdir(join(path, 'src/components/eli'))).includes('modal'));
+  assert.ok(!(await readdir(join(path, 'src/components/ui'))).includes('modal'));
 });
 
 test('잘못된 인자·내부 항목 선택·설정 경로 탈출을 허용하지 않아요', async () => {
@@ -322,7 +323,7 @@ test('잘못된 인자·내부 항목 선택·설정 경로 탈출을 허용하�
   assert.equal((await run(path, ['init', '--registry', base, '--dry-run'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal((await run(path, ['add', 'tokens'], 1)).error.code, 'UNKNOWN_ITEM');
   assert.equal((await run(path, ['add', 'button', '--registry', base], 1)).error.code, 'INVALID_ARGUMENT');
-  await writeFile(join(path, 'eli.json'), config.replace('src/components/eli', '../escape'));
+  await writeFile(join(path, 'eli.json'), config.replace('src/components/ui', '../escape'));
   assert.equal((await run(path, ['status'], 1)).error.code, 'UNSAFE_PATH');
   assert.deepEqual(await readdir(join(path, 'src')), []);
 });
