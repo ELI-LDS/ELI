@@ -19,7 +19,7 @@ npx eli-design@latest add button
 
 ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 덮어쓸 수 있어요. 일반 CSS, CSS Modules, Tailwind CSS, Emotion과 vanilla-extract처럼 최종적으로 클래스 이름을 만드는 방식이라면 같은 API를 사용해요. 별도 ELI 플러그인이나 스타일 도구 의존성은 필요하지 않아요.
 
-`className`이 적용되는 요소는 컴포넌트마다 달라요. Button은 루트 `button`에, TextField와 TextArea는 바깥 `label`에 적용돼요. 에디터에서 컴포넌트나 해당 prop에 커서를 올리면 빠른 사용법, 허용 값, 기본값과 정확한 적용 대상을 확인할 수 있어요.
+`className`이 적용되는 요소는 컴포넌트마다 달라요. Button은 루트 `button`에, TextField는 바깥 `div`에, TextArea는 바깥 `label`에 적용돼요. 에디터에서 컴포넌트나 해당 prop에 커서를 올리면 빠른 사용법, 허용 값, 기본값과 정확한 적용 대상을 확인할 수 있어요.
 
 Tailwind CSS에서는 평소 사용하는 utility class를 그대로 입력해요. 배경처럼 상태가 있는 스타일을 바꿀 때는 Hover·Pressed·Disabled도 함께 지정해요.
 
@@ -416,6 +416,8 @@ export function ProfileTabs() {
 ```
 
 TextField는 아래 경로에서 가져와요. 라벨과 Placeholder 문구를 바꾸고 하나의 상태를 선택할 수 있어요.
+
+X 버튼은 입력을 지우고 기존 `onChange`에 빈 값을 전달한 뒤 입력창에 포커스를 돌려줘요. `value`로 제어하면 받은 값을 상태에 반영해요. `state="disabled"`·`readOnly`에서는 지울 수 없어요. 라벨은 `htmlFor`·`id`로 연결하며 `className`·`style`은 바깥 `div`에 적용해요.
 
 ```tsx
 import { TextField } from './components/eli/text/TextField/TextField';

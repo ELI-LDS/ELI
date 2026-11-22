@@ -1,3 +1,4 @@
+import { useArgs } from 'storybook/preview-api';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { StoryCase, StoryOverview } from '../components/StoryDeviceFrame.js';
 import { TextField } from '@/packages/ui/src/text/TextField/TextField.js';
@@ -11,6 +12,7 @@ const meta = {
     state: 'default',
   },
   argTypes: {
+    value: { name: '입력값', control: 'text', description: '입력하거나 X로 지우면 Controls에도 바로 반영돼요.' },
     label: {
       name: '라벨',
       control: 'text',
@@ -53,5 +55,10 @@ export const Overview: Story = {
 /* 라벨과 Placeholder 문구를 바꿔 Text Field 하나를 확인해요. */
 export const Playground: Story = {
   name: '직접 바꿔보기',
-  parameters: { controls: { include: ['라벨', 'Placeholder 문구'] } },
+  args: { value: '' },
+  render: function Render(args) {
+    const [, updateArgs] = useArgs();
+    return <TextField {...args} onChange={event => { args.onChange?.(event); updateArgs({ value: event.currentTarget.value }); }} />;
+  },
+  parameters: { controls: { include: ['라벨', 'Placeholder 문구', '입력값'] } },
 };
