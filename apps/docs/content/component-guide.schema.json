@@ -1,0 +1,142 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ELI 컴포넌트 사용 가이드",
+  "description": "디자이너 Markdown을 코드와 대조해 정리한 사용 가이드예요. 자동 위반 판정 규칙이나 설치 레지스트리가 아니에요.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "name", "group", "status", "source", "summary", "usage", "choices", "structure", "content", "interaction", "composition", "customization", "accessibility", "examples", "related", "review"],
+  "properties": {
+    "$schema": { "const": "../component-guide.schema.json" },
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "name": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" },
+    "group": { "type": "string", "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$" },
+    "status": { "enum": ["draft", "stable"] },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["markdown", "sha256"],
+      "properties": {
+        "markdown": { "type": ["string", "null"], "pattern": "^apps/docs/content/source/components/[a-z0-9-]+\\.md$" },
+        "sha256": { "type": ["string", "null"], "pattern": "^[a-f0-9]{64}$" }
+      },
+      "oneOf": [
+        { "properties": { "markdown": { "type": "null" }, "sha256": { "type": "null" } } },
+        { "properties": { "markdown": { "type": "string" }, "sha256": { "type": "string" } } }
+      ]
+    },
+    "summary": { "$ref": "#/definitions/text" },
+    "usage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recommended", "avoid"],
+      "properties": {
+        "recommended": { "$ref": "#/definitions/textList" },
+        "avoid": { "$ref": "#/definitions/textList" }
+      }
+    },
+    "choices": {
+      "description": "color·variant처럼 함께 고르는 값은 같은 항목의 props에 묶어요.",
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["props", "role", "when"],
+        "properties": {
+          "props": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": { "type": ["string", "number", "boolean", "null"] }
+          },
+          "role": { "$ref": "#/definitions/text" },
+          "when": { "type": "string", "minLength": 1, "pattern": "\\S" }
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description", "note"],
+      "properties": {
+        "description": { "$ref": "#/definitions/text" },
+        "note": { "$ref": "#/definitions/text" }
+      }
+    },
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "icon", "limits"],
+      "properties": {
+        "text": { "$ref": "#/definitions/textList" },
+        "icon": { "$ref": "#/definitions/textList" },
+        "limits": { "$ref": "#/definitions/textList" }
+      }
+    },
+    "interaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["states", "behavior", "limitations"],
+      "properties": {
+        "states": { "$ref": "#/definitions/textList" },
+        "behavior": { "$ref": "#/definitions/textList" },
+        "limitations": { "$ref": "#/definitions/textList" }
+      }
+    },
+    "composition": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["components", "purpose", "guidance"],
+        "properties": {
+          "components": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" } },
+          "purpose": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "guidance": { "$ref": "#/definitions/text" }
+        }
+      }
+    },
+    "customization": { "$ref": "#/definitions/textList" },
+    "accessibility": { "$ref": "#/definitions/textList" },
+    "examples": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "code"],
+        "properties": {
+          "title": { "type": "string", "minLength": 1, "pattern": "\\S" },
+          "code": { "type": "string", "minLength": 1, "pattern": "\\S" }
+        }
+      }
+    },
+    "related": { "type": ["array", "null"], "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-Z][A-Za-z0-9]*$" } },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["questions", "implementationGaps"],
+      "properties": {
+        "questions": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyText" } },
+        "implementationGaps": { "type": "array", "items": { "$ref": "#/definitions/nonEmptyText" } }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "stable" } } },
+      "then": {
+        "properties": {
+          "summary": { "$ref": "#/definitions/nonEmptyText" },
+          "source": { "properties": { "markdown": { "type": "string" }, "sha256": { "type": "string" } } },
+          "usage": { "properties": { "recommended": { "type": "array", "minItems": 1 } } },
+          "examples": { "type": "array", "minItems": 1 },
+          "review": { "properties": { "questions": { "maxItems": 0 }, "implementationGaps": { "maxItems": 0 } } }
+        }
+      }
+    }
+  ],
+  "definitions": {
+    "nonEmptyText": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "text": { "type": ["string", "null"], "minLength": 1, "pattern": "\\S" },
+    "textList": { "type": ["array", "null"], "items": { "$ref": "#/definitions/nonEmptyText" } }
+  }
+}

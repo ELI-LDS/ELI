@@ -1,0 +1,86 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "fab-menu",
+  "name": "FabMenu",
+  "group": "fab",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/fab.md",
+    "sha256": "c606557fbbb6d56b2bb2a17da1a7ed81ebbdc671ae75b8ea56c12a8aaa3c38b1"
+  },
+  "summary": "관련된 여러 액션을 메인 FAB 한 자리에서 펼쳐 제공해요.",
+  "usage": {
+    "recommended": [
+      "한 화면의 서로 관련된 액션을 한곳에서 열고 실행하게 해요."
+    ],
+    "avoid": [
+      "서로 무관한 행동을 모으거나 탐색 메뉴로 사용하지 않아요.",
+      "items의 id를 중복하거나 항목 클릭에 별도 닫기 처리를 중복 연결하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 div 안에 개별 FabMenuSegment 목록과 메인 Fab이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "메인 label과 각 items.label에 실제 실행할 행동을 적어요. 각 id는 고유해야 해요."
+    ],
+    "icon": [
+      "메인 아이콘과 개별 항목 아이콘을 바꿀 수 있어요. 의미가 불분명하면 라벨을 유지해요."
+    ],
+    "limits": [
+      "항목 라벨은 한 줄이에요. 최대 메뉴 개수는 문서에 정해져 있지 않아요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Collapsed",
+      "Expanded"
+    ],
+    "behavior": [
+      "expanded·onExpandedChange로 제어하거나 defaultExpanded로 처음 상태를 정해요. 메인 버튼은 열고 닫아요.",
+      "항목의 onClick을 실행한 뒤 메뉴를 닫아요. disabled 항목은 실행할 수 없어요.",
+      "닫힐 때의 모션을 위해 목록 DOM은 유지하되 inert·aria-hidden으로 조작과 접근에서 제외해요.",
+      "전체 메뉴가 위로 나타나고 아래로 사라지며 모션 줄이기 설정을 따라요."
+    ],
+    "limitations": [
+      "목록 실행의 비즈니스 로직이나 화면 전환은 소비 앱이 담당해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "FabMenu",
+        "Fab",
+        "FabMenuSegment"
+      ],
+      "purpose": "메인 액션과 관련 액션을 구성해요.",
+      "guidance": "items만 전달하면 FabMenu가 내부 컴포넌트를 생성하므로 자식으로 직접 중첩할 필요가 없어요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "메인 버튼의 aria-expanded·aria-controls로 목록 관계를 연결하고 닫힌 목록은 포커스를 받지 않아요."
+  ],
+  "examples": [
+    {
+      "title": "관련 액션 목록과 실행 함수 연결",
+      "code": "'use client';\n\nimport { FabMenu } from './components/ui/fab-menu';\nimport { useState } from 'react';\nexport default function Example() {\n  const [action, setAction] = useState('');\n  return <><FabMenu label=\"추가\" items={[{ id: 'photo', label: '사진 추가', onClick: () => setAction('사진') }, { id: 'file', label: '파일 첨부', onClick: () => setAction('파일') }]} /><output>{action}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "Fab",
+    "FabMenuSegment",
+    "NavigationBar",
+    "NavigationDrawer"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

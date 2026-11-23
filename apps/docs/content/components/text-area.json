@@ -1,0 +1,89 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "text-area",
+  "name": "TextArea",
+  "group": "text",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/text-area.md",
+    "sha256": "250c58185465b7bd964ad1ed7d7f458f91e0f047da07b75550ca4ab0cd803c19"
+  },
+  "summary": "소개·설명·댓글처럼 여러 줄의 텍스트를 입력하는 컴포넌트예요.",
+  "usage": {
+    "recommended": [
+      "한 줄로 입력하기 어려운 긴 내용을 작성할 때 사용해요."
+    ],
+    "avoid": [
+      "이름·이메일처럼 짧은 값은 TextField를 사용해요.",
+      "placeholder가 라벨이나 필수 작성 조건을 대신하지 않도록 해요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "바깥 label 안에 라벨 텍스트와 textarea가 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label에 항목의 목적을, placeholder에 작성 안내를 제공해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Filled",
+      "Disabled"
+    ],
+    "behavior": [
+      "value·onChange로 제어하거나 defaultValue로 초기화해요. 변경값은 event.currentTarget.value로 받아요.",
+      "disabled에서는 입력할 수 없어요. ref는 실제 textarea를 가리켜요."
+    ],
+    "limitations": [
+      "TextField의 error·success state는 제공하지 않아요. 검증과 오류 설명은 소비 앱이 관리해요.",
+      "사용자가 드래그하는 기본 textarea 크기 조절은 CSS에서 막고 있어요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "TextArea",
+        "Button"
+      ],
+      "purpose": "여러 줄의 입력을 제출해요.",
+      "guidance": "입력 상태·검증·제출은 부모에서 연결해요."
+    },
+    {
+      "components": [
+        "TextField",
+        "TextArea"
+      ],
+      "purpose": "짧은 기본 정보와 긴 설명을 함께 입력해요.",
+      "guidance": null
+    }
+  ],
+  "customization": [
+    "className·style은 바깥 label에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "라벨을 실제 textarea와 연결하고 필요한 작성 조건은 별도 설명으로 제공해요."
+  ],
+  "examples": [
+    {
+      "title": "여러 줄의 내용 입력",
+      "code": "'use client';\n\nimport { TextArea } from './components/ui/text-area';\nimport { useState } from 'react';\nexport default function Example() {\n  const [message, setMessage] = useState('');\n  return <TextArea label=\"소개\" placeholder=\"소개를 입력하세요\" value={message} onChange={event => setMessage(event.currentTarget.value)} />;\n}"
+    }
+  ],
+  "related": [
+    "TextField",
+    "Button"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

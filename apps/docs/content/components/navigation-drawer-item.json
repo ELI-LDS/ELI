@@ -1,0 +1,99 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-drawer-item",
+  "name": "NavigationDrawerItem",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-drawer.md",
+    "sha256": "cf69f9f86b7a23ffd452cba9ed3fb51fc7ef77717ab663332098fb1fdee04e0e"
+  },
+  "summary": "Drawer의 주 메뉴 또는 하위 메뉴 한 행을 표시하는 기본 항목이에요.",
+  "usage": {
+    "recommended": [
+      "전용 Menu를 구성하거나 Drawer 항목을 직접 조립할 때 사용해요."
+    ],
+    "avoid": [
+      "active만 전달하면 Drawer 선택값이나 실제 경로가 자동 변경된다고 가정하지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "variant": "main-menu"
+      },
+      "role": "주 메뉴",
+      "when": "아이콘과 선택적인 하위 목록을 가진 주 메뉴를 표시해요."
+    },
+    {
+      "props": {
+        "variant": "sub-menu"
+      },
+      "role": "하위 메뉴",
+      "when": "주 메뉴 아래의 들여쓴 목적지를 표시해요."
+    }
+  ],
+  "structure": {
+    "description": "루트 button에 라벨과 필요한 아이콘을 표시하고 주 메뉴이면 연결된 하위 목록을 렌더링할 수 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "라벨은 이동할 목적지를 한 줄로 설명해요."
+    ],
+    "icon": [
+      "Main Menu는 active일 때 filled, 그 외에는 outlined 아이콘을 사용해요. Sub Menu는 아이콘을 표시하지 않아요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Inactive",
+      "Active",
+      "Collapsed",
+      "Expanded",
+      "Hover",
+      "Pressed"
+    ],
+    "behavior": [
+      "active는 표시 상태예요. 단독 사용에서 실제 선택·라우팅은 소비 앱이 연결해요.",
+      "펼칠 수 있는 Main Menu는 전체 행을 클릭해 하위 목록을 열고 닫아요. 외부 onClick의 preventDefault로 펼침을 취소할 수 있어요.",
+      "expanded·onExpandedChange로 제어하거나 defaultExpanded로 초기화해요."
+    ],
+    "limitations": [
+      "선택 상태를 자동 저장하거나 임의의 ReactNode 하위 항목에 Drawer 선택을 연결하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationDrawerMenu",
+        "NavigationDrawerItem"
+      ],
+      "purpose": "주·하위 항목을 생성해요.",
+      "guidance": "일반 소비는 Menu의 subItems 데이터를 사용하고 세부 Item은 내부에서 구성해요."
+    }
+  ],
+  "customization": [
+    "className·style은 주 메뉴 또는 하위 메뉴의 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "active 항목은 aria-current=page로, 펼침 항목은 aria-expanded·aria-controls로 상태를 전달해요."
+  ],
+  "examples": [
+    {
+      "title": "직접 조립하는 주·하위 메뉴",
+      "code": "'use client';\n\nimport { NavigationDrawerItem } from './components/ui/navigation-drawer-item';\nimport { useState } from 'react';\nexport default function Example() {\n  const [selected, setSelected] = useState(false);\n  return <NavigationDrawerItem label=\"학습\" subItems={<NavigationDrawerItem variant=\"sub-menu\" label=\"내 강의\" active={selected} onClick={() => setSelected(true)} />} />;\n}"
+    }
+  ],
+  "related": [
+    "NavigationDrawerMenu",
+    "NavigationDrawer"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "progress-indicator",
+  "name": "ProgressIndicator",
+  "group": "loading",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/progress-indicator.md",
+    "sha256": "5be5d5bda70b6b7987dfa630b52713e7b06f92a8ad1a17edd0b59566eee198c1"
+  },
+  "summary": "작업의 실제 완료 비율이나 대기 상태를 가로 막대로 표시해요.",
+  "usage": {
+    "recommended": [
+      "실제 진행률을 알면 progress를 전달하고, 계산할 수 없으면 생략해 처리 중임을 알려요."
+    ],
+    "avoid": [
+      "진행률을 모르는 작업에 임의의 수치를 전달하지 않아요.",
+      "표시 컴포넌트가 작업을 실행하거나 진행률·남은 시간을 계산한다고 가정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 progressbar div 안에 실제 너비 또는 반복 모션을 가진 선택 트랙이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "작업 설명과 필요하면 실제 완료 비율을 별도 텍스트로 제공해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Determinate",
+      "Indeterminate"
+    ],
+    "behavior": [
+      "progress는 0~100 사이의 실제 숫자예요. 유한한 범위 밖 값은 제한하고 생략·NaN·Infinity는 진행률을 모르는 상태로 처리해요.",
+      "완료 시 progress=100을 표시하고 이후 결과 안내·로딩 종료는 소비 앱이 관리해요.",
+      "사용자의 모션 줄이기 설정에서는 반복 애니메이션을 멈춰요."
+    ],
+    "limitations": [
+      "작업 실행·진행률 추정·남은 시간·완료 후 제거를 자동 처리하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "ProgressIndicator"
+      ],
+      "purpose": "어떤 작업인지 텍스트로 설명해요.",
+      "guidance": "일반 작업 설명은 별도 텍스트로 제공해요."
+    },
+    {
+      "components": [
+        "ProgressIndicator",
+        "Alert"
+      ],
+      "purpose": "작업이 완료되거나 실패한 결과를 지속적으로 안내해요.",
+      "guidance": null
+    },
+    {
+      "components": [
+        "ProgressIndicator",
+        "SnackBar"
+      ],
+      "purpose": "작업 완료 후 짧은 결과를 안내해요.",
+      "guidance": null
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "aria-label로 진행 중인 작업을 설명해요.",
+    "role=progressbar를 사용해요. 진행률을 알면 최솟값·최댓값·현재값을, 모르면 진행 중이라는 텍스트를 전달해요. 내부 그래픽은 장식으로 숨겨요."
+  ],
+  "examples": [
+    {
+      "title": "앱에서 받은 실제 진행률 표시",
+      "code": "import { ProgressIndicator } from './components/ui/progress-indicator';\nexport default function Example({ progress }: { progress: number }) {\n  return <ProgressIndicator aria-label=\"파일 업로드\" progress={progress} />;\n}"
+    }
+  ],
+  "related": [
+    "LoadingIndicator",
+    "Alert",
+    "SnackBar"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}
