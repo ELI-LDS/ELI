@@ -43,7 +43,7 @@ export default function App() {
 <Button size="medium" className="w-full">버튼</Button>
 ```
 
-클래스의 적용 위치는 컴포넌트마다 달라요. Button은 버튼 자체, TextField는 바깥 래퍼에 적용돼요. 인라인 스타일과 전용 색상·크기 props는 일반 클래스보다 우선할 수 있어요. 색상을 바꾼 뒤에는 Hover·Pressed·Disabled와 키보드 포커스도 확인해요. [적용 위치·우선순위와 상태별 스타일 예시](https://github.com/ELI-LDS/ELI/blob/main/packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 참고해요.
+클래스의 적용 위치는 컴포넌트마다 달라요. Button은 버튼 자체, TextField는 바깥 래퍼에 적용돼요. 인라인 스타일과 전용 색상·크기 props는 일반 클래스보다 우선할 수 있어요. 색상을 바꾼 뒤에는 Hover·Pressed·Disabled와 키보드 포커스도 확인해요. [적용 위치·우선순위와 상태별 스타일 예시](https://github.com/ELI-team/ELI/blob/main/packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 참고해요.
 
 ## 다른 컴포넌트 추가하기
 
