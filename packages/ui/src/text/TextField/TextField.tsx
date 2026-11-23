@@ -25,8 +25,8 @@ import type { TextFieldProps } from './TextField.types.js';
  * - disabled·readOnly에서는 지울 수 없어요.
  *
  * ### 스타일 변경
- * - `className`: 바깥 `div`에 외부 클래스를 전달해요.
- * - `style`: 바깥 `div`의 인라인 스타일을 바꿔요.
+ * - `className`: 바깥 `div`의 너비·배치 등을 바꿔요. 입력 영역의 테두리·배경이나 내부 글자 크기에는 직접 적용되지 않아요.
+ * - `style`: 같은 바깥 `div`의 인라인 스타일이에요. 같은 속성의 일반 클래스보다 우선해요.
  */
 export function TextField(props: TextFieldProps) {
   const {

@@ -33,6 +33,16 @@ export default function App() {
 
 기존 `@/* → src/*` 별칭이 설정된 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. CLI가 별칭이나 TypeScript·빌드 설정을 추가·변경하지 않아요.
 
+## 원하는 스타일로 바꾸기
+
+크기·형태는 기본 props로 고르고, 다른 스타일이 필요하면 `className`이나 설치한 소스를 수정해요. ELI 토큰을 반드시 사용할 필요는 없어요. 아래는 Tailwind CSS가 설정된 앱에서 기본 크기에 너비를 추가한 예시예요.
+
+```tsx
+<Button size="medium" className="w-full">버튼</Button>
+```
+
+클래스의 적용 위치는 컴포넌트마다 달라요. Button은 버튼 자체, TextField는 바깥 래퍼에 적용돼요. 인라인 스타일과 전용 색상·크기 props는 일반 클래스보다 우선할 수 있어요. 색상을 바꾼 뒤에는 Hover·Pressed·Disabled와 키보드 포커스도 확인해요. [적용 위치·우선순위와 상태별 스타일 예시](https://github.com/ELI-LDS/ELI/blob/main/packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 참고해요.
+
 ## 다른 컴포넌트 추가하기
 
 사용할 수 있는 컴포넌트를 확인해요.

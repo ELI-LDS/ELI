@@ -146,7 +146,7 @@ export function SaveButton() {
 }
 ```
 
-기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. React와 폰트는 소비 앱에서 준비해요.
+기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. [스타일 적용 위치·우선순위와 상태별 예시](packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 확인해요. React와 폰트는 소비 앱에서 준비해요.
 
 기존 `@/* → src/*` 별칭을 쓰는 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. 원하는 설치 위치는 초기화할 때 `--dir`로 지정해요. [CLI 사용법](packages/cli/README.md)을 참고해요.
 
