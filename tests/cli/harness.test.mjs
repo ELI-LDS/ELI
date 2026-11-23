@@ -214,13 +214,16 @@ test('손상·경로 탈출·다른 버전의 하네스를 받지 않아요', as
 test('하네스 전용 Release만 선택하고 UI·CLI Release는 건너뛰어요', async () => {
   const { latestRelease } = await import(pathToFileURL(join(work, 'tool/node_modules/eli-design/dist/registry.mjs')));
   const original = globalThis.fetch;
-  globalThis.fetch = async () => new Response(JSON.stringify([
+  globalThis.fetch = async url => {
+    assert.equal(url, 'https://api.github.com/repos/ELI-team/ELI/releases?per_page=100');
+    return new Response(JSON.stringify([
     { tag_name: 'cli-v0.2.0', assets: [{ name: 'harness.json' }] },
     { tag_name: 'harness-v0.3.0', draft: true, assets: [{ name: 'harness.json' }] },
     { tag_name: 'v0.1.0', assets: [{ name: 'registry.json' }] },
     { tag_name: 'harness-v0.1.0', assets: [{ name: 'harness.json' }] },
   ]));
-  try { assert.equal(await latestRelease([], 'harness-v', 'harness.json'), 'https://github.com/ELI-LDS/ELI/releases/download/harness-v0.1.0/harness.json'); }
+  };
+  try { assert.equal(await latestRelease([], 'harness-v', 'harness.json'), 'https://github.com/ELI-team/ELI/releases/download/harness-v0.1.0/harness.json'); }
   finally { globalThis.fetch = original; }
 });
 

@@ -24,7 +24,7 @@ npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 
 npm view eli-design versions dist-tags --json
 npm view @eli-design/ui versions dist-tags --json
 gh release list
-gh repo view ELI-LDS/ELI --json visibility
+gh repo view ELI-team/ELI --json visibility
 ```
 
 콘텐츠를 일반 사용자에게 제공할 저장소는 공개되어 있어야 해요. 인증된 `gh`에서 Release를 확인한 것만으로 공개 다운로드가 된다고 판단하지 않아요. 인증 정보가 없는 CLI에서 목록 API와 개별 asset을 실제로 받아 확인해요. 비공개 저장소라면 전체 원본을 임의로 공개하거나 토큰을 CLI에 넣지 않고 공개 배포 위치부터 합의해요.
@@ -32,6 +32,8 @@ gh repo view ELI-LDS/ELI --json visibility
 설치 도구는 `packages/cli/package.json`, UI 콘텐츠는 `packages/ui/package.json`, 하네스는 `packages/harness/package.json`에서 버전을 정해요. 번호를 억지로 맞추지 않으며 콘텐츠 버전 변경만으로 기존 전체 UI 패키지를 npm에 게시하지 않아요. 고정된 pnpm으로 lockfile을 동기화하고, 실제 릴리스 대상만 CHANGELOG의 준비 중인 구역으로 옮겨요. 게시 날짜·최종 원본 SHA·게시 후 검사 결과를 미리 채우지 않아요.
 
 초기 CLI는 레지스트리 규격 v1과 같은 프로젝트 내 단일 콘텐츠 버전을 지원해요. UI·하네스 업데이트·강제 덮어쓰기·React/폰트 자동 설치·원격 MCP 연결을 제공한다고 안내하지 않아요. 하네스는 명시적 선택 설치와 같은 버전 재사용만 지원해요. 기존 수정 파일을 보존하는 제한도 릴리스 노트에 남겨요.
+
+저장소를 이전했다면 고정 후보에 들어 있는 Release API·asset 주소로 인증 없는 조회·다운로드가 계속 되는지 확인해요. 이전 API의 이동 응답이 설치 도구에서 거부되면 새 주소를 사용하는 CLI 후보를 별도 버전으로 준비해요. 이전 검증 결과만으로 게시하지 않고 기존 고정 파일은 보존해요.
 
 ### 2. 최종 후보를 한 번 만들고 고정해요
 
