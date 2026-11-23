@@ -30,11 +30,13 @@ import type { ButtonProps } from './Button.types.js';
  * - `type`: HTML 버튼 타입 — `button`(기본), `submit`, `reset`
  *
  * ### 스타일 변경
- * - `className`: Tailwind CSS, CSS Modules, Emotion, vanilla-extract 클래스
- * - `backgroundColor`: 직접 지정할 CSS 배경색
- * - `width`, `height`: 숫자(px) 또는 `100%`, `20rem` 같은 CSS 크기
- * - `style`: React 인라인 스타일
+ * - `className`: 루트 button에 Tailwind CSS, CSS Modules, Emotion, vanilla-extract 클래스를 전달해요.
+ * - `backgroundColor`: 모든 상태의 일반 CSS 배경색보다 우선해요. 상태별 색상은 이 prop을 생략하고 클래스로 지정해요.
+ * - `width`, `height`: 숫자(px) 또는 CSS 크기예요. 반응형 크기를 클래스로 정할 때는 해당 prop을 생략해요.
+ * - `style`: 루트 button의 인라인 스타일이에요. 같은 배경색·크기 속성은 전용 props가 우선해요.
+ * - 내부 텍스트는 공통 타이포그래피를 사용하므로 루트의 글자 크기 클래스만으로 바뀌지 않아요.
  *
+ * 기본 조합은 color·variant·size로 고르고, 외부 스타일로 바꾼 뒤에는 Hover·Pressed·Disabled와 포커스도 확인해요.
  * 각 prop의 자세한 설명은 해당 prop에 커서를 올리면 확인할 수 있어요.
  */
 export function Button(props: ButtonProps) {

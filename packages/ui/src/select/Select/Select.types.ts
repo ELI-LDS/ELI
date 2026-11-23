@@ -28,6 +28,6 @@ export interface SelectProps
   /** 옵션을 선택했을 때 선택한 value를 전달해요. */
   onValueChange?: (value: string) => void;
 
-  /** Select의 가장 바깥 `div`에 전달할 클래스 이름이에요. 선택 버튼과 목록에는 직접 적용되지 않아요. */
+  /** 바깥 div의 너비·배치 등에 적용해요. 내부 선택 버튼·목록의 배경·테두리·글자 크기를 직접 바꾸지는 않아요. 같은 속성을 style에도 지정하면 인라인 지정이 일반 클래스보다 우선해요. */
   className?: string;
 }

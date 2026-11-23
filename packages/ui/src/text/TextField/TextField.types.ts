@@ -19,6 +19,6 @@ export interface TextFieldProps
   /** 입력창의 상태예요. 서로 겹치지 않으며 기본값은 `default`예요. */
   state?: TextFieldState;
 
-  /** TextField의 바깥 `div`에 전달할 클래스 이름이에요. 실제 `input`에는 적용되지 않아요. */
+  /** 바깥 div의 너비·배치 등을 바꿔요. 입력 영역의 테두리·배경이나 내부 글자 크기에 직접 적용되지 않아요. 같은 속성을 style에도 지정하면 인라인 지정이 일반 클래스보다 우선해요. */
   className?: string;
 }

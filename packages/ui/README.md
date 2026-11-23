@@ -17,18 +17,36 @@ npx eli-design@latest add button
 
 ## 컴포넌트 스타일을 바꿔요
 
-ELI 컴포넌트는 토큰을 몰라도 `className`으로 기본 스타일을 덮어쓸 수 있어요. 일반 CSS, CSS Modules, Tailwind CSS, Emotion과 vanilla-extract처럼 최종적으로 클래스 이름을 만드는 방식이라면 같은 API를 사용해요. 별도 ELI 플러그인이나 스타일 도구 의존성은 필요하지 않아요.
+기본 크기·형태·색상 조합으로 원하는 결과를 만들 수 있으면 해당 props를 먼저 골라요. 제품에 맞는 다른 스타일이 필요하면 ELI 토큰을 몰라도 외부 클래스나 설치한 소스를 수정할 수 있어요. 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract를 그대로 사용하며 별도 ELI 플러그인은 필요하지 않아요.
 
-`className`이 적용되는 요소는 컴포넌트마다 달라요. Button은 루트 `button`에, TextField는 바깥 `div`에, TextArea는 바깥 `label`에 적용돼요. 에디터에서 컴포넌트나 해당 prop에 커서를 올리면 빠른 사용법, 허용 값, 기본값과 정확한 적용 대상을 확인할 수 있어요.
+```tsx
+<Button size="medium" className="w-full">버튼</Button>
+```
 
-Tailwind CSS에서는 평소 사용하는 utility class를 그대로 입력해요. 배경처럼 상태가 있는 스타일을 바꿀 때는 Hover·Pressed·Disabled도 함께 지정해요.
+위 예시는 Tailwind CSS가 설정된 앱에서 기본 Medium 크기에 너비만 추가한 경우예요. `className`이 적용되는 요소는 컴포넌트마다 달라요.
+
+| 컴포넌트 | 적용 위치 | 루트 클래스만으로 바뀌지 않는 부분 |
+| --- | --- | --- |
+| Button | 루트 `button` | 내부 텍스트에 직접 지정한 타이포그래피 크기 |
+| TextField | 바깥 `div` | 내부 입력 영역의 테두리·배경·타이포그래피 |
+| TextArea | 바깥 `label` | 내부 입력 영역의 배경·테두리·글자 크기·높이 |
+| Select | 바깥 `div` | 내부 선택 버튼·목록의 배경·테두리·글자 크기·높이 |
+| Modal | 화면 전체를 덮는 루트 | 내부 대화상자의 배경·크기 |
+
+예를 들어 Button의 `text-xl`은 내부 텍스트의 별도 글자 크기를 덮어쓰지 않아요. TextField의 `w-full`은 전체 너비를 바꾸지만 `border-red-500`이 입력 영역의 테두리를 바꾸지는 않아요. 에디터에서 컴포넌트나 해당 prop에 커서를 올려 적용 대상을 확인해요.
+
+Select는 바깥 너비를 바꾸면 선택 버튼과 목록도 그 너비를 따라가요. 바깥 높이만 바꿔 선택 버튼이나 TextArea 내부 입력 영역의 높이를 지정할 수는 없어요. Modal은 `width`·`height`로 내부 대화상자의 크기를 정하며, 루트에 적용하는 `style.width`·`style.height`와는 대상이 달라요.
+
+**같은 속성을 중복 지정하지 않아요.** 일반 CSS 선언 기준으로 Button의 `backgroundColor`·`width`·`height`는 같은 속성의 `style`보다 우선하고, 이 인라인 지정은 일반 외부 클래스보다 우선해요. TextField의 `style`은 바깥 `div`에만 적용돼요. CSS 레이어는 루트에 적용한 스타일을 자식에게 강제로 적용하는 기능은 아니에요.
+
+**상태별 색상은 클래스로 지정해요.** Button에 `backgroundColor`를 직접 주면 Hover·Pressed·Disabled의 일반 CSS 배경색도 그 색상으로 표시돼요. 다음처럼 상태별 색상을 정할 때는 `backgroundColor`나 `style.backgroundColor`를 함께 주지 않아요. 반응형 너비·높이를 클래스로 정할 때도 같은 속성의 전용 props와 인라인 지정은 생략해요.
 
 ```tsx
 import { Button } from './components/ui/button';
 
 export function PurpleButton() {
   return (
-    <Button className="w-full rounded-xl bg-violet-600 text-white hover:bg-violet-700 active:bg-violet-800 disabled:bg-violet-300">
+    <Button className="w-full rounded-xl bg-violet-600 text-white hover:enabled:bg-violet-700 active:enabled:bg-violet-800 disabled:bg-violet-300 disabled:text-violet-900">
       저장하기
     </Button>
   );
@@ -45,8 +63,17 @@ const customButton = css`
   width: 100%;
   background: #7c3aed;
 
-  &:hover {
+  &:hover:not(:disabled) {
     background: #6d28d9;
+  }
+
+  &:active:not(:disabled) {
+    background: #5b21b6;
+  }
+
+  &:disabled {
+    background: #c4b5fd;
+    color: #4c1d95;
   }
 `;
 
@@ -61,12 +88,16 @@ export const customButton = style({
   width: '100%',
   background: '#7c3aed',
   selectors: {
-    '&:hover': { background: '#6d28d9' },
+    '&:hover:not(:disabled)': { background: '#6d28d9' },
+    '&:active:not(:disabled)': { background: '#5b21b6' },
+    '&:disabled': { background: '#c4b5fd', color: '#4c1d95' },
   },
 });
 ```
 
-`style`과 Button의 `backgroundColor`, `width`, `height`도 계속 사용할 수 있어요. `className`은 반응형이나 상태별 스타일처럼 클래스 기반 커스터마이즈가 필요할 때 사용해요. 복합 컴포넌트의 내부 요소는 현재 공개된 prop으로 바꿀 수 있는 범위만 지원해요.
+색상과 크기는 위 예시 앱의 사용자 스타일이며 ELI의 새 공식 조합이 아니에요. 외형을 바꾼 뒤에는 Disabled 구분·키보드 포커스·글자 가독성·좁은 화면 배치를 함께 확인해요.
+
+내부 영역까지 바꾸려면 해당 영역의 공개 prop을 먼저 확인하고, 필요한 경우 설치한 소스를 직접 수정해요. 문서에 없는 자식 순서나 내부 선택자가 이후 버전에서도 유지된다고 가정하지 않아요. 여러 화면에서 같은 변경을 쓴다면 앱의 공통 컴포넌트나 설치한 소스에서 관리해요. 소스 수정은 허용되며 `status`의 수정 감지는 디자인 위반 판정이 아니에요.
 
 Badge는 짧은 상태나 분류를 표시해요. `type`으로 의미 색상을, `size`로 크기를 정해요.
 

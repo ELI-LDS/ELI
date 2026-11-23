@@ -29,8 +29,9 @@ import type { ModalProps } from './Modal.types.js';
  * - `onPositiveAction`, `onSecondaryAction`: 각 버튼을 눌렀을 때 실행할 함수
  *
  * ### 스타일 변경
- * - `className`: 화면 전체를 덮는 루트에 외부 클래스를 전달해요.
- * - `style`: 화면 전체를 덮는 루트의 인라인 스타일을 바꿔요.
+ * - `className`: 화면 전체 루트에 적용해요. 내부 대화상자의 배경·크기를 직접 바꾸는 클래스는 아니에요.
+ * - `style`: 같은 루트의 인라인 스타일로, 같은 속성의 일반 클래스보다 우선해요.
+ * - 대화상자의 크기는 width·height로 정해요. style.width·style.height와는 적용 대상이 달라요.
  */
 export function Modal(props: ModalProps) {
   const {
