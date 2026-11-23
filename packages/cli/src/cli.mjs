@@ -30,6 +30,39 @@ UI는 기존 React 프로젝트에서 사용해요. 하네스는 선택한 에�
 React·폰트·MCP는 자동 설치하지 않아요. 하네스는 harness 명령으로만 설치해요.
 `;
 
+/** 조회한 상태만 설명해요. 사용자 수정은 오류로 취급하거나 자동으로 복구하지 않아요. */
+function formatStatus(result) {
+  const lines = ['설치 상태'];
+  let modified = 0;
+  let missing = 0;
+  let total = 0;
+  const appendFiles = (label, files) => {
+    const counts = { unchanged: 0, modified: 0, missing: 0 };
+    for (const file of files) counts[file.state]++;
+    lines.push(`${label}: 변경 없음 ${counts.unchanged}개 · 직접 수정 ${counts.modified}개 · 누락 ${counts.missing}개`);
+    for (const file of files) {
+      if (file.state !== 'unchanged') lines.push(`  - ${file.state === 'modified' ? '직접 수정' : '누락'}: ${file.path}`);
+    }
+    modified += counts.modified;
+    missing += counts.missing;
+    total += files.length;
+  };
+  if (result.version !== null) {
+    lines.push(`UI 콘텐츠: ${result.version}`, `설치 위치: ${result.directory}`);
+    for (const entry of result.entries) lines.push(`${entry.export}: ${entry.path}`);
+    appendFiles('UI 파일', result.files);
+    if (result.entries.length === 0) lines.push('아직 추가한 UI 컴포넌트가 없어요. eli-design list로 필요한 컴포넌트를 확인해요.');
+  } else lines.push('UI 없음');
+  if (result.harness) {
+    lines.push(`하네스 콘텐츠: ${result.harness.version}`);
+    appendFiles('하네스 파일', result.harness.files);
+  } else lines.push('하네스 없음');
+  if (modified > 0) lines.push('직접 수정은 커스터마이즈한 결과일 수 있어요. 유지할 변경인지 확인하고 Git에 기록해요.');
+  if (missing > 0) lines.push('누락된 파일은 프로젝트의 Git 이력이나 백업에서 복구한 뒤 eli-design status로 다시 확인해요.');
+  if (total > 0 && modified === 0 && missing === 0) lines.push('등록된 파일이 모두 설치 당시와 같아요.');
+  return `${lines.join('\n')}\n`;
+}
+
 async function run() {
   let parsed;
   try {
@@ -101,13 +134,12 @@ try {
   else if (result.message) process.stdout.write(result.message);
   else if (!result.command) process.stdout.write(`${result.version}\n`);
   else if (result.command === 'list') process.stdout.write(result.items.map(item => `${item.id}\t${item.description}`).join('\n') + '\n');
+  else if (result.command === 'status') process.stdout.write(formatStatus(result));
   else {
     const counts = files => JSON.stringify(files.reduce((sum, file) => { const state = file.action ?? file.state; sum[state] = (sum[state] ?? 0) + 1; return sum; }, {}));
-    // 하네스만 설치한 프로젝트의 status에는 UI 버전과 config가 없어요.
     process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.version ?? result.config?.version ?? '없음'})\n`);
     for (const entry of result.entries ?? []) process.stdout.write(`${entry.export}: ${entry.path}\n`);
     process.stdout.write(`${counts(result.files)}\n`);
-    if (result.command === 'status' && result.harness) process.stdout.write(`하네스 ${result.harness.version}\n${counts(result.harness.files)}\n`);
     for (const step of result.nextSteps ?? []) process.stdout.write(`${step}\n`);
   }
 } catch (error) {

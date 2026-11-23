@@ -72,6 +72,10 @@ npx eli-design@latest init --dir src/shared/ui
 npx eli-design@latest status
 ```
 
+UI·하네스별 버전과 파일 상태를 한글로 보여줘요. 직접 수정했거나 누락된 파일은 경로와 함께 표시하고 다음 확인 방법을 안내해요. 직접 수정은 오류가 아니며, `status`는 파일·설정·설치 기록을 바꾸거나 네트워크로 최신 버전을 조회하지 않아요.
+
+자동화에서는 `status --json`으로 파일별 `unchanged`·`modified`·`missing` 상태를 읽어요. 상태 조회에 성공하면 수정·누락 파일이 있어도 종료 코드 `0`이며, 복구가 완료됐다는 뜻은 아니에요.
+
 파일을 추가하기 전에 변경 내용을 미리 볼 수도 있어요.
 
 ```bash

@@ -103,7 +103,8 @@ test('하네스만 설치한 프로젝트의 status 기본 출력도 하네스 �
   assert.equal(result.status, 0, result.stderr);
   assert.equal(result.stderr, '');
   assert.match(result.stdout, /UI 없음/);
-  assert.match(result.stdout, new RegExp(`하네스 ${harnessVersion.replaceAll('.', '\\.')}\\n\\{"unchanged":\\d+\\}`));
+  assert.ok(result.stdout.includes(`하네스 콘텐츠: ${harnessVersion}`));
+  assert.match(result.stdout, /하네스 파일: 변경 없음 \d+개 · 직접 수정 0개 · 누락 0개/);
 });
 
 test('사용자 수정·누락은 status로 구분하고 수정 파일은 덮어쓰지 않아요', async () => {
@@ -121,6 +122,15 @@ test('사용자 수정·누락은 status로 구분하고 수정 파일은 덮어
   assert.equal(status.version, null);
   assert.equal(status.harness.files.find(file => file.path === path).state, 'modified');
   assert.equal(status.harness.files.find(file => file.path === '.claude/skills/eli/VERSION').state, 'missing');
+  const record = await readFile(join(project, 'eli.harness.json'));
+  const terminal = spawnSync(process.execPath, [cli, 'status', '--cwd', project], { encoding: 'utf8' });
+  assert.equal(terminal.status, 0, terminal.stderr);
+  assert.equal(terminal.stderr, '');
+  assert.ok(terminal.stdout.includes(`직접 수정: ${path}`));
+  assert.ok(terminal.stdout.includes('누락: .claude/skills/eli/VERSION'));
+  assert.ok(terminal.stdout.includes('Git 이력이나 백업'));
+  assert.deepEqual(run(project, ['status']), status);
+  assert.deepEqual(await readFile(join(project, 'eli.harness.json')), record);
 });
 
 test('잘못된 설정·심볼릭 링크에는 쓰지 않아요', async () => {
@@ -167,6 +177,13 @@ test('소스로 설치된 UI를 훅과 스킬이 인식하고 npm 패키지를 �
   assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/ui/button.tsx');
   assert.equal(status.harness.version, harnessVersion);
   assert.equal(status.harness.installerVersion, toolVersion);
+  const terminal = spawnSync(process.execPath, [cli, 'status', '--cwd', project], { encoding: 'utf8' });
+  assert.equal(terminal.status, 0, terminal.stderr);
+  assert.ok(terminal.stdout.includes(`UI 콘텐츠: ${status.version}`));
+  assert.ok(terminal.stdout.includes(`하네스 콘텐츠: ${harnessVersion}`));
+  assert.ok(terminal.stdout.includes('UI 파일:'));
+  assert.ok(terminal.stdout.includes('하네스 파일:'));
+  assert.deepEqual(run(project, ['status']), status);
   await assert.rejects(readFile(join(project, 'node_modules/@eli-design/ui/package.json')));
 });
 

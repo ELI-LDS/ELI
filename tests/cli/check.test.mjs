@@ -86,6 +86,59 @@ test('init 미리보기는 파일을 쓰지 않고 목록은 공개 컴포넌트
   assert.equal((await run(path, ['init', '--registry', base], 1)).error.code, 'FILE_CONFLICT');
 });
 
+test('일반 status는 초기 설정과 정상 설치를 한글로 설명하고 JSON 계약을 유지해요', async () => {
+  const path = await fixture();
+  await init(path);
+  const empty = await execFile(process.execPath, [cli, 'status', '--cwd', path]);
+  assert.equal(empty.stderr, '');
+  assert.ok(empty.stdout.includes('아직 추가한 UI 컴포넌트가 없어요.'));
+  assert.ok(empty.stdout.includes('eli-design list'));
+  assert.ok(!(await readdir(path)).includes('eli.lock.json'));
+  await run(path, ['add', 'button']);
+  const expected = await run(path, ['status']);
+  const record = await readFile(join(path, 'eli.lock.json'));
+  requests.length = 0;
+  const healthy = await execFile(process.execPath, [cli, 'status', '--cwd', path]);
+  assert.equal(healthy.stderr, '');
+  assert.ok(healthy.stdout.includes(`UI 콘텐츠: ${expected.version}`));
+  assert.ok(healthy.stdout.includes(`설치 위치: ${expected.directory}`));
+  assert.ok(healthy.stdout.includes(`변경 없음 ${expected.files.length}개`));
+  assert.ok(healthy.stdout.includes('직접 수정 0개 · 누락 0개'));
+  assert.ok(healthy.stdout.includes('하네스 없음'));
+  assert.ok(healthy.stdout.includes('등록된 파일이 모두 설치 당시와 같아요.'));
+  assert.deepEqual(await run(path, ['status']), expected);
+  assert.deepEqual(await readFile(join(path, 'eli.lock.json')), record);
+  assert.deepEqual(requests, []);
+});
+
+test('일반 status는 수정·누락 경로와 확인 방법을 보여주고 파일을 복구하거나 기록을 바꾸지 않아요', async () => {
+  const path = await fixture();
+  await init(path);
+  const added = await run(path, ['add', 'button']);
+  const modified = added.entries.find(entry => entry.id === 'button').path;
+  const missing = added.files.find(file => file.path.endsWith('/Button.css')).path;
+  await writeFile(join(path, modified), '// 사용자 커스터마이즈\n');
+  await rm(join(path, missing));
+  const config = await readFile(join(path, 'eli.json'));
+  const record = await readFile(join(path, 'eli.lock.json'));
+  const expected = await run(path, ['status']);
+  requests.length = 0;
+  const terminal = await execFile(process.execPath, [cli, 'status', '--cwd', path]);
+  assert.equal(terminal.stderr, '');
+  assert.ok(terminal.stdout.includes(`직접 수정: ${modified}`));
+  assert.ok(terminal.stdout.includes(`누락: ${missing}`));
+  assert.ok(terminal.stdout.includes('직접 수정 1개 · 누락 1개'));
+  assert.ok(terminal.stdout.includes('커스터마이즈'));
+  assert.ok(terminal.stdout.includes('Git 이력이나 백업'));
+  assert.ok(terminal.stdout.includes('eli-design status'));
+  assert.deepEqual(await run(path, ['status']), expected);
+  assert.deepEqual(requests, []);
+  assert.equal(await readFile(join(path, modified), 'utf8'), '// 사용자 커스터마이즈\n');
+  await assert.rejects(readFile(join(path, missing)), { code: 'ENOENT' });
+  assert.deepEqual(await readFile(join(path, 'eli.json')), config);
+  assert.deepEqual(await readFile(join(path, 'eli.lock.json')), record);
+});
+
 test('기본 설치 경로는 src 유무만 따르고 기존 폴더 구조를 자동으로 변경하지 않아요', async () => {
   for (const withSource of [true, false]) {
     const path = await fixture();
