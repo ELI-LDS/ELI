@@ -127,7 +127,7 @@ flowchart TB
 
 ## 컴포넌트 사용하기
 
-아래는 준비 중인 CLI 0.3.0·UI 콘텐츠 0.2.0의 사용 예시예요. 아직 게시된 npm latest는 0.2.0이며 기존 설치 파일은 자동으로 바뀌지 않아요. [릴리스 준비 상태](handbook/releases/0.3.0.md)를 확인해요.
+아래는 게시 대기 중인 CLI 0.3.0과 공개된 UI 콘텐츠 0.2.0의 사용 예시예요. 현재 npm latest는 CLI 0.2.0이며 기존 설치 파일은 자동으로 바뀌지 않아요. [릴리스 상태](handbook/releases/0.3.0.md)를 확인해요.
 
 엘리 없이 직접 사용할 수도 있어요. 기존 React `^19.3.0` 프로젝트에서 실행해요.
 
@@ -290,7 +290,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 게시된 CLI 0.2.0과 UI·하네스 콘텐츠의 버전·무결성·검증 범위는 [릴리스 기록](handbook/releases/0.2.0.md)에서 확인해요. CLI 0.3.0·UI 콘텐츠 0.2.0은 [릴리스 준비 중](handbook/releases/0.3.0.md)이며 미배포 하네스 문서는 이번 후보에 포함하지 않아요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. 게시된 CLI 0.2.0의 기록은 [기존 릴리스](handbook/releases/0.2.0.md), 공개된 UI 콘텐츠 0.2.0과 게시 대기 중인 CLI 0.3.0의 고정 파일·검증 범위는 [새 릴리스](handbook/releases/0.3.0.md)에서 확인해요. 미배포 하네스 문서는 이번 후보에 포함하지 않아요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 
