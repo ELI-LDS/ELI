@@ -1,4 +1,5 @@
 import './LoadingIndicator.css';
+import { normalizeProgress } from '../normalizeProgress.js';
 import type { LoadingIndicatorProps } from './LoadingIndicator.types.js';
 
 /**
@@ -11,7 +12,7 @@ import type { LoadingIndicatorProps } from './LoadingIndicator.types.js';
  * `<LoadingIndicator aria-label="데이터 불러오는 중" />`
  *
  * ### 주요 설정
- * - `progress`: `0`, `10`, `30`, `50`, `80`, `100`; 생략하면 반복 애니메이션
+ * - `progress`: `0`~`100` 사이의 숫자; 생략하면 반복 애니메이션
  * - `variant`: `continuous`(기본) | `cycle`; 진행률을 모를 때의 회전 방식
  *
  * ### 선택 가이드
@@ -31,10 +32,11 @@ export function LoadingIndicator(props: LoadingIndicatorProps) {
   const {
     'aria-label': ariaLabel,
     className,
-    progress,
+    progress: requestedProgress,
     variant = 'continuous',
     ...indicatorProps
   } = props;
+  const progress = normalizeProgress(requestedProgress);
   const isDeterminate = progress !== undefined;
   const indicatorClassName = ['eli-loading-indicator', className].filter(Boolean).join(' ');
 

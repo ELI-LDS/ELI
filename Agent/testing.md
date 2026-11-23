@@ -62,6 +62,8 @@ UI 소스·공개 exports·레지스트리 규격·생성기를 바꾸면 `pnpm 
 - 비대화형 실행·구조화된 결과·변경 미리보기·오류와 종료 코드가 [설치 도구 계약](registry.md#하네스가-설치-도구를-호출해요)을 지키는지 확인해요. 입력 누락이나 충돌로 중단했을 때 성공으로 보고하거나 설치 기록만 완료로 남기면 안 돼요.
 - 기존 타입·Vite·Next.js 소비 검사와 별도로 실제 설치 도구를 실행한 결과를 검증해요. 지원 패키지 매니저별 실행 경로·외부 의존성 설치·기존 lockfile 보존도 함께 확인해요.
 
+공개 타입을 보완할 때는 허용해야 하는 사용법뿐 아니라 실제로 렌더링할 수 없는 HTML 속성도 소비 앱의 TypeScript에서 거부되는지 확인해요. 입력 참조는 대상 요소·교체·제거 시 정리를 검사하고, 숫자 입력은 표시·네이티브 값·콜백을 대조해요. 동적 목록은 항목 삭제·빈 목록·제어 값 유지와 비활성 항목의 키보드·포인터 처리를 함께 확인해요. 같은 회귀 시나리오를 tarball과 선택 설치 소스 양쪽에 적용해요.
+
 ## 브라우저와 모바일 환경을 구분해 확인해요
 
 데스크톱 지원 목표는 최신 안정 Chrome·Edge·Safari와 Firefox예요. GitHub Actions의 브라우저 행렬은 실제 Chrome·Edge 채널과 Playwright가 고정한 Chromium·Firefox·WebKit에서 같은 tarball 소비 검사를 실행해요. `pnpm test:browsers`는 로컬에서 Chromium·Firefox·WebKit과 Android Chromium·iOS WebKit 기기 조건을 순서대로 확인하고, 일상 `pnpm check`는 실행 비용을 고려해 Chromium 대표 검사만 실행해요.

@@ -1,4 +1,5 @@
 import './ProgressIndicator.css';
+import { normalizeProgress } from '../normalizeProgress.js';
 import type { ProgressIndicatorProps } from './ProgressIndicator.types.js';
 
 /**
@@ -11,7 +12,7 @@ import type { ProgressIndicatorProps } from './ProgressIndicator.types.js';
  * `<ProgressIndicator aria-label="데이터 불러오는 중" />`
  *
  * ### 주요 설정
- * - `progress`: `0`, `10`, `30`, `50`, `80`, `100`; 생략하면 반복 애니메이션
+ * - `progress`: `0`~`100` 사이의 숫자; 생략하면 반복 애니메이션
  *
  * ### 선택 가이드
  * - 완료 비율을 알면 `progress`를 전달해 실제 진행 상태를 보여줘요.
@@ -26,7 +27,8 @@ import type { ProgressIndicatorProps } from './ProgressIndicator.types.js';
  * - `style`: 루트 `div`의 인라인 스타일을 바꿔요.
  */
 export function ProgressIndicator(props: ProgressIndicatorProps) {
-  const { 'aria-label': ariaLabel, className, progress, ...indicatorProps } = props;
+  const { 'aria-label': ariaLabel, className, progress: requestedProgress, ...indicatorProps } = props;
+  const progress = normalizeProgress(requestedProgress);
   const isDeterminate = progress !== undefined;
   const indicatorClassName = ['eli-progress-indicator', className].filter(Boolean).join(' ');
 
@@ -43,7 +45,7 @@ export function ProgressIndicator(props: ProgressIndicatorProps) {
       data-state={isDeterminate ? 'determinate' : 'indeterminate'}
       role="progressbar"
     >
-      <span aria-hidden="true" className="eli-progress-indicator__active" />
+      <span aria-hidden="true" className="eli-progress-indicator__active" style={isDeterminate ? { width: `${progress}%` } : undefined} />
     </div>
   );
 }

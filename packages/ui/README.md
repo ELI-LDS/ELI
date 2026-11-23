@@ -13,6 +13,8 @@ npx eli-design@latest add button
 
 아래 import는 게시 대기 중인 CLI 0.3.0과 공개된 UI 콘텐츠 0.2.0을 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 기존 설치 소스는 자동으로 이동하지 않으며 실제 설치 기록의 경로를 사용해요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
 
+아래 API 보완 중 진행률의 일반 숫자·옵션별 비활성화·입력 ref 계약은 다음 UI 콘텐츠 릴리스에 포함할 미배포 변경이에요. 기존 0.2.0 소스가 자동으로 바뀌지는 않아요.
+
 기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. Pretendard 폰트는 소비 앱에서 직접 불러와요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
 
 ## 컴포넌트 스타일을 바꿔요
@@ -89,6 +91,7 @@ export function SaveDescription() {
 ```
 
 LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `progress`를 표시하고, 알 수 없으면 값을 생략해 반복 애니메이션으로 진행 중임을 알려요.
+`progress`는 0~100 사이의 일반 숫자를 받아요. 범위 밖 값은 0 또는 100으로 제한하고, 값을 생략하거나 NaN·Infinity를 전달하면 진행률을 모르는 상태로 표시해요.
 LoadingIndicator의 `continuous`는 일정하게 회전하고, `cycle`은 Figma의 2초 가감속 모션을 반복해요.
 
 ```tsx
@@ -97,7 +100,7 @@ import { ProgressIndicator } from './components/ui/progress-indicator';
 
 <LoadingIndicator aria-label="프로필 불러오는 중" />
 <LoadingIndicator aria-label="동기화하는 중" variant="cycle" />
-<ProgressIndicator aria-label="파일 업로드" progress={80} />
+<ProgressIndicator aria-label="파일 업로드" progress={37} />
 ```
 
 Alert는 `status`에 맞는 색상과 아이콘으로 제목과 본문을 표시해요. 화면에 띄우는 Toast 동작은 포함하지 않아요.
