@@ -130,7 +130,7 @@ export function AddButton() {
 }
 ```
 
-Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요.
+Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요. 항목에 `disabled: true`를 지정하면 그 액션은 실행할 수 없어요.
 
 ```tsx
 import { Fab } from './components/ui/fab';
@@ -345,7 +345,7 @@ export function ConfirmModal() {
 `open`을 생략하면 내부 상태로 열고 닫으며 `defaultOpen`은 `true`예요. Secondary 콜백에서 `event.preventDefault()`를 호출하면 자동 닫기를 취소할 수 있어요. 외부 제어에서는 `onOpenChange`에서 `open` 값을 갱신해요. `aria-label`·`aria-labelledby`·`aria-describedby`는 dialog 콘텐츠에 연결되고, `className`·`style`은 기존처럼 바깥 루트에 적용돼요.
 
 Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록을 전달해요. 옵션 행은
-MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요.
+MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요. 전체를 막으려면 `disabled`, 특정 옵션만 막으려면 옵션의 `disabled: true`를 사용해요. 방향키는 비활성 옵션을 건너뛰어요.
 
 ```tsx
 import { Select } from './components/ui/select';
@@ -360,7 +360,7 @@ export function CategorySelect() {
 }
 ```
 
-SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요.
+SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요. 전체 `disabled`와 옵션별 `disabled`를 지원하고 방향키는 사용 가능한 옵션만 이동해요.
 
 ```tsx
 import { SegmentControl } from './components/ui/segment-control';
@@ -374,6 +374,10 @@ export function ViewControl() {
   return <SegmentControl aria-label="보기 방식" options={viewOptions} />;
 }
 ```
+
+NavigationBar·NavigationBarGlass의 `items`와 SegmentControl의 `options`는 `.map()`·권한 필터로 만든 일반 배열도 받아요. 권장 항목 수는 각각 3~5개와 2~4개이며, 배열을 자동으로 자르지 않아요. 빈 목록은 선택 없이 표시해요. 탐색 항목의 `disabled: true`는 클릭·키보드·드래그 선택을 막아요.
+
+세 컴포넌트에서 선택 항목이 목록에서 사라지면 비제어 방식은 첫 번째 사용 가능한 항목으로 보정해요. 제어 방식은 부모의 값을 유지하고 선택 표시를 숨겨요. 목록 변경만으로 `onValueChange`를 실행하지 않아요. 이미 선택된 항목이 비활성화되면 선택은 유지하고 추가 조작을 막아요.
 
 Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요. 초기값·제어값·변경값을 `min` 기준의 `step` 간격에 맞춰 표시해요. 예를 들어 `min={0} max={10} step={3} defaultValue={5}`는 6으로 표시하며 마지막 유효 값은 9예요. step은 양수여야 하며 유효하지 않으면 기본값 1을 사용해요.
 

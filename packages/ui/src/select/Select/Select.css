@@ -49,14 +49,14 @@
     background-color 150ms ease-in;
 }
 
-.eli-select__trigger:active,
+.eli-select__trigger:active:not(:disabled),
 .eli-select[data-open='true'] .eli-select__trigger {
   transition-duration: 100ms;
   transition-timing-function: ease-out;
 }
 
 /* Hover와 펼침 */
-.eli-select__trigger:hover,
+.eli-select__trigger:hover:not(:disabled),
 .eli-select__trigger:focus-visible,
 .eli-select[data-open='true'] .eli-select__trigger {
   border-color: var(--eli-border-interaction-focused, #4b5668);
@@ -134,5 +134,11 @@
     .eli-select__menu {
       animation-duration: 0.01ms;
     }
+  }
+}
+
+@layer components {
+  .eli-select__trigger:disabled {
+    cursor: not-allowed;
   }
 }

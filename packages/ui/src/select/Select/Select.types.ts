@@ -4,6 +4,9 @@ export interface SelectOption {
   /** 선택 값으로 사용하는 고유한 문자열이에요. */
   value: string;
 
+  /** true이면 이 옵션을 선택하거나 키보드로 이동할 수 없어요. 기본값은 false예요. */
+  disabled?: boolean;
+
   /** 옵션 행에 표시할 내용이에요. */
   label: ReactNode;
 }
@@ -18,6 +21,9 @@ export interface SelectProps
 
   /** 목록에 표시할 옵션이에요. 각 value는 중복되지 않아야 해요. */
   options: readonly SelectOption[];
+
+  /** true이면 목록을 열거나 값을 바꿀 수 없어요. 기본값은 false예요. */
+  disabled?: boolean;
 
   /** 외부에서 제어하는 선택 값이에요. */
   value?: string;

@@ -8,6 +8,9 @@ export interface FabMenuItem {
   /** 항목을 구분하고 React key로 사용하는 고유 값이에요. */
   id: string;
 
+  /** true이면 이 액션을 실행할 수 없어요. 기본값은 false예요. */
+  disabled?: boolean;
+
   /** 개별 액션 버튼에 표시할 한 줄 라벨이에요. */
   label: string;
 
@@ -15,7 +18,7 @@ export interface FabMenuItem {
   icon?: ReactNode | null;
 
   /** 개별 액션을 실행해요. 실행 후 FAB Menu가 닫혀요. */
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 export interface FabMenuProps

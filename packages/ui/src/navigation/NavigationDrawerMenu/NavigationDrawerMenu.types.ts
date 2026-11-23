@@ -30,7 +30,7 @@ export interface NavigationDrawerMenuProps
   subItems?: readonly NavigationDrawerSubItem[];
 
   /** Sub Menu가 없는 Main Menu를 선택했을 때 실행해요. Sub Menu가 있으면 펼침 동작만 실행해요. */
-  onClick?: MouseEventHandler<HTMLButtonElement>;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 
   /** Sub Menu가 선택될 때 해당 값과 클릭 이벤트를 전달해요. */
   onSubItemClick?: (

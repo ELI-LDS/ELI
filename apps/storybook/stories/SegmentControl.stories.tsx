@@ -45,11 +45,13 @@ const meta = {
   title: '컴포넌트/SegmentControl',
   component: SegmentControl,
   args: {
+    disabled: false,
     'aria-label': '보기 방식',
     options: twoOptions,
     value: '1',
   },
   argTypes: {
+    disabled: { name: '비활성화', control: 'boolean', description: 'true이면 값을 바꿀 수 없어요.' },
     'aria-label': {
       name: '선택 영역 설명',
       control: 'text',
@@ -87,6 +89,12 @@ export const Overview: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <StoryOverview>
+      <StoryCase title="전체 비활성화">
+        <SegmentControl aria-label="비활성 선택" disabled options={twoOptions} />
+      </StoryCase>
+      <StoryCase title="일부 옵션 비활성화">
+        <SegmentControl aria-label="일부 비활성 선택" options={threeOptions.map((option, index) => ({ ...option, disabled: index === 1 }))} />
+      </StoryCase>
       {[twoOptions, threeOptions, fourOptions].map(options => (
         <StoryCase key={options.length} title={`${options.length}개 항목`}>
           <div style={{ display: 'grid', gap: 16 }}>
