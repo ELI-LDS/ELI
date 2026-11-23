@@ -29,9 +29,13 @@ npx eli-design@latest add button
 | --- | --- | --- |
 | Button | 루트 `button` | 내부 텍스트에 직접 지정한 타이포그래피 크기 |
 | TextField | 바깥 `div` | 내부 입력 영역의 테두리·배경·타이포그래피 |
-| TextArea | 바깥 `label` | 내부 입력 영역에 직접 지정한 스타일 |
+| TextArea | 바깥 `label` | 내부 입력 영역의 배경·테두리·글자 크기·높이 |
+| Select | 바깥 `div` | 내부 선택 버튼·목록의 배경·테두리·글자 크기·높이 |
+| Modal | 화면 전체를 덮는 루트 | 내부 대화상자의 배경·크기 |
 
 예를 들어 Button의 `text-xl`은 내부 텍스트의 별도 글자 크기를 덮어쓰지 않아요. TextField의 `w-full`은 전체 너비를 바꾸지만 `border-red-500`이 입력 영역의 테두리를 바꾸지는 않아요. 에디터에서 컴포넌트나 해당 prop에 커서를 올려 적용 대상을 확인해요.
+
+Select는 바깥 너비를 바꾸면 선택 버튼과 목록도 그 너비를 따라가요. 바깥 높이만 바꿔 선택 버튼이나 TextArea 내부 입력 영역의 높이를 지정할 수는 없어요. Modal은 `width`·`height`로 내부 대화상자의 크기를 정하며, 루트에 적용하는 `style.width`·`style.height`와는 대상이 달라요.
 
 **같은 속성을 중복 지정하지 않아요.** 일반 CSS 선언 기준으로 Button의 `backgroundColor`·`width`·`height`는 같은 속성의 `style`보다 우선하고, 이 인라인 지정은 일반 외부 클래스보다 우선해요. TextField의 `style`은 바깥 `div`에만 적용돼요. CSS 레이어는 루트에 적용한 스타일을 자식에게 강제로 적용하는 기능은 아니에요.
 

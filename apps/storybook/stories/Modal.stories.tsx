@@ -65,12 +65,12 @@ const meta = {
     width: {
       name: '가로 크기',
       control: 'text',
-      description: '모달 콘텐츠의 가로 크기예요. 작은 화면의 너비를 넘지 않아요.',
+      description: '내부 대화상자의 가로 크기예요. 작은 화면의 가용 너비를 넘지 않도록 제한해요. 화면 전체 루트의 style.width와는 적용 대상이 달라요.',
     },
     height: {
       name: '세로 크기',
       control: 'text',
-      description: '모달 콘텐츠의 세로 크기예요.',
+      description: '내부 대화상자의 세로 크기예요. 화면 전체 루트의 style.height와는 적용 대상이 달라요.',
     },
     onPositiveAction: {
       table: { disable: true },

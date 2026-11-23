@@ -23,8 +23,9 @@ import { useSelect } from './useSelect.js';
  * - `onValueChange`: 선택한 `value`를 받는 함수
  *
  * ### 스타일 변경
- * - `className`: 가장 바깥 `div`에 외부 클래스를 전달해요.
- * - `style`: 가장 바깥 `div`의 인라인 스타일을 바꿔요.
+ * - `className`: 바깥 div의 너비·배치 등을 바꿔요. 내부 선택 버튼·목록의 배경·테두리·글자 크기를 직접 바꾸지는 않아요.
+ * - `style`: 같은 바깥 div의 인라인 스타일로, 같은 속성의 일반 클래스보다 우선해요.
+ * - 선택 버튼과 목록의 너비는 바깥 영역을 따라가요. 루트 높이를 바꾸는 것으로 선택 버튼의 높이를 지정하지는 않아요.
  */
 export function Select(props: SelectProps) {
   const {

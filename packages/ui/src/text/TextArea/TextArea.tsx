@@ -19,8 +19,8 @@ import type { TextAreaProps } from './TextArea.types.js';
  * - `onChange`: 입력 값이 바뀔 때 실행할 함수
  *
  * ### 스타일 변경
- * - `className`: 바깥 `label`에 외부 클래스를 전달해요.
- * - `style`: 바깥 `label`의 인라인 스타일을 바꿔요.
+ * - `className`: 바깥 label의 너비·배치 등을 바꿔요. 내부 textarea의 배경·테두리·글자 크기·높이에 직접 적용되지 않아요.
+ * - `style`: 같은 바깥 label의 인라인 스타일로, 같은 속성의 일반 클래스보다 우선해요.
  */
 export function TextArea(props: TextAreaProps) {
   const {
