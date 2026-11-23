@@ -20,9 +20,9 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-team/ELI/pull/73)
 
-## eli-design 0.3.1 — 준비 중 · npm 미게시
+## eli-design 0.3.1 — npm 게시 대기
 
-현재 npm latest·next는 0.2.0이에요. 저장소 이전 주소와 status 안내를 수정하는 새 후보를 준비해요. 기존 0.3.0 고정 파일은 보존하며 덮어쓰지 않아요. [준비 기록](handbook/releases/0.3.1.md)에서 최종 검증과 파일 전달 상태를 구분해요.
+현재 npm latest·next는 0.2.0이에요. 저장소 이전 주소와 status 안내를 수정한 최종 파일을 [cli-v0.3.1](https://github.com/ELI-team/ELI/releases/tag/cli-v0.3.1)에 제공하고 같은 tarball의 설치 행렬·공개 콘텐츠·브라우저 검증을 완료했어요. 기존 0.3.0 고정 파일은 보존해요. [릴리스 기록](handbook/releases/0.3.1.md)에서 파일·해시·수행 범위와 실제 npm 게시 상태를 구분해요.
 
 ### 수정
 
