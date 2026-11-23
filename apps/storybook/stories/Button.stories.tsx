@@ -98,17 +98,17 @@ const meta = {
     backgroundColor: {
       name: '배경색 직접 지정',
       control: 'color',
-      description: '기본 스타일보다 우선해 적용할 배경색이에요.',
+      description: '모든 상태의 일반 CSS 배경색보다 우선해요. Hover·Pressed·Disabled 배경색도 이 색상으로 표시돼요. 상태별 색상을 클래스로 정할 때는 비워둬요.',
     },
     width: {
       name: '가로 크기',
       control: 'text',
-      description: '버튼의 가로 크기예요. px, %, rem 같은 CSS 값을 사용할 수 있어요.',
+      description: '버튼의 가로 크기예요. px, %, rem 등을 사용하며 style의 width보다 우선해요. 반응형 너비를 클래스로 정할 때는 비워둬요.',
     },
     height: {
       name: '세로 크기',
       control: 'text',
-      description: '버튼의 세로 크기예요. 크기별 기본 높이보다 우선해요.',
+      description: '크기별 기본 높이와 style의 height보다 우선해요. 반응형 높이를 클래스로 정할 때는 비워둬요.',
     },
     color: {
       name: '색상',

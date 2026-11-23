@@ -146,7 +146,7 @@ export function SaveButton() {
 }
 ```
 
-기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. React와 폰트는 소비 앱에서 준비해요.
+기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. [스타일 적용 위치·우선순위와 상태별 예시](packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 확인해요. React와 폰트는 소비 앱에서 준비해요.
 
 기존 `@/* → src/*` 별칭을 쓰는 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. 원하는 설치 위치는 초기화할 때 `--dir`로 지정해요. [CLI 사용법](packages/cli/README.md)을 참고해요.
 
@@ -169,7 +169,7 @@ npx eli-design@latest harness --agent codex
 
 둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
 
-CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-team/ELI/pull/84)로 병합했으며 다음 CLI 0.3.1 후보에 포함돼요. 저장소 이전 수정과 함께 [새 후보를 준비 중](handbook/releases/0.3.1.md)이며 게시된 0.2.0에는 포함되지 않았어요.
+CLI 0.2.0에서 하네스만 설치한 프로젝트는 `status --json`으로 확인해요. 일반 `status` 출력 오류 수정은 [PR #84](https://github.com/ELI-team/ELI/pull/84)로 병합했으며 다음 CLI 0.3.1 후보에 포함돼요. 저장소 이전 수정과 함께 [CLI 0.3.1 검증 파일을 준비](handbook/releases/0.3.1.md)했으며 npm 게시를 기다리고 있어요. 게시된 0.2.0에는 포함되지 않았어요.
 
 ### 기존 전체 패키지에서 이전하기
 
