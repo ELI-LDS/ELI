@@ -1,7 +1,7 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
 export interface NavigationDrawerProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'aria-label' | 'children' | 'defaultValue'> {
+  extends Omit<HTMLAttributes<HTMLElement>, 'dangerouslySetInnerHTML' | 'aria-label' | 'children' | 'defaultValue'> {
   /** Drawer 안에 배치할 NavigationDrawerCategory, NavigationDrawerMenu와 Divider예요. */
   children: ReactNode;
 

@@ -18,6 +18,7 @@ import type { TextFieldProps } from './TextField.types.js';
  * - `state`: `default`(기본값), `error`, `success`, `disabled`
  *
  * ### 내용과 동작
+ * - `ref`: 실제 입력 요소를 가리켜 focus() 같은 입력 동작에 사용해요.
  * - `value`, `defaultValue`: 입력 값
  * - `onChange`: 입력 값이 바뀔 때 실행할 함수
  * - `type`: 표준 input 유형, 기본값은 `text`
@@ -34,6 +35,7 @@ export function TextField(props: TextFieldProps) {
     className,
     id,
     readOnly,
+    ref: forwardedRef,
     label = '라벨',
     placeholder = '내용을 입력하세요',
     state = 'default',
@@ -43,7 +45,7 @@ export function TextField(props: TextFieldProps) {
   } = props;
   const generatedId = useId();
   const inputId = id ?? generatedId;
-  const { clear, inputRef } = useTextFieldClear();
+  const { clear, inputRef, setInputRef } = useTextFieldClear(forwardedRef);
   const textFieldClassName = ['eli-text-field', className].filter(Boolean).join(' ');
   const inputClassName = [
     'eli-text-field__input',
@@ -64,7 +66,7 @@ export function TextField(props: TextFieldProps) {
           className={inputClassName}
           id={inputId}
           readOnly={readOnly}
-          ref={inputRef}
+          ref={setInputRef}
           disabled={state === 'disabled'}
           placeholder={placeholder}
           type={type}

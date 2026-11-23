@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from 'react';
 
 export interface TabProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-selected' | 'children'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'aria-selected' | 'children'> {
   /** Tab에 표시할 한 줄 이름이에요. 기본값은 `탭 이름`이에요. */
   label?: string;
 

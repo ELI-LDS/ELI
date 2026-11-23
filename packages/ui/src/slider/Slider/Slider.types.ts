@@ -6,7 +6,7 @@ export type SliderRangeValue = readonly [number, number];
 interface SliderBaseProps
   extends Omit<
     HTMLAttributes<HTMLDivElement>,
-    'aria-label' | 'children' | 'defaultValue' | 'onChange'
+    'dangerouslySetInnerHTML' | 'aria-label' | 'children' | 'defaultValue' | 'onChange'
   > {
   /** Slider가 조절하는 값을 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
@@ -17,7 +17,7 @@ interface SliderBaseProps
   /** 조절할 수 있는 최댓값이에요. 기본값은 `100`이에요. */
   max?: number;
 
-  /** 한 번에 이동할 값의 간격이에요. 기본값은 `1`이에요. */
+  /** min 기준으로 이동할 양수 간격이에요. 초기값·제어값·콜백도 같은 간격에 맞춰요. 기본값은 1이며 유효하지 않은 간격은 1로 처리해요. */
   step?: number;
 
   /** 양 끝의 최솟값과 최댓값을 표시할지 정해요. 기본값은 `true`예요. */

@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes, ReactNode } from 'react';
 export type NavigationDrawerItemVariant = 'main-menu' | 'sub-menu';
 
 export interface NavigationDrawerItemProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'children'> {
   /** 항목에 표시할 한 줄 라벨이에요. */
   label?: string;
 

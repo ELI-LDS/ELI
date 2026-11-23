@@ -1,7 +1,7 @@
 import type { HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
 export interface RemovableChipProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, 'children' | 'onClick'> {
+  extends Omit<HTMLAttributes<HTMLSpanElement>, 'dangerouslySetInnerHTML' | 'children' | 'onClick'> {
   /** 칩에 표시할 라벨이에요. 최대 너비를 넘으면 말줄임표로 표시해요. */
   children: ReactNode;
 

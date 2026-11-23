@@ -4,7 +4,7 @@ import type {
 } from 'react';
 
 export interface NavigationBarGlassItemProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'aria-label' | 'children'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'aria-label' | 'children'> {
   /** 화면에 표시하지 않고 화면 낭독기에 전달할 라벨이에요. */
   label: string;
 

@@ -1,10 +1,16 @@
-import type { ReactNode, TextareaHTMLAttributes } from 'react';
+import type { ChangeEventHandler, Ref, ReactNode, TextareaHTMLAttributes } from 'react';
 
 export interface TextAreaProps
   extends Omit<
     TextareaHTMLAttributes<HTMLTextAreaElement>,
-    'children' | 'placeholder'
+    'dangerouslySetInnerHTML' | 'children' | 'placeholder'
   > {
+  /** 입력이 바뀌면 호출해요. event.currentTarget.value로 새 값을 확인해요. */
+  onChange?: ChangeEventHandler<HTMLTextAreaElement> | undefined;
+
+  /** 실제 입력 요소에 접근할 참조예요. focus() 같은 입력 동작에 사용해요. */
+  ref?: Ref<HTMLTextAreaElement> | undefined;
+
   /** 입력 영역 위에 표시할 라벨이에요. 생략하면 `라벨`을 표시해요. */
   label?: ReactNode;
 

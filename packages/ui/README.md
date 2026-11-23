@@ -375,7 +375,7 @@ export function ViewControl() {
 }
 ```
 
-Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요.
+Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요. 초기값·제어값·변경값을 `min` 기준의 `step` 간격에 맞춰 표시해요. 예를 들어 `min={0} max={10} step={3} defaultValue={5}`는 6으로 표시하며 마지막 유효 값은 9예요. step은 양수여야 하며 유효하지 않으면 기본값 1을 사용해요.
 
 ```tsx
 import { Slider } from './components/ui/slider';
@@ -427,7 +427,9 @@ export function SignUpField() {
 }
 ```
 
-TextArea도 같은 그룹 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
+TextField·TextArea·Checkbox·Radio의 `ref`는 바깥 래퍼가 아닌 실제 입력 요소를 가리켜요. TextField의 입력 지우기와 외부 객체·콜백 ref를 함께 사용할 수 있어요.
+
+TextArea는 아래 로컬 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
 
 ```tsx
 import { TextArea } from './components/ui/text-area';

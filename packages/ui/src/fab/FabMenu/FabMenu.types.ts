@@ -19,7 +19,7 @@ export interface FabMenuItem {
 }
 
 export interface FabMenuProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children'> {
   /** 메뉴가 열렸을 때 표시할 액션 목록이에요. */
   items: readonly FabMenuItem[];
 

@@ -16,6 +16,7 @@ import type { CheckboxProps } from './Checkbox.types.js';
  * - `disabled`: `true`이면 비활성화해요.
  *
  * ### 내용과 동작
+ * - `ref`: 실제 입력 요소를 가리켜 focus() 같은 입력 동작에 사용해요.
  * - `aria-label`: 화면에 라벨이 없다면 동작을 설명해요.
  * - `onChange`: 선택 상태가 바뀔 때 실행할 함수
  *

@@ -1,6 +1,6 @@
 import type { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
-export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'title'> {
+export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children' | 'title'> {
   /** 표시 여부를 외부에서 관리해요. onOpenChange에서 새 값을 반영해요. */
   open?: boolean;
 

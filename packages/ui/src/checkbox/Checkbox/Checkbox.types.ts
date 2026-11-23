@@ -1,6 +1,12 @@
-import type { InputHTMLAttributes } from 'react';
+import type { ChangeEventHandler, Ref, InputHTMLAttributes } from 'react';
 
-export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'dangerouslySetInnerHTML' | 'children' | 'type'> {
+  /** 입력이 바뀌면 호출해요. event.currentTarget.checked로 새 값을 확인해요. */
+  onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
+
+  /** 실제 입력 요소에 접근할 참조예요. focus() 같은 입력 동작에 사용해요. */
+  ref?: Ref<HTMLInputElement> | undefined;
+
   /** 외부에서 제어하는 선택 상태예요. `true`이면 선택되고 `false`이면 해제돼요. `onChange`와 함께 사용해요. */
   checked?: boolean;
 

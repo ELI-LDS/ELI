@@ -9,7 +9,7 @@ export interface SelectOption {
 }
 
 export interface SelectProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children' | 'defaultValue' | 'onChange'> {
   /** 선택 영역 위에 표시할 라벨이에요. 생략하면 `라벨`을 표시해요. */
   label?: ReactNode;
 

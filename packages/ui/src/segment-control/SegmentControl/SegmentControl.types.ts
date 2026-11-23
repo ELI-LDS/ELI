@@ -20,7 +20,7 @@ export type SegmentControlOptions =
     ];
 
 export interface SegmentControlProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'children' | 'defaultValue' | 'onChange'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children' | 'defaultValue' | 'onChange'> {
   /** Segment Control이 무엇을 선택하는 영역인지 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 

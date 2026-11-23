@@ -7,7 +7,7 @@ import type {
 import type { NavigationDrawerItemProps } from '../NavigationDrawerItem/NavigationDrawerItem.types.js';
 
 export interface NavigationDrawerSubItem
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'value'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'children' | 'value'> {
   /** Sub Menu를 구분하고 선택 상태를 연결하는 고유 값이에요. */
   value: string;
 

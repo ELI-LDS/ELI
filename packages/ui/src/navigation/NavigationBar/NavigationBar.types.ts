@@ -32,7 +32,7 @@ export type NavigationBarOptions =
     ];
 
 export interface NavigationBarProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'defaultValue' | 'onChange'> {
+  extends Omit<HTMLAttributes<HTMLElement>, 'dangerouslySetInnerHTML' | 'children' | 'defaultValue' | 'onChange'> {
   /** Navigation Bar의 목적을 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 

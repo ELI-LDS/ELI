@@ -23,6 +23,7 @@ import type { RadioProps } from './Radio.types.js';
  * - 여러 항목 중 하나만 골라야 하면 같은 `name`을 가진 Radio를 사용해요.
  *
  * ### 내용과 동작
+ * - `ref`: 실제 입력 요소를 가리켜 focus() 같은 입력 동작에 사용해요.
  * - `onChange`: 선택 상태가 바뀔 때 실행할 함수
  * - 화면에 라벨이 없다면 `aria-label`로 선택지를 설명해요.
  *

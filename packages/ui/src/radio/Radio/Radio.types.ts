@@ -1,7 +1,13 @@
-import type { InputHTMLAttributes } from 'react';
+import type { ChangeEventHandler, Ref, InputHTMLAttributes } from 'react';
 
 export interface RadioProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'dangerouslySetInnerHTML' | 'children' | 'type'> {
+  /** 입력이 바뀌면 호출해요. event.currentTarget.value로 새 값을 확인해요. */
+  onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
+
+  /** 실제 입력 요소에 접근할 참조예요. focus() 같은 입력 동작에 사용해요. */
+  ref?: Ref<HTMLInputElement> | undefined;
+
   /** 같은 선택 묶음에서 Radio를 구분하는 값이에요. */
   value: string;
 

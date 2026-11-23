@@ -4,7 +4,7 @@ import type { IndicatorProgress } from '../loading.types.js';
 export type LoadingIndicatorVariant = 'continuous' | 'cycle';
 
 export interface LoadingIndicatorProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'aria-label' | 'children' | 'role'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'aria-label' | 'children' | 'role'> {
   /** 진행 상태를 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 

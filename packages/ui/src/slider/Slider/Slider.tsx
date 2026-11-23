@@ -50,16 +50,17 @@ function StandardSlider(props: SliderStandardProps) {
     onValueChange,
     showMarker = true,
     showValueIndicator = true,
-    step = 1,
+    step: requestedStep,
     value,
     variant = 'standard',
     ...sliderProps
   } = props;
-  const { max, min, setStandardValue, standardValue } = useSlider({
+  const { max, min, step, setStandardValue, standardValue } = useSlider({
     defaultValue,
     max: maximum,
     min: minimum,
     onValueChange,
+    step: requestedStep,
     value,
     variant: 'standard',
   });
@@ -112,16 +113,17 @@ function RangeSlider(props: SliderRangeProps) {
     showLeftValueIndicator = true,
     showMarker = true,
     showRightValueIndicator = true,
-    step = 1,
+    step: requestedStep,
     value,
     variant,
     ...sliderProps
   } = props;
-  const { max, min, rangeValue, setRangeValue } = useSlider({
+  const { max, min, step, rangeValue, setRangeValue } = useSlider({
     defaultValue,
     max: maximum,
     min: minimum,
     onValueChange,
+    step: requestedStep,
     value,
     variant: 'range',
   });

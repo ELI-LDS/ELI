@@ -1,4 +1,4 @@
-import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
+import type { MouseEventHandler, ButtonHTMLAttributes, CSSProperties, ReactNode } from 'react';
 
 export type ButtonSize = 'large' | 'medium';
 
@@ -7,7 +7,10 @@ export type ButtonVariant = 'solid' | 'outline' | 'ghost';
 export type ButtonColor = 'brand' | 'neutral';
 
 export interface ButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'color'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'children' | 'color'> {
+  /** 클릭·Enter·Space로 버튼을 실행하면 호출해요. 여기에 저장·이동 같은 동작을 연결해요. */
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+
   /**
    * 루트 button 요소에 추가할 클래스예요.
    * 일반 CSS와 CSS Modules뿐 아니라 Tailwind CSS의 `w-full bg-violet-600 hover:bg-violet-700`,

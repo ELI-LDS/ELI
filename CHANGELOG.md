@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### UI 콘텐츠 — 다음 MINOR 대상
+
+- Slider의 초기값·제어값·변경값을 같은 min·max·step 기준으로 보정해 실제 input·표시·트랙·콜백의 불일치를 수정해요.
+- TextField의 외부 객체·콜백 ref가 내부 입력 지우기 참조에 덮어써지는 문제를 수정하고, TextField·TextArea·Checkbox·Radio에 실제 입력 요소를 가리키는 ref 타입을 명시해요.
+- BREAKING CHANGE: 렌더링할 수 없는 네이티브 속성을 공개 타입에서 제외해요. Checkbox·Radio·Divider의 children은 주변 label·요소로 옮기고, 직접 HTML 주입 대신 각 컴포넌트의 내용 prop을 사용해요. 새 기능·허용 타입 축소를 포함하므로 현재 0.x 정책의 MINOR에 모아 배포하며 버전·기존 고정 파일은 이번에 변경하지 않아요.
+
 ### 수정
 
 - 원본 저장소를 `ELI-team/ELI`로 이전해 CLI의 UI·하네스 Release 조회와 패키지 repository 주소를 갱신했어요. 이전 주소가 남은 설치 기록도 버전·해시 검증을 유지해요. 새 웹사이트·Storybook 주소를 안내하며, 설치 도구 수정은 다음 CLI PATCH 대상으로 기록하고 기존 고정 후보를 덮어쓰지 않아요.
