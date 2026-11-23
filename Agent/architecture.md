@@ -18,6 +18,18 @@
 
 컴포넌트 Storybook 예제는 `apps/storybook/stories`에서 관리하고 개발용 `@/` 경로로 UI 소스를 연결해요. 이를 통해 `packages/ui`에 Storybook 의존성을 추가하지 않아요.
 
+## 저장소와 공개 주소를 구분해요
+
+| 용도 | 주소 |
+| --- | --- |
+| 원본 저장소 | [ELI-team/ELI](https://github.com/ELI-team/ELI) |
+| 공식 웹사이트·문서 앱 | [eli-design.dev](https://eli-design.dev) — 웹페이지 제작 예정 |
+| 컴포넌트 검수·Storybook | [storybook.eli-design.dev](https://storybook.eli-design.dev) |
+
+저장소 링크·clone 안내·패키지 repository·CLI의 GitHub Release API와 asset 주소는 현재 원본 저장소를 기준으로 맞춰요. 이전 주소가 남은 사용자 설치 기록은 임의로 고쳐 쓰지 않고 기존 버전·해시 검증을 유지해요. 이미 고정한 태그·배포 파일·검증 기록의 원본 SHA와 해시를 주소 변경 때문에 다시 만들지 않아요.
+
+웹페이지는 아직 제작 전이며 `eli-design.dev`는 향후 사용할 주소예요. 도메인을 구매하거나 문서에 링크를 추가한 것과 앱 배포 완료는 구분해요. 웹사이트는 실제 응답과 콘텐츠를 확인하기 전까지 준비 중으로 안내해요. Storybook의 배포와 Git 연결 확인은 [배포 검증](testing.md#storybook-배포를-확인해요)에서 관리해요. Cloudflare Worker 리소스 이름을 GitHub 조직명이나 도메인에 맞추기 위해 임의로 바꾸지 않아요.
+
 ## 소스 설치를 기본으로 사용해요
 
 ELI의 기본 소비 방식은 shadcn/ui처럼 필요한 컴포넌트 소스를 소비 프로젝트에 추가하는 방식이에요. 전체를 원하면 같은 소스 설치 흐름에서 모든 공개 컴포넌트를 명시적으로 선택할 수 있어야 해요. UI 원본은 `packages/ui/src` 한 곳에서 관리하고 배포 방식별로 구현을 복제하지 않아요.

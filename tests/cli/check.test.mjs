@@ -394,16 +394,16 @@ test('GitHub asset CDN만 따라가고 다른 리디렉션은 거부해요', asy
         : new Response(index);
     };
     const version = JSON.parse(index).version;
-    assert.equal((await loadRegistry(`https://github.com/ELI-LDS/ELI/releases/download/v${version}/registry.json`)).index.version, version);
+    assert.equal((await loadRegistry(`https://github.com/ELI-team/ELI/releases/download/v${version}/registry.json`)).index.version, version);
     assert.equal(seen.length, 2);
     globalThis.fetch = async () => new Response(null, { status: 302, headers: { location: 'https://example.com/private' } });
-    await assert.rejects(loadRegistry('https://github.com/ELI-LDS/ELI/releases/download/v0.0.0/registry.json'), { code: 'UNSAFE_REGISTRY' });
+    await assert.rejects(loadRegistry('https://github.com/ELI-team/ELI/releases/download/v0.0.0/registry.json'), { code: 'UNSAFE_REGISTRY' });
     await assert.rejects(loadRegistry('https://custom.example/registry.json'), { code: 'UNSAFE_REGISTRY' });
   } finally { globalThis.fetch = original; }
 });
 
 test('도구 전용·사전 릴리스를 제외하고 콘텐츠 릴리스를 선택해요', async () => {
-  const { latestRegistry } = await import('../../packages/cli/dist/registry.mjs');
+  const { latestRegistry, releaseRegistry } = await import('../../packages/cli/dist/registry.mjs');
   const original = globalThis.fetch;
   const releases = [
     { tag_name: 'cli-v0.1.0', assets: [] },
@@ -411,11 +411,29 @@ test('도구 전용·사전 릴리스를 제외하고 콘텐츠 릴리스를 선
     { tag_name: 'v0.2.0', assets: [{ name: 'registry.json' }] },
   ];
   try {
-    globalThis.fetch = async () => new Response(JSON.stringify(releases));
+    globalThis.fetch = async url => {
+      assert.equal(url, 'https://api.github.com/repos/ELI-team/ELI/releases?per_page=100');
+      return new Response(JSON.stringify(releases));
+    };
+    assert.equal(releaseRegistry('0.2.0'), 'https://github.com/ELI-team/ELI/releases/download/v0.2.0/registry.json');
     const downloads = [];
-    assert.equal(await latestRegistry(downloads), 'https://github.com/ELI-LDS/ELI/releases/download/v0.2.0/registry.json');
+    assert.equal(await latestRegistry(downloads), 'https://github.com/ELI-team/ELI/releases/download/v0.2.0/registry.json');
     assert.equal(downloads.length, 1);
     globalThis.fetch = async () => new Response('[]');
     await assert.rejects(latestRegistry([]), { code: 'REGISTRY_UNAVAILABLE' });
+  } finally { globalThis.fetch = original; }
+});
+
+test('이전·현재 저장소 주소 모두 Release 태그와 콘텐츠 버전을 대조해요', async () => {
+  const { loadRegistry } = await import('../../packages/cli/dist/registry.mjs');
+  const original = globalThis.fetch;
+  const index = await readFile(join(registry, 'registry.json'));
+  try {
+    globalThis.fetch = async () => new Response(index);
+    const version = JSON.parse(index).version;
+    for (const owner of ['ELI-team', 'ELI-LDS']) {
+      await assert.rejects(loadRegistry(`https://github.com/${owner}/ELI/releases/download/v999.0.0/registry.json`), { code: 'VERSION_MISMATCH' });
+      assert.equal((await loadRegistry(`https://github.com/${owner}/ELI/releases/download/v${version}/registry.json`)).index.version, version);
+    }
   } finally { globalThis.fetch = original; }
 });

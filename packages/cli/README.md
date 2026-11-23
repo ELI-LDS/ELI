@@ -2,6 +2,8 @@
 
 필요한 ELI React 컴포넌트만 프로젝트에 추가해요. 컴포넌트와 함께 필요한 토큰·아이콘도 가져오고, 추가한 코드는 직접 수정할 수 있어요.
 
+[웹사이트 (준비 중)](https://eli-design.dev) · [Storybook](https://storybook.eli-design.dev) · [GitHub](https://github.com/ELI-team/ELI)
+
 ## 시작하기
 
 기존 React 프로젝트의 루트에서 실행해요. CLI를 전역으로 설치할 필요는 없어요.

@@ -74,7 +74,7 @@ export async function readResource(url, downloads) {
 /** 콘텐츠 버전을 명시하면 이동하는 latest 대신 같은 Release의 파일만 사용해요. */
 export function releaseRegistry(version) {
   ensure(/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version), 'INVALID_ARGUMENT', '콘텐츠 버전을 숫자로 지정해요.');
-  return `https://github.com/ELI-LDS/ELI/releases/download/v${version}/registry.json`;
+  return `https://github.com/ELI-team/ELI/releases/download/v${version}/registry.json`;
 }
 
 export async function latestRegistry(downloads) {
@@ -83,13 +83,13 @@ export async function latestRegistry(downloads) {
 
 /** UI·하네스·도구의 Release를 태그와 asset 이름으로 구분해 잘못된 콘텐츠를 선택하지 않아요. */
 export async function latestRelease(downloads, prefix, filename) {
-  const bytes = await readResource('https://api.github.com/repos/ELI-LDS/ELI/releases?per_page=100', downloads);
+  const bytes = await readResource('https://api.github.com/repos/ELI-team/ELI/releases?per_page=100', downloads);
   const releases = parseJson(bytes.toString('utf8'), 'GitHub Release');
   ensure(Array.isArray(releases), 'INVALID_DATA', 'GitHub Release 목록이 올바르지 않아요.');
   // 설치 도구의 별도 Release를 콘텐츠 릴리스로 잘못 선택하지 않아요.
   const release = releases.find(item => !item.draft && !item.prerelease && typeof item.tag_name === 'string' && item.tag_name.startsWith(prefix) && /^\d+\.\d+\.\d+$/.test(item.tag_name.slice(prefix.length)) && item.assets?.some(asset => asset.name === filename));
   ensure(release, 'REGISTRY_UNAVAILABLE', '게시된 레지스트리가 없어요. 개발 검증에는 --registry 경로를 지정해요.');
-  return `https://github.com/ELI-LDS/ELI/releases/download/${release.tag_name}/${filename}`;
+  return `https://github.com/ELI-team/ELI/releases/download/${release.tag_name}/${filename}`;
 }
 
 export async function loadRegistry(url, expected = {}) {
@@ -99,7 +99,8 @@ export async function loadRegistry(url, expected = {}) {
   const index = parseJson(bytes.toString('utf8'), '레지스트리');
   ensure(matches(index, schema.$defs.index, schema) && semver.valid(index.version), 'INVALID_DATA', '지원하는 레지스트리 v1 목록이 아니에요.');
   const location = new URL(url);
-  const tag = location.hostname === 'github.com' && location.pathname.match(/^\/ELI-LDS\/ELI\/releases\/download\/v([^/]+)\/registry\.json$/)?.[1];
+  // 이전 저장소 주소가 남은 설치 기록도 태그와 콘텐츠 버전의 대조를 유지해요.
+  const tag = location.hostname === 'github.com' && location.pathname.match(/^\/(?:ELI-team|ELI-LDS)\/ELI\/releases\/download\/v([^/]+)\/registry\.json$/)?.[1];
   ensure(!tag || tag === index.version, 'VERSION_MISMATCH', 'GitHub Release 태그와 콘텐츠 버전이 달라요.');
   ensure(!expected.version || index.version === expected.version, 'VERSION_MISMATCH', '설치된 UI와 콘텐츠 버전이 달라요.');
   ensure(!expected.sha256 || indexHash === expected.sha256, 'INTEGRITY_MISMATCH', '고정한 레지스트리 목록이 변경됐어요.');
