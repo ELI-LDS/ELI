@@ -23,7 +23,7 @@ function ApiContractsFixture() {
   }, []);
   const items = options.map(value => ({ value, label: value, outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
   const withDisabled = ['a', 'b', 'c'].map(value => ({ value, label: value, disabled: value === 'b', outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
-  return <>
+  return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', minWidth: 0, overflowWrap: 'anywhere' }}>
     <section aria-label="간격 검증">
       <Slider aria-label="간격 값" min={0} max={10} step={3} defaultValue={5} onValueChange={value => setChanges(String(value))} />
       <Slider aria-label="제어 간격" min={0} max={10} step={3} value={sliderValue} onValueChange={setSliderValue} />
@@ -59,12 +59,12 @@ function ApiContractsFixture() {
     <SegmentControl aria-label="세그먼트 비활성화" disabled={disabled} options={withDisabled} onValueChange={setChanges} />
     <NavigationBar aria-label="탐색 비활성화" items={withDisabled} onValueChange={setChanges} />
     <NavigationBarGlass aria-label="글래스 비활성화" items={withDisabled} onValueChange={setChanges} />
-    <section style={{ paddingTop: 160, minHeight: 230, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}><FabMenu label="비활성 메뉴" defaultExpanded items={[{ id: 'disabled', label: '차단 액션', disabled: true, onClick: () => setChanges('차단 실패') }, { id: 'enabled', label: '허용 액션', onClick: () => setChanges('허용') }]} /></section>
+    <section aria-label="FAB 검증" style={{ position: 'relative', height: 240, flexShrink: 0 }}><FabMenu style={{ position: 'absolute', right: 0, bottom: 0 }} label="비활성 메뉴" defaultExpanded items={[{ id: 'disabled', label: '차단 액션', disabled: true, onClick: () => setChanges('차단 실패') }, { id: 'enabled', label: '허용 액션', onClick: () => setChanges('허용') }]} /></section>
     <output data-testid="api-changes">{changes}</output>
     <section aria-label="진행률 검증">
       {[37, -5, 130, NaN, Infinity, undefined].map((progress, index) => <div key={index} style={{ width: 200 }}><ProgressIndicator aria-label={'막대 ' + index} progress={progress} /><LoadingIndicator aria-label={'원형 ' + index} progress={progress} /></div>)}
     </section>
-  </>;
+  </div>;
 }
 `;
 
