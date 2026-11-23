@@ -16,9 +16,9 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-LDS/ELI/pull/73)
 
-## eli-design 0.3.0 — 릴리스 준비 중
+## eli-design 0.3.0 — npm 게시 대기
 
-아직 npm에 게시하지 않았어요. CLI의 기본 설치 위치와 충돌 보호를 바꾸는 MINOR 후보이며, UI 콘텐츠 0.2.0·공개 하네스 0.1.0을 함께 검증해요. 고정 파일과 실제 게시 상태는 [릴리스 기록](handbook/releases/0.3.0.md)에서 구분해요.
+아직 npm에 게시하지 않았어요. CLI의 기본 설치 위치와 충돌 보호를 바꾸는 MINOR 후보예요. 2026-11-23 UI 콘텐츠 0.2.0·공개 하네스 0.1.0의 소비 검증을 완료하고 [cli-v0.3.0](https://github.com/ELI-LDS/ELI/releases/tag/cli-v0.3.0)에 고정 파일을 제공했어요. 해시·크기·검증 범위와 실제 게시 상태는 [릴리스 기록](handbook/releases/0.3.0.md)에서 구분해요.
 
 ### 변경
 
@@ -34,9 +34,9 @@
 
 BREAKING CHANGE: 별도 경로를 지정하지 않은 새 초기화의 기본 위치가 components/eli에서 components/ui로 바뀌어요. 이전 위치가 필요하면 init --dir로 지정해요. 이미 초기화한 프로젝트는 고정된 경로와 콘텐츠를 계속 사용하며 자동 이동·업데이트는 제공하지 않아요.
 
-## UI 소스 콘텐츠 0.2.0 — 릴리스 준비 중
+## UI 소스 콘텐츠 0.2.0 — 2026-11-23
 
-GitHub Release v0.2.0으로 제공할 MINOR 후보예요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 이전 v0.1.0 JSON·태그·설치 기록은 변경하지 않아요.
+[GitHub Release v0.2.0](https://github.com/ELI-LDS/ELI/releases/tag/v0.2.0)에 공개했어요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 이전 v0.1.0 JSON·태그·설치 기록은 변경하지 않았어요.
 
 ### 변경
 
