@@ -1,14 +1,17 @@
 <div align="center">
 
-<img src=".github/assets/eli-mascot.png" alt="ELI 이름표를 달고 펜을 든 채 생각에 잠긴 디자이너 엘리" width="260">
+<img src=".github/assets/eli-logo.png" alt="ELI" width="720">
 
-<h1><img src=".github/assets/eli-logo.png" alt="ELI" width="220"></h1>
+<h1>디자인의 첫 단추, ELI</h1>
 
-**천재 디자이너 엘리를 팀에 합류시키세요.**
+작은 조각 하나가 규칙이 되고, 규칙이 모이면 하나의 화면이 돼요.<br>
+ELI가 처음부터 맞춰 끼워 둘게요.
 
 [공식 웹사이트 (준비 중)](https://eli-design.dev) · [Storybook](https://storybook.eli-design.dev) · [컴포넌트 사용 예시](packages/cli/README.md#컴포넌트-사용하기) · [기여 방법](#함께-개발해요)
 
 </div>
+
+<img src=".github/assets/eli-mascot-badge.png" alt="곁에서 디자인의 첫 단추를 함께 끼워 주는 엘리" width="72" align="right">
 
 디자이너가 없어도, 디자인을 몰라도 괜찮아요. 엘리는 AI 에이전트 안에서 일하는 디자이너예요. 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요. 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 

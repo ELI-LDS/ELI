@@ -10,7 +10,7 @@ ELI의 이름, 로고, 마스코트 캐릭터 "엘리"는 MIT 라이선스의 �
 | --- | --- |
 | "ELI", "엘리"라는 이름 | |
 | ELI 로고 | `.github/assets/eli-logo.png` |
-| 마스코트 캐릭터 "엘리"의 이미지와 생김새 | `.github/assets/eli-mascot.png` |
+| 마스코트 캐릭터 "엘리"의 이미지와 생김새 | `.github/assets/eli-mascot.png` (원본), `.github/assets/eli-mascot-badge.png` (배경을 받친 표시용) |
 
 이 저장소에 앞으로 추가되는 로고와 캐릭터 이미지에도 같은 기준을 적용해요.
 
