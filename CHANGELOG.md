@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### 개발 환경
+
+- Storybook·Vite·ESLint·typescript-eslint를 보안 수정 버전으로 갱신했어요. Storybook 문서 추출 도구의 glob은 수정판으로 제한해 교체하고, 소비 검사도 같은 Vite 버전을 사용해요. 알려진 취약점은 전체 의존성 감사에서 0개로 확인했어요. CLI·UI·하네스 버전과 기존 배포 파일은 변경하지 않았어요.
+
 ### 문서
 
 - Storybook의 Modal 직접 바꿔보기에 열기·닫기 흐름을 표시하고, Chip의 클릭 선택 상태와 Controls를 연결했어요. 한눈에 보기의 Chip도 각각 선택·해제할 수 있어요. 공개 UI 소스와 API는 변경하지 않았어요.

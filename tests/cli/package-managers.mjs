@@ -102,7 +102,7 @@ async function verify(manager, candidate) {
         ssr: 'vite build --ssr ssr.tsx --outDir dist-ssr && node dist-ssr/ssr.js',
       },
       dependencies: { react: '19.3.0', 'react-dom': '19.3.0' },
-      devDependencies: { '@types/react': '19.3.0', '@types/react-dom': '19.3.0', typescript: '5.9.3', vite: '8.3.2' },
+      devDependencies: { '@types/react': '19.3.0', '@types/react-dom': '19.3.0', typescript: '5.9.3', vite: '8.3.3' },
     }));
     await mkdir(join(work, 'src'));
     await writeFile(join(work, 'index.html'), '<html lang="ko"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');
