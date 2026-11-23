@@ -6,23 +6,17 @@
 
 ### 수정
 
-- CLI status의 일반 출력을 한글로 정리하고 UI·하네스별 변경·누락 파일 경로와 다음 확인 방법을 표시해요. 파일·설정·설치 기록을 수정하지 않으며 기존 JSON 응답과 종료 코드는 유지해요. 릴리스 준비 0.3.0과 분리한 후속 CLI PATCH 대상으로 기록해요.
+- CLI status의 일반 출력을 한글로 정리하고 UI·하네스별 변경·누락 파일 경로와 다음 확인 방법을 표시해요. 파일·설정·설치 기록을 수정하지 않으며 기존 JSON 응답과 종료 코드는 유지해요. 기존 0.3.0 고정 후보에는 포함하지 않고 다음 묶음 업데이트에 담을 CLI 오류 수정(PATCH)으로 기록해요.
 
-### 추가
+### 개발 환경
 
-- CLI 초기화 결과에 선택한 UI 소스 설치 경로를 표시해요. 새 초기화의 기본 위치는 `src/components/ui` 또는 `components/ui`이며 기존 `eli.json`의 위치와 별칭 설정은 유지해요. 기본 위치 변경은 다음 CLI MINOR 대상으로 기록해요.
-- 선택 설치의 공개 진입 파일을 `button/Button/Button.tsx`에서 `button.tsx`처럼 짧게 제공해요. 스타일·타입·Hook은 컴포넌트 보조 폴더로 모으고 TS·CSS 참조를 새 위치에 맞춰 연결해요. 같은 모듈명의 기존 파일·폴더 구현이 있으면 중단해요. 설치 파일과 import 경로 변경은 UI 콘텐츠의 다음 MINOR 대상이며, 기존 공개 JSON·태그·설치 기록은 변경하지 않아요. 기존 프로젝트의 소스는 자동으로 이동하지 않으며 새 콘텐츠 이전 전에는 기록된 경로를 계속 사용해요.
-- TextField의 X를 입력 지우기 버튼으로 연결했어요. onChange에 빈 값을 전달하고 포커스를 입력창으로 복원하며 readonly·disabled에서는 막아요. 라벨과 버튼의 올바른 연결을 위해 바깥 label을 div로 바꾸고 내부 label을 htmlFor/id로 연결했어요. 외형은 유지하고 UI 콘텐츠의 다음 MINOR 대상으로 기록해요.
-- Modal에 `open`, `defaultOpen`, `onOpenChange`와 Dim·Secondary·Esc 닫기를 추가했어요. Secondary는 콜백 후 닫고 preventDefault로 취소할 수 있으며, Positive는 자동으로 닫지 않아요. 포커스 순환·복귀와 배경 잠금·복원을 지원하고 기존 디자인·최대 너비는 유지해요.
-- UI 콘텐츠의 다음 MINOR 대상으로 기록해요. 기존 Secondary 클릭 뒤에도 모달을 유지하려면 콜백에서 preventDefault를 사용하거나 외부 open 제어를 적용해요. 공개된 0.1.0 JSON·npm 파일·태그는 변경하지 않았어요.
-
+- Storybook·Vite·ESLint·typescript-eslint를 보안 수정 버전으로 갱신했어요. Storybook 문서 추출 도구의 glob은 수정판으로 제한해 교체하고, 소비 검사도 같은 Vite 버전을 사용해요. 알려진 취약점은 전체 의존성 감사에서 0개로 확인했어요. CLI·UI·하네스 버전과 기존 배포 파일은 변경하지 않았어요.
 
 ### 문서
 
 - Storybook의 Modal 직접 바꿔보기에 열기·닫기 흐름을 표시하고, Chip의 클릭 선택 상태와 Controls를 연결했어요. 한눈에 보기의 Chip도 각각 선택·해제할 수 있어요. 공개 UI 소스와 API는 변경하지 않았어요.
 - npm 게시 완료 안내와 공식 홍보 전후의 버전 정책, 수동 릴리스 절차를 정리했어요. 패키지 README의 변경은 다음 npm 릴리스에 반영돼요.
 - 개별 소스 추가를 기본으로 하는 배포 방향과 진입점 `eli-design`, 하네스 연동·버전·전체 다운로드량의 지침을 정리했어요. 로컬 구현과 공개 배포·하네스 연결을 구분해요.
-- npm README를 사용자 설치·사용법 중심으로 정리하고 루트·패키지 README와 지침을 공개된 소스 선택 설치 기준으로 맞췄어요. CLI README는 다음 패치 게시 후 npm에 반영돼요.
 - 종료 예정인 `@eli-design/ui`를 신규 설치 대안에서 제외하고 컴포넌트 사용 예시를 CLI 소스·로컬 import 기준으로 전환했어요. UI 원본·내부 연결·과거 기록은 유지하며 npm 삭제·게시 작업은 하지 않았어요.
 - 하네스 설치 안내의 게시 준비 문구와 기존 패키지 점검의 버전 비교 기준을 바로잡았어요. 하네스 문서 변경은 다음 독립 패치 릴리스 대상으로 기록하며 공개된 0.1.0 JSON은 변경하지 않아요.
 
@@ -30,7 +24,42 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-LDS/ELI/pull/73)
 
-## eli-design 0.2.1 — 릴리스 준비 중
+## eli-design 0.3.0 — npm 게시 대기
+
+아직 npm에 게시하지 않았어요. CLI의 기본 설치 위치와 충돌 보호를 바꾸는 MINOR 후보예요. 2026-11-23 UI 콘텐츠 0.2.0·공개 하네스 0.1.0의 소비 검증을 완료하고 [cli-v0.3.0](https://github.com/ELI-LDS/ELI/releases/tag/cli-v0.3.0)에 고정 파일을 제공했어요. 해시·크기·검증 범위와 실제 게시 상태는 [릴리스 기록](handbook/releases/0.3.0.md)에서 구분해요.
+
+### 변경
+
+- 새 초기화의 기본 위치를 src 유무에 따라 `src/components/ui` 또는 `components/ui`로 정하고 초기화 결과에 경로를 표시해요. 기존 eli.json의 설치 위치와 앱의 별칭 설정은 유지해요.
+- 같은 모듈명의 기존 파일이나 폴더의 index 구현이 있으면 짧은 import가 다른 구현을 가리지 않도록 중단해요.
+- npm README를 사용자 설치·사용법과 새 경로 기준으로 정리했어요.
+
+### 수정
+
+- 미게시 0.2.1 후보에 준비했던 하네스 전용 프로젝트의 일반 status 출력 수정을 포함해요. 하네스 콘텐츠 자체는 공개된 0.1.0을 그대로 사용해요.
+
+### 이전 안내
+
+BREAKING CHANGE: 별도 경로를 지정하지 않은 새 초기화의 기본 위치가 components/eli에서 components/ui로 바뀌어요. 이전 위치가 필요하면 init --dir로 지정해요. 이미 초기화한 프로젝트는 고정된 경로와 콘텐츠를 계속 사용하며 자동 이동·업데이트는 제공하지 않아요.
+
+## UI 소스 콘텐츠 0.2.0 — 2026-11-23
+
+[GitHub Release v0.2.0](https://github.com/ELI-LDS/ELI/releases/tag/v0.2.0)에 공개했어요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 이전 v0.1.0 JSON·태그·설치 기록은 변경하지 않았어요.
+
+### 변경
+
+- 공개 진입 파일을 button/Button/Button.tsx에서 button.tsx처럼 짧게 제공해요. 스타일·타입·Hook은 컴포넌트 보조 폴더로 모으고 TS·CSS·URL 참조와 해시를 새 배치에 맞춰 생성해요. 원본과 컴포넌트 디자인은 유지해요.
+
+### 추가
+
+- Modal에 open·defaultOpen·onOpenChange, Dim·Secondary·Esc 닫기, 포커스 순환·복귀와 배경 잠금·복원을 추가해요. Secondary는 콜백 후 닫고 preventDefault로 취소할 수 있어요. Positive는 자동으로 닫지 않아요.
+- TextField의 X를 입력 지우기로 연결해요. onChange에 빈 값을 전달하고 포커스를 복원하며 readonly·disabled에서는 막아요. 바깥 label은 div로 바꾸고 내부 label과 input을 htmlFor/id로 연결해요.
+
+### 이전 안내
+
+BREAKING CHANGE: 새 콘텐츠를 사용할 때 로컬 import를 짧은 진입 파일에 맞춰야 해요. 기존 소스는 자동으로 이동하지 않아요. 사용자 수정 파일을 확인한 뒤 별도로 이전해요. Modal의 기존 Secondary 클릭 뒤에도 열림을 유지하려면 콜백에서 preventDefault를 사용하거나 외부 open 상태를 제어해요. TextField의 바깥 요소를 대상으로 한 CSS 선택자도 확인해요.
+
+## eli-design 0.2.1 — 과거 패치 후보
 
 CLI 실행 오류와 사용자용 README를 수정한 패치 후보예요. npm 게시는 담당자가 진행하며, 이 구역은 게시 완료를 뜻하지 않아요. UI·하네스 콘텐츠는 공개된 0.1.0을 재사용하고 이번 후보에 미배포 하네스 문서 변경을 묶지 않아요.
 

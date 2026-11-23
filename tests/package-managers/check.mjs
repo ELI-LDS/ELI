@@ -122,7 +122,7 @@ async function verify(manager, tarball) {
         '@types/react': '19.3.0',
         '@types/react-dom': '19.3.0',
         typescript: '5.9.3',
-        vite: '8.3.2',
+        vite: '8.3.3',
       },
     }, null, 2));
     await writeFile(join(work, 'index.html'), '<html lang="ko"><body><div id="root"></div><script type="module" src="/main.tsx"></script></body></html>');

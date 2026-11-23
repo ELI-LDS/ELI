@@ -11,7 +11,7 @@ npx eli-design@latest add button
 
 여러 개는 `add button modal`, 전체는 명시적으로 `add --all`을 사용해요. 예시의 컴포넌트 ID는 `list`에서 확인하고 필요한 컴포넌트를 먼저 추가해요. [CLI 사용법](https://github.com/ELI-LDS/ELI/blob/main/packages/cli/README.md)에 지원 환경·경로 설정·하네스 선택 설치를 안내해요.
 
-아래 import는 다음 CLI·UI 콘텐츠 릴리스에서 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 기존 설치 소스는 자동으로 이동하지 않으며 실제 설치 기록의 경로를 사용해요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
+아래 import는 게시 대기 중인 CLI 0.3.0과 공개된 UI 콘텐츠 0.2.0을 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 기존 설치 소스는 자동으로 이동하지 않으며 실제 설치 기록의 경로를 사용해요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
 
 기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. Pretendard 폰트는 소비 앱에서 직접 불러와요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
 
