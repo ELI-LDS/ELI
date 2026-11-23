@@ -7,5 +7,9 @@ autoInstallPeers: false
 saveExact: true
 engineStrict: true
 minimumReleaseAgeStrict: true
+# Storybook의 문서 추출 도구가 glob 13에 고정돼 있어 보안 수정판으로 교체해요.
+# 상위 도구가 수정 버전을 지원하면 제거하고, 그전에는 Storybook 빌드로 호환성을 확인해요.
+overrides:
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.7.0>glob': 14.0.2
 allowBuilds:
   esbuild@0.28.2: true
