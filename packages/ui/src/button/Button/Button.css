@@ -123,7 +123,8 @@
 
 /* Variant / Ghost / Brand, Neutral */
 .eli-button[data-variant='ghost'] {
-  background: var(--eli-background-default, #fff);
+  /* 기본 상태만 투명하게 해요. 아래 상태별 배경은 기존 디자인을 유지해요. */
+  background: transparent;
 }
 
 /* State / Brand / Large, Medium / Solid / Hover */

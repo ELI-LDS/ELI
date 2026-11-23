@@ -6,10 +6,14 @@
 
 ### UI 콘텐츠 — 다음 MINOR 대상
 
+- SnackBar에 duration·open·defaultOpen·onOpenChange를 추가해 기본 5초 후 닫히도록 해요. 0이면 자동 닫힘을 끄고 마우스·내부 포커스·창 비활성 중에는 남은 시간을 보존해요. 기존 액션 콜백은 유지하며 자동 닫힘을 추가한 동작 변경도 다음 MINOR에 포함해요.
+- BREAKING CHANGE: 사용자 합의에 따라 NavigationBar·NavigationBarGlass의 항목별 disabled와 단독 Item의 disabled 타입·처리를 제거해요. 비선택 항목은 모두 이동할 수 있어요. 이동 불가 항목을 전달하던 소비자는 목록 구성을 검토해야 해요. SegmentControl 2~4개·NavigationBar 3~5개는 강제 제한이 아닌 권장 범위로 안내해요.
+
+- Button의 Brand·Neutral Ghost 기본 배경을 디자이너 문서와 사용자 합의에 따라 투명하게 변경해요. Hover·Pressed·Disabled의 기존 배경은 유지해요. 문서로 설명한 기본 외형의 변경이며 기존 공개 JSON·CLI 고정 파일은 바꾸지 않아요.
 - Slider의 초기값·제어값·변경값을 같은 min·max·step 기준으로 보정해 실제 input·표시·트랙·콜백의 불일치를 수정해요.
 - TextField의 외부 객체·콜백 ref가 내부 입력 지우기 참조에 덮어써지는 문제를 수정하고, TextField·TextArea·Checkbox·Radio에 실제 입력 요소를 가리키는 ref 타입을 명시해요.
 - NavigationBar·NavigationBarGlass·SegmentControl에 일반 readonly 배열을 허용해 map 결과를 바로 전달해요. 선택 항목 제거 시 비제어는 첫 사용 가능 항목으로 보정하고, 제어 값이 목록에 없으면 선택 표시를 숨겨요. 목록 변경만으로 콜백을 호출하지 않아요.
-- Select·SegmentControl의 전체·옵션별 disabled와 NavigationBar·NavigationBarGlass·FabMenu의 항목별 disabled를 연결해요. 비활성 항목은 클릭·키보드·드래그로 선택할 수 없어요. 새 색상은 추가하지 않아요.
+- Select·SegmentControl의 전체·옵션별 disabled와 FabMenu의 항목별 disabled를 연결해요. 비활성 항목은 선택하거나 실행할 수 없어요. 새 색상은 추가하지 않아요.
 - LoadingIndicator·ProgressIndicator의 progress를 0~100 숫자로 넓히고 실제 중간 진행률을 표시해요. 범위 밖 값은 제한하며 생략·NaN·Infinity는 진행률을 모르는 상태로 처리해요. 기존 디자인·반복 모션을 유지해요.
 - BREAKING CHANGE: 렌더링할 수 없는 네이티브 속성을 공개 타입에서 제외해요. Checkbox·Radio·Divider의 children은 주변 label·요소로 옮기고, 직접 HTML 주입 대신 각 컴포넌트의 내용 prop을 사용해요. 새 기능·허용 타입 축소를 포함하므로 현재 0.x 정책의 MINOR에 모아 배포하며 버전·기존 고정 파일은 이번에 변경하지 않아요.
 

@@ -6,19 +6,18 @@ import type { NavigationBarGlassProps } from './NavigationBarGlass.types.js';
 import { useNavigationBarGlass } from './useNavigationBarGlass.js';
 
 /**
- * 주요 화면 3개부터 5개 사이를 이동하는 유리 효과의 알약형 모바일 Navigation Bar예요.
+ * 주요 화면 사이를 이동하는 유리 효과의 알약형 모바일 Navigation Bar예요.
  *
  * @example 빠른 사용
  * `<NavigationBarGlass aria-label="주요 메뉴" items={items} onValueChange={setValue} />`
  *
  * ### 주요 설정
- * - `items`: `{ value, label, outlinedIcon, filledIcon }` 형식의 항목 3~5개
+ * - `items`: `{ value, label, outlinedIcon, filledIcon }` 형식의 항목, 3~5개 권장
  * - `value`: 외부에서 제어하는 활성 항목의 값
- * - `defaultValue`: 처음 활성화할 값, 기본값은 첫 번째 사용 가능 항목
+ * - `defaultValue`: 처음 활성화할 값, 기본값은 첫 번째 항목
  *
  * ### 내용과 동작
- * - `items`의 `disabled: true` 항목은 선택과 키보드 이동에서 제외해요.
- * - 선택 항목 제거 시 비제어는 첫 사용 가능 항목을 선택하고, 잘못된 제어 값은 선택 표시를 숨겨요.
+ * - 선택 항목 제거 시 비제어는 첫 항목을 선택하고, 잘못된 제어 값은 선택 표시를 숨겨요.
  * - `onValueChange`: 탭을 누르거나 indicator를 끌어 항목을 선택하면 해당 `value`를 받아요.
  * - 활성 탭만 `filledIcon`을 사용하고 나머지는 `outlinedIcon`을 사용해요.
  * - 방향키로 포커스를 이동하고 Enter 또는 Space로 선택해요.
@@ -92,7 +91,6 @@ export function NavigationBarGlass(props: NavigationBarGlassProps) {
         {items.map((item, index) => (
           <NavigationBarGlassItem
             active={item.value === selectedValue}
-            disabled={item.disabled}
             filledIcon={item.filledIcon}
             key={item.value}
             label={item.label}
