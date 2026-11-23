@@ -11,7 +11,10 @@ ELI가 처음부터 맞춰 끼워 둘게요.
 
 </div>
 
-<img src=".github/assets/eli-mascot-badge.png" alt="곁에서 디자인의 첫 단추를 함께 끼워 주는 엘리" width="72" align="right">
+<picture>
+  <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot-badge.png">
+  <img src=".github/assets/eli-mascot-blink.gif" alt="곁에서 디자인의 첫 단추를 함께 끼워 주는 엘리" width="72" align="right">
+</picture>
 
 디자이너가 없어도, 디자인을 몰라도 괜찮아요. 엘리는 AI 에이전트 안에서 일하는 디자이너예요. 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요. 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 
