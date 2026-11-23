@@ -23,18 +23,8 @@ const meta = {
     },
     progress: {
       name: '진행률',
-      control: 'select',
-      options: progressOptions,
-      labels: {
-        undefined: '진행률을 모름',
-        0: '0%',
-        10: '10%',
-        30: '30%',
-        50: '50%',
-        80: '80%',
-        100: '100%',
-      },
-      description: '완료 비율을 알면 값을 고르고, 알 수 없으면 비워 반복 애니메이션을 사용해요.',
+      control: { type: 'number', min: 0, max: 100, step: 1 },
+      description: '0~100 사이의 숫자를 입력해요. 값을 비우면 진행률을 모르는 반복 애니메이션을 표시해요.',
     },
     variant: {
       name: '반복 방식',

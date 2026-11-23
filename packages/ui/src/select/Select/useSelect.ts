@@ -1,9 +1,10 @@
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { FocusEventHandler, KeyboardEventHandler, MouseEventHandler } from 'react';
 import type { SelectProps } from './Select.types.js';
 
 /* Select 동작에 필요한 공개 속성만 받아요. */
 interface UseSelectOptions {
+  disabled: boolean;
   defaultValue: SelectProps['defaultValue'];
   onBlur: SelectProps['onBlur'];
   onKeyDown: SelectProps['onKeyDown'];
@@ -15,6 +16,7 @@ interface UseSelectOptions {
 /* 선택 상태와 키보드·포커스 상호작용을 관리해요. */
 export function useSelect({
   defaultValue,
+  disabled,
   onBlur,
   onKeyDown,
   onValueChange,
@@ -23,7 +25,9 @@ export function useSelect({
 }: UseSelectOptions) {
   /* 선택 상태 */
   const [internalValue, setInternalValue] = useState(defaultValue);
-  const [isOpen, setIsOpen] = useState(false);
+  const [internalOpen, setIsOpen] = useState(false);
+  const isOpen = !disabled && internalOpen;
+  useEffect(() => { if (disabled) setIsOpen(false); }, [disabled]);
   const selectedValue = value ?? internalValue;
   const selectedOption = options.find(option => option.value === selectedValue);
 
@@ -39,11 +43,12 @@ export function useSelect({
 
   /* 선택 버튼으로 목록을 열고 닫아요. */
   const handleTriggerClick: MouseEventHandler<HTMLButtonElement> = () => {
-    setIsOpen(current => !current);
+    if (!disabled) setIsOpen(current => !current);
   };
 
   /* 값을 반영한 뒤 목록을 닫고 선택 버튼으로 포커스를 돌려요. */
   const handleOptionClick = (nextValue: string) => {
+    if (disabled || !options.some(option => option.value === nextValue && !option.disabled)) return;
     if (value === undefined) setInternalValue(nextValue);
     onValueChange?.(nextValue);
     setIsOpen(false);
@@ -53,7 +58,7 @@ export function useSelect({
   /* 현재 Select 안에서 이동할 옵션을 찾아 포커스해요. */
   const focusOption = (position: 'first' | 'last' | 'next' | 'previous') => {
     const optionElements = Array.from(
-      menuRef.current?.querySelectorAll<HTMLButtonElement>('[role="option"]') ?? [],
+      menuRef.current?.querySelectorAll<HTMLButtonElement>('[role="option"]:not(:disabled)') ?? [],
     );
     if (optionElements.length === 0) return;
 
@@ -72,6 +77,7 @@ export function useSelect({
 
   /* 목록을 연 다음 렌더링된 첫 번째 또는 마지막 옵션으로 이동해요. */
   const openAndFocus = (position: 'first' | 'last') => {
+    if (disabled) return;
     if (isOpen) {
       focusOption(position);
       return;
@@ -84,7 +90,7 @@ export function useSelect({
   /* Select의 방향키 이동과 닫기 동작을 처리해요. */
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = event => {
     onKeyDown?.(event);
-    if (event.defaultPrevented) return;
+    if (event.defaultPrevented || disabled) return;
 
     if (event.key === 'Escape' && isOpen) {
       event.preventDefault();

@@ -68,6 +68,7 @@ export function FabMenu(props: FabMenuProps) {
       >
         {items.map(item => (
           <FabMenuSegment
+            disabled={item.disabled}
             icon={item.icon}
             key={item.id}
             label={item.label}

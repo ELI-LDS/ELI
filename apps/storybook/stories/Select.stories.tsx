@@ -16,7 +16,7 @@ const options = [
 
 function SelectPlayground({ options: initialOptions, ...selectProps }: SelectProps) {
   const [editableOptions, setEditableOptions] = useState(() =>
-    initialOptions.map(option => ({ label: String(option.label), value: option.value })),
+    initialOptions.map(option => ({ label: String(option.label), value: option.value, disabled: option.disabled ?? false })),
   );
 
   const addOption = () => {
@@ -28,7 +28,7 @@ function SelectPlayground({ options: initialOptions, ...selectProps }: SelectPro
 
       return [
         ...currentOptions,
-        { label: `옵션 ${optionNumber}`, value: `option-${optionNumber}` },
+        { label: `옵션 ${optionNumber}`, value: `option-${optionNumber}`, disabled: false },
       ];
     });
   };
@@ -63,6 +63,18 @@ function SelectPlayground({ options: initialOptions, ...selectProps }: SelectPro
                 value={option.label}
               />
             </label>
+            <label>
+              <input
+                aria-label={`옵션 ${index + 1} 비활성화`}
+                checked={option.disabled}
+                onChange={event => {
+                  const disabled = event.currentTarget.checked;
+                  setEditableOptions(current => current.map((item, itemIndex) => itemIndex === index ? { ...item, disabled } : item));
+                }}
+                type="checkbox"
+              />
+              비활성화
+            </label>
             <button
               disabled={editableOptions.length === 1}
               onClick={() => removeOption(index)}
@@ -88,11 +100,13 @@ const meta = {
   title: '컴포넌트/Select',
   component: Select,
   args: {
+    disabled: false,
     label: '라벨',
     options,
     placeholder: '선택해주세요.',
   },
   argTypes: {
+    disabled: { name: '비활성화', control: 'boolean', description: 'true이면 값을 바꿀 수 없어요.' },
     label: {
       name: '라벨',
       control: 'text',
@@ -134,6 +148,9 @@ export const Overview: Story = {
     <StoryOverview description="선택 영역에 마우스를 올리거나 눌러 Hover와 펼침 상태를 확인해요. Select의 옵션에는 좌우 아이콘과 단축키 안내를 표시하지 않아요.">
       <StoryCase title="선택 전">
         <Select {...args} />
+      </StoryCase>
+      <StoryCase title="전체 비활성화">
+        <Select {...args} disabled />
       </StoryCase>
       <StoryCase title="선택 완료">
         <Select {...args} defaultValue="option-1" />

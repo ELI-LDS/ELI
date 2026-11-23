@@ -9,6 +9,7 @@ import type {
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
 } from 'react';
+import { useSelection } from '../../shared/useSelection.js';
 import type { NavigationBarGlassProps } from './NavigationBarGlass.types.js';
 
 interface UseNavigationBarGlassOptions {
@@ -31,10 +32,6 @@ interface PointerPosition {
 
 const itemSelector = '.eli-navigation-bar-glass-item';
 
-function getFirstItemValue(items: NavigationBarGlassProps['items']) {
-  return items[0]?.value;
-}
-
 /* 제어·비제어 선택, 포인터 제스처와 indicator 동기화를 관리해요. */
 export function useNavigationBarGlass({
   defaultValue,
@@ -42,9 +39,9 @@ export function useNavigationBarGlass({
   onValueChange,
   value,
 }: UseNavigationBarGlassOptions) {
-  const [internalValue, setInternalValue] = useState(
-    () => defaultValue ?? getFirstItemValue(items) ?? '',
-  );
+  const { selectedValue, selectValue } = useSelection({
+    defaultValue, options: items, onValueChange, value,
+  });
   /* 눌림과 드래그 상태만 렌더링에 사용하고 포인터 위치는 ref로 관리해요. */
   const [isPressed, setIsPressed] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -53,22 +50,9 @@ export function useNavigationBarGlass({
   const activePointerRef = useRef<ActivePointer | null>(null);
   const instantFrameRef = useRef<number | null>(null);
   const isFirstSyncRef = useRef(true);
-  const selectedValue = value ?? internalValue;
-  const selectedIndex = Math.max(
-    0,
-    items.findIndex(item => item.value === selectedValue),
-  );
+  const selectedIndex = items.findIndex(item => item.value === selectedValue);
   const selectedIndexRef = useRef(selectedIndex);
   selectedIndexRef.current = selectedIndex;
-
-  /* 제어 모드에서는 부모에 알리고, 비제어 모드에서는 내부 값을 갱신해요. */
-  const selectValue = useCallback(
-    (nextValue: string) => {
-      if (value === undefined) setInternalValue(nextValue);
-      onValueChange?.(nextValue);
-    },
-    [onValueChange, value],
-  );
 
   /* 트랙 크기에 맞춰 indicator의 위치와 너비를 직접 갱신해요. */
   const setIndicatorPosition = useCallback(
@@ -121,9 +105,9 @@ export function useNavigationBarGlass({
 
   /* 드래그 중 손가락 아래의 아이콘만 강조해요. */
   const setHotItem = useCallback((hotIndex?: number) => {
-    const buttons = trackRef.current?.querySelectorAll(itemSelector);
+    const buttons = trackRef.current?.querySelectorAll<HTMLButtonElement>(itemSelector);
     buttons?.forEach((button, index) => {
-      if (index === hotIndex) button.setAttribute('data-hot', 'true');
+      if (index === hotIndex && !button.disabled) button.setAttribute('data-hot', 'true');
       else button.removeAttribute('data-hot');
     });
   }, []);
@@ -198,6 +182,9 @@ export function useNavigationBarGlass({
       return;
     }
 
+    const target = event.target as Element;
+    if (target.closest<HTMLButtonElement>(itemSelector)?.disabled) return;
+
     /* 트랙이 포인터를 캡처해 항목 사이를 이동해도 제스처를 이어가요. */
     activePointerRef.current = {
       id: event.pointerId,
@@ -261,10 +248,13 @@ export function useNavigationBarGlass({
       const pointerPosition = getPointerPosition(event.clientX);
       const nextItem = pointerPosition && items[pointerPosition.index];
 
-      if (activePointer.isDragging && pointerPosition) {
-        setIndicatorPosition(pointerPosition.index);
+      // 부모가 제어 값을 유지하면 indicator도 기존 선택 위치로 돌아가요.
+      if (pointerPosition && nextItem && !nextItem.disabled) {
+        setIndicatorPosition(value === undefined ? pointerPosition.index : selectedIndex);
+        selectValue(nextItem.value);
+      } else {
+        setIndicatorPosition(selectedIndex);
       }
-      if (nextItem) selectValue(nextItem.value);
     }
 
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -311,8 +301,11 @@ export function useNavigationBarGlass({
     /* 방향키는 선택값을 바꾸지 않고 인접 항목으로 포커스만 옮겨요. */
     event.preventDefault();
     const direction = event.key === 'ArrowRight' ? 1 : -1;
-    const nextIndex = (index + direction + buttons.length) % buttons.length;
-    buttons[nextIndex]?.focus();
+    for (let offset = 1; offset <= buttons.length; offset++) {
+      const nextIndex = (index + direction * offset + buttons.length) % buttons.length;
+      const next = buttons[nextIndex];
+      if (next && !next.disabled) { next.focus(); break; }
+    }
   };
 
   return {

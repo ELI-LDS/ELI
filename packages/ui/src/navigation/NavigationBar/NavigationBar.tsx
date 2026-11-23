@@ -14,9 +14,11 @@ import { useNavigationBar } from './useNavigationBar.js';
  * ### 주요 설정
  * - `items`: `{ value, label, outlinedIcon, filledIcon }` 형식의 항목 3~5개
  * - `value`: 외부에서 제어하는 활성 항목의 값
- * - `defaultValue`: 처음 활성화할 값, 기본값은 첫 번째 항목
+ * - `defaultValue`: 처음 활성화할 값, 기본값은 첫 번째 사용 가능 항목
  *
  * ### 내용과 동작
+ * - `items`의 `disabled: true` 항목은 선택과 키보드 이동에서 제외해요.
+ * - 선택 항목 제거 시 비제어는 첫 사용 가능 항목을 선택하고, 잘못된 제어 값은 선택 표시를 숨겨요.
  * - `onValueChange`: 항목을 선택하면 해당 `value`를 받아요.
  * - 활성 탭만 `filledIcon`을 사용하고 나머지는 `outlinedIcon`을 사용해요.
  *
@@ -47,6 +49,7 @@ export function NavigationBar({
       {items.map(item => (
         <NavigationBarItem
           active={item.value === selectedValue}
+          disabled={item.disabled}
           filledIcon={item.filledIcon}
           key={item.value}
           label={item.label}

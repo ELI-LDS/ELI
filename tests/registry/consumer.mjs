@@ -6,6 +6,8 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { build } from 'vite';
 import { chromium } from '@playwright/test';
+import { apiContractsFixture, apiContractsTypes, publicApiTypeAssertions } from '../browser/api-contracts-fixture.mjs';
+import { checkApiContracts } from '../browser/api-contracts.mjs';
 import { checkTextField } from '../browser/text-field.mjs';
 import { textFieldFixture } from '../browser/text-field-fixture.mjs';
 import { checkModal } from '../browser/modal.mjs';
@@ -42,6 +44,8 @@ const all = await materialize(registry, join(vite, 'ui'), index.items.filter(ite
 await writeFile(join(vite, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
 const exports = [...all.selected.values()].filter(item => item.kind === 'component').map(item => `export { ${item.entry.export} } from './ui/${item.entry.path.replace(/\.tsx$/, '')}';`).join('\n');
 await writeFile(join(vite, 'components.ts'), exports);
+const publicNames = [...all.selected.values()].filter(item => item.kind === 'component').map(item => item.entry.export);
+await writeFile(join(vite, 'api-types.tsx'), `import { ${publicNames.join(', ')} } from './components';\n` + publicApiTypeAssertions(publicNames));
 await writeFile(join(vite, 'main.tsx'), `import * as components from './components';\ndocument.body.textContent = Object.keys(components).join(',');\n`);
 await writeFile(join(vite, 'index.html'), '<html lang="ko"><body><script type="module" src="./main.tsx"></script></body></html>');
 await writeFile(join(vite, 'assets.d.ts'), "declare module '*.css';\n");
@@ -54,7 +58,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio']);
+await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -63,19 +67,33 @@ await writeFile(join(next, 'next.config.mjs'), 'export default { reactStrictMode
 await writeFile(join(next, 'tsconfig.json'), JSON.stringify({ compilerOptions: { target: 'ES2022', lib: ['dom', 'esnext'], module: 'esnext', moduleResolution: 'bundler', jsx: 'react-jsx', strict: true, skipLibCheck: true, esModuleInterop: true, resolveJsonModule: true, isolatedModules: true, plugins: [{ name: 'next' }] }, include: ['**/*.ts', '**/*.tsx', '.next/types/**/*.ts'], exclude: ['node_modules'] }));
 await writeFile(join(next, 'app/layout.tsx'), 'export const metadata = { title: "ELI 소스 소비 검증" }; export default function Layout({ children }: { children: React.ReactNode }) { return <html lang="ko"><body>{children}</body></html>; }');
 await writeFile(join(next, 'app/client.tsx'), `'use client';
-import { useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { Modal } from '../ui/modal';
 import { TextField } from '../ui/text-field';
 import { Button } from '../ui/button';
 import { Select } from '../ui/select';
 import { FabMenu } from '../ui/fab-menu';
+import { Slider } from '../ui/slider';
+import { Checkbox } from '../ui/checkbox';
+import { Radio } from '../ui/radio';
+import { TextArea } from '../ui/text-area';
+import { SegmentControl } from '../ui/segment-control';
+import { NavigationBar } from '../ui/navigation-bar';
+import { NavigationBarGlass } from '../ui/navigation-bar-glass';
+import { LoadingIndicator } from '../ui/loading-indicator';
+import { ProgressIndicator } from '../ui/progress-indicator';
+import { Divider } from '../ui/divider';
 ${modalFixture}
 ${textFieldFixture}
+${apiContractsFixture}
+${apiContractsTypes}
 export function Client() {
   const [modalTest, setModalTest] = useState(false);
+  const [apiTest, setApiTest] = useState(false);
   const [textTest, setTextTest] = useState(false);
-  useEffect(() => { setModalTest(location.search.includes('modal')); setTextTest(location.search.includes('text-field')); }, []);
+  useEffect(() => { setApiTest(location.search.includes('api-contracts')); setModalTest(location.search.includes('modal')); setTextTest(location.search.includes('text-field')); }, []);
   const [count, setCount] = useState(0);
+  if (apiTest) return <ApiContractsFixture />;
   if (modalTest) return <ModalFixture />;
   if (textTest) return <TextFieldFixture />;
   return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
@@ -139,6 +157,7 @@ try {
   await page.getByRole('button', { name: /소스 선택 소스 옵션/ }).waitFor();
   await checkModal(page, url);
   await checkTextField(page, url);
+  await checkApiContracts(page, url);
   assert.deepEqual(errors, []);
   console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select 상호작용·CSS 연결을 검증했어요.');
 } finally {

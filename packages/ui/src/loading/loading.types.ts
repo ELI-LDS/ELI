@@ -1,2 +1,2 @@
-/* Figma에서 제공하는 진행률 단계 */
-export type IndicatorProgress = 0 | 10 | 30 | 50 | 80 | 100;
+/** 실제 진행률이에요. 0부터 100까지 숫자를 전달해요. */
+export type IndicatorProgress = number;

@@ -15,6 +15,7 @@ import type { TextAreaProps } from './TextArea.types.js';
  * - `disabled`: `true`이면 비활성화해요.
  *
  * ### 내용과 동작
+ * - `ref`: 실제 입력 요소를 가리켜 focus() 같은 입력 동작에 사용해요.
  * - `value`, `defaultValue`: 입력 값
  * - `onChange`: 입력 값이 바뀔 때 실행할 함수
  *

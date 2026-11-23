@@ -1,14 +1,17 @@
-import type { ChangeEventHandler, InputHTMLAttributes, ReactNode } from 'react';
+import type { Ref, ChangeEventHandler, InputHTMLAttributes, ReactNode } from 'react';
 
 export type TextFieldState = 'default' | 'error' | 'success' | 'disabled';
 
 export interface TextFieldProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
-    'children' | 'disabled' | 'placeholder'
+    'dangerouslySetInnerHTML' | 'children' | 'disabled' | 'placeholder'
   > {
+  /** 실제 입력 요소에 접근할 참조예요. focus() 같은 입력 동작에 사용해요. */
+  ref?: Ref<HTMLInputElement> | undefined;
+
   /** 입력하거나 X로 지우면 호출해요. value로 제어할 때 event.currentTarget.value를 상태에 반영해요. */
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  onChange?: ChangeEventHandler<HTMLInputElement> | undefined;
 
   /** 입력창 위에 표시할 라벨이에요. 생략하면 `라벨`을 표시해요. */
   label?: ReactNode;

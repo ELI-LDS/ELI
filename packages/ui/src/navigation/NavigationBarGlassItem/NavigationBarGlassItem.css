@@ -71,3 +71,9 @@
   }
 }
 }
+
+@layer components {
+  .eli-navigation-bar-glass-item:disabled {
+    cursor: not-allowed;
+  }
+}

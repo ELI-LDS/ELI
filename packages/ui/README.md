@@ -13,6 +13,8 @@ npx eli-design@latest add button
 
 아래 import는 준비 중인 CLI 0.3.1과 공개된 UI 콘텐츠 0.2.0을 기본 경로로 설치한 뒤 `src/App.tsx`에서 사용하는 예시예요. 기존 설치 소스는 자동으로 이동하지 않으며 실제 설치 기록의 경로를 사용해요. 전체 UI 패키지를 추가로 설치하거나 기존 그룹 경로에서 가져오지 않아요.
 
+아래 API 보완 중 진행률의 일반 숫자·옵션별 비활성화·입력 ref 계약은 다음 UI 콘텐츠 릴리스에 포함할 미배포 변경이에요. 기존 0.2.0 소스가 자동으로 바뀌지는 않아요.
+
 기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. Pretendard 폰트는 소비 앱에서 직접 불러와요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
 
 ## 컴포넌트 스타일을 바꿔요
@@ -120,6 +122,7 @@ export function SaveDescription() {
 ```
 
 LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `progress`를 표시하고, 알 수 없으면 값을 생략해 반복 애니메이션으로 진행 중임을 알려요.
+`progress`는 0~100 사이의 일반 숫자를 받아요. 범위 밖 값은 0 또는 100으로 제한하고, 값을 생략하거나 NaN·Infinity를 전달하면 진행률을 모르는 상태로 표시해요.
 LoadingIndicator의 `continuous`는 일정하게 회전하고, `cycle`은 Figma의 2초 가감속 모션을 반복해요.
 
 ```tsx
@@ -128,7 +131,7 @@ import { ProgressIndicator } from './components/ui/progress-indicator';
 
 <LoadingIndicator aria-label="프로필 불러오는 중" />
 <LoadingIndicator aria-label="동기화하는 중" variant="cycle" />
-<ProgressIndicator aria-label="파일 업로드" progress={80} />
+<ProgressIndicator aria-label="파일 업로드" progress={37} />
 ```
 
 Alert는 `status`에 맞는 색상과 아이콘으로 제목과 본문을 표시해요. 화면에 띄우는 Toast 동작은 포함하지 않아요.
@@ -161,7 +164,7 @@ export function AddButton() {
 }
 ```
 
-Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요.
+Fab은 하나의 주요 액션을 실행하고, FabMenu는 관련된 여러 액션을 펼쳐요. FabMenu의 개별 액션을 누르면 해당 동작을 실행한 뒤 메뉴가 닫혀요. 항목에 `disabled: true`를 지정하면 그 액션은 실행할 수 없어요.
 
 ```tsx
 import { Fab } from './components/ui/fab';
@@ -376,7 +379,7 @@ export function ConfirmModal() {
 `open`을 생략하면 내부 상태로 열고 닫으며 `defaultOpen`은 `true`예요. Secondary 콜백에서 `event.preventDefault()`를 호출하면 자동 닫기를 취소할 수 있어요. 외부 제어에서는 `onOpenChange`에서 `open` 값을 갱신해요. `aria-label`·`aria-labelledby`·`aria-describedby`는 dialog 콘텐츠에 연결되고, `className`·`style`은 기존처럼 바깥 루트에 적용돼요.
 
 Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록을 전달해요. 옵션 행은
-MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요.
+MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요. 전체를 막으려면 `disabled`, 특정 옵션만 막으려면 옵션의 `disabled: true`를 사용해요. 방향키는 비활성 옵션을 건너뛰어요.
 
 ```tsx
 import { Select } from './components/ui/select';
@@ -391,7 +394,7 @@ export function CategorySelect() {
 }
 ```
 
-SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요.
+SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요. 전체 `disabled`와 옵션별 `disabled`를 지원하고 방향키는 사용 가능한 옵션만 이동해요.
 
 ```tsx
 import { SegmentControl } from './components/ui/segment-control';
@@ -406,7 +409,11 @@ export function ViewControl() {
 }
 ```
 
-Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요.
+NavigationBar·NavigationBarGlass의 `items`와 SegmentControl의 `options`는 `.map()`·권한 필터로 만든 일반 배열도 받아요. 권장 항목 수는 각각 3~5개와 2~4개이며, 배열을 자동으로 자르지 않아요. 빈 목록은 선택 없이 표시해요. 탐색 항목의 `disabled: true`는 클릭·키보드·드래그 선택을 막아요.
+
+세 컴포넌트에서 선택 항목이 목록에서 사라지면 비제어 방식은 첫 번째 사용 가능한 항목으로 보정해요. 제어 방식은 부모의 값을 유지하고 선택 표시를 숨겨요. 목록 변경만으로 `onValueChange`를 실행하지 않아요. 이미 선택된 항목이 비활성화되면 선택은 유지하고 추가 조작을 막아요.
+
+Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요. 초기값·제어값·변경값을 `min` 기준의 `step` 간격에 맞춰 표시해요. 예를 들어 `min={0} max={10} step={3} defaultValue={5}`는 6으로 표시하며 마지막 유효 값은 9예요. step은 양수여야 하며 유효하지 않으면 기본값 1을 사용해요.
 
 ```tsx
 import { Slider } from './components/ui/slider';
@@ -458,7 +465,9 @@ export function SignUpField() {
 }
 ```
 
-TextArea도 같은 그룹 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
+TextField·TextArea·Checkbox·Radio의 `ref`는 바깥 래퍼가 아닌 실제 입력 요소를 가리켜요. TextField의 입력 지우기와 외부 객체·콜백 ref를 함께 사용할 수 있어요.
+
+TextArea는 아래 로컬 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
 
 ```tsx
 import { TextArea } from './components/ui/text-area';

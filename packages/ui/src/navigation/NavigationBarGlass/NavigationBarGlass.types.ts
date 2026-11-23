@@ -4,6 +4,9 @@ export interface NavigationBarGlassOption {
   /** 항목을 구분하고 선택 결과로 전달할 값이에요. */
   value: string;
 
+  /** true이면 선택과 키보드 이동에서 제외해요. 기본값은 false예요. */
+  disabled?: boolean;
+
   /** 화면에는 표시하지 않고 화면 낭독기에 전달할 라벨이에요. */
   label: string;
 
@@ -14,29 +17,11 @@ export interface NavigationBarGlassOption {
   filledIcon: ReactNode;
 }
 
-/** NavigationBarGlass는 디자인 명세에 맞게 3개부터 5개까지 항목을 받아요. */
-export type NavigationBarGlassOptions =
-  | readonly [
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-    ]
-  | readonly [
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-    ]
-  | readonly [
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-      NavigationBarGlassOption,
-    ];
+/** map()으로 만든 목록도 전달할 수 있어요. 항목 수는 확정된 디자인 범위를 따라요. */
+export type NavigationBarGlassOptions = readonly NavigationBarGlassOption[];
 
 export interface NavigationBarGlassProps
-  extends Omit<HTMLAttributes<HTMLElement>, 'children' | 'defaultValue' | 'onChange'> {
+  extends Omit<HTMLAttributes<HTMLElement>, 'dangerouslySetInnerHTML' | 'children' | 'defaultValue' | 'onChange'> {
   /** Navigation Bar의 목적을 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 
@@ -46,7 +31,7 @@ export interface NavigationBarGlassProps
   /** 외부에서 제어하는 활성 항목의 값이에요. */
   value?: string;
 
-  /** 비제어 방식에서 처음 활성화할 값이에요. 생략하면 첫 번째 항목을 사용해요. */
+  /** 비제어 방식에서 처음 활성화할 값이에요. 생략하면 첫 번째 사용 가능한 항목을 사용해요. */
   defaultValue?: string;
 
   /** 항목을 선택하면 해당 `value`를 전달해요. */

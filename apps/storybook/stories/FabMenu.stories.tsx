@@ -184,6 +184,18 @@ export const Playground: Story = {
                   onChange={event => updateItemLabel(item.id, event.currentTarget.value)}
                   value={item.label}
                 />
+                <label>
+                  <input
+                    aria-label={`${index + 1}번째 메뉴 비활성화`}
+                    checked={item.disabled ?? false}
+                    onChange={event => {
+                      const disabled = event.currentTarget.checked;
+                      updateArgs({ items: args.items.map(current => current.id === item.id ? { ...current, disabled } : current) });
+                    }}
+                    type="checkbox"
+                  />
+                  비활성화
+                </label>
                 <button
                   aria-label={`${item.label} 삭제`}
                   disabled={args.items.length === 1}

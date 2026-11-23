@@ -18,6 +18,8 @@ import { useSelect } from './useSelect.js';
  * - `options`: `{ value, label }` 목록. 옵션에는 아이콘과 단축키 안내를 표시하지 않아요.
  *
  * ### 내용과 동작
+ * - `options`의 `disabled: true` 항목은 선택과 키보드 이동에서 제외해요.
+ * - `disabled`: true이면 전체 선택을 막아요. 기본값은 false예요.
  * - `value`: 외부에서 제어하는 선택 값
  * - `defaultValue`: 처음 선택할 값
  * - `onValueChange`: 선택한 `value`를 받는 함수
@@ -31,6 +33,7 @@ export function Select(props: SelectProps) {
   const {
     className,
     defaultValue,
+    disabled = false,
     label = '라벨',
     onBlur,
     onKeyDown,
@@ -54,13 +57,14 @@ export function Select(props: SelectProps) {
     selectedValue,
     triggerRef,
     valueId,
-  } = useSelect({ defaultValue, onBlur, onKeyDown, onValueChange, options, value });
+  } = useSelect({ disabled, defaultValue, onBlur, onKeyDown, onValueChange, options, value });
 
   const selectClassName = ['eli-select', className].filter(Boolean).join(' ');
 
   return (
     <div
       {...selectProps}
+      aria-disabled={disabled || undefined}
       className={selectClassName}
       data-open={isOpen}
       onBlur={handleBlur}
@@ -76,6 +80,7 @@ export function Select(props: SelectProps) {
           aria-haspopup="listbox"
           aria-labelledby={`${labelId} ${valueId}`}
           className="eli-select__trigger"
+          disabled={disabled}
           data-has-value={selectedOption !== undefined}
           onClick={handleTriggerClick}
           ref={triggerRef}
@@ -103,6 +108,7 @@ export function Select(props: SelectProps) {
             {options.map((option, index) => (
               <MenuItem
                 aria-selected={option.value === selectedValue}
+                disabled={option.disabled ?? false}
                 id={`${listboxId}-option-${index}`}
                 key={option.value}
                 onClick={() => handleOptionClick(option.value)}

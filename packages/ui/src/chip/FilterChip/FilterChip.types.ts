@@ -9,7 +9,7 @@ export interface FilterChipOption {
 }
 
 export interface FilterChipProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'children'> {
   /** 필터를 선택하지 않았을 때 표시할 항목명이에요. */
   label: string;
 

@@ -1,7 +1,7 @@
 import type { HTMLAttributes } from 'react';
 
 export interface NavigationDrawerCategoryProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+  extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children'> {
   /** 카테고리 행에 표시할 한 줄 이름이에요. 기본값은 `카테고리`예요. */
   label?: string;
 

@@ -1,6 +1,6 @@
 import type { CSSProperties, HTMLAttributes, MouseEventHandler, ReactNode } from 'react';
 
-export interface SnackBarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface SnackBarProps extends Omit<HTMLAttributes<HTMLDivElement>, 'dangerouslySetInnerHTML' | 'children'> {
   /** SnackBar에 표시할 메시지예요. 생략하면 `메시지를 작성합니다.`를 표시해요. */
   children?: ReactNode;
 
