@@ -43,13 +43,14 @@ async function loadHarness(project, values, previous) {
   else if (values['harness-version']) {
     const version = values['harness-version'];
     ensure(semver.valid(version) === version, 'INVALID_ARGUMENT', '하네스 버전을 정확히 지정해요.');
-    url = `https://github.com/ELI-LDS/ELI/releases/download/harness-v${version}/harness.json`;
+    url = `https://github.com/ELI-team/ELI/releases/download/harness-v${version}/harness.json`;
   } else url = previous?.registry ?? await latestRelease(downloads, 'harness-v', 'harness.json');
   url = registryUrl(url, project.root, 'harness.json');
   const bytes = await readResource(url, downloads);
   const manifest = parseJson(bytes.toString('utf8'), '하네스');
   ensure(matches(manifest, schema, schema) && semver.valid(manifest.version) && manifest.files.length <= 1000, 'INVALID_DATA', '지원하는 하네스 v1 데이터가 아니에요.');
-  const tag = new URL(url).pathname.match(/^\/ELI-LDS\/ELI\/releases\/download\/harness-v([^/]+)\/harness\.json$/)?.[1];
+  // 이전 저장소 주소가 남은 설치 기록도 태그와 콘텐츠 버전의 대조를 유지해요.
+  const tag = new URL(url).pathname.match(/^\/(?:ELI-team|ELI-LDS)\/ELI\/releases\/download\/harness-v([^/]+)\/harness\.json$/)?.[1];
   ensure(!tag || tag === manifest.version, 'VERSION_MISMATCH', '하네스 태그와 파일의 버전이 달라요.');
   ensure(!previous || previous.version === manifest.version, 'VERSION_MISMATCH', '다른 버전의 하네스로 덮어쓰지 않아요. 기존 설치와 변경 내역을 먼저 확인해요.');
   ensure(!previous || previous.sha256 === hash(bytes), 'INTEGRITY_MISMATCH', '고정한 하네스 배포 파일이 변경됐어요.');

@@ -7,7 +7,7 @@
   "bin": { "eli-design": "dist/cli.mjs" },
   "files": ["dist", "README.md", "LICENSE"],
   "engines": { "node": ">=24.21.0 <25 || >=26" },
-  "repository": { "type": "git", "url": "https://github.com/ELI-LDS/ELI.git", "directory": "packages/cli" },
+  "repository": { "type": "git", "url": "https://github.com/ELI-team/ELI.git", "directory": "packages/cli" },
   "scripts": {
     "build": "node ../../scripts/build-cli.mjs",
     "prepack": "npm run build"
