@@ -4,7 +4,7 @@
   "id": "alert",
   "name": "Alert",
   "group": "alert",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/alert.md",
     "sha256": "8bd9cc88cf07313de84a904e5638d2399f30c3a6caab1633c22cbfcc7e3cd273"

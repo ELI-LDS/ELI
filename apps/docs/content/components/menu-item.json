@@ -4,7 +4,7 @@
   "id": "menu-item",
   "name": "MenuItem",
   "group": "menu",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/menu-item.md",
     "sha256": "d514b5686778602c04a91b5e50ff90001ffddab261cff8049d050013b4b7a2fe"

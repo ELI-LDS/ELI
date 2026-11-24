@@ -17,7 +17,7 @@ export const mcpHandler = createMcpHandler(
     server.registerTool(
       'list_components',
       {
-        description: 'ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 draft면 검토 전 가이드, null이면 가이드가 없는 컴포넌트예요.',
+        description: 'ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 stable이면 승인된 가이드가 있어요. draft나 null이면 가이드 섹션이 없어요.',
         inputSchema: { status: z.string().optional().describe(`${GUIDE_STATUSES.join(', ')}. 그 상태의 컴포넌트만 돌려줘요`) },
         annotations,
       },

@@ -4,7 +4,7 @@
   "id": "tooltip",
   "name": "Tooltip",
   "group": "tooltip",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/tooltip.md",
     "sha256": "2eca7057048366ed157f15a0180249df97a0cd62126dc8872bf43d5a710c8a54"

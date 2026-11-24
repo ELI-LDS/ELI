@@ -4,7 +4,7 @@
   "id": "checkbox",
   "name": "Checkbox",
   "group": "checkbox",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/checkbox.md",
     "sha256": "4adc8daba6999bc99779cbcb1b90a97442e200b961843a797e2f35d67ac05f9c"

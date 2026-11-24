@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { getComponent, getGuide, getProps, getTokens, getVersions, listComponents, search } from '../../apps/docs/content/query.ts';
-import { loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
+import { approvedGuide, loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
 
 test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
   const { components } = listComponents();
@@ -14,7 +14,7 @@ test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
   assert.ok(components.some(item => item.name === 'Button' && item.id === 'button'));
   // 가이드가 없는 공개 컴포넌트도 목록에 나오고 상태는 null이에요.
   assert.equal(components.find(item => item.name === 'Divider').status, null);
-  assert.ok(listComponents({ status: 'DRAFT' }).components.every(item => item.status === 'draft'));
+  assert.ok(listComponents({ status: 'STABLE' }).components.length > 0 && listComponents({ status: 'STABLE' }).components.every(item => item.status === 'stable'));
   assert.deepEqual(listComponents({ status: 'review' }).error.allowed, ['draft', 'stable']);
 });
 
@@ -24,7 +24,7 @@ test('컴포넌트는 요청한 섹션만 줘요', () => {
   assert.deepEqual(basic.entry, { path: 'button.tsx', export: 'Button' });
   assert.deepEqual(Object.keys(basic.sections), ['summary', 'when-to-use']);
   assert.ok(basic.available.includes('examples') && basic.available.includes('do-dont'));
-  assert.ok(['draft', 'stable'].includes(basic.status));
+  assert.equal(basic.status, 'stable');
   // 원문 경로·해시·검토 메모는 응답에 담지 않아요.
   assert.doesNotMatch(JSON.stringify(getComponent({ name: 'Button', sections: basic.available })), /sha256|source\/components|implementationGaps/);
   // 가이드가 없으면 섹션 없이 설치 정보만 줘요.
@@ -91,6 +91,11 @@ test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대
     accessibility: '- 라벨을 줘요',
     related: '**함께 쓰는 조합**\n- Button + Modal — 확인해요.\n\n**관련 컴포넌트**: Modal',
   });
+
+  // 검토 전 초안의 내용은 일반 응답에 내보내지 않아요.
+  assert.equal(approvedGuide(guide), undefined);
+  assert.equal(approvedGuide({ ...guide, status: 'stable' }).status, 'stable');
+  assert.equal(approvedGuide(undefined), undefined);
 
   const registered = [{ id: 'button', name: 'Button' }, { id: 'modal', name: 'Modal' }];
   const directory = mkdtempSync(join(tmpdir(), 'eli-guides-'));

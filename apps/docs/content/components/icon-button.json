@@ -4,7 +4,7 @@
   "id": "icon-button",
   "name": "IconButton",
   "group": "button",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/icon-button.md",
     "sha256": "08ae35cdf60b36ed4dad59b7575589989fa97ab17e00c0d9f2d57f2632062400"

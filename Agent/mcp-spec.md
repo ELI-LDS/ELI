@@ -78,7 +78,7 @@
 
 ### `list_components`
 
-- **설명:** `ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 draft면 검토 전 가이드, null이면 가이드가 없는 컴포넌트예요.`
+- **설명:** `ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 stable이면 승인된 가이드가 있어요. draft나 null이면 가이드 섹션이 없어요.`
 
 | 입력 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
@@ -87,7 +87,7 @@
 ```json
 {
   "components": [
-    { "name": "Button", "id": "button", "status": "draft", "description": "사용자가 텍스트로 표현된 행동을 실행할 수 있도록 제공하는 버튼 컴포넌트예요." },
+    { "name": "Button", "id": "button", "status": "stable", "description": "사용자가 텍스트로 표현된 행동을 실행할 수 있도록 제공하는 버튼 컴포넌트예요." },
     { "name": "Divider", "id": "divider", "status": null, "description": "콘텐츠 사이를 가로선으로 구분해요." }
   ]
 }
@@ -95,8 +95,8 @@
 
 - 이름순으로 정렬해요. 레지스트리의 공개 컴포넌트를 모두 담아요.
 - `id`는 레지스트리 항목 ID예요. 설치 도구의 `add`에 그대로 써요.
-- `status`는 가이드 JSON의 검토 상태예요. 가이드가 없으면 `null`이에요.
-- `description`은 가이드의 `summary`예요. 가이드가 없으면 컴포넌트 JSDoc의 첫 줄이에요.
+- `status`는 가이드 JSON의 검토 상태예요. 가이드가 없으면 `null`이에요. `stable`이 아니면 `get_component`의 섹션이 비어 있어요.
+- `description`은 승인된 가이드의 `summary`예요. 그런 가이드가 없으면 컴포넌트 JSDoc의 첫 줄이에요.
 - 가이드의 `group`은 담지 않아요. 소스 설치에는 그룹 경로가 없어요.
 - 없는 상태 값은 `invalid_argument`예요.
 
@@ -115,7 +115,7 @@
 {
   "name": "Button",
   "id": "button",
-  "status": "draft",
+  "status": "stable",
   "entry": { "path": "button.tsx", "export": "Button" },
   "sections": {
     "summary": "…마크다운…",
@@ -127,7 +127,7 @@
 
 - `entry.path`는 설치 위치를 기준으로 한 진입 파일이에요. 서버는 소비 프로젝트의 import 경로를 만들어 주지 않아요.
 - `sections`의 값은 검토한 JSON의 요청 필드만 마크다운으로 표현한 문자열이에요. 원문 전체를 보내거나 조회 중 AI로 내용을 새로 만들지 않아요. 필드 대응은 [콘텐츠 연결](#컴포넌트-json과-응답을-연결해요)을 따라요.
-- 가이드가 없는 컴포넌트는 `sections`와 `available`이 비어 있어요. `id`·`entry`와 `get_props`는 그대로 쓸 수 있어요.
+- 가이드가 없거나 검토 전인 컴포넌트는 `sections`와 `available`이 비어 있어요. `id`·`entry`와 `get_props`는 그대로 쓸 수 있어요.
 - 원문 경로·해시·`review`는 내부 검토 자료라 응답에 담지 않아요.
 - 요청한 섹션이 문서에 없으면 그 키를 `sections`에서 빼요. 오류가 아니에요.
 - `available`은 이 문서에 실제로 있는 섹션 키예요. 에이전트가 없는 섹션을 다시 요청하지 않게 해요.
@@ -303,12 +303,12 @@
 
 - 저장할 때의 `null`은 미전달, `[]`는 확인 결과 해당 사항이 없음을 뜻해요. 조회 계층은 없는 설명을 만들어내지 않아요. 내용이 없는 섹션은 응답과 `available`에서 제외해요.
 - `styling`은 `do-dont`의 커스터마이징 부분만 따로 읽는 키예요. 공개한 하네스 0.2.0이 이 키를 안내해서 유지해요. 두 섹션을 함께 요청하면 같은 내용이 두 번 가요.
-- **검토 전 초안도 지금은 응답에 포함해요.** 현재 가이드는 모두 `draft`예요. `stable`만 제공하면 원격 문서가 비어서 하네스가 동작하지 않기 때문에, 초안을 `status: "draft"`로 표시해 함께 제공해요. 에이전트는 `status`로 검토 전 내용임을 구분해요. 가이드가 승인되면 일반 조회를 `stable`만으로 좁힐지 다시 정해요.
+- 일반 응답에는 사용자가 승인한 `stable` 가이드의 내용만 담아요. `draft`인 컴포넌트는 목록과 상세에 `status: "draft"`만 나오고 `sections`·`available`은 비어 있어요. 목록의 `description`도 가이드의 `summary` 대신 JSDoc의 첫 줄을 써요. 검토 전용 조회는 아직 없어요.
 - `stable` 전환은 사용자 검토, 코드 예시 타입 검사와 미해결 항목 해소가 필요해요. `stable`이나 workspace 버전만으로 배포 완료를 판단하지 않아요.
 - `props`·기본값·토큰은 코드에서 추출하고 설치 항목은 레지스트리에서 연결해요. 서버는 소비 프로젝트의 별칭·설치 위치를 추측하지 않아요.
 - 예시 코드는 기본 설치 위치를 쓰는 `Example.tsx`를 전제로 `./components/ui/...`에서 import해요. 이 경로는 예시의 전제이고 소비 프로젝트의 확정된 경로가 아니에요. 실제 import는 하네스가 설치 기록으로 확인해요.
 - 규칙은 AI가 참고할 문장이에요. JSON이 있다고 자동 위반 판정·코드 수정이 구현된 것은 아니에요. 필요한 부분만 반환하고 전체 JSON을 보내지 않아요.
-- 가이드가 없는 공개 컴포넌트(현재 Divider·Modal·Tab)는 목록·props·설치 정보만 제공해요. 원문에 없는 사용 기준을 만들어 채우지 않아요.
+- 가이드가 없는 공개 컴포넌트(현재 Divider·Modal·Tab, 나중에 추가 예정)는 목록·props·설치 정보만 제공해요. 원문에 없는 사용 기준을 만들어 채우지 않아요.
 
 ### 가이드
 
@@ -435,7 +435,7 @@ sequenceDiagram
 | --- | --- | --- |
 | 데이터 타입 | `content/schema.ts` | 구현했어요 |
 | 생성 스크립트 | `scripts/build-content.mjs` | 구현했어요. 가이드 JSON에서 섹션을, 레지스트리 JSON에서 props·토큰을 만들어요 |
-| 컴포넌트 가이드 | `content/components/` | 31개 모두 검토 전 `draft`예요. Divider·Modal·Tab은 가이드가 없어요 |
+| 컴포넌트 가이드 | `content/components/` | 31개를 2026-11-24에 승인해 모두 `stable`이에요. Divider·Modal·Tab은 가이드가 나중에 추가돼요 |
 | 조회 함수 | `content/query.ts` | 구현했어요 |
 | MCP 도구 | `backend/mcp/server.ts` | 일곱 개를 등록했어요 |
 | 가이드 원본 | `content/source/guides/` | 아직 없어요. 목록은 빈 배열, 주제 조회는 `not_found`예요 |

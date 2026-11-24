@@ -4,7 +4,7 @@
   "id": "fab-menu-segment",
   "name": "FabMenuSegment",
   "group": "fab",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/fab.md",
     "sha256": "c606557fbbb6d56b2bb2a17da1a7ed81ebbdc671ae75b8ea56c12a8aaa3c38b1"

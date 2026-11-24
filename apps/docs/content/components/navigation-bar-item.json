@@ -4,7 +4,7 @@
   "id": "navigation-bar-item",
   "name": "NavigationBarItem",
   "group": "navigation",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/navigation-bar.md",
     "sha256": "eb6e2e9dc7d0f254b8c29f12100d1cb2badc1e4bafc828e540debbfa4c845380"

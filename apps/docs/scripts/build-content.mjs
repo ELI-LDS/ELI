@@ -35,6 +35,9 @@ export function renderSections(guide) {
   return Object.fromEntries(Object.entries(sections).filter(([, text]) => text));
 }
 
+/** 사용자가 승인한(stable) 가이드만 일반 응답에 내보내요. 초안은 상태만 알리고 내용은 담지 않아요. */
+export const approvedGuide = guide => (guide?.status === 'stable' ? guide : undefined);
+
 /** 가이드 JSON을 읽고 레지스트리의 공개 컴포넌트·원문 해시·참조와 대조해요. */
 export function loadGuides(directory, components, repository) {
   const names = new Set(components.map(component => component.name));
@@ -166,11 +169,12 @@ export function generateContent({ guidesDirectory = join(docs, 'content/source/g
 
   const registered = [...items.values()].filter(item => item.kind === 'component');
   const componentGuides = loadGuides(componentsDirectory, registered, repository);
-  // 가이드가 없는 공개 컴포넌트도 목록·props에는 나와요. 없는 사용 기준을 만들어 채우지 않아요.
+  // 가이드가 없거나 검토 전인 공개 컴포넌트도 목록·props에는 나와요. 없는 사용 기준을 만들어 채우지 않아요.
   const components = registered
     .map(item => {
       const guide = componentGuides.get(item.id);
-      return { name: item.name, id: item.id, description: guide?.summary ?? item.description, status: guide?.status ?? null, entry: item.entry, sections: guide ? renderSections(guide) : {}, ...parseProps(item.name, filesOf(item.id)) };
+      const approved = approvedGuide(guide);
+      return { name: item.name, id: item.id, description: approved?.summary ?? item.description, status: guide?.status ?? null, entry: item.entry, sections: approved ? renderSections(approved) : {}, ...parseProps(item.name, filesOf(item.id)) };
     })
     .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 

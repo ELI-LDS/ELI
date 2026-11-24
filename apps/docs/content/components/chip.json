@@ -4,7 +4,7 @@
   "id": "chip",
   "name": "Chip",
   "group": "chip",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/chip.md",
     "sha256": "d7ff3c55ed48c06a6d1223110862e88628a2a6643e1e2df8d43113563d287fdf"

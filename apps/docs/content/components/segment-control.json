@@ -4,7 +4,7 @@
   "id": "segment-control",
   "name": "SegmentControl",
   "group": "segment-control",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/segment-control.md",
     "sha256": "f23981d5df740c0cc6eaa0f6706a8b436ad45bf6b33dc27ef7370f36bbc95010"

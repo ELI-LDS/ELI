@@ -4,7 +4,7 @@
   "id": "slider",
   "name": "Slider",
   "group": "slider",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/slider.md",
     "sha256": "bf76b40997667a0fd038f649a0b8436eb4c05da4e17dedc3ff9be63124eef3e7"

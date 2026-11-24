@@ -4,7 +4,7 @@
   "id": "snack-bar",
   "name": "SnackBar",
   "group": "snackbar",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/snack-bar.md",
     "sha256": "64c4706ebab7f20ebdc6644a69eef4633b34190fa7eba0f45afae46d7422f6ba"

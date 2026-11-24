@@ -4,7 +4,7 @@
   "id": "toggle",
   "name": "Toggle",
   "group": "toggle",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/toggle.md",
     "sha256": "fe358cc3a126b0f3c6d15dc0fdde25171514e152f10b80483e20042a673b7948"

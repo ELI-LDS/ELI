@@ -4,7 +4,7 @@
   "id": "text-area",
   "name": "TextArea",
   "group": "text",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/text-area.md",
     "sha256": "250c58185465b7bd964ad1ed7d7f458f91e0f047da07b75550ca4ab0cd803c19"
