@@ -94,9 +94,9 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 
 도구는 `registerTool`로 등록하고 입력의 타입은 zod로 검증해요. 허용 값 검사와 오류 형식은 조회 계층이 맡아요. 모든 도구에 `annotations: { readOnlyHint: true }`를 지정해요.
 
-## 정하지 않은 것
+## 배포 상태와 미정 사항을 구분해요
 
-- **배포 설정:** Cloudflare Workers에 OpenNext 어댑터로 올리고 `eli-design.dev`에 연결해요. 원격 MCP의 주소는 `https://eli-design.dev/mcp`예요. 설정과 확인 방법은 [배포 검증](testing.md#문서-앱-배포를-확인해요)을 따라요.
+- **배포:** Cloudflare Workers에 OpenNext 어댑터로 배포했고 `eli-design.dev`에 연결했어요. 원격 MCP의 주소는 `https://eli-design.dev/mcp`이며 사용자용 웹페이지 배포와 구분해요. 설정과 확인 방법은 [배포 검증](testing.md#문서-앱-배포를-확인해요)을 따라요.
 - **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** npm 배포는 시작했지만 버전별 문서 조회는 아직 구현하지 않았어요. 문서 앱을 공개할 때 설명 대상인 게시 버전을 명시하고, 설치 버전과 다르면 차이를 안내해요. `0.x`·정식 릴리스의 운영 기준은 [버전 규칙](versioning.md)을 따라요.
 

@@ -18,7 +18,7 @@ ELI는 누구나 쉽게 쓰는 React 디자인 컴포넌트 라이브러리와, 
 - 패키지 다운로드 용량과 실제 브라우저의 상호작용 성능은 별도 기준으로 확인해요. 현실적인 사용량에서도 빠른 동작을 기본값으로 제공해요.
 - 데스크톱 Chrome·Safari·Edge와 Android·iOS 웹 환경을 지원 목표로 두고, 자동 브라우저 행렬과 실제 기기 확인 범위를 구분해요. 에뮬레이션 결과만으로 실기기 호환을 완료했다고 표현하지 않아요.
 - 검증은 변경 위험도에 맞춰 실행해요. 문구나 고립된 스타일처럼 영향이 작은 수정마다 전체 검사를 반복하지 않고, 공개 API·동작·빌드·배포에 영향을 주는 핵심 변경은 전체 검사를 실행해요.
-- 커밋 전에는 코드·공개 API·폴더 구조·검증 범위를 확인하고 README, `Agent/`, `handbook/`에 동기화할 내용이 있는지 반드시 확인해요. 상세 절차는 [Git 규칙](Agent/branch.md)을 따라요.
+- 커밋 전에는 코드·공개 API·폴더 구조·검증 범위를 확인하고 README, `Agent/`, `handbook/`, 관련 `apps/docs/content/`에 동기화할 내용이 있는지 반드시 확인해요. 상세 절차는 [Git 규칙](Agent/branch.md)을 따라요.
 - 기존 작업을 보존하고, 수행하지 않은 검증을 통과했다고 적지 않아요.
 - 개인 컴퓨터의 도구·홈 설정 문제와 프로젝트 문제를 구분해요. 개인 환경을 위한 우회 코드를 공유 프로젝트에 추가하지 않아요.
 
@@ -29,6 +29,7 @@ ELI는 누구나 쉽게 쓰는 React 디자인 컴포넌트 라이브러리와, 
 | 코드·설정 변경 | [구조](Agent/architecture.md), [컨벤션](Agent/conventions.md) |
 | 컴포넌트·스타일 구현 | [컴포넌트](Agent/components.md) |
 | 문서 앱 전체 구조·API·MCP | [문서 앱](Agent/docs.md) |
+| 디자이너 문서 전달·컴포넌트 가이드 JSON·사용 예시 | [문서 앱](Agent/docs.md), [변환·검토 절차](handbook/component-guide-json.md), [검증](Agent/testing.md) |
 | 원격 MCP 도구·응답 형식·문서 원본 형식 | [원격 MCP 규격](Agent/mcp-spec.md) |
 | 하네스·`/eli-...` 명령·로컬 MCP | [하네스](Agent/harness.md) |
 | 문서 웹페이지·프론트엔드 | [문서 프론트엔드](Agent/docs-frontend.md), [검증](Agent/testing.md) |
