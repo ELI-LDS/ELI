@@ -1,0 +1,82 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "toggle",
+  "name": "Toggle",
+  "group": "toggle",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/toggle.md",
+    "sha256": "fe358cc3a126b0f3c6d15dc0fdde25171514e152f10b80483e20042a673b7948"
+  },
+  "summary": "설정을 켜거나 끄고 변경을 즉시 적용하는 스위치예요.",
+  "usage": {
+    "recommended": [
+      "알림·공개 여부처럼 On·Off가 분명한 설정에 사용해요."
+    ],
+    "avoid": [
+      "여러 선택지 중 하나를 고르는 용도로 사용하지 않아요.",
+      "나중에 제출해야 적용되는 선택에는 Checkbox 등 다른 입력을 검토해요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "switch 역할의 button 안에 장식용 손잡이가 있어요. 라벨은 외부에서 제공해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "실제 설정 이름을 보이는 라벨이나 aria-label로 설명해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Off",
+      "On",
+      "Disabled"
+    ],
+    "behavior": [
+      "checked·onCheckedChange로 제어하거나 defaultChecked로 초기화해요.",
+      "onClick을 먼저 실행하고 preventDefault로 취소하지 않았다면 다음 checked를 전달해요.",
+      "disabled에서는 값을 바꿀 수 없고 기존 선택 표시를 유지해요.",
+      "사용자의 모션 줄이기 설정을 따라요."
+    ],
+    "limitations": [
+      "보이는 라벨·그룹·저장 로직을 자동으로 제공하지 않아요.",
+      "별도의 Hover·Pressed 디자인이나 Disabled 색상은 없어요.",
+      "button이므로 체크박스처럼 폼에 체크 값을 자동 제출하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Toggle"
+      ],
+      "purpose": "설정 이름·설명을 스위치와 연결해요.",
+      "guidance": "외부 텍스트와 부모 상태가 설정의 의미와 실제 적용을 담당해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "role=switch와 aria-checked로 설정 상태를 전달해요. 기본 설명에 의존하지 않고 실제 설정의 의미를 지정해요."
+  ],
+  "examples": [
+    {
+      "title": "즉시 적용하는 설정 전환",
+      "code": "'use client';\n\nimport { Toggle } from './components/ui/toggle';\nimport { useState } from 'react';\nexport default function Example() {\n  const [enabled, setEnabled] = useState(false);\n  return <><span>알림 받기</span><Toggle aria-label=\"알림 받기\" checked={enabled} onCheckedChange={setEnabled} /></>;\n}"
+    }
+  ],
+  "related": [
+    "Checkbox",
+    "Radio"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

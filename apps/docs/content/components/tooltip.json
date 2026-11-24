@@ -1,0 +1,75 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "tooltip",
+  "name": "Tooltip",
+  "group": "tooltip",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/tooltip.md",
+    "sha256": "2eca7057048366ed157f15a0180249df97a0cd62126dc8872bf43d5a710c8a54"
+  },
+  "summary": "대상의 의미를 짧게 보완하는 설명 말풍선의 표시 컴포넌트예요.",
+  "usage": {
+    "recommended": [
+      "이미 이해 가능한 UI에 짧은 보조 설명을 붙일 때 사용해요."
+    ],
+    "avoid": [
+      "반드시 확인해야 할 정보나 긴 설명은 일반 본문·Alert 등 지속적인 영역에 표시해요.",
+      "Tooltip을 대상의 유일한 이름이나 필수 안내로 사용하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "role=tooltip인 루트 div 안의 텍스트 영역에 children을 표시해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "짧고 구체적인 설명을 제공하며 전달한 줄바꿈을 유지해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [],
+    "behavior": [
+      "내용이 길면 정해진 너비 안에서 줄바꿈해요."
+    ],
+    "limitations": [
+      "트리거 연결·open 상태·표시 지연·위치 계산·Escape 닫힘은 구현하지 않아요. 소비 앱에서 연결해야 해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Tooltip",
+        "Button"
+      ],
+      "purpose": "행동을 보조 설명해요.",
+      "guidance": "소비 앱이 대상과 설명의 id·aria-describedby, 키보드·포인터 표시 동작과 배치를 함께 연결해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "role=tooltip이 있지만 트리거와 자동 연결되지는 않아요. aria-describedby 등 관계를 사용하는 쪽에서 지정해요.",
+    "마우스 사용자에게만 필수 정보를 제공하지 않아요."
+  ],
+  "examples": [
+    {
+      "title": "설명과 대상 연결: 표시 제어는 소비 앱에서 제공",
+      "code": "'use client';\n\nimport { Tooltip } from './components/ui/tooltip';\nimport { useId } from 'react';\nexport default function Example() {\n  const descriptionId = useId();\n  return <><button type=\"button\" aria-describedby={descriptionId}>도움말</button><Tooltip id={descriptionId}>작성 중인 내용은 자동으로 저장돼요.</Tooltip></>;\n}"
+    }
+  ],
+  "related": [
+    "Button",
+    "IconButton",
+    "Alert"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

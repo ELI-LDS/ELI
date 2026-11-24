@@ -1,0 +1,83 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-drawer",
+  "name": "NavigationDrawer",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-drawer.md",
+    "sha256": "cf69f9f86b7a23ffd452cba9ed3fb51fc7ef77717ab663332098fb1fdee04e0e"
+  },
+  "summary": "주 메뉴·하위 메뉴를 조합해 계층적인 화면 탐색을 제공하는 사이드 내비게이션이에요.",
+  "usage": {
+    "recommended": [
+      "많은 목적지를 카테고리와 계층으로 정리해 탐색할 때 사용해요."
+    ],
+    "avoid": [
+      "실행 액션 모음이나 서로 무관한 상태 표시 목록으로 사용하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 nav가 선택 Context를 제공하고 children으로 카테고리·메뉴·구분선을 조립해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "탐색 영역의 목적과 각 메뉴가 이동할 화면을 명확하게 설명해요."
+    ],
+    "icon": [
+      "활성 Main Menu에서만 filled 아이콘을, 다른 Main Menu에서는 outlined 아이콘을 사용해요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Unselected",
+      "Selected"
+    ],
+    "behavior": [
+      "value·onValueChange로 제어하거나 defaultValue로 처음 선택을 지정해요. 생략하면 선택 없이 시작해요.",
+      "하위 메뉴가 없는 Main Menu와 Sub Menu의 선택값을 관리해요. 실제 라우팅은 소비 앱이 연결해요."
+    ],
+    "limitations": [
+      "화면 전체에서 Drawer를 열고 닫는 오버레이나 자동 라우팅은 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationDrawer",
+        "NavigationDrawerCategory",
+        "NavigationDrawerMenu",
+        "Divider"
+      ],
+      "purpose": "카테고리·계층 메뉴·구분선을 조립해요.",
+      "guidance": "Menu가 Main·Sub Item을 만들며 Drawer가 선택 상태를 공유해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 nav에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "aria-label로 이 탐색 영역의 목적을 설명해요. 각 항목의 선택·펼침 상태는 전용 메뉴 컴포넌트가 연결해요."
+  ],
+  "examples": [
+    {
+      "title": "카테고리·주 메뉴·하위 메뉴 조립",
+      "code": "'use client';\n\nimport { NavigationDrawer } from './components/ui/navigation-drawer';\nimport { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nimport { useState } from 'react';\nexport default function Example() {\n  const [page, setPage] = useState('');\n  return <><NavigationDrawer aria-label=\"서비스 메뉴\" value={page} onValueChange={setPage}><NavigationDrawerCategory label=\"서비스\" /><NavigationDrawerMenu value=\"home\" label=\"홈\" /><NavigationDrawerMenu value=\"learning\" label=\"학습\" subItems={[{ value: 'courses', label: '내 강의' }, { value: 'saved', label: '저장한 강의' }]} /></NavigationDrawer><output>{page || '선택한 메뉴가 없어요.'}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "NavigationDrawerCategory",
+    "NavigationDrawerMenu",
+    "NavigationDrawerItem",
+    "Divider",
+    "NavigationBar"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

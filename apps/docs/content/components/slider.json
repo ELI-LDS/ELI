@@ -1,0 +1,107 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "slider",
+  "name": "Slider",
+  "group": "slider",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/slider.md",
+    "sha256": "bf76b40997667a0fd038f649a0b8436eb4c05da4e17dedc3ff9be63124eef3e7"
+  },
+  "summary": "연속된 수치 중 하나 또는 시작·끝 범위를 직관적으로 조절해요.",
+  "usage": {
+    "recommended": [
+      "볼륨·밝기·가격대·기간처럼 범위 안의 수치를 조절해요."
+    ],
+    "avoid": [
+      "정확한 숫자 직접 입력이 필요하면 TextField를 함께 제공해요.",
+      "독립적인 항목 선택에는 Checkbox를, 정해진 선택지 중 하나를 고를 때는 Radio·Select를 검토해요.",
+      "단위나 범위의 의미를 설명하지 않은 채 배치하지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "variant": "standard"
+      },
+      "role": "단일 값",
+      "when": "범위 안에서 하나의 수치를 조절해요."
+    },
+    {
+      "props": {
+        "variant": "range"
+      },
+      "role": "구간",
+      "when": "같은 기준의 시작 값과 끝 값을 함께 조절해요."
+    },
+    {
+      "props": {
+        "variant": "standard",
+        "showValueIndicator": true
+      },
+      "role": "현재 값 표시",
+      "when": "조절 중인 수치를 확인해야 할 때 표시해요."
+    }
+  ],
+  "structure": {
+    "description": "루트 div 안에 트랙·선택 구간과 네이티브 range input을 가진 손잡이가 있어요. Range는 두 손잡이를 사용해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "설정 이름과 단위를 함께 안내하고 Range의 시작·끝 의미를 설명해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Focus",
+      "Disabled"
+    ],
+    "behavior": [
+      "value·onValueChange로 제어하거나 defaultValue로 초기화해요. Range는 두 숫자의 배열을 사용해요.",
+      "min·max·step은 실제 입력·표시·콜백에 같은 기준으로 적용해요. 간격이 유효하지 않으면 기본 간격을 사용해요.",
+      "범위 밖 값은 제한하고 step에 맞춰 보정해요. min·max 순서를 정리하며 Range의 손잡이가 교차하지 않도록 제한해요.",
+      "disabled이면 조절할 수 없어요."
+    ],
+    "limitations": [
+      "Range에는 showValueIndicator 대신 showLeftValueIndicator·showRightValueIndicator를 사용해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Slider",
+        "TextField"
+      ],
+      "purpose": "드래그 조절과 정밀한 숫자 입력을 함께 제공해요.",
+      "guidance": "부모가 두 입력의 값·범위·간격을 맞춰요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "aria-label로 조절할 대상을 설명해요. Range는 각 손잡이의 시작·끝 설명과 범위를 제공해요.",
+    "네이티브 range의 방향키·Home·End와 포커스를 유지해요."
+  ],
+  "examples": [
+    {
+      "title": "단일 수치 조절",
+      "code": "'use client';\n\nimport { Slider } from './components/ui/slider';\nimport { useState } from 'react';\nexport default function Example() {\n  const [volume, setVolume] = useState(50);\n  return <><Slider aria-label=\"볼륨\" min={0} max={100} step={1} value={volume} onValueChange={setVolume} /><output>{volume}%</output></>;\n}"
+    }
+  ],
+  "related": [
+    "TextField",
+    "Radio",
+    "Select",
+    "Checkbox"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

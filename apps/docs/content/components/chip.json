@@ -1,0 +1,83 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "chip",
+  "name": "Chip",
+  "group": "chip",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/chip.md",
+    "sha256": "d7ff3c55ed48c06a6d1223110862e88628a2a6643e1e2df8d43113563d287fdf"
+  },
+  "summary": "짧은 라벨의 항목을 선택하거나 해제하는 칩이에요.",
+  "usage": {
+    "recommended": [
+      "단순한 옵션을 선택하거나 해제하는 목록에 사용해요."
+    ],
+    "avoid": [
+      "필터 설정 화면을 열려면 FilterChip을, 적용된 조건·태그를 제거하려면 RemovableChip을 사용해요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "aria-pressed를 가진 button 안에 한 줄 라벨이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "children에 선택할 항목의 라벨을 제공해요."
+    ],
+    "icon": null,
+    "limits": [
+      "최대 너비를 넘는 라벨은 한 줄 말줄임표로 표시해요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Unselected",
+      "Selected",
+      "Hover",
+      "Pressed",
+      "Disabled"
+    ],
+    "behavior": [
+      "selected와 onSelectedChange를 함께 연결해 부모가 선택 상태를 관리해요. 내부 비제어 선택 상태는 없어요.",
+      "클릭 시 onClick을 먼저 실행하고 preventDefault하지 않았다면 다음 선택 여부를 전달해요.",
+      "단일·복수 선택 규칙과 disabled 적용은 소비 앱이 지정해요."
+    ],
+    "limitations": [
+      "칩 목록의 선택 규칙을 자동 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Chip"
+      ],
+      "purpose": "여러 항목 중 하나 또는 여러 항목을 선택해요.",
+      "guidance": "부모가 각 칩의 selected를 계산하고 선택 변경을 반영해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "aria-pressed로 현재 선택 여부를 전달해요."
+  ],
+  "examples": [
+    {
+      "title": "선택 상태를 부모에서 반영",
+      "code": "'use client';\n\nimport { Chip } from './components/ui/chip';\nimport { useState } from 'react';\nexport default function Example() {\n  const [selected, setSelected] = useState(false);\n  return <Chip selected={selected} onSelectedChange={setSelected}>디자인</Chip>;\n}"
+    }
+  ],
+  "related": [
+    "FilterChip",
+    "RemovableChip",
+    "Checkbox"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

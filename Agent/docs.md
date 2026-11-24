@@ -1,6 +1,6 @@
 # 문서 앱 구조
 
-`apps/docs`는 하나의 Next.js App Router 앱에서 사람용 문서 페이지, GET API, 원격 MCP를 함께 제공해요. 세 출력은 같은 문서 원본에서 만든 데이터만 읽어요. 이를 통해 페이지와 에이전트가 보는 내용이 어긋나지 않아요.
+`apps/docs`는 하나의 Next.js App Router 앱에서 사람용 문서 페이지, GET API, 원격 MCP를 함께 제공할 구조예요. 세 출력은 검토한 같은 컴포넌트 JSON을 읽도록 해요. 이를 통해 페이지와 에이전트가 보는 내용이 어긋나지 않아요.
 
 목표는 Claude Code 같은 에이전트가 문서 HTML 전체를 읽지 않고, 필요한 컴포넌트의 필요한 섹션만 조회하게 하는 것이에요.
 
@@ -16,6 +16,8 @@ flowchart LR
   Query --> Api["GET API /api/v1/*"]
   Query --> Mcp["원격 MCP /mcp"]
 ```
+
+JSON은 검토하며 Git으로 관리하는 자료예요. 자동 Markdown 변환기로 매번 덮어쓰는 생성물이 아니에요. JSON Schema·빈 템플릿과 타입 검사를 거친 예시를 담은 컴포넌트별 초안은 준비했으며 조회 계층과 실제 연결은 후속 작업이에요.
 
 ## 폴더 구조
 
@@ -58,9 +60,18 @@ apps/docs/
 
 JSDoc과 섹션 키의 대응, 가이드 주제와 각 가이드가 담아야 하는 내용은 [원격 MCP 규격](mcp-spec.md#콘텐츠)에서 관리해요.
 
+## 검토한 컴포넌트 JSON을 함께 관리해요
+
+- 디자이너가 작성한 Markdown을 그대로 받아 원문을 보존해요. 특정 frontmatter·영어 섹션 제목을 요구하지 않아요.
+- AI가 문서를 실제 코드와 대조해 JSON 초안을 작성하고 사용자가 검토해요. 미정·구현 차이를 숨기거나 임의 명세를 추가하지 않아요.
+- JSON에 전체 Props·기본값·토큰 표를 수동 복제하지 않아요. 원문에 표가 있어도 그대로 보존하고 구현 확인에 사용해요. 해당 기술 정보의 자동 추출은 후속 작업이에요.
+- 스키마·템플릿·변환 절차·검토 상태는 [JSON 변환 안내](../handbook/component-guide-json.md)를 따라요. 원문이 바뀌면 JSON과 출처 해시를 함께 검토해요.
+
+JSON의 필드·자료형은 `content/component-guide.schema.json`, MCP 섹션과의 연결은 [원격 MCP 규격](mcp-spec.md#컴포넌트-json과-응답을-연결해요)에서 관리해요. 원문은 `content/source/components/`, JSON은 `content/components/`, 빈 틀은 `content/templates/`에 있어요. 현재 서버는 아직 이 JSON을 읽지 않아요.
+
 ## 조회 계층을 하나로 둬요
 
-페이지, GET API, MCP는 모두 `content/query.ts`의 같은 함수를 호출해요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
+페이지, GET API, MCP는 후속 구현할 `content/query.ts`의 같은 함수를 호출해요. 일반 조회에는 `stable`만 제공하고 검토용 초안 조회는 명시적으로 구분해요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
 
 ## API와 MCP 도구를 작게 나눠요
 
@@ -92,3 +103,5 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 - **문서 버전:** npm 배포는 시작했지만 버전별 문서 조회는 아직 구현하지 않았어요. 문서 앱을 공개할 때 설명 대상인 게시 버전을 명시하고, 설치 버전과 다르면 차이를 안내해요. `0.x`·정식 릴리스의 운영 기준은 [버전 규칙](versioning.md)을 따라요.
 
 조회 계층과 MCP 도구는 구현되어 있어요. 사람용 문서 페이지·GET API·가이드 원본·배포는 아직 없어요. 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
+
+현재 가이드의 검토 상태와 담당자 인계 범위는 [검토 기록](../handbook/component-guide-review.md), [연동 인계](../handbook/component-guide-handoff.md)에서 확인해요. 도구 계약은 원격 MCP 규격에만 정의해요.

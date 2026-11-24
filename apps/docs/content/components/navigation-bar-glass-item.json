@@ -1,0 +1,82 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-bar-glass-item",
+  "name": "NavigationBarGlassItem",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-bar.md",
+    "sha256": "eb6e2e9dc7d0f254b8c29f12100d1cb2badc1e4bafc828e540debbfa4c845380"
+  },
+  "summary": "유리 효과 내비게이션 안에서 아이콘만으로 하나의 목적지를 표시해요.",
+  "usage": {
+    "recommended": [
+      "NavigationBarGlass를 구성하는 개별 목적지에 사용해요."
+    ],
+    "avoid": [
+      "active=false를 이동할 수 없는 disabled 상태로 해석하지 않아요.",
+      "단독 Item이 라우팅이나 형제 항목의 선택을 자동 관리한다고 가정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "aria-label을 가진 루트 button 안에서 outlined·filled 아이콘을 겹쳐 전환해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label은 화면 낭독기가 읽을 목적지 설명이에요."
+    ],
+    "icon": [
+      "active=true인 경우에만 filledIcon을, 그 외에는 outlinedIcon을 사용해요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Inactive",
+      "Active",
+      "Hover",
+      "Pressed"
+    ],
+    "behavior": [
+      "부모가 active를 전달하고 onClick으로 선택·이동을 연결해요.",
+      "disabled prop은 지원하지 않아요. 비선택 항목도 누를 수 있어요."
+    ],
+    "limitations": [
+      "독립적인 선택 저장소나 라우터를 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationBarGlass",
+        "NavigationBarGlassItem"
+      ],
+      "purpose": "하단 내비게이션의 항목을 표시해요.",
+      "guidance": "일반 사용에서는 Bar의 items를 통해 자동 생성해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "active 항목에 aria-current=page를 설정해요.",
+    "label로 시각적으로 숨겨진 목적지 설명을 제공해요."
+  ],
+  "examples": [
+    {
+      "title": "단독 항목의 활성 상태 연결",
+      "code": "'use client';\n\nimport { NavigationBarGlassItem } from './components/ui/navigation-bar-glass-item';\nimport { useState } from 'react';\nexport default function Example() {\n  const [active, setActive] = useState(false);\n  return <NavigationBarGlassItem label=\"홈\" outlinedIcon={<span aria-hidden=\"true\">○</span>} filledIcon={<span aria-hidden=\"true\">●</span>} active={active} onClick={() => setActive(true)} />;\n}"
+    }
+  ],
+  "related": [
+    "NavigationBarGlass"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

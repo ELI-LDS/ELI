@@ -1,0 +1,99 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "snack-bar",
+  "name": "SnackBar",
+  "group": "snackbar",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/snack-bar.md",
+    "sha256": "64c4706ebab7f20ebdc6644a69eef4633b34190fa7eba0f45afae46d7422f6ba"
+  },
+  "summary": "사용자 행동의 결과를 짧게 알리고 일정 시간이 지나면 닫히는 피드백이에요.",
+  "usage": {
+    "recommended": [
+      "저장·복사·삭제 등의 결과를 간결하게 전달해요.",
+      "메시지와 직접 관련된 실행 취소 등 후속 행동을 함께 제공할 수 있어요."
+    ],
+    "avoid": [
+      "반드시 확인해야 하는 경고나 오래 유지할 안내에는 Alert를 사용해요.",
+      "긴 설명이나 여러 정보를 한 번에 넣지 않아요.",
+      "액션을 제공하면서 onAction을 빠뜨리거나 무관한 행동을 배치하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 div 안에 메시지와 선택적인 액션 버튼이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "메시지는 작업 결과를, 액션 문구는 후속 행동을 명확하게 설명해요.",
+      "action을 생략하면 기본 문구를 표시하고 null이면 버튼을 숨겨요."
+    ],
+    "icon": null,
+    "limits": [
+      "메시지는 최대 두 줄까지 표시하며 넘는 내용은 잘려요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Open",
+      "Closed"
+    ],
+    "behavior": [
+      "기본 5초 후 자동으로 닫혀요. duration은 밀리초이며 0이면 자동으로 닫히지 않아요. 유효하지 않거나 브라우저 타이머 한도를 넘는 값은 기본 시간으로 처리해요.",
+      "open·onOpenChange로 표시 상태를 제어하거나 defaultOpen으로 처음 표시 여부를 지정해요. 비제어 기본값은 표시 상태예요.",
+      "마우스를 올리거나 내부에 키보드 포커스가 있거나 창이 비활성화되면 남은 시간을 보존하고, 모두 해제된 뒤 이어서 계산해요.",
+      "닫힌 뒤 다시 열거나 duration을 변경하면 표시 시간을 새로 계산해요. 콜백 변경만으로 타이머를 초기화하지 않아요.",
+      "액션은 type=button으로 onAction을 실행해요. 액션 클릭 자체는 자동으로 닫지 않으며 즉시 닫으려면 소비 앱이 open을 변경해요."
+    ],
+    "limitations": [
+      "화면 위치·등장·퇴장 애니메이션·닫기 버튼·알림 대기열은 제공하지 않아요.",
+      "액션만 비활성화하는 별도 prop은 없어요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Button",
+        "SnackBar"
+      ],
+      "purpose": "작업 실행 후 결과와 후속 행동을 안내해요.",
+      "guidance": "작업 완료 후 open을 true로 바꾸고 onOpenChange에 표시 상태 변경 함수를 연결해요."
+    },
+    {
+      "components": [
+        "IconButton",
+        "SnackBar"
+      ],
+      "purpose": "아이콘으로 실행한 행동의 결과를 텍스트로 보완해요.",
+      "guidance": null
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요.",
+    "actionColor는 오른쪽 액션 버튼의 글자색에만 적용해요."
+  ],
+  "accessibility": [
+    "메시지와 실제 행동이 일치해야 하며 오래 확인할 필수 정보는 별도 지속 안내로 제공해요.",
+    "라이브 리전 역할은 자동 지정하지 않아요. 필요한 role·aria-live 등은 소비 앱이 전달할 수 있어요.",
+    "액션에 포커스가 있는 동안 자동으로 사라지지 않아요."
+  ],
+  "examples": [
+    {
+      "title": "표시·자동 닫힘·다시 표시하기",
+      "code": "'use client';\n\nimport { SnackBar } from './components/ui/snack-bar';\nimport { useState } from 'react';\nexport default function Example() {\n  const [open, setOpen] = useState(false);\n  return <><button type=\"button\" onClick={() => setOpen(true)}>결과 보기</button><SnackBar open={open} onOpenChange={setOpen} duration={5000} action=\"닫기\" onAction={() => setOpen(false)}>저장했어요.</SnackBar></>;\n}"
+    }
+  ],
+  "related": [
+    "Alert",
+    "Button",
+    "IconButton",
+    "TextField"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

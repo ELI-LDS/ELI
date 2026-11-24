@@ -1,0 +1,89 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "checkbox",
+  "name": "Checkbox",
+  "group": "checkbox",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/checkbox.md",
+    "sha256": "4adc8daba6999bc99779cbcb1b90a97442e200b961843a797e2f35d67ac05f9c"
+  },
+  "summary": "독립적인 항목을 선택하거나 해제하며 여러 값을 함께 선택할 수 있어요.",
+  "usage": {
+    "recommended": [
+      "복수 선택 목록·약관 동의·개별 설정의 선택 여부를 표시할 때 사용해요."
+    ],
+    "avoid": [
+      "상호 배타적인 하나의 선택에는 Radio를 사용해요.",
+      "value를 선택 여부로 사용하지 않아요. 선택 여부는 checked예요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "바깥 span 안에 네이티브 checkbox input과 장식용 체크 아이콘이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "보이는 라벨은 소비 앱에서 별도의 label로 제공해요."
+    ],
+    "icon": [
+      "체크 아이콘은 선택 여부를 시각화하며 별도 동작을 맡지 않아요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Unchecked",
+      "Checked",
+      "Disabled"
+    ],
+    "behavior": [
+      "checked·onChange로 제어하거나 defaultChecked로 초기화해요. 선택 여부는 event.currentTarget.checked로 받아요.",
+      "disabled이면 변경할 수 없어요. ref는 실제 input을 가리켜요."
+    ],
+    "limitations": [
+      "그룹 선택·전체 선택·개수 제한·중간 선택 상태는 자동 관리하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Checkbox"
+      ],
+      "purpose": "여러 선택 항목을 폼으로 묶어요.",
+      "guidance": "소비 앱이 label·fieldset·legend를 제공하고 그룹·전체 선택을 관리해요."
+    },
+    {
+      "components": [
+        "Checkbox",
+        "Button"
+      ],
+      "purpose": "선택한 항목에 작업을 실행해요.",
+      "guidance": null
+    }
+  ],
+  "customization": [
+    "className·style은 바깥 span에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "보이는 label을 감싸거나 htmlFor·id로 연결해요. 보이는 라벨이 없다면 aria-label로 항목을 설명해요.",
+    "네이티브 checkbox의 키보드 조작과 disabled 의미를 유지해요."
+  ],
+  "examples": [
+    {
+      "title": "라벨과 선택 상태 연결",
+      "code": "'use client';\n\nimport { Checkbox } from './components/ui/checkbox';\nimport { useState } from 'react';\nexport default function Example() {\n  const [agreed, setAgreed] = useState(false);\n  return <label><Checkbox checked={agreed} onChange={event => setAgreed(event.currentTarget.checked)} />이용약관에 동의해요.</label>;\n}"
+    }
+  ],
+  "related": [
+    "Radio",
+    "Select",
+    "Button"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

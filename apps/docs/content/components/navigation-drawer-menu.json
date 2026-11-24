@@ -1,0 +1,88 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-drawer-menu",
+  "name": "NavigationDrawerMenu",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-drawer.md",
+    "sha256": "cf69f9f86b7a23ffd452cba9ed3fb51fc7ef77717ab663332098fb1fdee04e0e"
+  },
+  "summary": "하나의 Main Menu와 연결된 Sub Menu들을 묶어 선택·펼침을 연결해요.",
+  "usage": {
+    "recommended": [
+      "Drawer에서 주 메뉴와 하위 목적지를 한 단위로 구성할 때 사용해요."
+    ],
+    "avoid": [
+      "하위 메뉴가 있는 Main Menu에 이동 동작을 동시에 연결하지 않아요.",
+      "중복 value를 사용하거나 펼침 동작을 화살표 클릭에만 한정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "Main NavigationDrawerItem과 subItems로 만든 Sub NavigationDrawerItem 목록으로 구성해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label·subItems.label은 목적지를 설명하는 한 줄 텍스트예요. 모든 value는 Drawer 안에서 고유하게 지정해요."
+    ],
+    "icon": [
+      "Main Menu의 outlinedIcon·filledIcon을 함께 전달해요. Sub Menu는 아이콘을 표시하지 않아요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Inactive",
+      "Active",
+      "Collapsed",
+      "Expanded",
+      "Hover",
+      "Pressed"
+    ],
+    "behavior": [
+      "하위 메뉴가 있으면 Main Menu 전체 클릭으로 열고 닫으며 해당 Main Menu의 선택·이동은 실행하지 않아요.",
+      "하위 메뉴가 없으면 onClick 실행 뒤 preventDefault하지 않은 경우 Main Menu를 선택해요.",
+      "Sub Menu는 개별 onClick 실행 후 preventDefault하지 않았다면 Drawer 선택을 변경하고 onSubItemClick을 실행해요.",
+      "펼침은 expanded·onExpandedChange로 제어하거나 defaultExpanded로 초기화해요. 선택은 가장 가까운 Drawer가 관리해요."
+    ],
+    "limitations": [
+      "실제 화면 전환은 소비 앱에서 연결해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationDrawer",
+        "NavigationDrawerMenu",
+        "NavigationDrawerItem"
+      ],
+      "purpose": "주 메뉴와 하위 메뉴를 함께 관리해요.",
+      "guidance": "Menu에 데이터 목록을 전달하면 전용 Item들을 생성해요."
+    }
+  ],
+  "customization": [
+    "className·style은 Main Menu의 button에 적용해요. 각 Sub Menu는 해당 subItems의 className·style로 바꿀 수 있어요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "현재 목적지는 aria-current로, 하위 목록의 열림 상태는 aria-expanded·aria-controls로 전달해요."
+  ],
+  "examples": [
+    {
+      "title": "하위 목록의 펼침과 선택 연결",
+      "code": "'use client';\n\nimport { NavigationDrawer } from './components/ui/navigation-drawer';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nimport { useState } from 'react';\nexport default function Example() {\n  const [page, setPage] = useState('');\n  return <NavigationDrawer aria-label=\"학습 메뉴\" value={page} onValueChange={setPage}><NavigationDrawerMenu label=\"학습\" value=\"learning\" subItems={[{ value: 'courses', label: '내 강의' }, { value: 'saved', label: '저장한 강의' }]} /></NavigationDrawer>;\n}"
+    }
+  ],
+  "related": [
+    "NavigationDrawer",
+    "NavigationDrawerItem",
+    "NavigationDrawerCategory"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

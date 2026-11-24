@@ -271,6 +271,8 @@ ELI/
 
 사용자 배포는 CLI를 통한 소스 설치로 통일하며 기존 전체 UI 패키지는 종료 예정이에요. UI 원본과 현재 내부 workspace 연결은 유지하고 하네스는 독립 콘텐츠로 선택 설치해요. Storybook과 테스트 도구는 배포 패키지에 포함하지 않아요. 엘리의 스킬과 훅은 [하네스 지침](Agent/harness.md), 원격 MCP는 [원격 MCP 규격](Agent/mcp-spec.md), 전체 구조는 [프로젝트 구조 지침](Agent/architecture.md)에서 확인해요.
 
+디자이너 문서를 전달받아 검토할 [컴포넌트 JSON 틀과 검토용 초안](handbook/component-guide-json.md)을 준비했어요. 자료는 `apps/docs/content`에 두며 문서 웹사이트·MCP·하네스의 실제 조회 연결은 아직 구현하지 않았어요.
+
 ## 로드맵
 
 다음 기능은 아직 구현되지 않았어요.

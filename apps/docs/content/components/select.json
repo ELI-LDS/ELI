@@ -1,0 +1,95 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "select",
+  "name": "Select",
+  "group": "select",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/select.md",
+    "sha256": "770137a98938cf860d9632c67bee7d38bbb1569c3b0a92a01f31a97b3c408b48"
+  },
+  "summary": "옵션 목록을 열어 하나의 값을 고르는 입력 컴포넌트예요.",
+  "usage": {
+    "recommended": [
+      "폼이나 설정에서 여러 선택지 중 하나를 고르게 할 때 사용해요."
+    ],
+    "avoid": [
+      "여러 값을 선택하려면 Checkbox 등 별도 선택 UI를 사용해요.",
+      "선택지가 적고 모두 보여야 한다면 Radio를 검토해요.",
+      "검색 가능한 목록이나 필터 설정 화면이 자동 제공된다고 가정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "라벨·값 표시 트리거와 listbox를 가진 루트 div예요. 옵션은 MenuItem으로 렌더링하며 좌우 아이콘·단축키는 표시하지 않아요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label은 입력의 목적을, placeholder는 선택 전 안내를 설명해요.",
+      "options의 value는 고유해야 하고 label은 선택 내용을 명확하게 표현해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Closed",
+      "Open",
+      "Selected",
+      "Disabled"
+    ],
+    "behavior": [
+      "value·onValueChange로 제어하거나 defaultValue로 초기화해요. 선택값이 없으면 placeholder를 표시해요.",
+      "트리거 클릭으로 목록을 열고 닫으며 옵션 선택 후 닫고 트리거로 포커스를 돌려줘요.",
+      "전체 disabled와 옵션별 disabled를 지원해요. 방향키는 사용 가능 옵션만 이동하며 양 끝에서 순환하지 않아요.",
+      "닫힌 상태에서 아래·위 방향키는 목록을 열고 처음·마지막 옵션으로 이동해요. 열린 상태의 Home·End는 처음·마지막으로 이동해요.",
+      "Escape로 닫고 트리거로 포커스를 복귀해요. 바깥으로 포커스가 이동하면 닫혀요. 외부 onKeyDown의 preventDefault는 내부 키보드 처리를 취소해요."
+    ],
+    "limitations": [
+      "검색·다중 선택·목록의 최대 높이와 스크롤 정책은 자동 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Select",
+        "MenuItem"
+      ],
+      "purpose": "선택 옵션을 목록으로 표시해요.",
+      "guidance": "Select가 options를 MenuItem으로 생성해요. 별도 자식 옵션을 중첩하는 API가 아니에요."
+    },
+    {
+      "components": [
+        "Select",
+        "Button"
+      ],
+      "purpose": "선택 결과로 작업을 실행해요.",
+      "guidance": "선택값과 실제 제출·검색은 소비 앱에서 연결해요."
+    }
+  ],
+  "customization": [
+    "className·style은 바깥 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "라벨·표시값·listbox를 연결하며 각 option의 선택 여부와 트리거의 펼침 상태를 전달해요."
+  ],
+  "examples": [
+    {
+      "title": "옵션 목록에서 하나 선택",
+      "code": "'use client';\n\nimport { Select } from './components/ui/select';\nimport { useState } from 'react';\nexport default function Example() {\n  const [value, setValue] = useState('');\n  return <Select label=\"분류\" placeholder=\"분류를 선택하세요\" value={value} onValueChange={setValue} options={[{ value: 'design', label: '디자인' }, { value: 'development', label: '개발' }]} />;\n}"
+    }
+  ],
+  "related": [
+    "MenuItem",
+    "Radio",
+    "Checkbox",
+    "TextField",
+    "FilterChip"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

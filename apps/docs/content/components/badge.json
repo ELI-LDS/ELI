@@ -1,0 +1,109 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "badge",
+  "name": "Badge",
+  "group": "badge",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/badge.md",
+    "sha256": "b523b7f5bb1bce354726c40ffbccc62338cfcfbee98dd98220a243991f9406e7"
+  },
+  "summary": "콘텐츠의 상태나 분류를 짧은 텍스트로 보완하는 비상호작용 표시예요.",
+  "usage": {
+    "recommended": [
+      "목록·카드·제목 옆에 상태나 카테고리를 간결하게 표시해요."
+    ],
+    "avoid": [
+      "Badge 자체를 버튼이나 링크로 사용하지 않아요.",
+      "실제 의미 없이 강조하려고 오류·성공·주의 색상을 쓰지 않아요.",
+      "긴 설명이나 여러 문장을 넣거나 색상만으로 상태를 구분하지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "type": "neutral"
+      },
+      "role": "일반 분류",
+      "when": "특별한 오류·성공·주의 의미가 없는 상태나 분류를 표시해요."
+    },
+    {
+      "props": {
+        "type": "error"
+      },
+      "role": "오류",
+      "when": "오류 의미를 가진 상태를 표시해요."
+    },
+    {
+      "props": {
+        "type": "success"
+      },
+      "role": "성공",
+      "when": "성공 의미를 가진 상태를 표시해요."
+    },
+    {
+      "props": {
+        "type": "caution"
+      },
+      "role": "주의",
+      "when": "주의가 필요한 상태를 표시해요."
+    }
+  ],
+  "structure": {
+    "description": "루트 span에 children을 표시해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "내용과 관계된 상태·분류를 짧게 작성하고 같은 맥락에서 type을 일관되게 사용해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Neutral",
+      "Error",
+      "Success",
+      "Caution"
+    ],
+    "behavior": [
+      "상태를 표시하며 자체 선택·실행 동작은 없어요."
+    ],
+    "limitations": [
+      "info type이나 액션 버튼을 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Badge"
+      ],
+      "purpose": "콘텐츠 제목·본문·카드에 보조 정보를 제공해요.",
+      "guidance": "Text·Card는 원문에서 일반적인 콘텐츠를 뜻해요. 해당 이름의 ELI 공개 컴포넌트를 전제하지 않아요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 span에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "색상과 함께 상태를 설명하는 텍스트를 제공해요."
+  ],
+  "examples": [
+    {
+      "title": "짧은 상태 표시",
+      "code": "import { Badge } from './components/ui/badge';\nexport default function Example() {\n  return <Badge type=\"success\">완료</Badge>;\n}"
+    }
+  ],
+  "related": [
+    "Button",
+    "Chip",
+    "FilterChip",
+    "Alert"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "radio",
+  "name": "Radio",
+  "group": "radio",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/radio.md",
+    "sha256": "43aa2982ccad2afd574e7f91ca884ee7daa5c2b75aad750308b2925983adbbdb"
+  },
+  "summary": "같은 묶음의 여러 선택지 중 하나를 선택하는 네이티브 입력이에요.",
+  "usage": {
+    "recommended": [
+      "상호 배타적인 소수 선택지를 모두 보여주고 하나를 선택하게 할 때 사용해요."
+    ],
+    "avoid": [
+      "여러 항목을 동시에 선택하게 하려면 Checkbox를 사용해요.",
+      "같은 묶음에 서로 다른 name이나 중복 value를 지정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "바깥 span 안에 네이티브 radio input과 선택 표시가 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "보이는 라벨은 외부 label로 제공해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Unchecked",
+      "Checked",
+      "Disabled"
+    ],
+    "behavior": [
+      "같은 묶음은 name을 공유하고 각 항목은 고유한 value를 가져요.",
+      "checked·onChange로 제어하거나 defaultChecked로 초기화해요. ref는 실제 input을 가리켜요.",
+      "네이티브 disabled 항목은 변경할 수 없고 폼 제출에 포함되지 않아요."
+    ],
+    "limitations": [
+      "그룹 값을 저장하는 별도 RadioGroup은 제공하지 않아요. 부모가 제어 상태를 연결해요.",
+      "전용 Hover·Focus·Disabled 색상 상태가 모두 정의된 것은 아니에요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Radio"
+      ],
+      "purpose": "상호 배타적인 입력 묶음을 구성해요.",
+      "guidance": "소비 앱의 fieldset·legend와 label로 그룹·항목을 설명해요."
+    }
+  ],
+  "customization": [
+    "className·style은 바깥 span에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "label과 input을 연결해요. 같은 name의 네이티브 라디오 키보드 동작을 유지해요."
+  ],
+  "examples": [
+    {
+      "title": "같은 묶음에서 하나 선택",
+      "code": "'use client';\n\nimport { Radio } from './components/ui/radio';\nimport { useId, useState } from 'react';\nexport default function Example() {\n  const name = useId();\n  const [course, setCourse] = useState('frontend');\n  return <fieldset><legend>참여 분야</legend>{[{ value: 'frontend', label: '프론트엔드' }, { value: 'backend', label: '백엔드' }].map(option => <label key={option.value}><Radio name={name} value={option.value} checked={course === option.value} onChange={event => setCourse(event.currentTarget.value)} />{option.label}</label>)}</fieldset>;\n}"
+    }
+  ],
+  "related": [
+    "Checkbox",
+    "Select"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

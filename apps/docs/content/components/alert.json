@@ -1,0 +1,120 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "alert",
+  "name": "Alert",
+  "group": "alert",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/alert.md",
+    "sha256": "8bd9cc88cf07313de84a904e5638d2399f30c3a6caab1633c22cbfcc7e3cd273"
+  },
+  "summary": "오류·성공·주의·정보를 제목과 선택적인 본문으로 화면에 유지해 안내해요.",
+  "usage": {
+    "recommended": [
+      "작업 결과나 사용자가 확인해야 할 상태·조건을 구체적으로 설명할 때 사용해요."
+    ],
+    "avoid": [
+      "자동으로 사라지는 짧은 결과 피드백에는 SnackBar를 사용해요.",
+      "일반 텍스트를 꾸미거나 서로 다른 상태를 하나에 혼합하지 않아요.",
+      "버튼·입력 요소를 내부 슬롯에 넣는 용도로 사용하지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "status": "error"
+      },
+      "role": "오류",
+      "when": "작업 실패나 해결해야 할 오류를 안내해요."
+    },
+    {
+      "props": {
+        "status": "success"
+      },
+      "role": "성공",
+      "when": "작업이 성공적으로 완료되었음을 안내해요."
+    },
+    {
+      "props": {
+        "status": "caution"
+      },
+      "role": "주의",
+      "when": "사용자가 주의해야 할 조건을 안내해요."
+    },
+    {
+      "props": {
+        "status": "info"
+      },
+      "role": "정보",
+      "when": "일반적인 정보나 추가 안내를 전달해요."
+    }
+  ],
+  "structure": {
+    "description": "루트 div 안에 상태 아이콘과 제목·선택적인 본문이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "title은 핵심 내용을 간결하게 작성해요. message는 원인·조건·추가 설명에 사용해요."
+    ],
+    "icon": [
+      "status에 맞는 아이콘을 표시해요. 별도 사용자 아이콘 슬롯은 없어요."
+    ],
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Error",
+      "Success",
+      "Caution",
+      "Info"
+    ],
+    "behavior": [
+      "status는 소비 앱이 실제 작업 결과에 맞춰 지정해요."
+    ],
+    "limitations": [
+      "닫기·표시 타이머·내부 액션 버튼·자동 검증 기능은 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Alert",
+        "Button"
+      ],
+      "purpose": "안내와 관련된 후속 행동을 제공해요.",
+      "guidance": "Button은 Alert 밖에 배치하고 알림 내용에 직접 관련된 행동을 연결해요."
+    },
+    {
+      "components": [
+        "Alert",
+        "TextField"
+      ],
+      "purpose": "폼 전체 오류와 개별 입력 오류를 구분해요.",
+      "guidance": "같은 오류를 불필요하게 반복하지 않고 TextField 입력값을 보존해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "색상·아이콘만으로 내용을 전달하지 않고 제목과 본문을 제공해요.",
+    "기본 role이나 라이브 리전은 자동 지정하지 않아요. 동적 알림의 읽기 방식은 소비 앱에서 상황에 맞춰 연결해요."
+  ],
+  "examples": [
+    {
+      "title": "지속적으로 유지할 상태 안내",
+      "code": "import { Alert } from './components/ui/alert';\nexport default function Example() {\n  return <Alert status=\"error\" title=\"저장하지 못했어요.\" message=\"입력한 내용을 확인하고 다시 시도해 주세요.\" />;\n}"
+    }
+  ],
+  "related": [
+    "SnackBar",
+    "TextField",
+    "Button"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}
