@@ -7,7 +7,7 @@
   "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/button.md",
-    "sha256": "2b679fa9a7f330e9b2492387970f0fab341ec000280a9e0a09dfa18d06873b0e"
+    "sha256": "b3964040ea1b0b9339d29fe33017338302dcff27da9ecd578b4a187ecc88ccd3"
   },
   "summary": "사용자가 텍스트로 표현된 행동을 실행할 수 있도록 제공하는 버튼 컴포넌트예요.",
   "usage": {
