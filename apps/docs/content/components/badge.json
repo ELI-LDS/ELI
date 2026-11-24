@@ -4,7 +4,7 @@
   "id": "badge",
   "name": "Badge",
   "group": "badge",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/badge.md",
     "sha256": "b523b7f5bb1bce354726c40ffbccc62338cfcfbee98dd98220a243991f9406e7"

@@ -34,7 +34,7 @@ function findComponent(name: string): Component | QueryError {
 export function listComponents({ status }: { status?: string | undefined } = {}) {
   const picked = status === undefined ? undefined : pick([status], GUIDE_STATUSES, '상태');
   if (picked && 'error' in picked) return picked;
-  // 가이드가 검토 전(draft)이거나 없는(null) 컴포넌트도 목록에 나와요. 에이전트가 status로 구분해요.
+  // 가이드가 검토 전(draft)이거나 없는(null) 컴포넌트도 목록에는 나와요. 그런 컴포넌트는 섹션이 비어 있어요.
   return { components: content.components.filter(component => !picked || component.status === picked[0]).map(({ name, id, status, description }) => ({ name, id, status, description })) };
 }
 

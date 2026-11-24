@@ -4,7 +4,7 @@
   "id": "loading-indicator",
   "name": "LoadingIndicator",
   "group": "loading",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/loading-indicator.md",
     "sha256": "5641971b088fbc095437f33a7d8974cee4c8734c8cf6ecba01e937dc73ff0de7"

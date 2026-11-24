@@ -6,39 +6,39 @@
 
 | 컴포넌트 JSON | 개발자가 보완한 예시 | 승인 상태 |
 | --- | --- | --- |
-| [Alert](../apps/docs/content/components/alert.json) | 지속적으로 유지할 상태 안내 | 사용자 검토 대기 |
-| [Badge](../apps/docs/content/components/badge.json) | 짧은 상태 표시 | 사용자 검토 대기 |
-| [Button](../apps/docs/content/components/button.json) | 주요 행동 실행 | 사용자 검토 대기 |
-| [Checkbox](../apps/docs/content/components/checkbox.json) | 라벨과 선택 상태 연결 | 사용자 검토 대기 |
-| [Chip](../apps/docs/content/components/chip.json) | 선택 상태를 부모에서 반영 | 사용자 검토 대기 |
-| [FabMenuSegment](../apps/docs/content/components/fab-menu-segment.json) | 개별 액션의 실행 함수 연결 | 사용자 검토 대기 |
-| [FabMenu](../apps/docs/content/components/fab-menu.json) | 관련 액션 목록과 실행 함수 연결 | 사용자 검토 대기 |
-| [Fab](../apps/docs/content/components/fab.json) | 단일 주요 행동 실행 | 사용자 검토 대기 |
-| [FilterChip](../apps/docs/content/components/filter-chip.json) | 필터 설정과 적용은 소비 앱에서 제공 | 사용자 검토 대기 |
-| [IconButton](../apps/docs/content/components/icon-button.json) | 아이콘으로 항목 추가 | 사용자 검토 대기 |
-| [LoadingIndicator](../apps/docs/content/components/loading-indicator.json) | 진행률을 모르는 작업의 대기 표시 | 사용자 검토 대기 |
-| [MenuItem](../apps/docs/content/components/menu-item.json) | 항목 클릭을 기능에 연결 | 사용자 검토 대기 |
-| [NavigationBarGlassItem](../apps/docs/content/components/navigation-bar-glass-item.json) | 단독 항목의 활성 상태 연결 | 사용자 검토 대기 |
-| [NavigationBarGlass](../apps/docs/content/components/navigation-bar-glass.json) | 현재 목적지를 부모 상태에 연결 | 사용자 검토 대기 |
-| [NavigationBarItem](../apps/docs/content/components/navigation-bar-item.json) | 단독 항목의 활성 상태 연결 | 사용자 검토 대기 |
-| [NavigationBar](../apps/docs/content/components/navigation-bar.json) | 현재 목적지를 부모 상태에 연결 | 사용자 검토 대기 |
-| [NavigationDrawerCategory](../apps/docs/content/components/navigation-drawer-category.json) | 탐색 메뉴 묶음에 이름 제공 | 사용자 검토 대기 |
-| [NavigationDrawerItem](../apps/docs/content/components/navigation-drawer-item.json) | 직접 조립하는 주·하위 메뉴 | 사용자 검토 대기 |
-| [NavigationDrawerMenu](../apps/docs/content/components/navigation-drawer-menu.json) | 하위 목록의 펼침과 선택 연결 | 사용자 검토 대기 |
-| [NavigationDrawer](../apps/docs/content/components/navigation-drawer.json) | 카테고리·주 메뉴·하위 메뉴 조립 | 사용자 검토 대기 |
-| [ProgressIndicator](../apps/docs/content/components/progress-indicator.json) | 앱에서 받은 실제 진행률 표시 | 사용자 검토 대기 |
-| [Radio](../apps/docs/content/components/radio.json) | 같은 묶음에서 하나 선택 | 사용자 검토 대기 |
-| [RemovableChip](../apps/docs/content/components/removable-chip.json) | 부모 목록에서 항목 제거 | 사용자 검토 대기 |
-| [SegmentControl](../apps/docs/content/components/segment-control.json) | 보기 방식 선택 | 사용자 검토 대기 |
-| [Select](../apps/docs/content/components/select.json) | 옵션 목록에서 하나 선택 | 사용자 검토 대기 |
-| [Slider](../apps/docs/content/components/slider.json) | 단일 수치 조절 | 사용자 검토 대기 |
-| [SnackBar](../apps/docs/content/components/snack-bar.json) | 표시·자동 닫힘·다시 표시하기 | 사용자 검토 대기 |
-| [TextArea](../apps/docs/content/components/text-area.json) | 여러 줄의 내용 입력 | 사용자 검토 대기 |
-| [TextField](../apps/docs/content/components/text-field.json) | 입력과 지우기를 같은 상태에 연결 | 사용자 검토 대기 |
-| [Toggle](../apps/docs/content/components/toggle.json) | 즉시 적용하는 설정 전환 | 사용자 검토 대기 |
-| [Tooltip](../apps/docs/content/components/tooltip.json) | 설명과 대상 연결: 표시 제어는 소비 앱에서 제공 | 사용자 검토 대기 |
+| [Alert](../apps/docs/content/components/alert.json) | 지속적으로 유지할 상태 안내 | 2026-11-24 사용자 승인 |
+| [Badge](../apps/docs/content/components/badge.json) | 짧은 상태 표시 | 2026-11-24 사용자 승인 |
+| [Button](../apps/docs/content/components/button.json) | 주요 행동 실행 | 2026-11-24 사용자 승인 |
+| [Checkbox](../apps/docs/content/components/checkbox.json) | 라벨과 선택 상태 연결 | 2026-11-24 사용자 승인 |
+| [Chip](../apps/docs/content/components/chip.json) | 선택 상태를 부모에서 반영 | 2026-11-24 사용자 승인 |
+| [FabMenuSegment](../apps/docs/content/components/fab-menu-segment.json) | 개별 액션의 실행 함수 연결 | 2026-11-24 사용자 승인 |
+| [FabMenu](../apps/docs/content/components/fab-menu.json) | 관련 액션 목록과 실행 함수 연결 | 2026-11-24 사용자 승인 |
+| [Fab](../apps/docs/content/components/fab.json) | 단일 주요 행동 실행 | 2026-11-24 사용자 승인 |
+| [FilterChip](../apps/docs/content/components/filter-chip.json) | 필터 설정과 적용은 소비 앱에서 제공 | 2026-11-24 사용자 승인 |
+| [IconButton](../apps/docs/content/components/icon-button.json) | 아이콘으로 항목 추가 | 2026-11-24 사용자 승인 |
+| [LoadingIndicator](../apps/docs/content/components/loading-indicator.json) | 진행률을 모르는 작업의 대기 표시 | 2026-11-24 사용자 승인 |
+| [MenuItem](../apps/docs/content/components/menu-item.json) | 항목 클릭을 기능에 연결 | 2026-11-24 사용자 승인 |
+| [NavigationBarGlassItem](../apps/docs/content/components/navigation-bar-glass-item.json) | 단독 항목의 활성 상태 연결 | 2026-11-24 사용자 승인 |
+| [NavigationBarGlass](../apps/docs/content/components/navigation-bar-glass.json) | 현재 목적지를 부모 상태에 연결 | 2026-11-24 사용자 승인 |
+| [NavigationBarItem](../apps/docs/content/components/navigation-bar-item.json) | 단독 항목의 활성 상태 연결 | 2026-11-24 사용자 승인 |
+| [NavigationBar](../apps/docs/content/components/navigation-bar.json) | 현재 목적지를 부모 상태에 연결 | 2026-11-24 사용자 승인 |
+| [NavigationDrawerCategory](../apps/docs/content/components/navigation-drawer-category.json) | 탐색 메뉴 묶음에 이름 제공 | 2026-11-24 사용자 승인 |
+| [NavigationDrawerItem](../apps/docs/content/components/navigation-drawer-item.json) | 직접 조립하는 주·하위 메뉴 | 2026-11-24 사용자 승인 |
+| [NavigationDrawerMenu](../apps/docs/content/components/navigation-drawer-menu.json) | 하위 목록의 펼침과 선택 연결 | 2026-11-24 사용자 승인 |
+| [NavigationDrawer](../apps/docs/content/components/navigation-drawer.json) | 카테고리·주 메뉴·하위 메뉴 조립 | 2026-11-24 사용자 승인 |
+| [ProgressIndicator](../apps/docs/content/components/progress-indicator.json) | 앱에서 받은 실제 진행률 표시 | 2026-11-24 사용자 승인 |
+| [Radio](../apps/docs/content/components/radio.json) | 같은 묶음에서 하나 선택 | 2026-11-24 사용자 승인 |
+| [RemovableChip](../apps/docs/content/components/removable-chip.json) | 부모 목록에서 항목 제거 | 2026-11-24 사용자 승인 |
+| [SegmentControl](../apps/docs/content/components/segment-control.json) | 보기 방식 선택 | 2026-11-24 사용자 승인 |
+| [Select](../apps/docs/content/components/select.json) | 옵션 목록에서 하나 선택 | 2026-11-24 사용자 승인 |
+| [Slider](../apps/docs/content/components/slider.json) | 단일 수치 조절 | 2026-11-24 사용자 승인 |
+| [SnackBar](../apps/docs/content/components/snack-bar.json) | 표시·자동 닫힘·다시 표시하기 | 2026-11-24 사용자 승인 |
+| [TextArea](../apps/docs/content/components/text-area.json) | 여러 줄의 내용 입력 | 2026-11-24 사용자 승인 |
+| [TextField](../apps/docs/content/components/text-field.json) | 입력과 지우기를 같은 상태에 연결 | 2026-11-24 사용자 승인 |
+| [Toggle](../apps/docs/content/components/toggle.json) | 즉시 적용하는 설정 전환 | 2026-11-24 사용자 승인 |
+| [Tooltip](../apps/docs/content/components/tooltip.json) | 설명과 대상 연결: 표시 제어는 소비 앱에서 제공 | 2026-11-24 사용자 승인 |
 
-모든 JSON은 draft예요. 기술 검증이 끝났다는 이유로 사용자 승인을 대신하지 않았어요. 아래 처리 기록을 다시 검토한 뒤 승인한 문서만 stable로 바꿔요. 새로운 명세 차이를 발견하면 review.questions 또는 review.implementationGaps에 다시 기록해요. 승인 기준은 [변환 안내](component-guide-json.md#검토와-공개를-구분해요)에서 관리해요.
+2026-11-24에 사용자가 31개 문서를 모두 승인해 `stable`로 전환했어요. 승인 전에 스키마의 `stable` 조건(요약·권장 상황·출처·예시가 있고 미해결 질문·구현 차이가 없음)을 31개 모두 충족하는 것을 확인했어요. 새로운 명세 차이를 발견하면 해당 문서를 `draft`로 되돌리고 다시 검토해요.
 
 ## 처리한 원문과 구현의 차이
 

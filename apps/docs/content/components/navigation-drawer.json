@@ -4,7 +4,7 @@
   "id": "navigation-drawer",
   "name": "NavigationDrawer",
   "group": "navigation",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/navigation-drawer.md",
     "sha256": "cf69f9f86b7a23ffd452cba9ed3fb51fc7ef77717ab663332098fb1fdee04e0e"

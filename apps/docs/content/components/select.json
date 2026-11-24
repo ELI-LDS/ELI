@@ -4,7 +4,7 @@
   "id": "select",
   "name": "Select",
   "group": "select",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/select.md",
     "sha256": "770137a98938cf860d9632c67bee7d38bbb1569c3b0a92a01f31a97b3c408b48"

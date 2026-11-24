@@ -4,7 +4,7 @@
   "id": "text-field",
   "name": "TextField",
   "group": "text",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/text-field.md",
     "sha256": "74aa1807dee002bb498c310dc4d89afc003077b616d07ec1f61037c83a39de18"

@@ -8,6 +8,7 @@
 
 - 문서 앱의 `/mcp`에 도구 일곱 개를 등록하고 Cloudflare Workers로 `https://eli-design.dev/mcp`에 배포했어요. 레지스트리 JSON에서 컴포넌트 섹션·props·토큰을 만들어 돌려주고, 섹션·prop 이름·필드·토큰 구역으로 응답을 좁혀요. npm 그룹 import 경로 대신 레지스트리 항목 `id`와 `entry`를 알려줘요. 2026-11-24에 공개 주소에서 도구 일곱 개의 응답을 확인했어요. 가이드 원본은 아직 없어요. 서버는 `main`의 소스를 설명하므로 공개된 UI 콘텐츠 0.2.0에 없는 미배포 변경이 응답에 보일 수 있어요.
 - 컴포넌트 문서의 섹션을 검토한 컴포넌트 가이드 JSON에서 만들도록 바꿨어요. `do-dont`·`accessibility`·`related` 섹션을 제공하고 `behavior` 섹션 키를 없앴어요. 목록과 상세 응답에 가이드의 검토 상태 `status`를 담고 `list_components`를 `status`로 좁힐 수 있어요. 현재 가이드 31개는 모두 검토 전 `draft`이고 Divider·Modal·Tab은 가이드가 없어요. props·토큰은 이전처럼 레지스트리에서 추출해요.
+- 사용자 승인에 따라 컴포넌트 가이드 31개를 `stable`로 전환했어요. 일반 응답에는 `stable` 가이드의 내용만 담고, 검토 전(`draft`)인 컴포넌트는 상태만 알려요. Divider·Modal·Tab의 가이드는 나중에 추가돼요.
 
 ### 개발 환경
 

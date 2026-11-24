@@ -4,7 +4,7 @@
   "id": "radio",
   "name": "Radio",
   "group": "radio",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/radio.md",
     "sha256": "43aa2982ccad2afd574e7f91ca884ee7daa5c2b75aad750308b2925983adbbdb"

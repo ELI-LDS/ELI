@@ -4,7 +4,7 @@
   "id": "progress-indicator",
   "name": "ProgressIndicator",
   "group": "loading",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/progress-indicator.md",
     "sha256": "5be5d5bda70b6b7987dfa630b52713e7b06f92a8ad1a17edd0b59566eee198c1"

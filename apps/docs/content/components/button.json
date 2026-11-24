@@ -4,7 +4,7 @@
   "id": "button",
   "name": "Button",
   "group": "button",
-  "status": "draft",
+  "status": "stable",
   "source": {
     "markdown": "apps/docs/content/source/components/button.md",
     "sha256": "2b679fa9a7f330e9b2492387970f0fab341ec000280a9e0a09dfa18d06873b0e"
