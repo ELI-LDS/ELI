@@ -1,37 +1,20 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset=".github/assets/eli-mascot-dark.png">
-  <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot.png">
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/eli-mascot-blink-dark.gif">
-  <source media="(prefers-color-scheme: light)" srcset=".github/assets/eli-mascot-blink-light.gif">
-  <img src=".github/assets/eli-mascot-blink-light.gif" alt="눈을 깜빡이는 엘리" width="300" align="left">
+  <source media="(max-width: 1280px) and (prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset=".github/assets/readme-hero-mobile-dark.png">
+  <source media="(max-width: 1280px) and (prefers-reduced-motion: reduce)" srcset=".github/assets/readme-hero-mobile-light.png">
+  <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset=".github/assets/readme-hero-desktop-dark.png">
+  <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/readme-hero-desktop-light.png">
+  <source media="(max-width: 1280px) and (prefers-color-scheme: dark)" srcset=".github/assets/readme-hero-mobile-dark.gif">
+  <source media="(max-width: 1280px)" srcset=".github/assets/readme-hero-mobile-light.gif">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/readme-hero-desktop-dark.gif">
+  <img src=".github/assets/readme-hero-desktop-light.gif" alt="디자인의 첫 단추, ELI. 작은 조각 하나가 규칙이 되고, 규칙이 모이면 하나의 화면이 돼요. ELI가 처음부터 맞춰 끼워 둘게요. 디자이너가 없어도, 디자인을 몰라도 괜찮아요. 엘리는 AI 에이전트 안에서 일하는 디자이너예요. 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요. 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.">
 </picture>
-
-<p align="center">
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/eli-title-dark.svg">
-  <img src=".github/assets/eli-title-light.svg" alt="디자인의 첫 단추, ELI" width="680">
-</picture>
-</p>
-
-<p align="center">
-작은 조각 하나가 규칙이 되고, 규칙이 모이면 하나의 화면이 돼요.<br>
-ELI가 처음부터 맞춰 끼워 둘게요.
-</p>
 
 <p align="center">
 <a href="https://eli-design.dev">공식 웹사이트 (준비 중)</a> · <a href="https://storybook.eli-design.dev">Storybook</a> · <a href="packages/cli/README.md#컴포넌트-사용하기">컴포넌트 사용 예시</a> · <a href="#함께-개발해요">기여 방법</a>
 </p>
 
-<p align="center">
-디자이너가 없어도, 디자인을 몰라도 괜찮아요.<br>
-엘리는 AI 에이전트 안에서 일하는 디자이너예요.<br>
-서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요.<br>
-그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
-</p>
-
-<br clear="all">
 </div>
 
 ## 시작하는 방법은 한 줄이에요
