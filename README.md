@@ -114,7 +114,7 @@ flowchart TB
 | 버전을 확인한 지 오래되면 알려주기 | 돼요 |
 | 새 버전 확인하기 (`/eli-update`) | 원격 MCP로 최신 버전을 확인해요. 설치된 소스·하네스를 새 버전으로 올리는 명령은 아직 없어요 |
 | 필요한 컴포넌트 소스 추가 | `eli-design add`로 하나·여러 개·전체를 선택해요 |
-| 컴포넌트 문서와 토큰 조회 (원격 MCP) | `https://eli-design.dev/mcp`에서 돼요. 승인한 컴포넌트 가이드 31개를 제공해요. Divider·Modal·Tab의 가이드와 설치·폰트 같은 공통 가이드는 아직 없어요 |
+| 컴포넌트 문서와 토큰 조회 (원격 MCP) | `https://eli-design.dev/mcp`에서 돼요. 승인한 컴포넌트 가이드 34개를 제공해요. 설치·폰트 같은 공통 가이드는 아직 없어요 |
 | 디자인 토큰 만들기, 디자인 시스템 페이지, 코드 점검, 기존 화면 옮기기 | 원격 MCP의 문서·토큰으로 진행해요. 공통 가이드가 없는 단계는 원격 기준 없이 진행했다고 알려줘요. 실제 에이전트에서의 전체 흐름은 아직 확인하지 않았어요 |
 
 준비 중인 단계를 만나면 엘리는 추측해서 진행하지 않고, 할 수 있는 데까지 한 뒤 무엇이 남았는지 알려줘요. 스킬과 훅이 실제 프로젝트에서 처음부터 끝까지 동작하는지는 아직 충분히 확인하지 못했어요.
@@ -133,7 +133,7 @@ flowchart TB
 
 ## 컴포넌트 사용하기
 
-아래는 npm `latest`인 CLI 0.3.1과 공개된 UI 콘텐츠 0.3.0의 사용 예시예요. 기존 설치 파일은 자동으로 바뀌지 않아요. [릴리스 기록](handbook/releases/0.3.1.md)과 [변경 내역](CHANGELOG.md)을 확인해요.
+아래는 npm `latest`인 CLI 0.4.0과 공개된 UI 콘텐츠 0.3.0의 사용 예시예요. 기존 설치 파일은 자동으로 바뀌지 않아요. [릴리스 기록](handbook/releases/0.4.0.md)과 [변경 내역](CHANGELOG.md)을 확인해요.
 
 엘리 없이 직접 사용할 수도 있어요. 기존 React `^19.3.0` 프로젝트에서 실행해요.
 
@@ -175,7 +175,7 @@ npx eli-design@latest harness --agent codex
 
 둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
 
-CLI 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하고, 하네스만 설치한 프로젝트의 일반 `status` 출력에도 오류가 있어요. 두 문제를 고친 [CLI 0.3.1](handbook/releases/0.3.1.md)이 npm `latest`예요. `npx eli-design@latest`로 실행해요.
+CLI 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하고, 하네스만 설치한 프로젝트의 일반 `status` 출력에도 오류가 있어요. 두 문제는 CLI 0.3.1에서 고쳤어요. 지금 npm `latest`는 하네스 설치에서 문서 서버까지 등록하는 [CLI 0.4.0](handbook/releases/0.4.0.md)이에요. `npx eli-design@latest`로 실행해요.
 
 ### 기존 전체 패키지에서 이전하기
 
@@ -299,7 +299,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. npm `latest`인 CLI 0.3.1의 고정 파일·검증 범위는 [릴리스 기록](handbook/releases/0.3.1.md), 이전 CLI는 [0.2.0](handbook/releases/0.2.0.md)·[0.3.0 후보](handbook/releases/0.3.0.md)에서 확인해요. UI 콘텐츠 0.3.0과 하네스 0.2.1의 공개 기록은 CHANGELOG와 각 GitHub Release에 있어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. npm `latest`인 CLI 0.4.0의 고정 파일·검증 범위는 [릴리스 기록](handbook/releases/0.4.0.md), 이전 CLI는 [0.2.0](handbook/releases/0.2.0.md)·[0.3.0 후보](handbook/releases/0.3.0.md)·[0.3.1](handbook/releases/0.3.1.md)에서 확인해요. UI 콘텐츠 0.3.0과 하네스 0.3.0의 공개 기록은 CHANGELOG와 각 GitHub Release에 있어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 
