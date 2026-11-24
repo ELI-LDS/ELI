@@ -1,0 +1,82 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "fab-menu-segment",
+  "name": "FabMenuSegment",
+  "group": "fab",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/fab.md",
+    "sha256": "c606557fbbb6d56b2bb2a17da1a7ed81ebbdc671ae75b8ea56c12a8aaa3c38b1"
+  },
+  "summary": "FAB 메뉴에 속한 개별 액션을 아이콘과 한 줄 라벨로 표시해요.",
+  "usage": {
+    "recommended": [
+      "FabMenu의 관련 액션 한 항목을 표시해요."
+    ],
+    "avoid": [
+      "탐색 항목이나 무관한 액션을 무분별하게 추가하는 데 사용하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 button 안에 아이콘과 라벨이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label로 실행할 행동을 구체적으로 작성해요."
+    ],
+    "icon": [
+      "icon을 생략하면 Add 아이콘을 사용하고 null이면 숨겨요."
+    ],
+    "limits": [
+      "라벨은 한 줄이에요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Hover",
+      "Pressed",
+      "Disabled"
+    ],
+    "behavior": [
+      "onClick으로 실제 행동을 실행해요. disabled이면 실행할 수 없어요.",
+      "FabMenu 안에서는 상위 메뉴가 항목 실행 후 닫힘을 담당해요. 단독 사용은 자체적으로 메뉴를 닫지 않아요."
+    ],
+    "limitations": [
+      "자체 메뉴 상태나 항목 목록을 관리하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "FabMenu",
+        "FabMenuSegment"
+      ],
+      "purpose": "메뉴의 개별 액션을 제공해요.",
+      "guidance": "일반적으로 FabMenu의 items를 사용하며 상위 컴포넌트가 자동 생성해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요."
+  ],
+  "examples": [
+    {
+      "title": "개별 액션의 실행 함수 연결",
+      "code": "'use client';\n\nimport { FabMenuSegment } from './components/ui/fab-menu-segment';\nimport { useState } from 'react';\nexport default function Example() {\n  const [clicked, setClicked] = useState(false);\n  return <><FabMenuSegment label=\"사진 추가\" onClick={() => setClicked(true)} /><output>{clicked ? '사진 추가를 선택했어요.' : ''}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "FabMenu",
+    "Fab"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

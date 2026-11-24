@@ -394,7 +394,7 @@ export function CategorySelect() {
 }
 ```
 
-SegmentControl은 2개부터 4개의 옵션 중 하나를 선택해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요. 전체 `disabled`와 옵션별 `disabled`를 지원하고 방향키는 사용 가능한 옵션만 이동해요.
+SegmentControl은 같은 맥락의 옵션 중 하나를 선택하며 2~4개를 권장해요. 값은 부모에서 제어하거나 `defaultValue`로 초기화할 수 있어요. 전체 `disabled`와 옵션별 `disabled`를 지원하고 방향키는 사용 가능한 옵션만 이동해요.
 
 ```tsx
 import { SegmentControl } from './components/ui/segment-control';
@@ -409,9 +409,9 @@ export function ViewControl() {
 }
 ```
 
-NavigationBar·NavigationBarGlass의 `items`와 SegmentControl의 `options`는 `.map()`·권한 필터로 만든 일반 배열도 받아요. 권장 항목 수는 각각 3~5개와 2~4개이며, 배열을 자동으로 자르지 않아요. 빈 목록은 선택 없이 표시해요. 탐색 항목의 `disabled: true`는 클릭·키보드·드래그 선택을 막아요.
+NavigationBar·NavigationBarGlass의 `items`와 SegmentControl의 `options`는 `.map()`·권한 필터로 만든 일반 배열도 받아요. 권장 항목 수는 각각 3~5개와 2~4개이며, 배열을 자동으로 자르지 않아요. 빈 목록은 선택 없이 표시해요. NavigationBar·NavigationBarGlass는 항목별 disabled를 제공하지 않아요. 선택되지 않은 항목도 이동할 수 있어요.
 
-세 컴포넌트에서 선택 항목이 목록에서 사라지면 비제어 방식은 첫 번째 사용 가능한 항목으로 보정해요. 제어 방식은 부모의 값을 유지하고 선택 표시를 숨겨요. 목록 변경만으로 `onValueChange`를 실행하지 않아요. 이미 선택된 항목이 비활성화되면 선택은 유지하고 추가 조작을 막아요.
+세 컴포넌트에서 선택 항목이 목록에서 사라지면 비제어 방식은 첫 번째 사용 가능한 항목으로 보정해요. 제어 방식은 부모의 값을 유지하고 선택 표시를 숨겨요. 목록 변경만으로 `onValueChange`를 실행하지 않아요. SegmentControl에서 이미 선택된 옵션이 비활성화되면 선택은 유지하고 추가 조작을 막아요.
 
 Slider는 하나의 값이나 시작·끝 범위를 선택할 때 사용해요. `aria-label`에는 사용자가 무엇을 조절하는지 짧게 적어요. 초기값·제어값·변경값을 `min` 기준의 `step` 간격에 맞춰 표시해요. 예를 들어 `min={0} max={10} step={3} defaultValue={5}`는 6으로 표시하며 마지막 유효 값은 9예요. step은 양수여야 하며 유효하지 않으면 기본값 1을 사용해요.
 
@@ -477,16 +477,24 @@ export function IntroductionField() {
 }
 ```
 
-SnackBar는 아래 경로에서 가져와요. 메시지, 버튼명과 버튼 색상을 바꿀 수 있어요.
+SnackBar는 짧은 작업 결과를 표시하고 기본 5초 후 닫혀요. `duration`은 밀리초이며 `duration={0}`이면 자동으로 닫히지 않아요. 유효하지 않거나 브라우저 타이머 한도를 넘는 값은 기본값으로 처리해요. 마우스를 올리거나 내부에 포커스가 있거나 창이 비활성화되면 남은 시간을 보존해요.
 
 ```tsx
+import { useState } from 'react';
 import { SnackBar } from './components/ui/snack-bar';
 
-export function Example() {
+export function SaveFeedback() {
+  const [open, setOpen] = useState(false);
   return (
-    <SnackBar action="닫기" actionColor="#3584fb">
-      저장했어요.
-    </SnackBar>
+    <>
+      <button type="button" onClick={() => setOpen(true)}>결과 보기</button>
+      <SnackBar open={open} onOpenChange={setOpen} duration={5000}
+        action="닫기" onAction={() => setOpen(false)}>
+        저장했어요.
+      </SnackBar>
+    </>
   );
 }
 ```
+
+`open`을 지정하면 부모가 표시 상태를 관리해요. 비제어 방식은 `defaultOpen`으로 초기화하며 기본값은 `true`예요. 닫힌 뒤 다시 열거나 `duration`을 바꾸면 시간을 새로 계산해요. 액션은 `onAction`만 실행하므로 즉시 닫으려면 예시처럼 상태를 바꿔요. 액션이 필요하지 않다면 `action={null}`을 전달해요. Next.js에서 위처럼 상태를 사용하는 예시는 Client Component 안에 작성해요.

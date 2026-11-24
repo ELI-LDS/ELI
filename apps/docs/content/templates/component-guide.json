@@ -1,0 +1,21 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "component-id",
+  "name": "ComponentName",
+  "group": "group-name",
+  "status": "draft",
+  "source": { "markdown": null, "sha256": null },
+  "summary": null,
+  "usage": { "recommended": null, "avoid": null },
+  "choices": null,
+  "structure": { "description": null, "note": null },
+  "content": { "text": null, "icon": null, "limits": null },
+  "interaction": { "states": null, "behavior": null, "limitations": null },
+  "composition": null,
+  "customization": null,
+  "accessibility": null,
+  "examples": null,
+  "related": null,
+  "review": { "questions": [], "implementationGaps": [] }
+}

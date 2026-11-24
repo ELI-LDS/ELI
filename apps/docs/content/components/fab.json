@@ -1,0 +1,101 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "fab",
+  "name": "Fab",
+  "group": "fab",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/fab.md",
+    "sha256": "c606557fbbb6d56b2bb2a17da1a7ed81ebbdc671ae75b8ea56c12a8aaa3c38b1"
+  },
+  "summary": "화면에서 하나의 주요 행동을 바로 실행하는 플로팅 액션 버튼이에요.",
+  "usage": {
+    "recommended": [
+      "실행할 주요 액션이 하나일 때 단독으로 사용해요."
+    ],
+    "avoid": [
+      "화면 이동·탐색에는 NavigationBar나 NavigationDrawer를 사용해요.",
+      "서로 관련 없는 여러 행동을 하나의 버튼에 모으지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "showLabel": true
+      },
+      "role": "행동 설명 포함",
+      "when": "아이콘만으로 의미를 전달하기 어렵다면 라벨을 유지해요."
+    },
+    {
+      "props": {
+        "showLabel": false
+      },
+      "role": "아이콘 중심",
+      "when": "아이콘만으로 의미가 명확한 경우에도 label로 동작 설명을 제공해요."
+    }
+  ],
+  "structure": {
+    "description": "button 안에 기본·열림 상태 아이콘과 선택적인 라벨이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label은 실행할 행동을 구체적으로 표현해요. expanded이면 시각적 라벨을 숨겨요."
+    ],
+    "icon": [
+      "기본 Add·열림 Close 아이콘을 사용하며 icon·expandedIcon으로 바꿀 수 있어요. null이면 해당 아이콘을 숨겨요."
+    ],
+    "limits": [
+      "라벨은 한 줄로 표시해요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Collapsed",
+      "Expanded",
+      "Hover",
+      "Pressed",
+      "Disabled"
+    ],
+    "behavior": [
+      "onClick은 소비 앱의 단일 행동을 실행해요. expanded는 외부에서 표시 상태를 전달해요.",
+      "아이콘 전환은 두 아이콘이 있을 때 적용하며 모션 줄이기 설정을 따라요."
+    ],
+    "limitations": [
+      "Fab 자체는 메뉴 목록·열림 상태를 관리하지 않아요. 여러 액션은 FabMenu를 사용해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "FabMenu",
+        "Fab"
+      ],
+      "purpose": "메인 버튼으로 메뉴를 열고 닫아요.",
+      "guidance": "FabMenu가 내부에 Fab을 자동 구성해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
+    "아이콘만 보이는 경우에도 label로 동작을 설명해요."
+  ],
+  "examples": [
+    {
+      "title": "단일 주요 행동 실행",
+      "code": "'use client';\n\nimport { Fab } from './components/ui/fab';\nimport { useState } from 'react';\nexport default function Example() {\n  const [created, setCreated] = useState(false);\n  return <><Fab label=\"새 글 작성\" onClick={() => setCreated(true)} /><output>{created ? '작성 버튼을 눌렀어요.' : ''}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "FabMenu",
+    "NavigationBar",
+    "NavigationDrawer"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-drawer-category",
+  "name": "NavigationDrawerCategory",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-drawer.md",
+    "sha256": "cf69f9f86b7a23ffd452cba9ed3fb51fc7ef77717ab663332098fb1fdee04e0e"
+  },
+  "summary": "Drawer 메뉴 묶음을 구분하는 수정 가능한 카테고리 이름이에요.",
+  "usage": {
+    "recommended": [
+      "관련 메뉴를 묶고 그 범위를 설명할 때 사용해요."
+    ],
+    "avoid": [
+      "카테고리 이름 자체를 화면 이동이나 펼침 버튼으로 사용하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 div에 한 줄 카테고리 라벨을 표시해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label로 묶음의 의미를 짧게 설명해요."
+    ],
+    "icon": null,
+    "limits": [
+      "라벨은 한 줄로 표시해요."
+    ]
+  },
+  "interaction": {
+    "states": [],
+    "behavior": [
+      "선택·펼침·이동 동작이 없는 구분용 행이에요."
+    ],
+    "limitations": [
+      "하위 메뉴를 받거나 자동 그룹 관계를 생성하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationDrawer",
+        "NavigationDrawerCategory",
+        "NavigationDrawerMenu"
+      ],
+      "purpose": "메뉴 묶음에 카테고리 이름을 붙여요.",
+      "guidance": "Drawer의 children에 Category와 관련 Menu들을 배치해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "행동하는 컨트롤로 설명하지 않고 메뉴 묶음을 이해하는 보조 텍스트로 제공해요."
+  ],
+  "examples": [
+    {
+      "title": "탐색 메뉴 묶음에 이름 제공",
+      "code": "import { NavigationDrawer } from './components/ui/navigation-drawer';\nimport { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nexport default function Example() {\n  return <NavigationDrawer aria-label=\"학습 메뉴\"><NavigationDrawerCategory label=\"내 학습\" /><NavigationDrawerMenu value=\"courses\" label=\"내 강의\" /></NavigationDrawer>;\n}"
+    }
+  ],
+  "related": [
+    "NavigationDrawer",
+    "NavigationDrawerMenu",
+    "Divider"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

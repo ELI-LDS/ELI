@@ -1,0 +1,87 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "navigation-bar",
+  "name": "NavigationBar",
+  "group": "navigation",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/navigation-bar.md",
+    "sha256": "eb6e2e9dc7d0f254b8c29f12100d1cb2badc1e4bafc828e540debbfa4c845380"
+  },
+  "summary": "아이콘과 라벨로 주요 화면 사이를 이동하는 하단 내비게이션이에요.",
+  "usage": {
+    "recommended": [
+      "목적지를 텍스트와 함께 명확하게 알려야 하는 주요 화면 이동에 사용해요."
+    ],
+    "avoid": [
+      "실행 액션이나 복잡한 계층 탐색 메뉴로 사용하지 않아요.",
+      "아이콘이나 라벨로 목적지를 이해하기 어렵게 만들지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 nav 안에 NavigationBarItem들을 표시해요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "items.label은 목적지를 설명하는 한 줄 텍스트예요.",
+      "항목의 value는 고유해야 해요."
+    ],
+    "icon": [
+      "현재 활성 항목에만 filledIcon을 사용하고 나머지는 outlinedIcon을 사용해요. 각 목적지의 두 아이콘을 함께 전달해요."
+    ],
+    "limits": [
+      "3~5개 항목을 권장해요. 배열 타입과 구현은 개수를 강제로 제한하거나 목록을 자르지 않아요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Inactive",
+      "Active",
+      "Hover",
+      "Pressed"
+    ],
+    "behavior": [
+      "value·onValueChange로 제어하거나 defaultValue로 초기화해요. 생략하면 첫 항목을 사용해요.",
+      "항목별 disabled는 제공하지 않아요. 현재 선택되지 않은 항목도 이동할 수 있어요.",
+      "선택 항목 제거 시 비제어는 첫 항목으로 보정해요. 제어 값이 목록에 없으면 임의로 다른 값을 선택하지 않으며 목록 변경만으로 콜백을 호출하지 않아요.",
+      "실제 화면 이동은 소비 앱이 onValueChange에서 라우터 등에 연결해요."
+    ],
+    "limitations": [
+      "라우팅·권한 제어·항목의 이동 불가 상태를 자동 제공하지 않아요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "NavigationBar",
+        "NavigationBarItem"
+      ],
+      "purpose": "주요 목적지를 목록으로 구성해요.",
+      "guidance": "items를 전달하면 상위 Bar가 해당 Item을 자동 생성해요. 단독 Item을 임의의 children으로 넣는 API가 아니에요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 nav에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "aria-label로 탐색 영역을 설명해요. 현재 목적지에는 aria-current=page를 지정해요."
+  ],
+  "examples": [
+    {
+      "title": "현재 목적지를 부모 상태에 연결",
+      "code": "'use client';\n\nimport { NavigationBar } from './components/ui/navigation-bar';\nimport { useState } from 'react';\nexport default function Example() {\n  const [page, setPage] = useState('home');\n  const items = [{ value: 'home', label: '홈' }, { value: 'search', label: '검색' }, { value: 'profile', label: '내 정보' }].map(item => ({ ...item, outlinedIcon: <span aria-hidden=\"true\">○</span>, filledIcon: <span aria-hidden=\"true\">●</span> }));\n  return <><NavigationBar aria-label=\"주요 화면\" items={items} value={page} onValueChange={setPage} /><output>{page}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "NavigationBarItem",
+    "NavigationBarGlass",
+    "NavigationDrawer"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

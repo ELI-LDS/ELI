@@ -58,7 +58,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider']);
+await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -83,6 +83,7 @@ import { NavigationBarGlass } from '../ui/navigation-bar-glass';
 import { LoadingIndicator } from '../ui/loading-indicator';
 import { ProgressIndicator } from '../ui/progress-indicator';
 import { Divider } from '../ui/divider';
+import { SnackBar } from '../ui/snack-bar';
 ${modalFixture}
 ${textFieldFixture}
 ${apiContractsFixture}

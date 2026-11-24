@@ -28,6 +28,8 @@
     "test:browser": "pnpm test:packaging && node tests/browser/check.mjs",
     "test:browsers": "pnpm test:packaging && node tests/browser/matrix.mjs",
     "test:browser:target": "node tests/browser/check.mjs",
+    "build:content": "pnpm --filter @eli/docs build:content",
+    "test:docs": "pnpm build:content && node --test tests/docs/check.test.mjs",
     "test:harness": "node --test tests/harness/check.test.mjs",
     "test:next": "pnpm build && node tests/next/check.mjs",
     "check": "pnpm typecheck && pnpm lint && pnpm build:storybook && pnpm test:browser && pnpm test:next && pnpm size"

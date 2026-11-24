@@ -1,0 +1,124 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "text-field",
+  "name": "TextField",
+  "group": "text",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/text-field.md",
+    "sha256": "74aa1807dee002bb498c310dc4d89afc003077b616d07ec1f61037c83a39de18"
+  },
+  "summary": "이름·이메일·검색어처럼 한 줄의 텍스트를 입력하고 검증 상태를 표시해요.",
+  "usage": {
+    "recommended": [
+      "회원가입 등 짧은 텍스트를 입력하는 폼에 사용해요."
+    ],
+    "avoid": [
+      "여러 줄의 설명이나 댓글을 입력하려면 TextArea를 사용해요.",
+      "placeholder만으로 입력 목적을 설명하지 않아요."
+    ]
+  },
+  "choices": [
+    {
+      "props": {
+        "state": "default"
+      },
+      "role": "일반 입력",
+      "when": "검증 결과나 입력 차단이 없는 기본 입력에 사용해요."
+    },
+    {
+      "props": {
+        "state": "error"
+      },
+      "role": "입력 오류",
+      "when": "소비 앱이 검증한 오류를 테두리로 표시해요."
+    },
+    {
+      "props": {
+        "state": "success"
+      },
+      "role": "입력 성공",
+      "when": "소비 앱이 확인한 성공 상태를 테두리로 표시해요."
+    },
+    {
+      "props": {
+        "state": "disabled"
+      },
+      "role": "입력 불가",
+      "when": "현재 입력과 지우기를 막아야 할 때 사용해요."
+    }
+  ],
+  "structure": {
+    "description": "바깥 div 안에 연결된 label과 input·입력 지우기 버튼이 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label은 입력 항목명, placeholder는 값이 없을 때의 작성 안내예요.",
+      "오류 원인·작성 조건 등 추가 설명은 소비 앱에서 제공해요."
+    ],
+    "icon": null,
+    "limits": null
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Hover",
+      "Focus",
+      "Filled",
+      "Error",
+      "Success",
+      "Disabled"
+    ],
+    "behavior": [
+      "value·onChange로 제어하거나 defaultValue로 초기화해요. 변경값은 event.currentTarget.value로 받아요.",
+      "X는 입력을 지우고 onChange에 빈 값을 전달한 뒤 입력창으로 포커스를 복귀해요. 제어 방식에서는 부모도 빈 값을 반영해야 해요.",
+      "disabled·readOnly에서는 지울 수 없어요. disabled는 state로 지정하고 라벨의 스타일은 유지해요.",
+      "ref는 실제 input을 가리켜요."
+    ],
+    "limitations": [
+      "검증 로직은 자동 실행하지 않아요. error·success·disabled는 하나의 state로 서로 배타적이에요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "TextField",
+        "Button"
+      ],
+      "purpose": "입력한 내용을 제출하거나 검색해요.",
+      "guidance": "부모가 입력값·검증 결과·제출을 관리해요."
+    },
+    {
+      "components": [
+        "TextField",
+        "TextArea"
+      ],
+      "purpose": "짧은 값과 긴 설명을 함께 입력해요.",
+      "guidance": null
+    }
+  ],
+  "customization": [
+    "className·style은 바깥 div에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "label의 htmlFor와 input의 id를 연결해요. error이면 외부 지정이 없는 한 aria-invalid를 설정해요.",
+    "화면 낭독기에 지우기 버튼의 동작을 설명해요."
+  ],
+  "examples": [
+    {
+      "title": "입력과 지우기를 같은 상태에 연결",
+      "code": "'use client';\n\nimport { TextField } from './components/ui/text-field';\nimport { useState } from 'react';\nexport default function Example() {\n  const [email, setEmail] = useState('');\n  return <TextField label=\"이메일\" placeholder=\"이메일을 입력하세요\" type=\"email\" value={email} onChange={event => setEmail(event.currentTarget.value)} />;\n}"
+    }
+  ],
+  "related": [
+    "TextArea",
+    "Button",
+    "Alert"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

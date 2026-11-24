@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { expect } from '@playwright/test';
+import { checkSnackBar } from './snackbar.mjs';
 
 /** 감사에서 재현한 실제 입력·표시·선택·참조의 불일치가 다시 생기지 않는지 확인해요. */
 export async function checkApiContracts(page, url) {
@@ -89,26 +90,18 @@ export async function checkApiContracts(page, url) {
   await page.keyboard.press('ArrowRight');
   await expect(group.getByRole('radio', { name: 'c', exact: true })).toBeChecked();
   await expect(group.getByRole('radio', { name: 'c', exact: true })).toBeFocused();
-  for (const name of ['탐색 비활성화', '글래스 비활성화']) {
-    await expect(page.getByRole('navigation', { name, exact: true }).getByRole('button', { name: 'b', exact: true })).toBeDisabled();
+  for (const name of ['탐색 이동', '글래스 이동']) {
+    const navigation = page.getByRole('navigation', { name, exact: true });
+    await expect(navigation.locator('button:disabled')).toHaveCount(0);
+    await navigation.getByRole('button', { name: 'b', exact: true }).click();
+    await expect(navigation.getByRole('button', { name: 'b', exact: true })).toHaveAttribute('aria-current', 'page');
   }
-  const glass = page.getByRole('navigation', { name: '글래스 비활성화', exact: true });
+  const glass = page.getByRole('navigation', { name: '글래스 이동', exact: true });
   await glass.getByRole('button', { name: 'a', exact: true }).focus();
   await page.keyboard.press('ArrowRight');
-  await expect(glass.getByRole('button', { name: 'c', exact: true })).toBeFocused();
+  await expect(glass.getByRole('button', { name: 'b', exact: true })).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(glass.getByRole('button', { name: 'c', exact: true })).toHaveAttribute('aria-current', 'page');
-  await glass.getByRole('button', { name: 'b', exact: true }).scrollIntoViewIfNeeded();
-  const blockedBox = await glass.getByRole('button', { name: 'b', exact: true }).boundingBox();
-  await page.mouse.click(blockedBox.x + blockedBox.width / 2, blockedBox.y + blockedBox.height / 2);
-  await expect(glass.getByRole('button', { name: 'c', exact: true })).toHaveAttribute('aria-current', 'page');
-  // 사용 가능한 항목에서 시작해 비활성 항목 위에서 드래그를 끝내도 기존 선택을 유지해요.
-  const activeBox = await glass.getByRole('button', { name: 'c', exact: true }).boundingBox();
-  await page.mouse.move(activeBox.x + activeBox.width / 2, activeBox.y + activeBox.height / 2);
-  await page.mouse.down();
-  await page.mouse.move(blockedBox.x + blockedBox.width / 2, blockedBox.y + blockedBox.height / 2, { steps: 5 });
-  await page.mouse.up();
-  await expect(glass.getByRole('button', { name: 'c', exact: true })).toHaveAttribute('aria-current', 'page');
+  await expect(glass.getByRole('button', { name: 'b', exact: true })).toHaveAttribute('aria-current', 'page');
   await expect(page.getByRole('button', { name: '차단 액션', exact: true })).toBeDisabled();
   await page.getByRole('button', { name: '허용 액션', exact: true }).click();
   await expect(page.getByTestId('api-changes')).toHaveText('허용');
@@ -132,4 +125,5 @@ export async function checkApiContracts(page, url) {
       assert.ok(Math.abs(width - value * 2) < 1, `진행률 ${value}의 너비: ${width}`);
     }
   }
+  await checkSnackBar(page, url);
 }

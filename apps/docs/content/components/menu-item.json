@@ -1,0 +1,90 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "menu-item",
+  "name": "MenuItem",
+  "group": "menu",
+  "status": "draft",
+  "source": {
+    "markdown": "apps/docs/content/source/components/menu-item.md",
+    "sha256": "d514b5686778602c04a91b5e50ff90001ffddab261cff8049d050013b4b7a2fe"
+  },
+  "summary": "선택 목록이나 메뉴에서 한 줄의 항목을 표시하고 클릭 동작을 연결해요.",
+  "usage": {
+    "recommended": [
+      "메뉴 또는 Select 옵션의 개별 항목을 구성해요."
+    ],
+    "avoid": [
+      "여러 줄의 본문을 넣거나 단축키 표시만으로 키보드 실행이 연결된다고 가정하지 않아요.",
+      "메뉴 열기·닫기·선택 상태가 자동 관리된다고 가정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "루트 button 안에 좌측 아이콘·한 줄 텍스트·단축키 표시·우측 아이콘이 순서대로 있어요.",
+    "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "항목이 수행할 행동이나 선택 내용을 짧게 표현해요. shortcut은 단축키 설명만 표시해요."
+    ],
+    "icon": [
+      "필요에 따라 leftIcon·rightIcon을 제공해요. Select에서는 두 아이콘과 단축키를 표시하지 않아요."
+    ],
+    "limits": [
+      "텍스트는 한 줄로 표시하고 넘는 내용은 말줄임표로 처리해요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Hover",
+      "Pressed",
+      "Disabled"
+    ],
+    "behavior": [
+      "onClick 등 네이티브 버튼 이벤트에 실제 실행·선택을 연결해요. disabled이면 클릭할 수 없어요.",
+      "포인터를 누르면 콘텐츠가 줄어들고 놓기·취소·영역 벗어남에서 복원돼요. 외부 포인터 이벤트의 preventDefault로 해당 내부 처리를 취소할 수 있어요."
+    ],
+    "limitations": [
+      "단축키의 실제 등록이나 목록 선택 상태는 소비 앱 또는 상위 컴포넌트가 담당해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Select",
+        "MenuItem"
+      ],
+      "purpose": "선택 옵션을 생성해요.",
+      "guidance": "Select가 내부 MenuItem에 선택 상태와 목록 동작을 연결해요."
+    },
+    {
+      "components": [
+        "MenuItem"
+      ],
+      "purpose": "사용자 정의 메뉴를 구성해요.",
+      "guidance": "NavigationDrawer는 전용 Menu·Item을 사용하므로 MenuItem이 Drawer 선택 Context에 자동 연결된다고 안내하지 않아요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+  ],
+  "accessibility": [
+    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요."
+  ],
+  "examples": [
+    {
+      "title": "항목 클릭을 기능에 연결",
+      "code": "'use client';\n\nimport { MenuItem } from './components/ui/menu-item';\nimport { useState } from 'react';\nexport default function Example() {\n  const [selected, setSelected] = useState(false);\n  return <><MenuItem onClick={() => setSelected(true)}>이름 변경</MenuItem><output>{selected ? '항목을 선택했어요.' : ''}</output></>;\n}"
+    }
+  ],
+  "related": [
+    "Select",
+    "NavigationDrawerItem"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}
