@@ -8,7 +8,9 @@
 
 ```mermaid
 flowchart LR
-  Registry["레지스트리 JSON (JSDoc·타입·토큰 CSS)"] --> Build["생성 스크립트 (파싱·검증)"]
+  Source["디자이너 Markdown"] --> Review["검토한 가이드 JSON"]
+  Review --> Build["생성 스크립트 (대조·검증)"]
+  Registry["레지스트리 JSON (타입·토큰 CSS)"] --> Build
   Guides["가이드 마크다운"] --> Build
   Build --> Data["생성 TS 데이터"]
   Data --> Query["조회 계층 (필터)"]
@@ -35,12 +37,17 @@ apps/docs/
 │   └── mcp/                  # MCP 서버와 도구 정의
 ├── content/                  # 공용 영역: 문서 데이터
 │   ├── source/
+│   │   ├── components/       # 전달받은 디자이너 Markdown 원문
 │   │   ├── guides/           # 설치·폰트 설정 같은 공통 가이드 원본 (아직 없어요)
+│   │   ├── templates/        # 디자이너가 작성한 문서 양식 원본
 │   │   └── versions.json     # 함께 쓸 수 있는 가장 낮은 하네스 버전
+│   ├── components/           # 코드와 대조하고 검토하는 컴포넌트 가이드 JSON
+│   ├── templates/            # 공통 빈 JSON 틀, 조회 대상에서 제외
+│   ├── component-guide.schema.json # 컴포넌트 가이드의 JSON Schema
 │   ├── schema.ts             # 문서 데이터 타입과 섹션 키·분류
 │   ├── query.ts              # 목록·단건·섹션·props·토큰·검색 조회 함수
 │   └── generated/            # 생성 결과, Git에 포함하지 않아요
-└── scripts/                  # 레지스트리 JSON → TS 데이터 생성 스크립트
+└── scripts/                  # 가이드 JSON·레지스트리 JSON → TS 데이터 생성 스크립트
 ```
 
 - `app/`에는 라우트 파일만 둬요. 라우트 파일은 `frontend/`나 `backend/`의 코드를 불러와 연결만 해요.
@@ -48,26 +55,17 @@ apps/docs/
 - `content/`는 `frontend/`와 `backend/`를 import하지 않아요.
 - `frontend/`는 `pages`, `features`, `layouts`, `shared`로 역할을 나눠요. 페이지 조립, 코드 배치와 Server·Client Component 기준은 [문서 프론트엔드 지침](docs-frontend.md)에서 관리해요.
 
-## 원본은 레지스트리 JSON이에요
+## 원본은 가이드 JSON과 레지스트리 JSON이에요
 
-- 컴포넌트 문서를 따로 쓰지 않아요. 레지스트리 JSON에 담긴 소스의 JSDoc에서 설명과 섹션을 추출해요. JSDoc의 `###` 제목은 데이터의 섹션 키와 1:1로 대응해요.
-- 생성 스크립트는 `schema.ts` 타입을 만족하는 TS 데이터를 만들어요. `pnpm dev:docs`·`pnpm build:docs`가 먼저 실행해요.
-- 검증은 엄격하게 해요. JSDoc 설명이나 props 타입이 없거나 정해지지 않은 제목이 있으면 생성을 실패시켜요.
-- props는 직접 쓰지 않아요. 같은 JSON의 TypeScript 타입 선언에서 추출해요. 직접 쓴 props는 구현과 쉽게 어긋나고, 틀린 props는 에이전트가 잘못된 코드를 쓰게 만들어요.
+- 컴포넌트의 사용 기준은 검토한 가이드 JSON(`content/components/`)이 원본이에요. 디자이너가 작성한 Markdown을 그대로 받아 `content/source/components/`에 보존하고, AI가 실제 코드와 대조해 JSON 초안을 쓰고 사용자가 검토해요. 미정·구현 차이를 숨기거나 임의 명세를 추가하지 않아요.
+- JSON은 검토하며 Git으로 관리하는 자료예요. 자동 변환기로 매번 덮어쓰는 생성물이 아니에요. 스키마·템플릿·변환 절차·검토 상태는 [JSON 변환 안내](../handbook/component-guide-json.md)를 따라요. 원문이 바뀌면 JSON과 출처 해시를 함께 검토해요.
+- props는 직접 쓰지 않아요. 레지스트리 JSON의 TypeScript 타입 선언에서 추출해요. 직접 쓴 props는 구현과 쉽게 어긋나고, 틀린 props는 에이전트가 잘못된 코드를 쓰게 만들어요. 가이드 JSON에도 전체 Props·기본값·토큰 표를 복제하지 않아요.
 - 토큰도 직접 쓰지 않아요. 레지스트리 `tokens` 항목의 CSS 파일에서 추출해요.
-- 가이드만 `content/source/guides/`에 마크다운으로 써요.
+- 생성 스크립트는 두 원본을 합쳐 `schema.ts` 타입을 만족하는 TS 데이터를 만들어요. `pnpm dev:docs`·`pnpm build:docs`가 먼저 실행해요. 가이드의 `id`·원문 해시·참조가 맞지 않으면 생성을 실패시켜요.
+- 공통 가이드는 `content/source/guides/`에 마크다운으로 써요.
 - 전달받지 않은 컴포넌트 명세와 디자인 값을 문서에 임의로 쓰지 않아요.
 
-JSDoc과 섹션 키의 대응, 가이드 주제와 각 가이드가 담아야 하는 내용은 [원격 MCP 규격](mcp-spec.md#콘텐츠)에서 관리해요.
-
-## 검토한 컴포넌트 JSON을 함께 관리해요
-
-- 디자이너가 작성한 Markdown을 그대로 받아 원문을 보존해요. 특정 frontmatter·영어 섹션 제목을 요구하지 않아요.
-- AI가 문서를 실제 코드와 대조해 JSON 초안을 작성하고 사용자가 검토해요. 미정·구현 차이를 숨기거나 임의 명세를 추가하지 않아요.
-- JSON에 전체 Props·기본값·토큰 표를 수동 복제하지 않아요. 원문에 표가 있어도 그대로 보존하고 구현 확인에 사용해요. 해당 기술 정보의 자동 추출은 후속 작업이에요.
-- 스키마·템플릿·변환 절차·검토 상태는 [JSON 변환 안내](../handbook/component-guide-json.md)를 따라요. 원문이 바뀌면 JSON과 출처 해시를 함께 검토해요.
-
-JSON의 필드·자료형은 `content/component-guide.schema.json`, MCP 섹션과의 연결은 [원격 MCP 규격](mcp-spec.md#컴포넌트-json과-응답을-연결해요)에서 관리해요. 원문은 `content/source/components/`, JSON은 `content/components/`, 빈 틀은 `content/templates/`에 있어요. 현재 서버는 아직 이 JSON을 읽지 않아요.
+JSON의 필드·자료형은 `content/component-guide.schema.json`, MCP 섹션과의 연결·가이드 주제는 [원격 MCP 규격](mcp-spec.md#콘텐츠)에서 관리해요.
 
 ## 조회 계층을 하나로 둬요
 

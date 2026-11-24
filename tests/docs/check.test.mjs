@@ -1,14 +1,21 @@
 // 원격 MCP의 조회 계층을 실제 생성 데이터로 확인해요. `pnpm test:docs`가 먼저 데이터를 만들어요.
 import assert from 'node:assert/strict';
+import { mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { test } from 'node:test';
 import { getComponent, getGuide, getProps, getTokens, getVersions, listComponents, search } from '../../apps/docs/content/query.ts';
-import { parseGuide, parseProps, parseSections, parseTokens } from '../../apps/docs/scripts/build-content.mjs';
+import { loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
 
-test('목록은 이름·ID·설명만 이름순으로 줘요', () => {
+test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
   const { components } = listComponents();
-  assert.deepEqual(Object.keys(components[0]), ['name', 'id', 'description']);
+  assert.deepEqual(Object.keys(components[0]), ['name', 'id', 'status', 'description']);
   assert.deepEqual(components.map(item => item.name), components.map(item => item.name).sort());
   assert.ok(components.some(item => item.name === 'Button' && item.id === 'button'));
+  // 가이드가 없는 공개 컴포넌트도 목록에 나오고 상태는 null이에요.
+  assert.equal(components.find(item => item.name === 'Divider').status, null);
+  assert.ok(listComponents({ status: 'DRAFT' }).components.every(item => item.status === 'draft'));
+  assert.deepEqual(listComponents({ status: 'review' }).error.allowed, ['draft', 'stable']);
 });
 
 test('컴포넌트는 요청한 섹션만 줘요', () => {
@@ -16,9 +23,14 @@ test('컴포넌트는 요청한 섹션만 줘요', () => {
   assert.equal(basic.name, 'Button');
   assert.deepEqual(basic.entry, { path: 'button.tsx', export: 'Button' });
   assert.deepEqual(Object.keys(basic.sections), ['summary', 'when-to-use']);
-  assert.ok(basic.available.includes('examples'));
+  assert.ok(basic.available.includes('examples') && basic.available.includes('do-dont'));
+  assert.ok(['draft', 'stable'].includes(basic.status));
+  // 원문 경로·해시·검토 메모는 응답에 담지 않아요.
+  assert.doesNotMatch(JSON.stringify(getComponent({ name: 'Button', sections: basic.available })), /sha256|source\/components|implementationGaps/);
+  // 가이드가 없으면 섹션 없이 설치 정보만 줘요.
+  assert.deepEqual(getComponent({ name: 'Modal' }).available, []);
   // 문서에 없는 선택 섹션은 오류 없이 빠져요.
-  assert.deepEqual(Object.keys(getComponent({ name: 'Button', sections: ['examples', 'do-dont'] }).sections), ['examples']);
+  assert.deepEqual(Object.keys(getComponent({ name: 'Modal', sections: ['examples', 'do-dont'] }).sections), []);
 });
 
 test('없는 이름과 허용하지 않는 값은 allowed와 함께 알려요', () => {
@@ -62,10 +74,38 @@ test('가이드 목록과 버전은 항상 같은 형식이에요', () => {
   for (const value of [versions.ui.latest, versions.ui.docs, versions.harness.minimum]) assert.match(value, /^\d+\.\d+\.\d+$/);
 });
 
-test('생성 스크립트는 JSDoc·타입·CSS·가이드를 규격대로 나눠요', () => {
-  const doc = '/**\n * 설명이에요.\n *\n * @example 빠른 사용\n * ```tsx\n * <A />\n * ```\n *\n * ### 선택 가이드\n * - 골라요\n */';
-  assert.deepEqual(parseSections('A', doc), { summary: '설명이에요.', examples: '**빠른 사용**\n```tsx\n<A />\n```', 'when-to-use': '- 골라요' });
-  assert.throws(() => parseSections('A', '/**\n * 설명\n * ### 모르는 제목\n */'), /허용하지 않는 JSDoc 제목/);
+test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대로 나눠요', () => {
+  const guide = {
+    schemaVersion: 1, id: 'button', name: 'Button', status: 'draft', source: { markdown: null, sha256: null }, summary: '요약이에요.',
+    usage: { recommended: ['써요'], avoid: null }, choices: [{ props: { variant: 'solid', size: 2 }, role: '주요', when: '강조할 때' }],
+    structure: { description: null, note: null }, content: { text: [], icon: null, limits: null }, interaction: { states: ['Default'], behavior: null, limitations: null },
+    composition: [{ components: ['Button', 'Modal'], purpose: '확인해요.', guidance: null }], customization: null, accessibility: ['라벨을 줘요'],
+    examples: [{ title: '기본', code: '<Button />' }], related: ['Modal'], review: { questions: [], implementationGaps: [] },
+  };
+  // null과 빈 배열인 필드로는 섹션을 만들지 않아요.
+  assert.deepEqual(renderSections(guide), {
+    summary: '요약이에요.',
+    'when-to-use': '**이럴 때 써요**\n- 써요',
+    examples: '**기본**\n```tsx\n<Button />\n```',
+    variants: '**선택 기준**\n- `variant="solid"` `size=2` — 주요: 강조할 때\n\n**상태**\n- Default',
+    accessibility: '- 라벨을 줘요',
+    related: '**함께 쓰는 조합**\n- Button + Modal — 확인해요.\n\n**관련 컴포넌트**: Modal',
+  });
+
+  const registered = [{ id: 'button', name: 'Button' }, { id: 'modal', name: 'Modal' }];
+  const directory = mkdtempSync(join(tmpdir(), 'eli-guides-'));
+  const write = value => writeFileSync(join(directory, 'button.json'), JSON.stringify(value));
+  write(guide);
+  assert.equal(loadGuides(directory, registered, directory).get('button').name, 'Button');
+  write({ ...guide, related: ['Dialog'] });
+  assert.throws(() => loadGuides(directory, registered, directory), /없는 컴포넌트를 가리켜요/);
+  write({ ...guide, name: 'Btn' });
+  assert.throws(() => loadGuides(directory, registered, directory), /공개 컴포넌트가 아니에요/);
+  writeFileSync(join(directory, 'source.md'), '원문');
+  write({ ...guide, source: { markdown: 'source.md', sha256: '0'.repeat(64) } });
+  assert.throws(() => loadGuides(directory, registered, directory), /원문이 바뀌었어요/);
+  write({ ...guide, status: 'stable', review: { questions: ['미정'], implementationGaps: [] } });
+  assert.throws(() => loadGuides(directory, registered, directory), /stable 조건/);
 
   const types = "type Size = 'a' | 'b';\ninterface Option { value: string }\ninterface Base extends HTMLAttributes<HTMLDivElement> {\n  /** 크기예요. @default 'a' */\n  size?: Size | undefined;\n}\nexport type AProps = (Base & { mode?: 'one'; onPick: (v: number) => void }) | (Base & { mode: 'two'; onPick: (v: string) => void; options: readonly Option[] });";
   assert.deepEqual(parseProps('A', [{ path: 'a.types.ts', content: types }]), {

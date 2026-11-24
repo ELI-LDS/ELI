@@ -1,44 +1,57 @@
-// 레지스트리 JSON(목록·항목)에서 문서 데이터를 만들어 content/generated/data.ts에 써요.
-// 컴포넌트 설명·섹션은 진입 파일의 JSDoc, props는 타입 선언, 토큰은 tokens 항목의 CSS에서 가져와요.
+// 검토한 컴포넌트 가이드 JSON과 레지스트리 JSON에서 문서 데이터를 만들어 content/generated/data.ts에 써요.
+// 섹션은 content/components의 가이드 JSON, props는 레지스트리의 타입 선언, 토큰은 tokens 항목의 CSS에서 가져와요.
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ts from 'typescript';
 import { generateRegistry } from '../../../scripts/build-registry.mjs';
-import { GUIDE_TOPICS, JSDOC_HEADINGS, TOKEN_FILES } from '../content/schema.ts';
+import { GUIDE_STATUSES, GUIDE_TOPICS, TOKEN_FILES } from '../content/schema.ts';
 
 const docs = fileURLToPath(new URL('../', import.meta.url));
+const repository = join(docs, '../..');
 const SEMVER = /^\d+\.\d+\.\d+$/;
 const oneLine = text => text.replace(/\s+/g, ' ').trim();
 
-/** 진입 파일의 첫 JSDoc을 summary·examples와 `###` 제목별 섹션으로 나눠요. */
-export function parseSections(name, source) {
-  const block = source.match(/\/\*\*([\s\S]*?)\*\//)?.[1];
-  assert.ok(block, `JSDoc이 없어요: ${name}`);
-  const sections = {};
-  const add = (key, text) => {
-    if (text.trim()) sections[key] = sections[key] ? `${sections[key]}\n\n${text.trim()}` : text.trim();
+const bullets = (title, items) => (items?.length ? `${title ? `**${title}**\n` : ''}${items.map(item => `- ${item}`).join('\n')}` : '');
+const compose = (...blocks) => blocks.filter(Boolean).join('\n\n');
+
+/** 가이드 JSON의 필드를 섹션 키별 마크다운으로 표현해요. 대응은 Agent/mcp-spec.md의 표를 따라요. */
+export function renderSections(guide) {
+  const choices = guide.choices?.map(choice => `- ${Object.entries(choice.props).map(([name, value]) => `\`${name}=${JSON.stringify(value)}\``).join(' ')}${choice.role ? ` — ${choice.role}` : ''}: ${choice.when}`);
+  const sections = {
+    summary: compose(guide.summary, bullets('구조', [guide.structure.description, guide.structure.note].filter(Boolean))),
+    'when-to-use': compose(bullets('이럴 때 써요', guide.usage.recommended), bullets('이럴 때는 쓰지 않아요', guide.usage.avoid)),
+    examples: compose(...(guide.examples ?? []).map(example => `**${example.title}**\n\`\`\`tsx\n${example.code}\n\`\`\``)),
+    variants: compose(choices?.length ? `**선택 기준**\n${choices.join('\n')}` : '', bullets('상태', guide.interaction.states), bullets('동작', guide.interaction.behavior), bullets('제공하지 않는 것', guide.interaction.limitations)),
+    'do-dont': compose(bullets('피해요', guide.usage.avoid), bullets('문구', guide.content.text), bullets('아이콘', guide.content.icon), bullets('제한', guide.content.limits), bullets('커스터마이징', guide.customization)),
+    accessibility: bullets('', guide.accessibility),
+    related: compose(bullets('함께 쓰는 조합', guide.composition?.map(item => `${item.components.join(' + ')} — ${item.purpose}${item.guidance ? ` ${item.guidance}` : ''}`)), guide.related?.length ? `**관련 컴포넌트**: ${guide.related.join(', ')}` : ''),
+    styling: bullets('', guide.customization),
   };
-  let key = 'summary';
-  let lines = [];
-  for (const raw of block.split('\n')) {
-    const line = raw.replace(/^\s*\* ?/, '').trimEnd();
-    const example = line.match(/^@example\s*(.*)$/);
-    const heading = line.match(/^###\s+(.+)$/);
-    if (!example && !heading) {
-      lines.push(line);
-      continue;
-    }
-    add(key, lines.join('\n'));
-    if (heading) assert.ok(JSDOC_HEADINGS[heading[1]], `허용하지 않는 JSDoc 제목이에요: ${name} → ${heading[1]}`);
-    key = example ? 'examples' : JSDOC_HEADINGS[heading[1]];
-    lines = example?.[1] ? [`**${example[1]}**`] : [];
+  // 내용이 없는 섹션은 만들지 않아요. 조회 계층이 응답과 available에서 빼요.
+  return Object.fromEntries(Object.entries(sections).filter(([, text]) => text));
+}
+
+/** 가이드 JSON을 읽고 레지스트리의 공개 컴포넌트·원문 해시·참조와 대조해요. */
+export function loadGuides(directory, components, repository) {
+  const names = new Set(components.map(component => component.name));
+  const guides = new Map();
+  for (const filename of existsSync(directory) ? readdirSync(directory).filter(name => name.endsWith('.json')).sort() : []) {
+    const guide = JSON.parse(readFileSync(join(directory, filename), 'utf8'));
+    const component = components.find(item => item.id === guide.id);
+    assert.equal(`${guide.id}.json`, filename, `파일 이름과 id가 달라요: ${filename}`);
+    assert.equal(guide.schemaVersion, 1, `지원하지 않는 가이드 형식이에요: ${filename}`);
+    assert.ok(component && component.name === guide.name, `공개 컴포넌트가 아니에요: ${filename}`);
+    assert.ok(GUIDE_STATUSES.includes(guide.status), `허용하지 않는 상태예요: ${filename}`);
+    for (const name of [...(guide.related ?? []), ...(guide.composition ?? []).flatMap(item => item.components)]) assert.ok(names.has(name), `없는 컴포넌트를 가리켜요: ${filename} → ${name}`);
+    if (guide.source.markdown) assert.equal(createHash('sha256').update(readFileSync(join(repository, guide.source.markdown))).digest('hex'), guide.source.sha256, `원문이 바뀌었어요. JSON을 다시 검토해요: ${filename}`);
+    if (guide.status === 'stable') assert.ok(guide.summary && guide.examples?.length && !guide.review.questions.length && !guide.review.implementationGaps.length, `stable 조건을 채우지 못했어요: ${filename}`);
+    guides.set(guide.id, guide);
   }
-  add(key, lines.join('\n'));
-  assert.ok(sections.summary, `설명이 없어요: ${name}`);
-  return sections;
+  return guides;
 }
 
 /** `{Name}Props`와 같은 파일 묶음의 로컬 타입을 따라가 직접 정의한 props만 모아요. */
@@ -140,7 +153,7 @@ export function parseGuide(filename, text) {
   return { topic, title: meta.title, description: meta.description, body: match[2].trim() };
 }
 
-export function generateContent({ guidesDirectory = join(docs, 'content/source/guides') } = {}) {
+export function generateContent({ guidesDirectory = join(docs, 'content/source/guides'), componentsDirectory = join(docs, 'content/components') } = {}) {
   // 배포 파일과 같은 JSON을 메모리에서 바로 읽어 오래된 .artifacts를 쓰지 않게 해요.
   const { index, artifacts } = generateRegistry();
   const items = new Map(index.items.map(item => [item.id, JSON.parse(artifacts.get(item.filename))]));
@@ -151,12 +164,13 @@ export function generateContent({ guidesDirectory = join(docs, 'content/source/g
     return [...item.files, ...item.dependencies.flatMap(dependency => filesOf(dependency, seen))];
   };
 
-  const components = [...items.values()]
-    .filter(item => item.kind === 'component')
+  const registered = [...items.values()].filter(item => item.kind === 'component');
+  const componentGuides = loadGuides(componentsDirectory, registered, repository);
+  // 가이드가 없는 공개 컴포넌트도 목록·props에는 나와요. 없는 사용 기준을 만들어 채우지 않아요.
+  const components = registered
     .map(item => {
-      const entry = item.files.find(file => file.path === item.entry.path);
-      assert.ok(entry, `진입 파일이 없어요: ${item.name}`);
-      return { name: item.name, id: item.id, description: item.description, entry: item.entry, sections: parseSections(item.name, entry.content), ...parseProps(item.name, filesOf(item.id)) };
+      const guide = componentGuides.get(item.id);
+      return { name: item.name, id: item.id, description: guide?.summary ?? item.description, status: guide?.status ?? null, entry: item.entry, sections: guide ? renderSections(guide) : {}, ...parseProps(item.name, filesOf(item.id)) };
     })
     .sort((a, b) => a.name.localeCompare(b.name, 'en'));
 
