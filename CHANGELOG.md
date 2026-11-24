@@ -4,27 +4,10 @@
 
 ## Unreleased
 
-### UI 콘텐츠 — 다음 MINOR 대상
-
-- SnackBar에 duration·open·defaultOpen·onOpenChange를 추가해 기본 5초 후 닫히도록 해요. 0이면 자동 닫힘을 끄고 마우스·내부 포커스·창 비활성 중에는 남은 시간을 보존해요. 기존 액션 콜백은 유지하며 자동 닫힘을 추가한 동작 변경도 다음 MINOR에 포함해요.
-- BREAKING CHANGE: 사용자 합의에 따라 NavigationBar·NavigationBarGlass의 항목별 disabled와 단독 Item의 disabled 타입·처리를 제거해요. 비선택 항목은 모두 이동할 수 있어요. 이동 불가 항목을 전달하던 소비자는 목록 구성을 검토해야 해요. SegmentControl 2~4개·NavigationBar 3~5개는 강제 제한이 아닌 권장 범위로 안내해요.
-
-- Button의 Brand·Neutral Ghost 기본 배경을 디자이너 문서와 사용자 합의에 따라 투명하게 변경해요. Hover·Pressed·Disabled의 기존 배경은 유지해요. 문서로 설명한 기본 외형의 변경이며 기존 공개 JSON·CLI 고정 파일은 바꾸지 않아요.
-- Slider의 초기값·제어값·변경값을 같은 min·max·step 기준으로 보정해 실제 input·표시·트랙·콜백의 불일치를 수정해요.
-- TextField의 외부 객체·콜백 ref가 내부 입력 지우기 참조에 덮어써지는 문제를 수정하고, TextField·TextArea·Checkbox·Radio에 실제 입력 요소를 가리키는 ref 타입을 명시해요.
-- NavigationBar·NavigationBarGlass·SegmentControl에 일반 readonly 배열을 허용해 map 결과를 바로 전달해요. 선택 항목 제거 시 비제어는 첫 사용 가능 항목으로 보정하고, 제어 값이 목록에 없으면 선택 표시를 숨겨요. 목록 변경만으로 콜백을 호출하지 않아요.
-- Select·SegmentControl의 전체·옵션별 disabled와 FabMenu의 항목별 disabled를 연결해요. 비활성 항목은 선택하거나 실행할 수 없어요. 새 색상은 추가하지 않아요.
-- LoadingIndicator·ProgressIndicator의 progress를 0~100 숫자로 넓히고 실제 중간 진행률을 표시해요. 범위 밖 값은 제한하며 생략·NaN·Infinity는 진행률을 모르는 상태로 처리해요. 기존 디자인·반복 모션을 유지해요.
-- BREAKING CHANGE: 렌더링할 수 없는 네이티브 속성을 공개 타입에서 제외해요. Checkbox·Radio·Divider의 children은 주변 label·요소로 옮기고, 직접 HTML 주입 대신 각 컴포넌트의 내용 prop을 사용해요. 새 기능·허용 타입 축소를 포함하므로 현재 0.x 정책의 MINOR에 모아 배포하며 버전·기존 고정 파일은 이번에 변경하지 않아요.
-
 ### 원격 MCP — 배포 완료
 
 - 문서 앱의 `/mcp`에 도구 일곱 개를 등록하고 Cloudflare Workers로 `https://eli-design.dev/mcp`에 배포했어요. 레지스트리 JSON에서 컴포넌트 섹션·props·토큰을 만들어 돌려주고, 섹션·prop 이름·필드·토큰 구역으로 응답을 좁혀요. npm 그룹 import 경로 대신 레지스트리 항목 `id`와 `entry`를 알려줘요. 2026-11-24에 공개 주소에서 도구 일곱 개의 응답을 확인했어요. 가이드 원본은 아직 없어요. 서버는 `main`의 소스를 설명하므로 공개된 UI 콘텐츠 0.2.0에 없는 미배포 변경이 응답에 보일 수 있어요.
 - 컴포넌트 문서의 섹션을 검토한 컴포넌트 가이드 JSON에서 만들도록 바꿨어요. `do-dont`·`accessibility`·`related` 섹션을 제공하고 `behavior` 섹션 키를 없앴어요. 목록과 상세 응답에 가이드의 검토 상태 `status`를 담고 `list_components`를 `status`로 좁힐 수 있어요. 현재 가이드 31개는 모두 검토 전 `draft`이고 Divider·Modal·Tab은 가이드가 없어요. props·토큰은 이전처럼 레지스트리에서 추출해요.
-
-### 하네스 — 다음 릴리스 대상
-
-- `eli` 스킬에 `do-dont`·`accessibility` 섹션을 읽는 방법, 예시 코드의 import를 실제 설치 경로로 바꿔 쓰는 방법, 검토 전(`draft`) 가이드를 다루는 방법을 추가했어요. 공개한 하네스 0.2.0과 버전은 변경하지 않았어요.
 
 ### 개발 환경
 
@@ -46,9 +29,34 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-team/ELI/pull/73)
 
-## 하네스 콘텐츠 0.2.0 — GitHub 공개 준비
+## UI 소스 콘텐츠 0.3.0 — GitHub 공개 준비
 
-별도 npm 패키지가 아니에요. 설치 도구의 `harness` 명령이 `harness-v0.2.0` Release의 `harness.json`을 받아요. 새 스킬 안내와 설치 단계가 추가되어 현재 0.x 정책의 MINOR예요. 이미 0.1.0을 설치한 프로젝트를 다른 버전으로 덮어쓰는 명령은 아직 없어요.
+`v0.3.0` Release에 레지스트리 JSON으로 공개할 콘텐츠예요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 새 기능과 허용 타입 축소를 포함해 현재 0.x 정책의 MINOR예요. 이전 v0.2.0 JSON·태그·설치 기록은 변경하지 않아요. 이미 0.2.0을 설치한 프로젝트를 새 버전으로 올리는 명령은 아직 없어요.
+
+### 변경
+
+- SnackBar에 duration·open·defaultOpen·onOpenChange를 추가해 기본 5초 후 닫히도록 해요. 0이면 자동 닫힘을 끄고 마우스·내부 포커스·창 비활성 중에는 남은 시간을 보존해요. 기존 액션 콜백은 유지하며 자동 닫힘을 추가한 동작 변경도 다음 MINOR에 포함해요.
+- BREAKING CHANGE: 사용자 합의에 따라 NavigationBar·NavigationBarGlass의 항목별 disabled와 단독 Item의 disabled 타입·처리를 제거해요. 비선택 항목은 모두 이동할 수 있어요. 이동 불가 항목을 전달하던 소비자는 목록 구성을 검토해야 해요. SegmentControl 2~4개·NavigationBar 3~5개는 강제 제한이 아닌 권장 범위로 안내해요.
+
+- Button의 Brand·Neutral Ghost 기본 배경을 디자이너 문서와 사용자 합의에 따라 투명하게 변경해요. Hover·Pressed·Disabled의 기존 배경은 유지해요. 문서로 설명한 기본 외형의 변경이며 기존 공개 JSON·CLI 고정 파일은 바꾸지 않아요.
+- Slider의 초기값·제어값·변경값을 같은 min·max·step 기준으로 보정해 실제 input·표시·트랙·콜백의 불일치를 수정해요.
+- TextField의 외부 객체·콜백 ref가 내부 입력 지우기 참조에 덮어써지는 문제를 수정하고, TextField·TextArea·Checkbox·Radio에 실제 입력 요소를 가리키는 ref 타입을 명시해요.
+- NavigationBar·NavigationBarGlass·SegmentControl에 일반 readonly 배열을 허용해 map 결과를 바로 전달해요. 선택 항목 제거 시 비제어는 첫 사용 가능 항목으로 보정하고, 제어 값이 목록에 없으면 선택 표시를 숨겨요. 목록 변경만으로 콜백을 호출하지 않아요.
+- Select·SegmentControl의 전체·옵션별 disabled와 FabMenu의 항목별 disabled를 연결해요. 비활성 항목은 선택하거나 실행할 수 없어요. 새 색상은 추가하지 않아요.
+- LoadingIndicator·ProgressIndicator의 progress를 0~100 숫자로 넓히고 실제 중간 진행률을 표시해요. 범위 밖 값은 제한하며 생략·NaN·Infinity는 진행률을 모르는 상태로 처리해요. 기존 디자인·반복 모션을 유지해요.
+- BREAKING CHANGE: 렌더링할 수 없는 네이티브 속성을 공개 타입에서 제외해요. Checkbox·Radio·Divider의 children은 주변 label·요소로 옮기고, 직접 HTML 주입 대신 각 컴포넌트의 내용 prop을 사용해요. 새 기능·허용 타입 축소를 포함하므로 현재 0.x 정책의 MINOR에 모아 배포하며 버전·기존 고정 파일은 이번에 변경하지 않아요.
+
+## 하네스 콘텐츠 0.2.1 — GitHub 공개 준비
+
+`harness-v0.2.1` Release의 `harness.json`으로 공개할 콘텐츠예요. 원격 MCP가 컴포넌트 가이드 JSON으로 답하도록 바뀐 데 맞춘 스킬 문구 수정이라 PATCH예요.
+
+### 변경
+
+- `eli` 스킬에 `do-dont`·`accessibility` 섹션을 읽는 방법, 예시 코드의 import를 실제 설치 경로로 바꿔 쓰는 방법, 검토 전(`draft`) 가이드를 다루는 방법을 추가했어요.
+
+## 하네스 콘텐츠 0.2.0 — 2026-11-24
+
+[GitHub Release harness-v0.2.0](https://github.com/ELI-team/ELI/releases/tag/harness-v0.2.0)에 공개했어요. `harness.json`의 SHA-256은 `da85ee04abdc3227ee1dcc94ae9dd9605bb279adde151fe57ba04568c069f572`이고 원본 커밋은 `6e1ce5cc6c87e35964dbd67191359b7cc8ad0941`이에요. 별도 npm 패키지가 아니에요. 설치 도구의 `harness` 명령이 이 Release의 `harness.json`을 받아요. 새 스킬 안내와 설치 단계가 추가되어 현재 0.x 정책의 MINOR예요. 이미 0.1.0을 설치한 프로젝트를 다른 버전으로 덮어쓰는 명령은 아직 없어요.
 
 ### 추가
 
@@ -61,9 +69,9 @@
 - `get_versions`의 `ui.latest`·`ui.docs`를 UI 콘텐츠 버전으로 안내하고 `eli.json`의 콘텐츠 버전과 비교해요.
 - 가이드가 아직 없을 때(`not_found`) 멈추지 않고, 원격 기준 없이 진행했다고 보고해요.
 
-## eli-design 0.3.1 — npm 게시 대기
+## eli-design 0.3.1 — npm next 게시, latest 전환 대기
 
-현재 npm latest·next는 0.2.0이에요. 저장소 이전 주소와 status 안내를 수정한 최종 파일을 [cli-v0.3.1](https://github.com/ELI-team/ELI/releases/tag/cli-v0.3.1)에 제공하고 같은 tarball의 설치 행렬·공개 콘텐츠·브라우저 검증을 완료했어요. 기존 0.3.0 고정 파일은 보존해요. [릴리스 기록](handbook/releases/0.3.1.md)에서 파일·해시·수행 범위와 실제 npm 게시 상태를 구분해요.
+2026-11-24에 npm `next`로 게시했어요. npm의 tarball은 고정 파일과 SHA-256(`cbd6d816558439550a257cfdc7f8c9cc9488fac5f917ff621e48b7c9398568d3`)이 같고, 공개 명령으로 `init`·`add button`·`status`·`harness`를 확인했어요. `latest`는 아직 0.2.0이에요. 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하므로 `latest` 전환이 필요해요. 저장소 이전 주소와 status 안내를 수정한 최종 파일을 [cli-v0.3.1](https://github.com/ELI-team/ELI/releases/tag/cli-v0.3.1)에 제공하고 같은 tarball의 설치 행렬·공개 콘텐츠·브라우저 검증을 완료했어요. 기존 0.3.0 고정 파일은 보존해요. [릴리스 기록](handbook/releases/0.3.1.md)에서 파일·해시·수행 범위와 실제 npm 게시 상태를 구분해요.
 
 ### 수정
 
