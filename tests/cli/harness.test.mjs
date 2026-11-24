@@ -45,7 +45,12 @@ test('React·UI 없이 선택한 에이전트의 전체 하네스를 설치하�
   const original = await readFile(join(project, 'package.json'), 'utf8');
   const first = install(project, 'claude');
   assert.equal(first.version, harnessVersion);
-  assert.ok(first.files.every(file => file.path.startsWith('.claude/')));
+  assert.ok(first.files.every(file => file.path.startsWith('.claude/') || file.path === '.mcp.json'));
+  // 설치한 세션에서 바로 셋업으로 이어가도록 문서 서버 등록과 도구 없이 읽는 방법을 함께 알려요.
+  assert.deepEqual((await readJson(project, '.mcp.json')).mcpServers['eli-docs'], { type: 'http', url: 'https://eli-design.dev/mcp' });
+  assert.ok(first.nextSteps.some(step => step.includes('.claude/skills/eli-setup/SKILL.md')));
+  assert.ok(first.nextSteps.some(step => step.includes('.claude/hooks/eli/eli-docs.mjs')));
+  await readFile(join(project, '.claude/hooks/eli/eli-docs.mjs'));
   // 터미널 기본 출력에서도 필요한 재로딩·신뢰 절차를 바로 볼 수 있어야 해요.
   const terminal = execFileSync(process.execPath, [cli, 'harness', '--agent', 'all', '--registry', bundle, '--cwd', project, '--dry-run'], { encoding: 'utf8' });
   assert.ok(terminal.includes(`하네스 ${harnessVersion}`));
@@ -69,10 +74,16 @@ test('기존 설정·다른 훅을 보존하고 두 에이전트를 중복 없�
   await mkdir(join(project, '.claude'));
   await writeFile(join(project, '.claude/settings.json'), JSON.stringify({ theme: 'dark', hooks: { SessionStart: [{ hooks: [{ type: 'command', command: 'echo existing' }] }] } }));
   await chmod(join(project, '.claude/settings.json'), 0o660);
+  // 다른 MCP 서버와 사용자가 직접 등록한 eli-docs 주소는 그대로 둬요.
+  await writeFile(join(project, '.mcp.json'), JSON.stringify({ mcpServers: { other: { type: 'http', url: 'https://example.com/mcp' } } }));
   install(project, 'claude');
+  assert.deepEqual(Object.keys((await readJson(project, '.mcp.json')).mcpServers), ['other', 'eli-docs']);
+  const local = JSON.stringify({ mcpServers: { 'eli-docs': { type: 'http', url: 'http://localhost:3000/mcp' } } });
+  await writeFile(join(project, '.mcp.json'), local);
   install(project, 'codex');
   install(project, 'all');
   const settings = await readJson(project, '.claude/settings.json');
+  assert.equal(await readFile(join(project, '.mcp.json'), 'utf8'), local);
   assert.equal(settings.theme, 'dark');
   assert.equal((await stat(join(project, '.claude/settings.json'))).mode & 0o777, 0o660);
   assert.equal(settings.hooks.SessionStart.length, 2);
@@ -93,7 +104,7 @@ test('dry-run은 설정·파일·설치 기록을 만들지 않고 계획과 신
   const result = install(project, 'all', ['--dry-run']);
   assert.equal(result.dryRun, true);
   assert.ok(result.nextSteps.some(step => step.includes('/hooks')));
-  for (const path of ['eli.harness.json', '.claude/settings.json', '.codex/hooks.json']) await assert.rejects(readFile(join(project, path)));
+  for (const path of ['eli.harness.json', '.claude/settings.json', '.codex/hooks.json', '.mcp.json']) await assert.rejects(readFile(join(project, path)));
 });
 
 test('하네스만 설치한 프로젝트의 status 기본 출력도 하네스 상태를 표시해요', async () => {

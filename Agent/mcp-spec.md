@@ -349,6 +349,7 @@
 | 하네스가 쓰는 곳 | 의존하는 것 |
 | --- | --- |
 | 세션 시작 훅, `eli` 스킬 | 서버 이름 `eli-docs`, 도구 이름 일곱 개, 섹션 키 `when-to-use`·`examples` |
+| 조회 스크립트 `hooks/eli-docs.mjs` | 세션과 인증 없이 `tools/call` 요청 하나에 답하는 것, 응답이 텍스트 콘텐츠 하나인 것 |
 | `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page` |
 | `/eli-verify` | `list_components`, `get_tokens`, 섹션 `do-dont`, 가이드 `verify` |
 | `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`·`font`, `get_versions` |
@@ -454,7 +455,7 @@ sequenceDiagram
 ## 정하지 않은 것
 
 - **Next.js 어댑터:** OpenNext(`@opennextjs/cloudflare`)를 써요. Cloudflare의 안내는 vinext를 기본으로 소개하지만 기존 `next build`를 그대로 쓰기 위해 OpenNext를 골랐어요. MCP 패키지는 `next.config.mjs`의 `serverExternalPackages`에 둬야 해요. 빼면 Workers에서 스키마 검증기가 실행되지 않아 `/mcp`가 500을 돌려줘요.
-- **주소 변경:** 주소를 바꾸면 이 문서, [공개 주소 지침](architecture.md#저장소와-공개-주소를-구분해요), `packages/harness/skills/eli/SKILL.md`를 함께 고치고 하네스를 새 버전으로 릴리스해요.
+- **주소 변경:** 주소를 바꾸면 이 문서, [공개 주소 지침](architecture.md#저장소와-공개-주소를-구분해요), `packages/harness`의 `skills/eli/SKILL.md`·`hooks/eli-docs.mjs`, `packages/cli/src/harness.mjs`를 함께 고치고 하네스와 CLI를 새 버전으로 릴리스해요.
 - **버전별 문서:** 버전별 조회는 아직 구현하지 않았어요. 서버는 빌드한 커밋의 UI 콘텐츠 하나만 설명하고 그 버전을 `ui.docs`로 알려요. 설치 버전과 다른 문서가 같은 API를 지원한다고 단정하지 않아요.
 - **변경 내역 도구:** 버전 사이에 바뀐 props와 토큰을 알려주는 도구는 아직 없어요. 구현 전에는 릴리스 변경 내역과 소비 프로젝트의 타입 검사로 확인해요.
 - **압축 응답 형식:** 토큰은 구역별로 묶고 props는 `fields`로 좁혀요. TOON 같은 별도 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.

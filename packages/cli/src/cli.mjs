@@ -27,7 +27,8 @@ eli-design harness --agent <선택>     claude / codex / all의 스킬·훅을 �
 --version                             설치 도구 버전
 
 UI는 기존 React 프로젝트에서 사용해요. 하네스는 선택한 에이전트의 설정을 병합해요.
-React·폰트·MCP는 자동 설치하지 않아요. 하네스는 harness 명령으로만 설치해요.
+React·폰트는 자동 설치하지 않아요. 하네스는 harness 명령으로만 설치해요.
+harness --agent claude는 프로젝트의 .mcp.json에 문서 서버 eli-docs도 등록해요.
 `;
 
 /** 조회한 상태만 설명해요. 사용자 수정은 오류로 취급하거나 자동으로 복구하지 않아요. */

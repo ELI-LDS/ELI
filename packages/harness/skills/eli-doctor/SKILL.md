@@ -27,7 +27,7 @@ ELI를 쓸 준비가 되었는지 확인해요. 읽기만 하고 아무것도 �
 
 | 항목 | 확인하는 것 | 방법 |
 | --- | --- | --- |
-| 원격 연결 | `eli-docs` MCP에 연결되어 있는지 | `list_components`를 호출해요. 도구가 없으면 `eli` 스킬의 주소로 연결하는 방법을 안내해요 |
+| 원격 연결 | `eli-docs` MCP가 등록되어 있고 문서를 읽을 수 있는지 | `list_components`를 호출해요. 도구가 세션에 없으면 `eli` 스킬의 조회 스크립트로 호출하고, 등록 여부(`.mcp.json` 등)와 스크립트 응답을 따로 적어요 |
 | 설치 | `@eli-design/ui`가 `package.json`에 있고 실제로 설치되어 있는지 | `package.json`과 `node_modules/@eli-design/ui/package.json` |
 | 스킬 버전 | 복사한 스킬의 `VERSION`이 설치된 패키지의 `harness/skills/eli/VERSION`과 같은지 | 패키지에 하네스 VERSION이 없는 이전 버전만 UI 패키지 버전과 비교해요. 원격 없이 확인해요 |
 | 버전 기록 | `DESIGN.md`의 `## 버전`이 실제로 설치된 버전과 같은지, 마지막으로 확인한 날짜가 14일 안인지 | `DESIGN.md`, `node_modules/@eli-design/ui/package.json` |

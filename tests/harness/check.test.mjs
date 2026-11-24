@@ -84,6 +84,14 @@ test('색상 값을 찾으면 종료 코드 2와 위치를 돌려줘요', () => 
   assert.equal(spawnSync(process.execPath, [postEdit], { input: 'not json', encoding: 'utf8' }).status, 0);
 });
 
+test('도구가 보이지 않는 세션에서 쓰는 조회 스크립트가 두 응답 형식을 읽어요', async () => {
+  const { parse } = await import(join(harness, 'hooks/eli-docs.mjs'));
+  const message = JSON.stringify({ jsonrpc: '2.0', id: 1, result: { content: [{ type: 'text', text: '{"components":[]}' }] } });
+  assert.equal(parse(message), '{"components":[]}');
+  assert.equal(parse(`event: message\ndata: ${message}\n\n`), '{"components":[]}');
+  assert.throws(() => parse(JSON.stringify({ jsonrpc: '2.0', id: 1, error: { code: -32602, message: 'Tool nope not found' } })), /nope/);
+});
+
 test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
   for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
     const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');

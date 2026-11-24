@@ -18,7 +18,7 @@ export function parseJson(text, label) {
 /** 설치 파일·설정·기록의 경로는 프로젝트 안에만 둘 수 있어요. */
 export function safePath(path, agentPaths = false) {
   ensure(typeof path === 'string' && path.length > 0 && !/[\\:\x00-\x1f]/.test(path), 'UNSAFE_PATH', '올바른 상대 경로가 필요해요.', { path });
-  ensure(path.split('/').every((part, index) => (agentPaths && index === 0 && ['.claude', '.agents', '.codex'].includes(part)) || (/^[a-zA-Z0-9_][a-zA-Z0-9_.-]*$/.test(part) && !['node_modules', 'harness', '__tests__'].includes(part) && !part.endsWith('.'))), 'UNSAFE_PATH', '프로젝트 내부의 소스 경로만 사용할 수 있어요.', { path });
+  ensure(path.split('/').every((part, index) => (agentPaths && index === 0 && ['.claude', '.agents', '.codex', '.mcp.json', '.mcp.json.eli-pending'].includes(part)) || (/^[a-zA-Z0-9_][a-zA-Z0-9_.-]*$/.test(part) && !['node_modules', 'harness', '__tests__'].includes(part) && !part.endsWith('.'))), 'UNSAFE_PATH', '프로젝트 내부의 소스 경로만 사용할 수 있어요.', { path });
   ensure(!path.split('/').some(part => /^(con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part)), 'UNSAFE_PATH', '운영체제 예약 경로는 사용할 수 없어요.', { path });
   return path;
 }

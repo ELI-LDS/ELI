@@ -8,6 +8,8 @@ import { matches } from './schema.mjs';
 const schema = JSON.parse(await readFile(new URL('./harness.schema.json', import.meta.url), 'utf8'));
 const RECORD = 'eli.harness.json';
 const agents = ['claude', 'codex'];
+// 주소를 바꾸면 packages/harness의 skills/eli/SKILL.md, hooks/eli-docs.mjs와 함께 고쳐요.
+const MCP = { name: 'eli-docs', url: 'https://eli-design.dev/mcp' };
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const ownedPath = path => typeof path === 'string' && ['.claude/skills/', '.agents/skills/', '.claude/hooks/eli/', '.codex/hooks/eli/'].some(prefix => path.startsWith(prefix));
 const equals = (a, b) => a === null ? b === null : b !== null && a.equals(b);
@@ -102,6 +104,15 @@ function mergeSettings(before, agent) {
   return json(settings);
 }
 
+/** Claude Code가 다음 세션부터 문서 서버를 불러오게 해요. 사용자가 이미 등록한 eli-docs는 바꾸지 않아요. */
+function mergeMcp(before) {
+  const config = before === null ? {} : parseJson(before.toString('utf8'), '.mcp.json');
+  ensure(object(config) && (config.mcpServers === undefined || object(config.mcpServers)), 'INVALID_DATA', '.mcp.json의 mcpServers 형식을 확인해요.');
+  if (config.mcpServers?.[MCP.name] !== undefined) return before.toString('utf8');
+  config.mcpServers = { ...config.mcpServers, [MCP.name]: { type: 'http', url: MCP.url } };
+  return json(config);
+}
+
 export async function installHarness(project, values) {
   ensure(['claude', 'codex', 'all'].includes(values.agent), 'INVALID_ARGUMENT', '--agent claude, codex 또는 all을 선택해요. 스킬·훅을 복사하고 해당 에이전트 설정에 훅을 등록해요.');
   const selected = values.agent === 'all' ? agents : [values.agent];
@@ -121,10 +132,11 @@ export async function installHarness(project, values) {
     recorded.set(path, { path, sha256: hash(content) });
   }
   const replacements = new Map();
-  for (const agent of selected) {
-    const path = agent === 'claude' ? '.claude/settings.json' : '.codex/hooks.json';
+  const settings = selected.map(agent => [agent === 'claude' ? '.claude/settings.json' : '.codex/hooks.json', bytes => mergeSettings(bytes, agent)]);
+  if (selected.includes('claude')) settings.push(['.mcp.json', mergeMcp]);
+  for (const [path, merge] of settings) {
     const bytes = bytesAt(project.root, path, true);
-    const merged = mergeSettings(bytes, agent);
+    const merged = merge(bytes);
     before.set(path, bytes);
     if (bytes === null || !bytes.equals(Buffer.from(merged))) { changes.set(path, merged); replacements.set(path, bytes); }
     result.push({ path, action: bytes === null ? 'add' : bytes.equals(Buffer.from(merged)) ? 'reuse' : 'merge' });
@@ -136,8 +148,14 @@ export async function installHarness(project, values) {
     for (const [path, bytes] of before) ensure(equals(bytes, bytesAt(project.root, path, true)), 'PROJECT_BUSY', '설치 계획 이후 파일이 변경됐어요.', { path });
   }, { replacements, agentPaths: true });
   return { command: 'harness', dryRun: Boolean(values['dry-run']), version: record.version, agents: selected, registry: bundle.url, record: RECORD, files: result, downloads: bundle.downloads, nextSteps: [
-    ...(selected.includes('claude') ? ['Claude Code에서 필요하면 /reload-skills로 스킬을 다시 읽어요.'] : []),
-    ...(selected.includes('codex') ? ['Codex의 /hooks에서 등록한 훅을 확인하고 신뢰해요. 신뢰 전에는 실행되지 않아요.'] : []),
-    '원격 MCP는 별도 연결이 필요해요. 주소가 준비되지 않았다면 조회가 필요한 작업을 미완료로 안내해요.',
+    // 설치한 세션에서 바로 셋업으로 이어가게 해요. MCP 서버는 세션을 시작할 때만 불러와요.
+    ...(selected.includes('claude') ? [
+      'Claude Code: 새 세션을 열지 않고 지금 세션에서 .claude/skills/eli-setup/SKILL.md를 읽고 그대로 진행해요. 스킬 명령이 보이지 않으면 /reload-skills로 다시 읽어요.',
+      `문서 서버 ${MCP.name} MCP를 .mcp.json에 등록했어요. 다음 세션부터 도구로 보여요. 지금 세션에 도구가 보이지 않으면 node .claude/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽어요.`,
+    ] : []),
+    ...(selected.includes('codex') ? [
+      'Codex의 /hooks에서 등록한 훅을 확인하고 신뢰해요. 신뢰 전에는 실행되지 않아요.',
+      `Codex: codex mcp add ${MCP.name} --url ${MCP.url}로 문서 서버 MCP를 등록해요. 지금 세션에 도구가 보이지 않으면 node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽고 .agents/skills/eli-setup/SKILL.md대로 이어서 진행해요.`,
+    ] : []),
   ] };
 }
