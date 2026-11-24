@@ -54,6 +54,8 @@ UI 소스·공개 exports·레지스트리 규격·생성기를 바꾸면 `pnpm 
 
 `pnpm test:cli`에는 실제 tarball의 하네스 선택 설치 검사도 포함해요. React·UI 없이 설치, 에이전트 선택, 기존 훅·설정 보존, 중복 등록 방지, dry-run, 수정·누락·해시·경로·다른 버전 거부와 다중 설정 실패 복구를 확인해요. 소스 UI 설치 후 실제로 복사한 훅을 실행해 로컬 기록을 인식하는지도 확인해요. 여섯 실행 행렬에서도 하네스 설치·재사용·상태를 확인하고 앱의 package.json·lockfile이 바뀌지 않아야 해요.
 
+문서 앱의 생성 스크립트·조회 계층·MCP 도구를 바꾸면 `pnpm test:docs`를 실행해요. 컴포넌트 JSDoc의 `###` 제목이나 `{이름}Props` 타입 구조를 바꿀 때도 실행해요. 생성 데이터가 그 형태에 의존해요. 이 검사는 조회 함수까지만 확인하고 MCP 전송과 실제 에이전트 연결은 확인하지 않아요.
+
 `pnpm test:harness`는 훅과 스킬·초안의 형식을 확인해요. Claude Code·Codex가 스킬을 실제로 따르는지, Codex의 사용자 신뢰, 원격 MCP의 문서 조회는 자동 파일 설치 검사로 대체하지 않아요. 하네스 콘텐츠와 업데이트 범위의 기준은 [하네스 구조](harness.md)를 따라요.
 
 - 개별·다중 선택은 필요한 항목만 받고 전체 소스 추가는 명시적인 선택일 때만 수행하는지 확인해요. 전체 소스에도 하네스가 자동으로 포함되지 않아야 해요.
@@ -159,6 +161,20 @@ React·추가 의존성까지 합친 다운로드 크기나 브라우저 번들 
 - 실행 도구가 UI 전체나 하네스를 포함하지 않는지 확인해요. 소스 선택 배포가 다른 방식보다 항상 작다고 단정하지 않고 같은 조건의 실측 결과를 사용해요.
 
 HTTP 헤더·TLS·TCP, Node.js·npm 자체 설치, 공개 npm 이름·태그 조회 차이, GitHub Release 탐색·리디렉션과 다른 패키지 매니저의 캐시 정책은 별도 범위예요. 게시 후 공개 명령의 전송량을 다시 확인하기 전에는 전체 사용자의 최초 다운로드량으로 일반화하지 않아요. 근거 없이 용량 상한이나 CI 통과 기준을 만들지 않아요.
+
+## 문서 앱 배포를 확인해요
+
+문서 앱과 원격 MCP는 Storybook과 다른 Worker `eli`로 배포해요. 설정은 `apps/docs/wrangler.jsonc`에 있어요. 저장소 루트의 `wrangler.jsonc`는 Storybook용이므로 루트에서 `wrangler deploy`를 실행하면 Storybook 설정을 읽어요. 문서 앱은 반드시 `apps/docs`에서 배포해요.
+
+Cloudflare Workers Builds의 설정은 아래와 같아요. 루트 디렉터리는 저장소 루트로 두고 일반 변수 `PNPM_VERSION=12.8.1`을 추가해요.
+
+| 항목 | 값 |
+| --- | --- |
+| Build command | `pnpm --filter @eli/docs build:worker` |
+| Deploy command | `cd apps/docs && npx wrangler deploy` |
+| Non-production branch deploy command | `cd apps/docs && npx wrangler versions upload` |
+
+배포 전에는 `pnpm --filter @eli/docs preview`로 로컬 Workers 런타임에서 띄워 `/mcp`에 `tools/list`와 도구 호출을 보내 확인해요. `next start`의 결과만으로 Workers에서 동작한다고 판단하지 않아요. 두 런타임은 허용하는 코드가 달라요. 배포한 뒤에는 `https://eli-design.dev/mcp`의 실제 응답을 확인하고, 그 뒤에 주소를 안내하는 하네스를 릴리스해요.
 
 ## Storybook 배포를 확인해요
 

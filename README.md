@@ -234,6 +234,7 @@ Storybook은 `http://localhost:6006`에서 열려요. Node.js와 pnpm 버전은 
 | `pnpm typecheck` | TypeScript 타입을 확인해요 |
 | `pnpm lint` | 코드 규칙을 확인해요 |
 | `pnpm test:harness` | 하네스의 훅 출력과 스킬 형식을 확인해요 |
+| `pnpm test:docs` | 원격 MCP의 문서 데이터 생성과 조회·오류 응답을 확인해요 |
 | `pnpm test:packaging` | tarball의 공개 경로·SSR·CSS 연결을 확인해요 |
 | `pnpm test:browser` | Chromium에서 상호작용·접근성·계산 스타일을 확인해요 |
 | `pnpm test:browsers` | 브라우저 엔진과 모바일 기기 조건을 함께 확인해요 |

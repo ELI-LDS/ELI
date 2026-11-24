@@ -19,7 +19,7 @@ export interface SegmentControlProps
   /** Segment Control이 무엇을 선택하는 영역인지 화면 낭독기가 읽을 수 있게 설명해요. */
   'aria-label': string;
 
-  /** 표시할 옵션 목록이에요. 2개부터 4개까지 전달할 수 있어요. */
+  /** 표시할 옵션 목록이에요. 2~4개를 권장하며 개수를 강제로 제한하지 않아요. */
   options: SegmentControlOptions;
 
   /** 전체 선택을 막아요. 기본값은 false예요. */

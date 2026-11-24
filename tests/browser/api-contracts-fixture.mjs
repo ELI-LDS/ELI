@@ -1,5 +1,21 @@
 /** 입력·선택·진행률의 공개 계약을 패키지와 소스 설치 양쪽에서 확인해요. */
 export const apiContractsFixture = `
+function SnackBarFixture() {
+  const [open, setOpen] = useState(false);
+  const [duration, setDuration] = useState(5000);
+  const [count, setCount] = useState(0);
+  const [mounted, setMounted] = useState(true);
+  return <section aria-label="자동 닫힘 검증">
+    <button onClick={() => setOpen(true)}>알림 열기</button>
+    <button onClick={() => setOpen(false)}>알림 닫기</button>
+    <button onClick={() => setDuration(0)}>알림 유지</button>
+    <button onClick={() => setDuration(1000)}>알림 1초</button>
+    <button onClick={() => setMounted(false)}>알림 제거</button>
+    {mounted && <SnackBar data-testid="timed-snackbar" open={open} duration={duration} onOpenChange={next => setOpen(next)} action="실행" onAction={() => setCount(value => value + 1)}>시간 알림</SnackBar>}
+    <SnackBar data-testid="uncontrolled-snackbar" action={null}>기본 시간 알림</SnackBar>
+    <output data-testid="snackbar-actions">{count}</output>
+  </section>;
+}
 function ApiContractsFixture() {
   const [options, setOptions] = useState(['a', 'b', 'c']);
   const [disabled, setDisabled] = useState(false);
@@ -22,8 +38,10 @@ function ApiContractsFixture() {
     return () => { refCounts.current.cleaned++; };
   }, []);
   const items = options.map(value => ({ value, label: value, outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
+  const stableItems = ['a', 'b', 'c'].map(value => ({ value, label: value, outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
   const withDisabled = ['a', 'b', 'c'].map(value => ({ value, label: value, disabled: value === 'b', outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', minWidth: 0, overflowWrap: 'anywhere' }}>
+    <SnackBarFixture />
     <section aria-label="간격 검증">
       <Slider aria-label="간격 값" min={0} max={10} step={3} defaultValue={5} onValueChange={value => setChanges(String(value))} />
       <Slider aria-label="제어 간격" min={0} max={10} step={3} value={sliderValue} onValueChange={setSliderValue} />
@@ -57,8 +75,8 @@ function ApiContractsFixture() {
     <button onClick={() => setDisabled(current => !current)}>전체 비활성화 전환</button>
     <Select label="옵션 비활성화" disabled={disabled} options={withDisabled} onValueChange={setChanges} />
     <SegmentControl aria-label="세그먼트 비활성화" disabled={disabled} options={withDisabled} onValueChange={setChanges} />
-    <NavigationBar aria-label="탐색 비활성화" items={withDisabled} onValueChange={setChanges} />
-    <NavigationBarGlass aria-label="글래스 비활성화" items={withDisabled} onValueChange={setChanges} />
+    <NavigationBar aria-label="탐색 이동" items={stableItems} onValueChange={setChanges} />
+    <NavigationBarGlass aria-label="글래스 이동" items={stableItems} onValueChange={setChanges} />
     <section aria-label="FAB 검증" style={{ position: 'relative', height: 240, flexShrink: 0 }}><FabMenu style={{ position: 'absolute', right: 0, bottom: 0 }} label="비활성 메뉴" defaultExpanded items={[{ id: 'disabled', label: '차단 액션', disabled: true, onClick: () => setChanges('차단 실패') }, { id: 'enabled', label: '허용 액션', onClick: () => setChanges('허용') }]} /></section>
     <output data-testid="api-changes">{changes}</output>
     <section aria-label="진행률 검증">
@@ -76,6 +94,12 @@ function checkPublicInputTypes() {
   <Checkbox ref={ref} onChange={event => event.currentTarget.checked} />;
   <Radio ref={ref} value="a" onChange={event => event.currentTarget.value} />;
   <TextArea ref={{ current: null as HTMLTextAreaElement | null }} />;
+  // @ts-expect-error 탐색 항목은 모두 이동할 수 있어요.
+  const navigation: import('react').ComponentProps<typeof NavigationBar>['items'][number] = { value: 'a', label: 'a', outlinedIcon: null, filledIcon: null, disabled: true };
+  void navigation;
+  // @ts-expect-error 단독 탐색 항목도 disabled를 지원하지 않아요.
+  const glass: import('react').ComponentProps<typeof NavigationBarGlass>['items'][number] = { value: 'a', label: 'a', outlinedIcon: null, filledIcon: null, disabled: true };
+  void glass;
   // @ts-expect-error input에는 자식을 전달할 수 없어요.
   <Checkbox>자식</Checkbox>;
   // @ts-expect-error input에는 자식을 전달할 수 없어요.

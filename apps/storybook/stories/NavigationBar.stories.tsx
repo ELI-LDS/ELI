@@ -18,7 +18,6 @@ type NavigationBarStoryArgs = NavigationBarProps & {
   activeIndex: number;
   itemCount: 3 | 4 | 5;
   labels: string[];
-  disabledItems?: string[];
 };
 
 const defaultLabels = ['홈', '검색', '알림', '저장', '내 정보'];
@@ -42,13 +41,12 @@ function createItems(count: 3 | 4 | 5, labels: string[]): NavigationBarOptions {
 
 function NavigationBarPreview({
   activeIndex,
-  disabledItems = [],
   itemCount,
   labels,
   onValueChange,
   ...navigationBarProps
 }: NavigationBarStoryArgs) {
-  const items = createItems(itemCount, labels).map(item => ({ ...item, disabled: disabledItems.includes(item.value) }));
+  const items = createItems(itemCount, labels);
   const initialIndex = Math.min(Math.max(activeIndex, 0), items.length - 1);
   const initialItem = items[initialIndex] ?? items[0];
   const [value, setValue] = useState(initialItem?.value ?? '');
@@ -70,7 +68,6 @@ const meta = {
   title: '컴포넌트/NavigationBar',
   component: NavigationBar,
   args: {
-    disabledItems: [],
     'aria-label': '주요 메뉴',
     activeIndex: 0,
     itemCount: 3,
@@ -78,12 +75,6 @@ const meta = {
     labels: defaultLabels,
   },
   argTypes: {
-    disabledItems: {
-      name: '비활성화할 메뉴',
-      control: 'check',
-      options: ['item-1', 'item-2', 'item-3', 'item-4', 'item-5'],
-      description: '선택한 메뉴는 클릭·키보드·드래그로 고를 수 없어요. 실제 items의 disabled에 연결돼요.',
-    },
     'aria-label': {
       name: '탐색 영역 설명',
       control: 'text',
@@ -93,7 +84,7 @@ const meta = {
       name: '항목 수',
       control: 'select',
       options: [3, 4, 5],
-      description: '디자인 명세에 맞게 3개부터 5개까지 선택해요.',
+      description: '권장 범위인 3~5개를 미리보기에서 선택해요. 실제 컴포넌트는 개수를 강제로 제한하지 않아요.',
     },
     activeIndex: {
       name: '처음 활성화할 순서',
