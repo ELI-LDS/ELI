@@ -1,6 +1,12 @@
-<div align="center">
-
-<img src=".github/assets/eli-logo.png" alt="ELI" width="720">
+<table role="presentation">
+<tr>
+<td width="260" align="center" valign="middle">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot-badge.png">
+    <img src=".github/assets/eli-mascot-blink.gif" alt="눈을 깜빡이는 엘리" width="240">
+  </picture>
+</td>
+<td align="center" valign="middle">
 
 <h1 align="center">디자인의 첫 단추, ELI</h1>
 
@@ -20,15 +26,11 @@ ELI가 처음부터 맞춰 끼워 둘게요.
 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 </p>
 
-</div>
+</td>
+</tr>
+</table>
 
-<h2 id="시작하는-방법은-한-줄이에요">
-  <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot-badge.png">
-    <img src=".github/assets/eli-mascot-blink.gif" alt="눈을 깜빡이는 엘리" width="40" height="40" align="middle">
-  </picture>
-  시작하는 방법은 한 줄이에요
-</h2>
+## 시작하는 방법은 한 줄이에요
 
 쓰고 있는 AI 에이전트(Claude Code, Codex)에게 이렇게 말해요.
 
