@@ -22,15 +22,13 @@ ELI가 처음부터 맞춰 끼워 둘게요.
 
 </div>
 
-<div align="center">
+<h2 id="시작하는-방법은-한-줄이에요">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot-badge.png">
-    <img src=".github/assets/eli-mascot-blink.gif" alt="눈을 깜빡이며 합류를 기다리는 엘리" width="80">
+    <img src=".github/assets/eli-mascot-blink.gif" alt="눈을 깜빡이는 엘리" width="40" height="40" align="middle">
   </picture>
-  <p align="center"><strong>얼른 엘리를 팀에 합류시켜 줘요.</strong></p>
-</div>
-
-## 시작하는 방법은 한 줄이에요
+  시작하는 방법은 한 줄이에요
+</h2>
 
 쓰고 있는 AI 에이전트(Claude Code, Codex)에게 이렇게 말해요.
 
