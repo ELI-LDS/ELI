@@ -4,13 +4,6 @@
 
 ## Unreleased
 
-### CLI 0.5.0·하네스 콘텐츠 0.4.0 — 준비 중 (미게시)
-
-- BREAKING CHANGE: 설치 설정과 기록을 프로젝트 루트에서 `.eli/` 폴더로 옮겼어요. `eli.json`은 `.eli/config.json`, `eli.lock.json`은 `.eli/lock.json`, `eli.harness.json`은 `.eli/harness.json`이에요. 새 CLI와 하네스의 세션 시작 훅은 옛 위치를 읽지 않아요. 기존 프로젝트는 `mkdir .eli && mv eli.json .eli/config.json && mv eli.lock.json .eli/lock.json && mv eli.harness.json .eli/harness.json`으로 옮겨요(있는 파일만). 공식 홍보 전 0.x의 MINOR로 배포해요.
-- `/eli-setup`이 브랜드 컬러를 물어요. 색 이름이나 색상 코드를 받으면 ELI에 없는 색이어도 그 색으로 브랜드 토큰과 상태별 색을 만들고, ELI의 브랜드 시맨틱 토큰이 그 색을 가리키게 해 설치된 컴포넌트가 따라와요. 실제 프로젝트에서 버튼 색이 바뀌는지는 아직 확인하지 않았어요.
-- `/eli-setup`의 첫 세 질문(서비스 기획, 디자인 레퍼런스, 브랜드 컬러)을 질문 도구로 반드시 묻게 했어요. Claude Code는 `AskUserQuestion`, Codex는 `request_user_input_async`를 써요. 사용자가 직접 답하기 전에는 문서·토큰·페이지를 만들지 않고, 코드에서 추정한 내용으로 답을 대신하지 않아요. 설치 뒤 안내와 세션 시작 훅도 같은 내용을 알려요.
-- 실제 Claude Code·Codex가 질문 도구를 띄우는지는 아직 확인하지 않았어요. Codex는 `request_user_input_async`를 쓰고(Plan 모드에서는 `request_user_input`), 도구가 제공되지 않는 환경에서는 질문만 담은 메시지로 대신해요.
-
 ### 컴포넌트 사용 가이드
 
 - 전달받은 Modal·Divider·Tab Markdown을 보존하고 공개 컴포넌트별 JSON·소스 설치 예시를 추가해요. Tab의 빈 원문은 최신 전달본으로 교체해요. 기존 stable 31개는 유지하고 새 3개는 draft로 검증한 뒤 사용자 승인에 따라 stable로 전환해요. 전체 34개 가이드의 내용과 예시를 조회할 수 있는 데이터로 준비하며, 공개 MCP 반영은 배포 후 확인해요.
@@ -43,6 +36,27 @@
 ### 개발 환경
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-team/ELI/pull/73)
+
+## eli-design 0.5.0 — 2026-11-24
+
+2026-11-24에 npm `next`로 게시한 뒤 `latest`로 전환했어요. 원본 커밋은 `56fa0395f18a8791d73c3702dce52add2d2035f3`([#119](https://github.com/ELI-team/ELI/pull/119))이에요. npm의 integrity는 고정 파일과 같아요(SHA-256 `0a091aebacea80502e4b912e7c8db590fcb142e74cc6ad23966a7c4d9fd7efb8`). 공개 명령으로 새 프로젝트에 `harness --agent all`, `init`, `add button tab`, `status`를 확인했어요. 고정 범위와 생략한 검사는 [릴리스 기록](handbook/releases/0.5.0.md)에 있어요.
+
+### 변경
+
+- BREAKING CHANGE: 설치 설정과 기록을 프로젝트 루트에서 `.eli/` 폴더로 옮겼어요. `eli.json`은 `.eli/config.json`, `eli.lock.json`은 `.eli/lock.json`, `eli.harness.json`은 `.eli/harness.json`이에요. 옛 위치는 읽지 않아요. 기존 프로젝트는 있는 파일만 `mkdir .eli && mv eli.json .eli/config.json && mv eli.lock.json .eli/lock.json && mv eli.harness.json .eli/harness.json`으로 옮겨요. 공식 홍보 전 0.x의 MINOR예요.
+- `init --dir .eli`는 거부해요. 이 폴더는 설치 기록 전용이에요.
+- 하네스 설치 뒤 안내가 셋업의 세 질문을 질문 도구로 먼저 띄우라고 알려요.
+
+## 하네스 콘텐츠 0.4.0 — 2026-11-24
+
+[GitHub Release harness-v0.4.0](https://github.com/ELI-team/ELI/releases/tag/harness-v0.4.0)에 공개했어요. 원본 커밋은 `56fa0395f18a8791d73c3702dce52add2d2035f3`, `harness.json`의 SHA-256은 `0984318a957db5b0c1f544e5acd42e89dcb957e672d14f5b8285ec676367ae06`이에요. 설치 도구 0.5.0 이상과 함께 써요.
+
+### 변경
+
+- `/eli-setup`이 서비스 기획, 디자인 레퍼런스, 브랜드 컬러를 질문 도구로 반드시 물어요. Claude Code는 `AskUserQuestion`, Codex는 `request_user_input_async`를 쓰고(Plan 모드에서는 `request_user_input`), 도구가 없는 환경에서는 질문만 담은 메시지로 대신해요. 사용자가 직접 답하기 전에는 문서·토큰·페이지를 만들지 않아요.
+- 브랜드 컬러는 사용자가 정한 색으로 만들어요. ELI에 없는 색이어도 돼요. 토큰 파일에 기준 색을 적고 상태별 색은 기준 색에서 계산하며, ELI의 브랜드 시맨틱 토큰이 그 색을 가리키게 해요.
+- 세션 시작 훅과 스킬이 설치 기록을 `.eli/` 폴더에서 읽어요.
+- 실제 Claude Code·Codex가 질문 도구를 띄우는지, 브랜드 컬러가 설치된 컴포넌트에 반영되는지는 확인하지 않았어요.
 
 ## eli-design 0.4.0 — 2026-11-24
 
