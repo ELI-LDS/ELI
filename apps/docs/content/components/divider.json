@@ -1,0 +1,73 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "divider",
+  "name": "Divider",
+  "group": "divider",
+  "status": "stable",
+  "source": {
+    "markdown": "apps/docs/content/source/components/divider.md",
+    "sha256": "734a71e8a1b61ebc7242a757dede5369092cf022c3dd6dc0edfb55aeab5c95e1"
+  },
+  "summary": "콘텐츠의 주제나 맥락이 바뀌는 지점을 가로선으로 구분해요.",
+  "usage": {
+    "recommended": [
+      "서로 다른 콘텐츠·목록 항목·설정 그룹 사이의 의미 있는 경계를 표시해요.",
+      "부모 너비를 기준으로 배치하고 위아래 간격은 부모 레이아웃에서 관리해요."
+    ],
+    "avoid": [
+      "간격만 필요하면 gap·여백을 사용하고, 장식선만 필요하면 일반 요소와 CSS border 등을 사용해요.",
+      "버튼이나 선택 항목을 대신하는 조작 요소로 사용하지 않아요.",
+      "방향·두께 전용 props나 자동 여백이 있다고 가정하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "네이티브 hr 하나로 가로 구분선을 표시해요. 내부 자식 요소는 없어요.",
+    "note": "전달한 HTML 속성은 루트 hr에 적용해요. children·dangerouslySetInnerHTML은 실제 타입에서 제외돼요."
+  },
+  "content": {
+    "text": [],
+    "icon": [],
+    "limits": [
+      "너비는 부모 영역에 맞춰요. 특정 그룹에서만 구분하려면 해당 컨테이너 안에 배치해요."
+    ]
+  },
+  "interaction": {
+    "states": [],
+    "behavior": [
+      "자체 상태나 클릭·Hover·Pressed 동작을 제공하지 않아요.",
+      "콘텐츠 사이의 위아래 간격이나 그룹 레이아웃을 자동으로 만들지 않아요."
+    ],
+    "limitations": [
+      "가로 구분선이며 방향·두께·색상을 바꾸는 전용 props는 없어요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Divider"
+      ],
+      "purpose": "목록 항목·콘텐츠 섹션·설정 묶음의 경계를 구분해요.",
+      "guidance": "목록·섹션·설정 컨테이너는 소비 앱에서 구성해요. 그룹 구조와 여백은 Divider가 생성하지 않아요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 hr에 적용해요. 색상·두께 등 직접 스타일을 바꿀 수 있어요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요.",
+    "구분선의 너비를 제한하거나 여백이 필요하면 부모 레이아웃에서 관리해요."
+  ],
+  "accessibility": [
+    "네이티브 hr로 주제·맥락의 구분을 나타내요. 단순 장식선과 의미적 구분을 구별해 사용해요."
+  ],
+  "examples": [
+    {
+      "title": "설정 그룹 사이의 의미적 구분",
+      "code": "import { Divider } from './components/ui/divider';\n\nexport default function Example() {\n  return (\n    <div>\n      <section>\n        <h2>기본 정보</h2>\n        <p>계정의 기본 정보를 확인해요.</p>\n      </section>\n      <Divider />\n      <section>\n        <h2>알림 설정</h2>\n        <p>알림을 받을 방법을 확인해요.</p>\n      </section>\n    </div>\n  );\n}"
+    }
+  ],
+  "related": [],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

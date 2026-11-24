@@ -19,7 +19,7 @@ flowchart LR
   Query --> Mcp["원격 MCP /mcp"]
 ```
 
-JSON은 검토하며 Git으로 관리하는 자료예요. 자동 Markdown 변환기로 매번 덮어쓰는 생성물이 아니에요. JSON Schema·빈 템플릿과 타입 검사를 거친 예시를 담은 컴포넌트별 초안은 준비했으며 조회 계층과 실제 연결은 후속 작업이에요.
+JSON은 검토하며 Git으로 관리하는 자료예요. 자동 Markdown 변환기로 매번 덮어쓰는 생성물이 아니에요. JSON Schema·빈 템플릿과 검토 상태를 가진 컴포넌트별 가이드를 준비했고, 생성 데이터·조회 계층·MCP 도구가 이를 읽어요. 실제 사용자용 페이지와 GET API 구현은 별도 작업이에요.
 
 ## 폴더 구조
 
@@ -69,7 +69,7 @@ JSON의 필드·자료형은 `content/component-guide.schema.json`, MCP 섹션�
 
 ## 조회 계층을 하나로 둬요
 
-페이지, GET API, MCP는 후속 구현할 `content/query.ts`의 같은 함수를 호출해요. 일반 조회에는 `stable`만 제공하고 검토용 초안 조회는 명시적으로 구분해요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
+구현된 MCP와 후속 페이지·GET API는 `content/query.ts`의 같은 조회 함수를 사용해요. 일반 조회는 `stable` 가이드의 내용만 제공해요. `draft`는 상태·설치 정보와 코드에서 추출한 props만 제공하고 사용 기준·예시는 노출하지 않아요. 검토용 초안 본문 조회는 아직 없어요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
 
 ## API와 MCP 도구를 작게 나눠요
 
@@ -100,6 +100,6 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 - **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** npm 배포는 시작했지만 버전별 문서 조회는 아직 구현하지 않았어요. 문서 앱을 공개할 때 설명 대상인 게시 버전을 명시하고, 설치 버전과 다르면 차이를 안내해요. `0.x`·정식 릴리스의 운영 기준은 [버전 규칙](versioning.md)을 따라요.
 
-조회 계층과 MCP 도구는 구현되어 있어요. 사람용 문서 페이지·GET API·가이드 원본·배포는 아직 없어요. 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
+조회 계층과 MCP 도구는 구현되어 있어요. 사람용 문서 페이지·GET API·공통 가이드 원본은 아직 없어요. 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
 
 현재 가이드의 검토 상태와 담당자 인계 범위는 [검토 기록](../handbook/component-guide-review.md), [연동 인계](../handbook/component-guide-handoff.md)에서 확인해요. 도구 계약은 원격 MCP 규격에만 정의해요.

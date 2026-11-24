@@ -1,0 +1,108 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "modal",
+  "name": "Modal",
+  "group": "modal",
+  "status": "stable",
+  "source": {
+    "markdown": "apps/docs/content/source/components/modal.md",
+    "sha256": "aabdab5434d07971fcf7b8322712c7d183bc8dbdd8a9c69c0c133cb6540bfc02"
+  },
+  "summary": "현재 화면 위에서 제목과 안내 문장·두 액션을 제공해 사용자의 확인이나 결정을 받아요.",
+  "usage": {
+    "recommended": [
+      "삭제·변경·제출 등 사용자가 확인하거나 선택해야 하는 상황에 사용해요.",
+      "현재 작업과 관련된 핵심 안내와 주요·보조 행동을 함께 제공해요."
+    ],
+    "avoid": [
+      "단순한 상태 안내나 일시적인 작업 결과를 위해 작업 흐름을 중단하지 않아요. 이 경우 Alert·SnackBar를 사용해요.",
+      "positiveAction·secondaryAction의 문구만으로 실제 기능이 연결된다고 가정하지 않아요.",
+      "임의의 children이나 중복된 확인·취소 버튼을 추가하는 API로 사용하지 않아요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "화면 전체를 덮는 Root 안에 내부 Dim과 dialog 콘텐츠를 배치해요. 콘텐츠는 제목·두 안내 슬롯과 왼쪽 Secondary·오른쪽 Positive Button으로 구성돼요.",
+    "note": "현재 구현을 설명해요. 내부 Dim은 공개 API가 아니며 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "title은 사용자가 결정할 핵심 내용을 간결하게 설명해요.",
+      "message와 subMessage에 안내를 각각 전달하고 사용하지 않는 슬롯은 null로 숨겨요. 생략하면 기본 문구가 표시돼요.",
+      "positiveAction은 주요 행동을, secondaryAction은 취소 등 보조 행동을 명확하게 표현해요."
+    ],
+    "icon": [
+      "내부 액션 버튼은 텍스트 중심이며 아이콘을 표시하지 않아요."
+    ],
+    "limits": [
+      "기본 안내 슬롯은 message·subMessage 두 개예요. 두 줄로 고정한다는 뜻은 아니에요.",
+      "중첩 Modal은 지원하지 않아요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Open",
+      "Closed"
+    ],
+    "behavior": [
+      "open·onOpenChange로 표시를 제어하거나 defaultOpen으로 초기화해요. 비제어 기본값은 true예요.",
+      "Dim 클릭·Secondary 버튼·Escape로 닫혀요. 콘텐츠 안 클릭은 닫힘을 실행하지 않아요.",
+      "Secondary는 onSecondaryAction을 실행한 뒤 닫고 event.preventDefault()로 자동 닫힘을 취소할 수 있어요.",
+      "Positive는 onPositiveAction만 실행해요. 실제 요청의 성공 여부와 완료 후 닫기는 소비 앱이 결정해요.",
+      "열면 Secondary로 포커스를 이동하고 Tab·Shift+Tab은 dialog 안에서 순환해요. 닫히거나 제거되면 이전 포커스를 복원해요.",
+      "열린 동안 배경 조작과 스크롤을 잠그며 닫기·제거 시 원래 상태를 복원해요."
+    ],
+    "limitations": [
+      "별도 닫기 아이콘이나 임의의 children 슬롯은 제공하지 않아요.",
+      "실제 작업 실행·검증·요청 성공 판정은 소비 앱이 담당해요.",
+      "ReactNode 제목을 null로 비우면 dialog를 설명할 별도 aria-label 또는 aria-labelledby가 필요해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Modal",
+        "Button"
+      ],
+      "purpose": "외부 버튼으로 확인 창을 열고 내부 액션으로 결정을 받아요.",
+      "guidance": "외부 Button은 open을 변경해요. 내부 Button은 이미 포함되어 있으므로 positiveAction·secondaryAction과 각 콜백으로 연결해요."
+    },
+    {
+      "components": [
+        "Modal",
+        "Alert"
+      ],
+      "purpose": "결정 흐름 안에서 추가 상태나 오류를 설명해요.",
+      "guidance": "message·subMessage의 ReactNode 콘텐츠 등 실제 공개 슬롯에 연결해요. Modal의 children API가 있다는 뜻은 아니에요."
+    }
+  ],
+  "customization": [
+    "className·style과 일반 div 속성은 화면 전체 Root에 적용해요. 내부 dialog의 배경·크기를 모두 바꾸는 계약은 아니에요.",
+    "width·height는 내부 콘텐츠 크기에 적용돼요. width를 지정하면 가용 너비를 넘지 않도록 제한해요. 기존 CSS 최대 너비를 별도로 변경하지 않아요.",
+    "같은 속성의 일반 클래스보다 인라인 스타일이 우선해요. Root의 style.width·style.height와 콘텐츠의 width·height는 적용 대상이 달라요.",
+    "aria-label·aria-labelledby·aria-describedby는 dialog의 설명에 연결돼요. title·children·dangerouslySetInnerHTML 등 네이티브 상속 제외 속성은 실제 타입을 따라요."
+  ],
+  "accessibility": [
+    "내부 콘텐츠에 role=dialog·aria-modal=true를 적용하고 제목과 본문을 연결해요. 사용자 지정 aria-label이 있으면 그것을 dialog 설명으로 사용해요.",
+    "키보드 포커스 순환·복귀와 배경 조작 잠금을 기본 제공해요. 중첩 창을 동시에 열어 이 동작이 유지된다고 가정하지 않아요.",
+    "주요 행동의 성공 후 닫힘은 소비 앱이 결정해 실패 내용을 확인하기 전에 창이 사라지지 않도록 해요."
+  ],
+  "examples": [
+    {
+      "title": "외부에서 열고 성공한 행동 뒤 닫기",
+      "code": "'use client';\n\nimport { useState } from 'react';\nimport { Button } from './components/ui/button';\nimport { Modal } from './components/ui/modal';\n\nexport default function Example() {\n  const [open, setOpen] = useState(false);\n  const [result, setResult] = useState('');\n\n  return (\n    <>\n      <Button icon={null} onClick={() => setOpen(true)}>변경 확인</Button>\n      <Modal\n        open={open}\n        onOpenChange={setOpen}\n        title=\"변경할까요?\"\n        message=\"변경할 내용을 확인해 주세요.\"\n        subMessage={null}\n        secondaryAction=\"취소\"\n        positiveAction=\"확인\"\n        onPositiveAction={() => {\n          // 실제 요청이 있다면 성공을 확인한 뒤 결과와 표시 상태를 갱신해요.\n          setResult('확인했어요.');\n          setOpen(false);\n        }}\n      />\n      <output>{result}</output>\n    </>\n  );\n}"
+    }
+  ],
+  "related": [
+    "Button",
+    "Alert",
+    "SnackBar",
+    "LoadingIndicator",
+    "ProgressIndicator"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}
