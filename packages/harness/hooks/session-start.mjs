@@ -50,7 +50,7 @@ function usesEli(dir) {
   }
 }
 
-const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어요(DESIGN.md가 없어요). 사용자가 UI나 디자인 작업을 요청하면 먼저 /eli-setup으로 셋업하자고 제안해요. 셋업은 서비스 기획과 디자인 레퍼런스 두 질문을 질문 도구(Claude Code는 AskUserQuestion)로 반드시 묻고, 사용자의 답을 받기 전에는 문서·토큰·페이지를 만들지 않아요.`;
+const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어요(DESIGN.md가 없어요). 사용자가 UI나 디자인 작업을 요청하면 먼저 /eli-setup으로 셋업하자고 제안해요. 셋업은 서비스 기획과 디자인 레퍼런스 두 질문을 질문 도구(Claude Code는 AskUserQuestion, Codex는 request_user_input_async)로 반드시 묻고, 사용자의 답을 받기 전에는 문서·토큰·페이지를 만들지 않아요.`;
 
 const dir = process.cwd();
 // 훅이 프로젝트 안에 설치되어 있으면 @eli-design/ui를 아직 설치하지 못했어도 ELI를 쓰는 프로젝트예요.

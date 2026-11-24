@@ -156,7 +156,7 @@ export async function installHarness(project, values) {
     ] : []),
     ...(selected.includes('codex') ? [
       'Codex의 /hooks에서 등록한 훅을 확인하고 신뢰해요. 신뢰 전에는 실행되지 않아요.',
-      `Codex: codex mcp add ${MCP.name} --url ${MCP.url}로 문서 서버 MCP를 등록해요. 지금 세션에 도구가 보이지 않으면 node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽고 .agents/skills/eli-setup/SKILL.md대로 이어서 진행해요. 서비스 기획과 디자인 레퍼런스 두 질문은 질문 도구로 먼저 묻고 답을 받기 전에는 아무것도 만들지 않아요.`,
+      `Codex: codex mcp add ${MCP.name} --url ${MCP.url}로 문서 서버 MCP를 등록해요. 지금 세션에 도구가 보이지 않으면 node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽고 .agents/skills/eli-setup/SKILL.md대로 이어서 진행해요. 서비스 기획과 디자인 레퍼런스 두 질문은 request_user_input_async 도구로 먼저 묻고 답을 받기 전에는 아무것도 만들지 않아요.`,
     ] : []),
   ] };
 }
