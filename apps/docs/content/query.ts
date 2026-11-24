@@ -1,7 +1,7 @@
 // 페이지·API·MCP가 함께 쓰는 조회 계층이에요. 필터 규칙은 여기 한 곳에서 관리해요.
 // 응답에는 요청한 부분만 담아요. 형식은 Agent/mcp-spec.md를 따라요.
 import { content } from './generated/data.ts';
-import { PROP_FIELDS, SECTION_KEYS, TOKEN_CATEGORIES } from './schema.ts';
+import { GUIDE_STATUSES, PROP_FIELDS, SECTION_KEYS, TOKEN_CATEGORIES } from './schema.ts';
 import type { Component, PropField, SectionKey, TokenCategory } from './schema.ts';
 
 export interface QueryError {
@@ -31,8 +31,11 @@ function findComponent(name: string): Component | QueryError {
   return fail('not_found', `컴포넌트 '${name}'을(를) 찾을 수 없어요.`, similar.length ? similar.slice(0, 5) : names);
 }
 
-export function listComponents() {
-  return { components: content.components.map(({ name, id, description }) => ({ name, id, description })) };
+export function listComponents({ status }: { status?: string | undefined } = {}) {
+  const picked = status === undefined ? undefined : pick([status], GUIDE_STATUSES, '상태');
+  if (picked && 'error' in picked) return picked;
+  // 가이드가 검토 전(draft)이거나 없는(null) 컴포넌트도 목록에 나와요. 에이전트가 status로 구분해요.
+  return { components: content.components.filter(component => !picked || component.status === picked[0]).map(({ name, id, status, description }) => ({ name, id, status, description })) };
 }
 
 export function getComponent({ name, sections = ['summary', 'when-to-use'] }: { name: string; sections?: string[] | undefined }) {
@@ -45,7 +48,7 @@ export function getComponent({ name, sections = ['summary', 'when-to-use'] }: { 
     const text = component.sections[key];
     if (text !== undefined) picked[key] = text;
   }
-  return { name: component.name, id: component.id, entry: component.entry, sections: picked, available: SECTION_KEYS.filter(key => key in component.sections) };
+  return { name: component.name, id: component.id, status: component.status, entry: component.entry, sections: picked, available: SECTION_KEYS.filter(key => key in component.sections) };
 }
 
 export function getProps({ name, names, fields = PROP_FIELDS }: { name: string; names?: string[] | undefined; fields?: readonly string[] | undefined }) {

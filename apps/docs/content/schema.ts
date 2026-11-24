@@ -1,15 +1,11 @@
 // 생성 스크립트·조회 계층·MCP가 함께 쓰는 문서 데이터 타입이에요. 규격은 Agent/mcp-spec.md에서 관리해요.
 
-export const SECTION_KEYS = ['summary', 'when-to-use', 'examples', 'variants', 'behavior', 'styling', 'do-dont', 'accessibility', 'related'] as const;
+// styling은 do-dont의 커스터마이징 부분만 따로 읽는 키예요. 공개한 하네스 0.2.0이 이 키를 안내해요.
+export const SECTION_KEYS = ['summary', 'when-to-use', 'examples', 'variants', 'do-dont', 'accessibility', 'related', 'styling'] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
 
-/** 컴포넌트 JSDoc의 `###` 제목을 섹션 키로 바꿔요. 여기에 없는 제목은 생성을 실패시켜요. */
-export const JSDOC_HEADINGS: Record<string, SectionKey> = {
-  '주요 설정': 'variants',
-  '선택 가이드': 'when-to-use',
-  '내용과 동작': 'behavior',
-  '스타일 변경': 'styling',
-};
+export const GUIDE_STATUSES = ['draft', 'stable'] as const;
+export type GuideStatus = (typeof GUIDE_STATUSES)[number];
 
 export const TOKEN_CATEGORIES = ['color', 'semantic-color', 'typography', 'layout'] as const;
 export type TokenCategory = (typeof TOKEN_CATEGORIES)[number];
@@ -40,6 +36,8 @@ export interface Component {
   /** 레지스트리 항목 ID예요. 설치 도구의 `add`에 그대로 써요. */
   id: string;
   description: string;
+  /** 컴포넌트 가이드 JSON의 검토 상태예요. 가이드가 없으면 null이에요. */
+  status: GuideStatus | null;
   /** 설치 위치를 기준으로 한 진입 파일과 export 이름이에요. */
   entry: { path: string; export: string };
   sections: Partial<Record<SectionKey, string>>;

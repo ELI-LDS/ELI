@@ -1,7 +1,7 @@
 import { createMcpHandler } from 'mcp-handler';
 import { z } from 'zod';
 import { getComponent, getGuide, getProps, getTokens, getVersions, listComponents, search } from '../../content/query.ts';
-import { PROP_FIELDS, SECTION_KEYS, TOKEN_CATEGORIES } from '../../content/schema.ts';
+import { GUIDE_STATUSES, PROP_FIELDS, SECTION_KEYS, TOKEN_CATEGORIES } from '../../content/schema.ts';
 
 // 도구 이름·설명·입력은 Agent/mcp-spec.md의 규격이에요. 하네스의 스킬이 이 이름에 의존해요.
 // 허용 값은 zod enum 대신 조회 계층에서 검사해요. 틀린 값에 `allowed`가 담긴 오류를 돌려주기 위해서예요.
@@ -16,13 +16,17 @@ export const mcpHandler = createMcpHandler(
   server => {
     server.registerTool(
       'list_components',
-      { description: 'ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요.', annotations },
-      () => reply(listComponents()),
+      {
+        description: 'ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 draft면 검토 전 가이드, null이면 가이드가 없는 컴포넌트예요.',
+        inputSchema: { status: z.string().optional().describe(`${GUIDE_STATUSES.join(', ')}. 그 상태의 컴포넌트만 돌려줘요`) },
+        annotations,
+      },
+      input => reply(listComponents(input)),
     );
     server.registerTool(
       'get_component',
       {
-        description: '컴포넌트 하나의 문서를 섹션 단위로 돌려줘요. 필요한 섹션만 요청해요. 고를 때는 when-to-use, 코드를 쓸 때는 examples를 읽어요. props는 get_props로 읽어요.',
+        description: '컴포넌트 하나의 문서를 섹션 단위로 돌려줘요. 필요한 섹션만 요청해요. 고를 때는 when-to-use, 코드를 쓸 때는 examples, 점검할 때는 do-dont를 읽어요. props는 get_props로 읽어요.',
         inputSchema: { name, sections: z.array(z.string()).optional().describe(`${SECTION_KEYS.join(', ')} 중에서 골라요. 생략하면 summary, when-to-use`) },
         annotations,
       },

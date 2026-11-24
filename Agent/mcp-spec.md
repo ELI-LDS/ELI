@@ -2,7 +2,7 @@
 
 `apps/docs`의 `/mcp`에서 제공하는 원격 MCP 서버 `eli-docs`의 규격이에요. 도구 일곱 개와 조회 계층은 구현되어 있고 로컬에서 동작해요. `https://eli-design.dev/mcp`에 배포되어 있어요. GET API와 가이드 원본은 아직 없어요. 응답은 소스 설치 방식을 기준으로 해요.
 
-데이터는 [레지스트리](registry.md)의 목록·항목 JSON에서 만들어요. 컴포넌트 설명과 섹션은 진입 파일의 JSDoc, props는 타입 선언, 토큰은 `tokens` 항목의 CSS에서 가져와요. 문서용 내용을 따로 복제해 쓰지 않아요.
+컴포넌트의 사용 기준(섹션)은 검토한 [컴포넌트 가이드 JSON](../apps/docs/content/components)에서, props·토큰·설치 정보는 [레지스트리](registry.md)의 목록·항목 JSON에서 만들어요. 가이드는 사람이 검토하는 자료이고 props·토큰은 코드에서 추출해요. 같은 내용을 두 곳에 복제하지 않아요.
 
 문서 원본의 위치, 폴더 구조, 조회 계층은 [문서 앱 지침](docs.md)에서 관리해요. 이 서버를 쓰는 쪽의 규칙은 [하네스 지침](harness.md)에서 관리해요.
 
@@ -22,7 +22,7 @@
 
 - 응답은 종료 예정인 `@eli-design/ui`의 그룹 import 경로를 주지 않아요. 레지스트리 항목 `id`와 `entry`(설치 위치 기준 진입 파일·export 이름)를 줘요.
 - 서버는 소비 프로젝트의 파일 위치를 몰라요. 실제 import 경로는 하네스가 소비 프로젝트의 설치 기록에 `entry.path`를 연결해 만들어요.
-- 사용 목적·선택 기준은 컴포넌트 소스의 JSDoc이 원본이에요. 레지스트리나 문서 앱에 수동으로 복제하지 않아요.
+- 사용 목적·선택 기준은 컴포넌트 가이드 JSON이 원본이에요. 레지스트리에 수동으로 복제하지 않아요.
 - 서버 버전·`ui.latest`·`ui.docs`·`harness.minimum`의 역할은 [버전 기준](versioning.md#설치-도구와-콘텐츠-버전을-구분해요)에 맞춰 구분해요. 설치 도구의 npm `latest`를 UI 콘텐츠나 하네스 버전으로 대신하지 않아요.
 - 설치는 읽기 전용 MCP가 실행하지 않아요. 신뢰하는 설치 도구의 비대화형 호출·결과 처리는 [레지스트리 계약](registry.md#하네스가-설치-도구를-호출해요)을 따라요.
 
@@ -78,49 +78,57 @@
 
 ### `list_components`
 
-- **설명:** `ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요.`
+- **설명:** `ELI 컴포넌트의 목록을 돌려줘요. 어떤 컴포넌트가 있는지 찾을 때 가장 먼저 써요. 사용법은 get_component로 읽어요. status가 draft면 검토 전 가이드, null이면 가이드가 없는 컴포넌트예요.`
 
-입력은 없어요. 낱말로 좁힐 때는 `search`를 써요.
+| 입력 | 타입 | 필수 | 설명 |
+| --- | --- | --- | --- |
+| `status` | `draft` \| `stable` | 선택 | 그 상태의 컴포넌트만 돌려줘요 |
 
 ```json
 {
   "components": [
-    { "name": "Button", "id": "button", "description": "아이콘과 텍스트를 함께 표시하는 ELI 버튼이에요." },
-    { "name": "IconButton", "id": "icon-button", "description": "…" }
+    { "name": "Button", "id": "button", "status": "draft", "description": "사용자가 텍스트로 표현된 행동을 실행할 수 있도록 제공하는 버튼 컴포넌트예요." },
+    { "name": "Divider", "id": "divider", "status": null, "description": "콘텐츠 사이를 가로선으로 구분해요." }
   ]
 }
 ```
 
-- 이름순으로 정렬해요.
+- 이름순으로 정렬해요. 레지스트리의 공개 컴포넌트를 모두 담아요.
 - `id`는 레지스트리 항목 ID예요. 설치 도구의 `add`에 그대로 써요.
-- `description`은 컴포넌트 JSDoc의 첫 줄이에요.
+- `status`는 가이드 JSON의 검토 상태예요. 가이드가 없으면 `null`이에요.
+- `description`은 가이드의 `summary`예요. 가이드가 없으면 컴포넌트 JSDoc의 첫 줄이에요.
+- 가이드의 `group`은 담지 않아요. 소스 설치에는 그룹 경로가 없어요.
+- 없는 상태 값은 `invalid_argument`예요.
 
 ### `get_component`
 
-- **설명:** `컴포넌트 하나의 문서를 섹션 단위로 돌려줘요. 필요한 섹션만 요청해요. 고를 때는 when-to-use, 코드를 쓸 때는 examples를 읽어요. props는 get_props로 읽어요.`
+- **설명:** `컴포넌트 하나의 문서를 섹션 단위로 돌려줘요. 필요한 섹션만 요청해요. 고를 때는 when-to-use, 코드를 쓸 때는 examples, 점검할 때는 do-dont를 읽어요. props는 get_props로 읽어요.`
 
 | 입력 | 타입 | 필수 | 설명 |
 | --- | --- | --- | --- |
 | `name` | 문자열 | 필수 | 컴포넌트 이름 (예: `Button`) |
 | `sections` | 섹션 키 배열 | 선택 | 생략하면 `summary`, `when-to-use` |
 
-섹션 키는 `summary`, `when-to-use`, `examples`, `variants`, `behavior`, `styling`, `do-dont`, `accessibility`, `related`예요.
+섹션 키는 `summary`, `when-to-use`, `examples`, `variants`, `do-dont`, `accessibility`, `related`, `styling`이에요.
 
 ```json
 {
   "name": "Button",
   "id": "button",
+  "status": "draft",
   "entry": { "path": "button.tsx", "export": "Button" },
   "sections": {
     "summary": "…마크다운…",
     "when-to-use": "…마크다운…"
   },
-  "available": ["summary", "when-to-use", "examples", "variants", "behavior", "styling"]
+  "available": ["summary", "when-to-use", "examples", "variants", "do-dont", "accessibility", "related", "styling"]
 }
 ```
 
 - `entry.path`는 설치 위치를 기준으로 한 진입 파일이에요. 서버는 소비 프로젝트의 import 경로를 만들어 주지 않아요.
-- `sections`의 값은 JSDoc의 마크다운 그대로예요. 섹션 제목(`###`)은 빼요.
+- `sections`의 값은 검토한 JSON의 요청 필드만 마크다운으로 표현한 문자열이에요. 원문 전체를 보내거나 조회 중 AI로 내용을 새로 만들지 않아요. 필드 대응은 [콘텐츠 연결](#컴포넌트-json과-응답을-연결해요)을 따라요.
+- 가이드가 없는 컴포넌트는 `sections`와 `available`이 비어 있어요. `id`·`entry`와 `get_props`는 그대로 쓸 수 있어요.
+- 원문 경로·해시·`review`는 내부 검토 자료라 응답에 담지 않아요.
 - 요청한 섹션이 문서에 없으면 그 키를 `sections`에서 빼요. 오류가 아니에요.
 - `available`은 이 문서에 실제로 있는 섹션 키예요. 에이전트가 없는 섹션을 다시 요청하지 않게 해요.
 - 허용하지 않는 섹션 키는 `invalid_argument`예요.
@@ -274,33 +282,15 @@
 
 ### 컴포넌트 문서
 
-컴포넌트 문서는 따로 쓰지 않아요. `packages/ui` 진입 파일의 컴포넌트 JSDoc이 원본이고, 레지스트리 JSON에 담긴 소스에서 추출해요. Storybook과 편집기 도움말도 같은 JSDoc을 읽어요.
-
-| JSDoc | 섹션 키 | 담는 내용 |
-| --- | --- | --- |
-| 첫 문단 | `summary` | 무엇을 하는 컴포넌트인지 |
-| `@example 제목` | `examples` | 복사해서 쓸 수 있는 코드. 제목은 굵은 글씨로 붙여요 |
-| `### 주요 설정` | `variants` | 크기·색상·상태 같은 변형 |
-| `### 선택 가이드` | `when-to-use` | 언제 쓰고 언제 쓰지 않는지 |
-| `### 내용과 동작` | `behavior` | 내용 props와 동작 |
-| `### 스타일 변경` | `styling` | 외부 스타일을 적용하는 방법과 우선순위 |
-
-- 대응은 `apps/docs/content/schema.ts`의 `JSDOC_HEADINGS`에서 관리해요. 표에 없는 `###` 제목이 있으면 생성을 실패시켜요.
-- `do-dont`, `accessibility`, `related`는 하네스가 요청할 수 있는 키로 남겨 두지만 대응하는 JSDoc 구역이 아직 없어요. 요청하면 오류 없이 빠져요.
-- 전달받지 않은 컴포넌트 명세와 디자인 기준을 지어내지 않아요. 디자이너와 합의하지 않은 내용은 JSDoc에 쓰지 않아요.
-- 예시에는 import 문이 없어요. import 경로는 소비 프로젝트의 설치 위치에 따라 달라지므로 `entry`로 알려줘요.
-
-### 검토한 컴포넌트 JSON을 준비했어요
-
-`content/source/components/{id}.md`에 받은 원문을 보존하고 `content/components/{id}.json`에 코드와 대조한 초안을 작성해요. 디자이너 문서의 제목·Props 표를 기계적인 형식에 맞추도록 요구하지 않아요. 필드·자료형의 기준은 [JSON Schema](../apps/docs/content/component-guide.schema.json), 변환·사용자 검토 절차는 [변환 안내](../handbook/component-guide-json.md)에 있어요.
+`content/source/components/{id}.md`에 받은 원문을 보존하고 `content/components/{id}.json`에 코드와 대조한 가이드를 써요. 디자이너 문서의 제목·Props 표를 기계적인 형식에 맞추도록 요구하지 않아요. 필드·자료형의 기준은 [JSON Schema](../apps/docs/content/component-guide.schema.json), 변환·사용자 검토 절차는 [변환 안내](../handbook/component-guide-json.md)예요.
 
 ### 컴포넌트 JSON과 응답을 연결해요
 
-아래는 후속 조회 계층의 연결 계약이며 구현 완료를 뜻하지 않아요. 현재 서버의 섹션은 위의 JSDoc에서 만들어요. 도구 이름·입력 섹션 키·마크다운 문자열 응답 형식은 유지해요.
+생성 스크립트의 `renderSections`가 아래 대응대로 섹션을 만들어요. 도구 이름·입력 섹션 키·마크다운 문자열 응답 형식은 유지해요.
 
 | 조회 내용 | JSON의 기준 필드 |
 | --- | --- |
-| 목록의 `name`, `group`, `status` | 같은 이름의 필드 |
+| 목록의 `name`, `status` | 같은 이름의 필드 |
 | 목록의 짧은 `description` | `summary` |
 | `summary` 섹션 | `summary`, `structure` |
 | `when-to-use` 섹션 | `usage` |
@@ -309,12 +299,16 @@
 | `do-dont` 섹션 | `usage.avoid`, `content`, `customization` |
 | `accessibility` 섹션 | `accessibility` |
 | `related` 섹션 | `composition`, `related` |
+| `styling` 섹션 | `customization` |
 
-- 저장할 때의 `null`은 미전달, `[]`는 확인 결과 해당 사항이 없음을 뜻해요. 조회 계층은 없는 설명을 만들어내지 않아요. 내용이 없는 선택 섹션은 기존 규칙대로 응답과 `available`에서 제외해요.
-- 기본 목록·검색·상세 조회는 `stable`만 포함해요. `status=draft`처럼 명시한 조회는 검토 전용이며, 후속 구현에서 일반 공개 응답과 분리해야 해요. 원본 경로·해시·`review`는 내부 검토 자료이므로 기본 응답에 포함하지 않아요.
-- `stable` 전환은 사용자 검토, 코드 예시 타입 검사와 미해결 항목 해소가 필요해요. 공개 전에는 게시된 UI 콘텐츠 버전·원본과 대조해요. `stable`이나 workspace 버전만으로 배포 완료를 판단하지 않아요.
-- `props`·기본값·토큰은 코드에서 추출하고 설치 항목은 레지스트리에서 연결해요. 서버는 소비 프로젝트의 별칭·설치 위치를 추측하지 않아요. 앞의 소스 배포 후속 연결이 끝나기 전까지 기존 npm `import` 예시를 신규 설치 안내로 재사용하지 않아요.
-- 규칙은 AI가 참고할 문장이에요. JSON이 있다고 자동 위반 판정·코드 수정이 구현된 것은 아니에요. 필요한 부분만 반환하고 전체 JSON·같은 규칙의 텍스트를 중복 전송하지 않아요. 토큰 절감률은 아직 실측하지 않았어요.
+- 저장할 때의 `null`은 미전달, `[]`는 확인 결과 해당 사항이 없음을 뜻해요. 조회 계층은 없는 설명을 만들어내지 않아요. 내용이 없는 섹션은 응답과 `available`에서 제외해요.
+- `styling`은 `do-dont`의 커스터마이징 부분만 따로 읽는 키예요. 공개한 하네스 0.2.0이 이 키를 안내해서 유지해요. 두 섹션을 함께 요청하면 같은 내용이 두 번 가요.
+- **검토 전 초안도 지금은 응답에 포함해요.** 현재 가이드는 모두 `draft`예요. `stable`만 제공하면 원격 문서가 비어서 하네스가 동작하지 않기 때문에, 초안을 `status: "draft"`로 표시해 함께 제공해요. 에이전트는 `status`로 검토 전 내용임을 구분해요. 가이드가 승인되면 일반 조회를 `stable`만으로 좁힐지 다시 정해요.
+- `stable` 전환은 사용자 검토, 코드 예시 타입 검사와 미해결 항목 해소가 필요해요. `stable`이나 workspace 버전만으로 배포 완료를 판단하지 않아요.
+- `props`·기본값·토큰은 코드에서 추출하고 설치 항목은 레지스트리에서 연결해요. 서버는 소비 프로젝트의 별칭·설치 위치를 추측하지 않아요.
+- 예시 코드는 기본 설치 위치를 쓰는 `Example.tsx`를 전제로 `./components/ui/...`에서 import해요. 이 경로는 예시의 전제이고 소비 프로젝트의 확정된 경로가 아니에요. 실제 import는 하네스가 설치 기록으로 확인해요.
+- 규칙은 AI가 참고할 문장이에요. JSON이 있다고 자동 위반 판정·코드 수정이 구현된 것은 아니에요. 필요한 부분만 반환하고 전체 JSON을 보내지 않아요.
+- 가이드가 없는 공개 컴포넌트(현재 Divider·Modal·Tab)는 목록·props·설치 정보만 제공해요. 원문에 없는 사용 기준을 만들어 채우지 않아요.
 
 ### 가이드
 
@@ -333,28 +327,20 @@
 
 ### 빌드와 검증
 
-`apps/docs/scripts/build-content.mjs`가 레지스트리 JSON과 가이드 원본을 읽어 `content/generated/data.ts`를 만들어요. 문서 앱의 `dev`·`build`가 먼저 실행하고, 생성 파일은 Git에 올리지 않아요. 레지스트리 생성 함수를 직접 호출해 배포 파일과 같은 JSON을 읽으므로 오래된 `.artifacts/registry`에 의존하지 않아요. 아래 경우에는 생성을 실패시켜요.
+`apps/docs/scripts/build-content.mjs`가 가이드 JSON·레지스트리 JSON·공통 가이드 원본을 읽어 `content/generated/data.ts`를 만들어요. 문서 앱의 `dev`·`build`가 먼저 실행하고, 생성 파일은 Git에 올리지 않아요. 가이드 JSON은 Git으로 관리하며 이 스크립트가 덮어쓰지 않아요. 레지스트리는 생성 함수를 직접 호출해 배포 파일과 같은 JSON을 읽으므로 오래된 `.artifacts/registry`에 의존하지 않아요. 아래 경우에는 생성을 실패시켜요.
 
-- 컴포넌트에 JSDoc 설명이나 `{이름}Props` 타입이 없어요.
-- 허용하지 않는 JSDoc 제목이나 가이드 주제가 있어요.
-- 가이드에 `title`·`description`이 없어요.
+- 가이드 JSON의 파일 이름과 `id`가 다르거나, `id`·`name`이 레지스트리의 공개 컴포넌트와 일치하지 않아요.
+- 가이드의 원문 해시가 실제 Markdown 파일과 달라요. 원문이 바뀌면 JSON을 다시 검토해요.
+- 조합·관련 컴포넌트가 없는 컴포넌트를 가리켜요.
+- `stable`인데 요약·예시가 없거나 미해결 검토 항목이 남아 있어요.
+- 컴포넌트에 `{이름}Props` 타입이 없어요.
+- 허용하지 않는 공통 가이드 주제가 있거나 `title`·`description`이 없어요.
 - 분류에 대응하는 토큰 파일이 없어요.
 - 버전이 온전한 SemVer가 아니거나 `harness.minimum`이 `packages/harness`의 버전보다 높아요.
 
+아직 하지 않는 검사도 있어요. JSON Schema 전체 검증, `choices`의 prop·선택값과 실제 타입의 대조, 예시 코드의 타입 검사는 생성 스크립트에 연결하지 않았어요. 가이드가 없는 공개 컴포넌트는 실패가 아니에요.
+
 레지스트리 자체의 검증(없는 참조, 개발 파일 포함 등)은 [레지스트리 지침](registry.md)을 따라요. 조회 계층과 생성 스크립트는 `pnpm test:docs`로 확인해요.
-
-### 컴포넌트 JSON의 후속 검사
-
-컴포넌트 JSON은 Git으로 관리하며 자동 Markdown 빌드로 덮어쓰지 않아요. 후속 데이터 검사·조회 계층은 다음을 확인해야 해요. 현재 CI에 자동 연결됐다는 뜻은 아니에요.
-
-- JSON이 스키마를 만족하고 원문 경로·해시가 실제 파일과 같아요.
-- `name`·`group`·`id`가 공개 exports·레지스트리와 일치하고 중복되지 않아요.
-- `choices`의 prop·선택값, 조합·관련 컴포넌트가 실제 코드와 일치해요.
-- 빈 템플릿·미검토 초안이 일반 목록·검색·상세 조회에 섞이지 않아요.
-- `stable`의 코드 예시는 실제로 타입 검사를 통과해야 해요. 기본 설치 위치를 사용한 예시는 예시 파일의 위치·상대 import 전제를 명시하고, 사용자 지정 경로를 확정된 경로처럼 반환하지 않아요.
-- 공통 가이드는 기존 frontmatter·허용 주제를 검사해요. 컴포넌트 원문에는 그 형식을 강제하지 않아요.
-
-공개 컴포넌트 중 문서가 없는 것은 경고로 알려요. 원문에 없는 사용 기준을 경고를 없애기 위해 만들어 채우지 않아요.
 
 ## 하네스와의 계약
 
@@ -448,7 +434,8 @@ sequenceDiagram
 | 단계 | 위치 | 상태 |
 | --- | --- | --- |
 | 데이터 타입 | `content/schema.ts` | 구현했어요 |
-| 생성 스크립트 | `scripts/build-content.mjs` | 구현했어요. 레지스트리 JSON에서 섹션·props·토큰을 만들어요 |
+| 생성 스크립트 | `scripts/build-content.mjs` | 구현했어요. 가이드 JSON에서 섹션을, 레지스트리 JSON에서 props·토큰을 만들어요 |
+| 컴포넌트 가이드 | `content/components/` | 31개 모두 검토 전 `draft`예요. Divider·Modal·Tab은 가이드가 없어요 |
 | 조회 함수 | `content/query.ts` | 구현했어요 |
 | MCP 도구 | `backend/mcp/server.ts` | 일곱 개를 등록했어요 |
 | 가이드 원본 | `content/source/guides/` | 아직 없어요. 목록은 빈 배열, 주제 조회는 `not_found`예요 |
