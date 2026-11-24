@@ -6,7 +6,7 @@
 
 npm에 게시된 CLI는 `npx eli-design@latest harness --agent claude`, `--agent codex` 또는 `--agent all`로 전체 스킬·훅 복사와 설정 병합을 함께 처리해요. 저장소에서는 `pnpm build:harness`, `pnpm build:cli` 후 `node packages/cli/dist/cli.mjs harness --registry <ELI 저장소 절대 경로>/.artifacts/harness --agent <선택> --cwd <프로젝트>`로 확인해요. `--dry-run`으로 쓰기 전 계획을 볼 수 있어요.
 
-CLI로 설치했다면 `eli.harness.json`과 `eli-design status --json`으로 결과를 확인하고 아래 수동 복사를 반복하지 않아요. 스킬은 Claude Code의 `.claude/skills`, Codex의 `.agents/skills`에 있고 훅은 각 프로젝트의 `.claude/hooks/eli`, `.codex/hooks/eli`에 있어요. Codex 훅은 `/hooks`에서 사용자가 확인하고 신뢰해야 실행돼요. `--agent claude`는 프로젝트의 `.mcp.json`에 문서 서버 `eli-docs`도 등록해요. Codex의 MCP는 4번대로 따로 등록해요.
+CLI로 설치했다면 `.eli/harness.json`과 `eli-design status --json`으로 결과를 확인하고 아래 수동 복사를 반복하지 않아요. 스킬은 Claude Code의 `.claude/skills`, Codex의 `.agents/skills`에 있고 훅은 각 프로젝트의 `.claude/hooks/eli`, `.codex/hooks/eli`에 있어요. Codex 훅은 `/hooks`에서 사용자가 확인하고 신뢰해야 실행돼요. `--agent claude`는 프로젝트의 `.mcp.json`에 문서 서버 `eli-docs`도 등록해요. Codex의 MCP는 4번대로 따로 등록해요.
 
 기존 `@eli-design/ui`는 종료 예정이며 신규 설치에 사용하지 않아요. 아래 수동 절차는 이미 설치된 이전 패키지를 점검하거나 개발용 원본에서 직접 설치할 때만 적용해요. 소스로 설치된 UI를 인식하는 기준은 `skills/eli/references/installation.md`를 따라요.
 
@@ -103,7 +103,7 @@ Codex 명령은 하네스를 설치한 프로젝트 루트에서 실행해요. C
 
 1. 저장소를 임시 폴더에 받았으면 임시 폴더를 지워요.
 2. Claude Code에서 `.claude/skills` 폴더를 이번에 새로 만들었으면 사용자에게 `/reload-skills`를 실행해 달라고 안내해요.
-3. 처음 설치했으면 같은 세션에서 바로 `eli-setup` 스킬의 `SKILL.md`를 읽고 그대로 진행해요. 스킬을 다시 읽기를 기다리거나 새 세션을 열지 않아요. 프로젝트에 화면 코드가 이미 있으면 4단계(기존 화면 전체 옮기기)까지 진행해요.
+3. 처음 설치했으면 같은 세션에서 바로 `eli-setup` 스킬의 `SKILL.md`를 읽고 그대로 진행해요. 스킬을 다시 읽기를 기다리거나 새 세션을 열지 않아요. 가장 먼저 1단계의 세 질문을 질문 도구로 띄우고, 답을 받기 전에는 아무것도 만들지 않아요. 프로젝트에 화면 코드가 이미 있으면 4단계(기존 화면 전체 옮기기)까지 진행해요.
 4. 다시 설치한 것이면 `DESIGN.md`의 `## 버전`을 실제 버전으로 고쳐요.
 
 ## 6. 보고해요

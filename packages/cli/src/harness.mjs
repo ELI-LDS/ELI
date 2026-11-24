@@ -6,7 +6,7 @@ import { bytesAt, targetPath, writeProject } from './project.mjs';
 import { matches } from './schema.mjs';
 
 const schema = JSON.parse(await readFile(new URL('./harness.schema.json', import.meta.url), 'utf8'));
-const RECORD = 'eli.harness.json';
+const RECORD = '.eli/harness.json';
 const agents = ['claude', 'codex'];
 // 주소를 바꾸면 packages/harness의 skills/eli/SKILL.md, hooks/eli-docs.mjs와 함께 고쳐요.
 const MCP = { name: 'eli-docs', url: 'https://eli-design.dev/mcp' };
@@ -151,11 +151,12 @@ export async function installHarness(project, values) {
     // 설치한 세션에서 바로 셋업으로 이어가게 해요. MCP 서버는 세션을 시작할 때만 불러와요.
     ...(selected.includes('claude') ? [
       'Claude Code: 새 세션을 열지 않고 지금 세션에서 .claude/skills/eli-setup/SKILL.md를 읽고 그대로 진행해요. 스킬 명령이 보이지 않으면 /reload-skills로 다시 읽어요.',
+      '가장 먼저 서비스 기획, 디자인 레퍼런스, 브랜드 컬러 세 질문을 AskUserQuestion 도구로 띄워요. 글로 묻지 않고, 사용자의 답을 받기 전에는 문서·토큰·페이지를 만들지 않아요.',
       `문서 서버 ${MCP.name} MCP를 .mcp.json에 등록했어요. 다음 세션부터 도구로 보여요. 지금 세션에 도구가 보이지 않으면 node .claude/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽어요.`,
     ] : []),
     ...(selected.includes('codex') ? [
       'Codex의 /hooks에서 등록한 훅을 확인하고 신뢰해요. 신뢰 전에는 실행되지 않아요.',
-      `Codex: codex mcp add ${MCP.name} --url ${MCP.url}로 문서 서버 MCP를 등록해요. 지금 세션에 도구가 보이지 않으면 node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽고 .agents/skills/eli-setup/SKILL.md대로 이어서 진행해요.`,
+      `Codex: codex mcp add ${MCP.name} --url ${MCP.url}로 문서 서버 MCP를 등록해요. 지금 세션에 도구가 보이지 않으면 node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'으로 같은 문서를 읽고 .agents/skills/eli-setup/SKILL.md대로 이어서 진행해요. 서비스 기획, 디자인 레퍼런스, 브랜드 컬러 세 질문은 request_user_input_async 도구로 먼저 묻고 답을 받기 전에는 아무것도 만들지 않아요.`,
     ] : []),
   ] };
 }

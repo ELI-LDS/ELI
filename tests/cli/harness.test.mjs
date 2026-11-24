@@ -50,6 +50,7 @@ test('React·UI 없이 선택한 에이전트의 전체 하네스를 설치하�
   assert.deepEqual((await readJson(project, '.mcp.json')).mcpServers['eli-docs'], { type: 'http', url: 'https://eli-design.dev/mcp' });
   assert.ok(first.nextSteps.some(step => step.includes('.claude/skills/eli-setup/SKILL.md')));
   assert.ok(first.nextSteps.some(step => step.includes('.claude/hooks/eli/eli-docs.mjs')));
+  assert.ok(first.nextSteps.some(step => step.includes('AskUserQuestion')));
   await readFile(join(project, '.claude/hooks/eli/eli-docs.mjs'));
   // 터미널 기본 출력에서도 필요한 재로딩·신뢰 절차를 바로 볼 수 있어야 해요.
   const terminal = execFileSync(process.execPath, [cli, 'harness', '--agent', 'all', '--registry', bundle, '--cwd', project, '--dry-run'], { encoding: 'utf8' });
@@ -58,14 +59,14 @@ test('React·UI 없이 선택한 에이전트의 전체 하네스를 설치하�
   assert.match(terminal, /\/hooks/);
   assert.match(terminal, /MCP/);
   await assert.rejects(readFile(join(project, '.agents/skills/eli/SKILL.md')));
-  const record = await readJson(project, 'eli.harness.json');
+  const record = await readJson(project, '.eli/harness.json');
   assert.equal(record.installerVersion, toolVersion);
   for (const file of record.files) assert.equal(digest(await readFile(join(project, file.path))), file.sha256);
   assert.equal((await readFile(join(project, '.claude/skills/eli/VERSION'), 'utf8')).trim(), record.version);
   const second = install(project, 'claude');
   assert.ok(second.files.every(file => file.action === 'reuse'));
   assert.equal(await readFile(join(project, 'package.json'), 'utf8'), original);
-  await assert.rejects(readFile(join(project, 'eli.json')));
+  await assert.rejects(readFile(join(project, '.eli/config.json')));
   await assert.rejects(readFile(join(project, 'package-lock.json')));
 });
 
@@ -92,7 +93,7 @@ test('기존 설정·다른 훅을 보존하고 두 에이전트를 중복 없�
   const codex = await readJson(project, '.codex/hooks.json');
   assert.equal(codex.hooks.SessionStart.length, 1);
   assert.equal(codex.hooks.PostToolUse, undefined);
-  assert.deepEqual((await readJson(project, 'eli.harness.json')).agents, ['claude', 'codex']);
+  assert.deepEqual((await readJson(project, '.eli/harness.json')).agents, ['claude', 'codex']);
   // 설치한 명령 자체가 Git 없는 프로젝트에서도 실행되는지 확인해요.
   const hook = spawnSync(codex.hooks.SessionStart[0].hooks[0].command, { cwd: project, shell: true, encoding: 'utf8' });
   assert.equal(hook.status, 0, hook.stderr);
@@ -104,7 +105,7 @@ test('dry-run은 설정·파일·설치 기록을 만들지 않고 계획과 신
   const result = install(project, 'all', ['--dry-run']);
   assert.equal(result.dryRun, true);
   assert.ok(result.nextSteps.some(step => step.includes('/hooks')));
-  for (const path of ['eli.harness.json', '.claude/settings.json', '.codex/hooks.json', '.mcp.json']) await assert.rejects(readFile(join(project, path)));
+  for (const path of ['.eli/harness.json', '.claude/settings.json', '.codex/hooks.json', '.mcp.json']) await assert.rejects(readFile(join(project, path)));
 });
 
 test('하네스만 설치한 프로젝트의 status 기본 출력도 하네스 상태를 표시해요', async () => {
@@ -133,7 +134,7 @@ test('사용자 수정·누락은 status로 구분하고 수정 파일은 덮어
   assert.equal(status.version, null);
   assert.equal(status.harness.files.find(file => file.path === path).state, 'modified');
   assert.equal(status.harness.files.find(file => file.path === '.claude/skills/eli/VERSION').state, 'missing');
-  const record = await readFile(join(project, 'eli.harness.json'));
+  const record = await readFile(join(project, '.eli/harness.json'));
   const terminal = spawnSync(process.execPath, [cli, 'status', '--cwd', project], { encoding: 'utf8' });
   assert.equal(terminal.status, 0, terminal.stderr);
   assert.equal(terminal.stderr, '');
@@ -141,7 +142,7 @@ test('사용자 수정·누락은 status로 구분하고 수정 파일은 덮어
   assert.ok(terminal.stdout.includes('누락: .claude/skills/eli/VERSION'));
   assert.ok(terminal.stdout.includes('Git 이력이나 백업'));
   assert.deepEqual(run(project, ['status']), status);
-  assert.deepEqual(await readFile(join(project, 'eli.harness.json')), record);
+  assert.deepEqual(await readFile(join(project, '.eli/harness.json')), record);
 });
 
 test('잘못된 설정·심볼릭 링크에는 쓰지 않아요', async () => {
@@ -149,7 +150,7 @@ test('잘못된 설정·심볼릭 링크에는 쓰지 않아요', async () => {
   await mkdir(join(project, '.claude'));
   await writeFile(join(project, '.claude/settings.json'), '{');
   assert.equal(install(project, 'all', [], false).error.code, 'INVALID_DATA');
-  await assert.rejects(readFile(join(project, 'eli.harness.json')));
+  await assert.rejects(readFile(join(project, '.eli/harness.json')));
   await assert.rejects(readFile(join(project, '.claude/skills/eli/SKILL.md')));
   const another = await fixture();
   const outside = await fixture();
@@ -169,7 +170,7 @@ test('설정 두 개를 병합하다 실패하면 기존 설정과 새 파일을
   assert.equal(await readFile(join(project, '.claude/settings.json'), 'utf8'), original);
   assert.equal(await readFile(join(project, '.codex/hooks.json.eli-pending'), 'utf8'), '다른 작업');
   await assert.rejects(readFile(join(project, '.claude/skills/eli/SKILL.md')));
-  await assert.rejects(readFile(join(project, 'eli.harness.json')));
+  await assert.rejects(readFile(join(project, '.eli/harness.json')));
 });
 
 test('소스로 설치된 UI를 훅과 스킬이 인식하고 npm 패키지를 요구하지 않아요', async () => {
@@ -182,7 +183,7 @@ test('소스로 설치된 UI를 훅과 스킬이 인식하고 npm 패키지를 �
   install(project, 'all');
   const output = execFileSync(process.execPath, [join(project, '.claude/hooks/eli/session-start.mjs')], { cwd: project, encoding: 'utf8' });
   assert.match(output, /소스 방식/);
-  assert.match(output, /eli\.lock\.json/);
+  assert.match(output, /\.eli\/lock\.json/);
   assert.match(output, /전체 @eli-design\/ui를 추가하지 않아요/);
   const status = run(project, ['status']);
   assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/ui/button.tsx');
@@ -211,7 +212,7 @@ test('손상·경로 탈출·다른 버전의 하네스를 받지 않아요', as
     await writeFile(join(altered, 'harness.json'), JSON.stringify(data));
     const result = run(project, ['harness', '--registry', altered, '--agent', 'all'], false);
     assert.equal(result.error.code, code);
-    await assert.rejects(readFile(join(project, 'eli.harness.json')));
+    await assert.rejects(readFile(join(project, '.eli/harness.json')));
   }
   const project = await fixture();
   install(project);
@@ -242,8 +243,8 @@ test('하네스 기록의 임의 경로와 선택 없는 실행을 거부해요'
   const project = await fixture();
   assert.equal(run(project, ['harness', '--registry', bundle], false).error.code, 'INVALID_ARGUMENT');
   install(project, 'all');
-  const record = await readJson(project, 'eli.harness.json');
+  const record = await readJson(project, '.eli/harness.json');
   record.files[0].path = 'README.md';
-  await writeFile(join(project, 'eli.harness.json'), JSON.stringify(record));
+  await writeFile(join(project, '.eli/harness.json'), JSON.stringify(record));
   assert.equal(run(project, ['status'], false).error.code, 'INVALID_RECORD');
 });

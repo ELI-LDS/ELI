@@ -173,7 +173,7 @@ npx eli-design@latest harness --agent claude
 npx eli-design@latest harness --agent codex
 ```
 
-둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `eli.harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
+둘 다 사용하면 `--agent all`을 선택해요. 기존 설정을 보존해 훅을 등록하고 `.eli/harness.json`에 버전과 설치 파일을 기록해요. Codex는 `/hooks`에서 사용자가 훅을 확인·신뢰해야 해요. 실제 에이전트의 스킬 사용과 원격 MCP 동작은 파일 설치 검사와 별도로 확인해요.
 
 CLI 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하고, 하네스만 설치한 프로젝트의 일반 `status` 출력에도 오류가 있어요. 두 문제는 CLI 0.3.1에서 고쳤어요. 지금 npm `latest`는 하네스 설치에서 문서 서버까지 등록하는 [CLI 0.4.0](handbook/releases/0.4.0.md)이에요. `npx eli-design@latest`로 실행해요.
 

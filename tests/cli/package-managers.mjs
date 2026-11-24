@@ -165,7 +165,7 @@ console.log('CLI 소스의 SSR을 통과했어요.');
     for (const script of ['typecheck', 'build', 'ssr']) execute(tool, ['run', script], work, env);
     const css = await collectCss(join(work, 'dist'));
     for (const token of ['.eli-button', '.eli-select', '.eli-menu-item', '.eli-modal', '.eli-dim', '--eli-color-blue-500:']) assert.ok(css.includes(token), token);
-    const record = JSON.parse(await readFile(join(work, 'eli.lock.json'), 'utf8'));
+    const record = JSON.parse(await readFile(join(work, '.eli/lock.json'), 'utf8'));
     for (const file of record.files) assert.equal(digest(await readFile(join(work, file.path))), file.sha256);
     assert.deepEqual(await snapshot(work), baseline, '소비 검사 후 프로젝트 설정이 달라졌어요.');
     const report = { manager, version: actualVersion, node: process.versions.node, platform: process.platform, arch: process.arch, tarball: candidate.filename, sha256: candidate.sha256, passed: true, checks: ['ephemeral-bin', 'init', 'dry-run', 'button', 'composite-dependencies', 'shared-reuse', 'status', 'harness-agents', 'harness-reuse', 'harness-status', 'metadata-preserved', 'typecheck', 'vite-css', 'ssr'] };

@@ -92,6 +92,16 @@ test('도구가 보이지 않는 세션에서 쓰는 조회 스크립트가 두 
   assert.throws(() => parse(JSON.stringify({ jsonrpc: '2.0', id: 1, error: { code: -32602, message: 'Tool nope not found' } })), /nope/);
 });
 
+test('셋업의 세 질문은 질문 도구로 반드시 묻게 해요', () => {
+  const setup = readFileSync(join(harness, 'skills/eli-setup/SKILL.md'), 'utf8');
+  assert.match(setup, /AskUserQuestion/);
+  assert.match(setup, /request_user_input_async/);
+  assert.match(setup, /어떤 색을 브랜드 컬러로 하시겠어요\?/);
+  assert.match(readFileSync(join(harness, 'skills/eli-design-system/SKILL.md'), 'utf8'), /^### 브랜드 컬러를 만들어요$/m);
+  assert.match(setup, /답을 받을 때까지 진행하지 않아요/);
+  assert.match(runHook(JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } })), /AskUserQuestion/);
+});
+
 test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
   for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
     const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');

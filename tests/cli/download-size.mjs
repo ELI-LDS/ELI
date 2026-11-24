@@ -163,8 +163,8 @@ try {
       const coldResults = scenario.onlyHarness ? [] : [await run(['init', '--registry', `${origin}/${profile}/ui/registry.json`])];
       for (const args of commands) coldResults.push(await run(args));
       const coldLog = requests.slice(coldStart);
-      const record = scenario.onlyHarness ? { files: [], resolved: [], entries: [] } : JSON.parse(await readFile(join(app, 'eli.lock.json'), 'utf8'));
-      const files = [...record.files, ...(scenario.harness ? JSON.parse(await readFile(join(app, 'eli.harness.json'), 'utf8')).files : [])];
+      const record = scenario.onlyHarness ? { files: [], resolved: [], entries: [] } : JSON.parse(await readFile(join(app, '.eli/lock.json'), 'utf8'));
+      const files = [...record.files, ...(scenario.harness ? JSON.parse(await readFile(join(app, '.eli/harness.json'), 'utf8')).files : [])];
       let sourceBytes = 0;
       for (const file of files) {
         const content = await readFile(join(app, file.path));

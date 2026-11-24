@@ -64,7 +64,7 @@ Button의 Ghost 기본 배경과 Navigation의 disabled 제거·권장 항목 �
 
 ## 예시의 설치 위치와 검증 범위
 
-예시 파일을 components 폴더와 같은 위치에 둔 경우를 보여줘요. 기본 설치가 src/components/ui이면 src/Example.tsx, components/ui이면 프로젝트 루트 Example.tsx에서 ./components/ui/{항목}을 가져와요. 다른 위치의 파일이나 사용자 지정 설치 경로에서는 eli.json과 실제 파일을 확인해 상대 import를 맞춰야 해요. ELI 전용 별칭·전체 UI 패키지 import·별도 CSS import를 요구하지 않아요.
+예시 파일을 components 폴더와 같은 위치에 둔 경우를 보여줘요. 기본 설치가 src/components/ui이면 src/Example.tsx, components/ui이면 프로젝트 루트 Example.tsx에서 ./components/ui/{항목}을 가져와요. 다른 위치의 파일이나 사용자 지정 설치 경로에서는 .eli/config.json과 실제 파일을 확인해 상대 import를 맞춰야 해요. ELI 전용 별칭·전체 UI 패키지 import·별도 CSS import를 요구하지 않아요.
 
 [UI PR #103](https://github.com/ELI-team/ELI/pull/103)의 기준 커밋 1acaffa749c11a2316b28ce44499bf263d70b51c에서 만든 레지스트리 JSON으로 소스를 복원한 소비 폴더에 예시 31개를 저장하고, 저장소의 strict·exactOptionalPropertyTypes 설정으로 타입 검사와 Vite 빌드를 확인했어요. 스키마·출처 해시·공개 심벌·선택 조합도 다시 확인했어요. 예시를 전부 브라우저에서 조작했거나 실제 기기에서 검수했다는 뜻은 아니에요. UI 핵심 동작은 별도의 실제 tarball·선택 소스 소비 검사 기록을 참고해요.
 

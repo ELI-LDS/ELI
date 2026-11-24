@@ -74,7 +74,7 @@ npx eli-design@latest add --all
 npx eli-design@latest init --dir src/shared/ui
 ```
 
-기존 설정과 소스를 자동으로 이동하지 않아요. `eli.json`, `eli.lock.json`과 추가한 소스를 Git에 함께 저장해요.
+기존 설정과 소스를 자동으로 이동하지 않아요. `.eli/config.json`, `.eli/lock.json`과 추가한 소스를 Git에 함께 저장해요.
 
 ## 설치 상태 확인하기
 
@@ -113,7 +113,7 @@ npx eli-design@latest harness --agent all
 
 기존 에이전트 설정을 보존하며 훅을 추가해요. 설치 후 표시되는 안내에 따라 스킬을 다시 불러오고, Codex는 `/hooks`에서 훅을 확인·신뢰해요. `--agent claude`는 프로젝트의 `.mcp.json`에 문서 서버 `eli-docs`를 등록해요. 이미 있는 항목과 다른 서버는 바꾸지 않아요. 등록한 MCP 도구는 다음 세션부터 보이고, 설치한 세션에서는 안내된 조회 스크립트로 같은 문서를 읽어요. Codex는 안내된 `codex mcp add` 명령으로 등록해요.
 
-설치 기록은 `eli.harness.json`에 저장해요. `status --json`으로 수정·누락을 확인할 수 있고, 수정한 스킬·훅을 자동으로 덮어쓰거나 다른 버전으로 업데이트하지 않아요.
+설치 기록은 `.eli/harness.json`에 저장해요. `status --json`으로 수정·누락을 확인할 수 있고, 수정한 스킬·훅을 자동으로 덮어쓰거나 다른 버전으로 업데이트하지 않아요.
 
 ## 자동화에서 사용하기
 

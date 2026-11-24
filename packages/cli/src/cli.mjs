@@ -80,7 +80,7 @@ async function run() {
   ensure(['init', 'list', 'add', 'status', 'harness'].includes(command), 'INVALID_ARGUMENT', 'init, list, add, status, harness 중 하나를 사용해요.');
   ensure(command === 'add' || (!ids.length && !values.all), 'INVALID_ARGUMENT', '컴포넌트 ID와 --all은 add에서만 사용해요.');
   ensure(command === 'init' || !values.dir, 'INVALID_ARGUMENT', '--dir은 init에서만 사용해요.');
-  ensure(['init', 'list', 'harness'].includes(command) || (!values.registry && !values['content-version']), 'INVALID_ARGUMENT', '설치된 UI 버전은 eli.json에 고정돼요. add에서 레지스트리를 바꾸지 않아요.');
+  ensure(['init', 'list', 'harness'].includes(command) || (!values.registry && !values['content-version']), 'INVALID_ARGUMENT', '설치된 UI 버전은 .eli/config.json에 고정돼요. add에서 레지스트리를 바꾸지 않아요.');
   ensure(command === 'harness' || (!values.agent && !values['harness-version']), 'INVALID_ARGUMENT', '--agent와 --harness-version은 harness에서만 사용해요.');
   ensure(command !== 'harness' || (!ids.length && !values['content-version'] && !values.all), 'INVALID_ARGUMENT', 'harness는 --agent와 --harness-version으로 선택해요.');
   ensure(!values.registry || !values['content-version'], 'INVALID_ARGUMENT', '--registry와 --content-version 중 하나만 지정해요.');
@@ -96,7 +96,7 @@ async function run() {
   let config;
   let url;
   const discovery = [];
-  if (command === 'init') ensure(!existsSync(targetPath(project.root, CONFIG)), 'FILE_CONFLICT', 'eli.json이 이미 있어요. 기존 설정을 덮어쓰지 않아요.');
+  if (command === 'init') ensure(!existsSync(targetPath(project.root, CONFIG)), 'FILE_CONFLICT', '.eli/config.json이 이미 있어요. 기존 설정을 덮어쓰지 않아요.');
   if (command === 'init' || values.registry || values['content-version']) {
     url = values.registry ? registryUrl(values.registry, project.root) : values['content-version'] ? releaseRegistry(values['content-version']) : await latestRegistry(discovery);
   } else { config = loadConfig(project); url = registryUrl(config.registry, project.root); }
@@ -106,6 +106,7 @@ async function run() {
   if (command === 'list') return { command, version: registry.index.version, items: components.map(({ id, name, description }) => ({ id, name, description })), downloads: registry.downloads };
   if (command === 'init') {
     const directory = safePath(values.dir ?? defaultDirectory(project));
+    ensure(!/^\.eli(\/|$)/.test(directory), 'UNSAFE_PATH', '.eli 폴더는 설치 기록 전용이에요. 다른 폴더를 지정해요.', { path: directory });
     targetPath(project.root, directory);
     config = { schemaVersion: 1, registry: url, registrySha256: registry.indexHash, version: registry.index.version, directory };
     const manager = projectManager(project);
