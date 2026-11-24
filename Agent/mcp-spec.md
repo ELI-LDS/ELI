@@ -1,6 +1,6 @@
 # 원격 MCP 규격
 
-`apps/docs`의 `/mcp`에서 제공하는 원격 MCP 서버 `eli-docs`의 규격이에요. 도구 일곱 개와 조회 계층은 구현되어 있고 로컬에서 동작해요. 공개 주소는 `https://eli-design.dev/mcp`로 정했지만 아직 배포하지 않았어요. GET API와 가이드 원본도 아직 없어요. 응답은 소스 설치 방식을 기준으로 해요.
+`apps/docs`의 `/mcp`에서 제공하는 원격 MCP 서버 `eli-docs`의 규격이에요. 도구 일곱 개와 조회 계층은 구현되어 있고 로컬에서 동작해요. `https://eli-design.dev/mcp`에 배포되어 있어요. GET API와 가이드 원본은 아직 없어요. 응답은 소스 설치 방식을 기준으로 해요.
 
 데이터는 [레지스트리](registry.md)의 목록·항목 JSON에서 만들어요. 컴포넌트 설명과 섹션은 진입 파일의 JSDoc, props는 타입 선언, 토큰은 `tokens` 항목의 CSS에서 가져와요. 문서용 내용을 따로 복제해 쓰지 않아요.
 
@@ -36,7 +36,7 @@
 | 전송 방식 | Streamable HTTP |
 | 세션 | 없어요. 요청마다 독립적으로 처리해요 |
 | 인증 | 없어요 |
-| 공개 주소 | `https://eli-design.dev/mcp` (아직 배포하지 않았어요) |
+| 공개 주소 | `https://eli-design.dev/mcp` |
 | 배포 | Cloudflare Workers(Worker 이름 `eli`). Pages는 쓰지 않아요. OpenNext 어댑터와 `apps/docs/wrangler.jsonc`로 올려요 |
 | 로컬 주소 | `http://localhost:3000/mcp` (`pnpm dev:docs`) |
 
@@ -414,7 +414,7 @@ sequenceDiagram
 | MCP 도구 | `backend/mcp/server.ts` | 일곱 개를 등록했어요 |
 | 가이드 원본 | `content/source/guides/` | 아직 없어요. 목록은 빈 배열, 주제 조회는 `not_found`예요 |
 | GET API | `app/api/v1/` | 아직 없어요. 사람용 페이지가 필요로 할 때 같은 조회 함수로 만들어요 |
-| 배포와 도메인 | Cloudflare Workers, `eli-design.dev` | 어댑터와 Workers 설정을 넣고 로컬 Workers 런타임에서 도구 응답을 확인했어요. 실제 배포와 도메인 연결은 아직 확인하지 않았어요 |
+| 배포와 도메인 | Cloudflare Workers, `eli-design.dev` | 배포했어요. 2026-11-24에 공개 주소에서 도구 일곱 개의 응답을 확인했어요 |
 
 ### 확인한 것과 남은 것
 
@@ -422,7 +422,7 @@ sequenceDiagram
 - 로컬 프로덕션 빌드에서 MCP 프로토콜(`initialize`, `tools/list`, `tools/call`)로 도구 일곱 개의 응답을 확인했어요.
 - 실제 Claude Code·Codex에 `claude mcp add --transport http eli-docs http://localhost:3000/mcp`로 연결해 스킬과 함께 쓰는 흐름은 아직 확인하지 않았어요.
 - 하네스의 `/eli-doctor`가 원격 연결 항목을 통과로 보고하는지는 배포한 뒤에 확인해요.
-- 하네스의 `eli` 스킬은 공개 주소를 이미 안내해요. 주소가 실제로 응답하는 것을 확인한 뒤에 그 하네스 버전을 릴리스해요. 먼저 릴리스하면 사용자가 응답하지 않는 주소로 연결하게 돼요.
+- 서버는 `main` 푸시마다 배포되고 `main`의 소스를 설명해요. `ui.latest`·`ui.docs`는 `packages/ui/package.json`의 버전이라, UI 콘텐츠를 릴리스하기 전의 변경이 공개된 버전 번호로 보일 수 있어요. 릴리스 태그에서만 배포할지는 아직 정하지 않았어요.
 - 가이드 `install`·`font`·`verify`·`design-system-page`를 읽는 명령은 가이드 원본이 생길 때까지 원격 기준 없이 동작해요.
 
 ## 정하지 않은 것
