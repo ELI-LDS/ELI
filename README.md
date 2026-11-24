@@ -1,12 +1,12 @@
-<table role="presentation">
-<tr>
-<td width="260" align="center" valign="middle">
-  <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot-badge.png">
-    <img src=".github/assets/eli-mascot-blink.gif" alt="눈을 깜빡이는 엘리" width="240">
-  </picture>
-</td>
-<td align="center" valign="middle">
+<div align="center">
+
+<picture>
+  <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset=".github/assets/eli-mascot-dark.png">
+  <source media="(prefers-reduced-motion: reduce)" srcset=".github/assets/eli-mascot.png">
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/eli-mascot-blink-dark.gif">
+  <source media="(prefers-color-scheme: light)" srcset=".github/assets/eli-mascot-blink-light.gif">
+  <img src=".github/assets/eli-mascot-blink-light.gif" alt="눈을 깜빡이는 엘리" width="200">
+</picture>
 
 <h1 align="center">디자인의 첫 단추, ELI</h1>
 
@@ -26,9 +26,7 @@ ELI가 처음부터 맞춰 끼워 둘게요.
 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 </p>
 
-</td>
-</tr>
-</table>
+</div>
 
 ## 시작하는 방법은 한 줄이에요
 
