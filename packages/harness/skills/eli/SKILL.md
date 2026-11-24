@@ -20,7 +20,25 @@ UI나 디자인을 만들거나 고치는 요청을 받으면 코드를 쓰기 �
 2. `list_components`로 요청에 맞는 컴포넌트를 찾아요. 이름이 떠오르지 않으면 `search`를 써요.
 3. `get_component`로 필요한 섹션만 읽어요. 어떤 컴포넌트를 쓸지 고를 때는 `when-to-use`, 코드를 쓸 때는 `examples`를 읽어요.
 4. props가 필요하면 `get_props`, 색상·간격·글자 값이 필요하면 `get_tokens`로 확인해요.
-5. 설치가 필요하면 `get_guide`로 `install` 가이드를 읽어요. 글꼴은 Pretendard로 고정이에요.
+5. 설치가 필요하면 `references/installation.md`를 따르고 `get_guide`의 `install` 가이드가 있으면 함께 읽어요. 글꼴은 Pretendard로 고정이에요.
+
+## 필요한 만큼만 읽어요
+
+원격 문서는 요청한 부분만 돌려줘요. 넓게 읽으면 컨텍스트만 차지해요. 아래처럼 좁혀서 불러요.
+
+| 필요한 것 | 부르는 방법 |
+| --- | --- |
+| 컴포넌트 고르기 | `get_component`를 `sections` 없이 불러요. `summary`와 `when-to-use`만 와요 |
+| 코드 쓰기 | `sections: ["examples"]`. 변형이 필요할 때만 `variants`, 외부 스타일을 바꿀 때만 `styling`을 더해요 |
+| 쓸 prop을 알 때 | `get_props`에 `names`로 그 prop만 요청해요 |
+| 어떤 prop이 있는지 훑을 때 | `get_props`에 `fields: ["type"]`. 설명은 쓸 prop을 정한 뒤에 `names`로 읽어요 |
+| 토큰 값 | `get_tokens`를 `category` 없이 불러 구역 이름을 본 뒤, `category`와 `group`으로 그 구역만 읽어요. 이름을 알면 `q`로 찾아요 |
+
+- 응답의 `available`에 없는 섹션은 다시 요청하지 않아요. 그 내용은 문서에 없는 거예요.
+- 오류 응답의 `allowed`에서 골라 바로 다시 불러요. 이름을 추측해서 여러 번 부르지 않아요.
+- `get_component`의 `id`는 설치 도구의 `add`에 쓰는 이름이에요. `entry`는 설치 폴더를 기준으로 한 파일과 export 이름이에요. 서버는 프로젝트의 폴더 위치를 모르므로, 실제 import 경로는 `eli.lock.json`의 같은 `id` 항목에서 읽어요.
+- 예시 코드에는 import 문이 없어요. 위에서 확인한 실제 경로로 직접 써요.
+- 가이드나 섹션이 `not_found`이거나 빠져 있으면 아직 제공되지 않는 내용이에요. 지어내지 않고, 이 스킬과 프로젝트 문서의 기준으로만 작업했다고 사용자에게 알려요.
 
 ## 지켜요
 
@@ -103,11 +121,17 @@ ELI를 쓰는 것만으로 좋은 화면이 되지 않아요. 프로젝트가 �
 
 `eli-docs`의 도구가 보이지 않으면 추측해서 작업하지 않아요. 아래 방법을 사용자에게 안내하고 연결한 뒤 이어서 작업해요.
 
-- 주소: 아직 정해지지 않았어요. 정해지기 전에는 ELI 저장소에서 `pnpm dev:docs`를 실행하고 `http://localhost:3000/mcp`를 써요.
-- Claude Code: `claude mcp add --transport http eli-docs <주소>`
-- 그 밖의 에이전트: MCP 설정에 이름 `eli-docs`, 전송 방식 HTTP, 위 주소로 서버를 추가해요.
+- 주소: `https://eli-design.dev/mcp`
+- Claude Code: `claude mcp add --transport http eli-docs https://eli-design.dev/mcp`
+- Codex: `codex mcp add eli-docs --url https://eli-design.dev/mcp`
+- 그 밖의 에이전트: MCP 설정에 이름 `eli-docs`, 전송 방식 HTTP(Streamable HTTP), 위 주소로 서버를 추가해요.
 
 인증은 필요 없어요. 모든 도구는 읽기 전용이에요.
+
+- 서버 이름은 반드시 `eli-docs`로 등록해요. 다른 스킬이 이 이름으로 도구를 찾아요.
+- 추가한 뒤 `list_components`를 불러 응답이 오는지 확인해요. 에이전트를 다시 시작해야 도구가 보일 수 있어요.
+- 주소가 응답하지 않으면 서버 문제로 보고 추측해서 작업하지 않아요. 연결하지 못했다고 알리고 원격 문서가 필요한 단계를 미완료로 남겨요. 다른 주소나 검색 결과의 문서로 대신하지 않아요.
+- ELI 저장소에서 문서 서버를 직접 개발할 때만 `pnpm dev:docs`의 `http://localhost:3000/mcp`를 써요.
 
 ## 명령
 

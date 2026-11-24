@@ -3,21 +3,28 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
+    "build:content": "node scripts/build-content.mjs",
+    "dev": "node scripts/build-content.mjs && next dev",
+    "build": "node scripts/build-content.mjs && next build",
+    "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "build:worker": "opennextjs-cloudflare build"
   },
   "dependencies": {
     "@modelcontextprotocol/server": "2.4.0",
     "mcp-handler": "2.3.1",
     "next": "16.4.6",
     "react": "19.3.0",
-    "react-dom": "19.3.0"
+    "react-dom": "19.3.0",
+    "zod": "4.6.7"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "1.20.18",
     "@types/node": "24.13.6",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "wrangler": "4.166.0"
   }
 }

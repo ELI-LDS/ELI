@@ -1,0 +1,13 @@
+// 문서 앱과 원격 MCP(/mcp)를 Cloudflare Workers에 올리는 설정이에요.
+// main과 assets는 OpenNext 빌드 결과(.open-next)의 위치라 바꾸지 않아요.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eli",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-11",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  }
+}

@@ -24,6 +24,7 @@
 | --- | --- |
 | 원본 저장소 | [ELI-team/ELI](https://github.com/ELI-team/ELI) |
 | 공식 웹사이트·문서 앱 | [eli-design.dev](https://eli-design.dev) — 웹페이지 제작 예정 |
+| 원격 MCP `eli-docs` | `https://eli-design.dev/mcp` — 문서 앱과 함께 배포 예정 |
 | 컴포넌트 검수·Storybook | [storybook.eli-design.dev](https://storybook.eli-design.dev) |
 
 저장소 링크·clone 안내·패키지 repository·CLI의 GitHub Release API와 asset 주소는 현재 원본 저장소를 기준으로 맞춰요. 이전 주소가 남은 사용자 설치 기록은 임의로 고쳐 쓰지 않고 기존 버전·해시 검증을 유지해요. 이미 고정한 태그·배포 파일·검증 기록의 원본 SHA와 해시를 주소 변경 때문에 다시 만들지 않아요.

@@ -13,3 +13,6 @@ storybook-static/
 .next/
 next-env.d.ts
 packages/ui/harness/
+apps/docs/content/generated/
+.open-next/
+.wrangler/

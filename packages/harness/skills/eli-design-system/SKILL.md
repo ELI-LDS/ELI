@@ -30,7 +30,7 @@ description: >
 
 프레임워크가 정해진 프로젝트에서만 해요. 정해지지 않았으면 3번으로 넘어가요.
 
-1. `get_guide`로 `install` 가이드를 읽어요.
+1. `get_guide`로 `install` 가이드를 읽어요. `not_found`이면 `../eli/references/installation.md`만 따라요.
 2. 소스 방식은 CLI로 필요한 항목만 추가해요. 실제 npm 패키지 방식을 선택한 경우에만 패키지 매니저로 UI 패키지를 설치해요. 이미 되어 있는 설정은 다시 추가하지 않아요.
 3. 가이드에 없는 설정 파일이나 플러그인을 추가하지 않아요.
 4. 설치한 버전을 `DESIGN.md`의 `## 버전`에 적어요.
@@ -80,7 +80,7 @@ description: >
 
 ## 5. 디자인 시스템 페이지를 만들어요
 
-`get_guide`로 `design-system-page` 가이드를 읽고 그 구성을 따라요. 내용은 4번에서 만든 프로젝트 토큰과 `list_components`, `get_component`의 `examples`·`variants` 섹션에서 가져와요.
+`get_guide`로 `design-system-page` 가이드를 읽고 그 구성을 따라요. `not_found`이면 토큰, 타이포그래피, 컴포넌트 순서의 기본 구성으로 만들고 원격 가이드 없이 구성했다고 알려요. 내용은 4번에서 만든 프로젝트 토큰과 `list_components`, `get_component`의 `examples`·`variants` 섹션에서 가져와요.
 
 | 프로젝트 상태 | 만드는 것 |
 | --- | --- |
