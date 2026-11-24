@@ -29,9 +29,9 @@
 
 - 문서 앱과 소비 검증의 Next.js를 `16.4.3`에서 `16.4.6`으로 올렸어요. UI 패키지의 실행 의존성을 추가한 변경은 아니에요. [#73](https://github.com/ELI-team/ELI/pull/73)
 
-## UI 소스 콘텐츠 0.3.0 — GitHub 공개 준비
+## UI 소스 콘텐츠 0.3.0 — 2026-11-24
 
-`v0.3.0` Release에 레지스트리 JSON으로 공개할 콘텐츠예요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 새 기능과 허용 타입 축소를 포함해 현재 0.x 정책의 MINOR예요. 이전 v0.2.0 JSON·태그·설치 기록은 변경하지 않아요. 이미 0.2.0을 설치한 프로젝트를 새 버전으로 올리는 명령은 아직 없어요.
+[GitHub Release v0.3.0](https://github.com/ELI-team/ELI/releases/tag/v0.3.0)에 레지스트리 JSON 53개로 공개했어요. 원본 커밋은 `5428bd00306f2cfa757ac02b9a5db6e718d701ba`, `registry.json`의 SHA-256은 `ede4630ddc7f83e3e31cdd8ec90610f54731594d89d89532dcc06d586f7e0c2e`예요. 공개 주소에서 다시 받은 모든 JSON이 로컬 생성 파일과 같은 것을 확인했어요. 기존 @eli-design/ui를 npm에 다시 게시하는 작업이 아니에요. 새 기능과 허용 타입 축소를 포함해 현재 0.x 정책의 MINOR예요. 이전 v0.2.0 JSON·태그·설치 기록은 변경하지 않아요. 이미 0.2.0을 설치한 프로젝트를 새 버전으로 올리는 명령은 아직 없어요.
 
 ### 변경
 
@@ -46,9 +46,9 @@
 - LoadingIndicator·ProgressIndicator의 progress를 0~100 숫자로 넓히고 실제 중간 진행률을 표시해요. 범위 밖 값은 제한하며 생략·NaN·Infinity는 진행률을 모르는 상태로 처리해요. 기존 디자인·반복 모션을 유지해요.
 - BREAKING CHANGE: 렌더링할 수 없는 네이티브 속성을 공개 타입에서 제외해요. Checkbox·Radio·Divider의 children은 주변 label·요소로 옮기고, 직접 HTML 주입 대신 각 컴포넌트의 내용 prop을 사용해요. 새 기능·허용 타입 축소를 포함하므로 현재 0.x 정책의 MINOR에 모아 배포하며 버전·기존 고정 파일은 이번에 변경하지 않아요.
 
-## 하네스 콘텐츠 0.2.1 — GitHub 공개 준비
+## 하네스 콘텐츠 0.2.1 — 2026-11-24
 
-`harness-v0.2.1` Release의 `harness.json`으로 공개할 콘텐츠예요. 원격 MCP가 컴포넌트 가이드 JSON으로 답하도록 바뀐 데 맞춘 스킬 문구 수정이라 PATCH예요.
+[GitHub Release harness-v0.2.1](https://github.com/ELI-team/ELI/releases/tag/harness-v0.2.1)에 공개했어요. 원본 커밋은 `5428bd00306f2cfa757ac02b9a5db6e718d701ba`, `harness.json`의 SHA-256은 `501401a9d0d8549bc5dedbfe953f14630c2cbf693c4e1033f60e915e997cf0f0`이에요. 원격 MCP가 컴포넌트 가이드 JSON으로 답하도록 바뀐 데 맞춘 스킬 문구 수정이라 PATCH예요.
 
 ### 변경
 
@@ -69,9 +69,9 @@
 - `get_versions`의 `ui.latest`·`ui.docs`를 UI 콘텐츠 버전으로 안내하고 `eli.json`의 콘텐츠 버전과 비교해요.
 - 가이드가 아직 없을 때(`not_found`) 멈추지 않고, 원격 기준 없이 진행했다고 보고해요.
 
-## eli-design 0.3.1 — npm next 게시, latest 전환 대기
+## eli-design 0.3.1 — 2026-11-24
 
-2026-11-24에 npm `next`로 게시했어요. npm의 tarball은 고정 파일과 SHA-256(`cbd6d816558439550a257cfdc7f8c9cc9488fac5f917ff621e48b7c9398568d3`)이 같고, 공개 명령으로 `init`·`add button`·`status`·`harness`를 확인했어요. `latest`는 아직 0.2.0이에요. 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하므로 `latest` 전환이 필요해요. 저장소 이전 주소와 status 안내를 수정한 최종 파일을 [cli-v0.3.1](https://github.com/ELI-team/ELI/releases/tag/cli-v0.3.1)에 제공하고 같은 tarball의 설치 행렬·공개 콘텐츠·브라우저 검증을 완료했어요. 기존 0.3.0 고정 파일은 보존해요. [릴리스 기록](handbook/releases/0.3.1.md)에서 파일·해시·수행 범위와 실제 npm 게시 상태를 구분해요.
+2026-11-24에 npm `next`로 게시한 뒤 `latest`로 전환했어요. `npx eli-design@latest`로 `init`·`add`·`harness`·`status`를 실행해 UI 0.3.0과 하네스 0.2.1을 받는 것을 확인했어요. npm의 tarball은 고정 파일과 SHA-256(`cbd6d816558439550a257cfdc7f8c9cc9488fac5f917ff621e48b7c9398568d3`)이 같고, 공개 명령으로 `init`·`add button`·`status`·`harness`를 확인했어요. 이전 `latest`였던 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못해요. 저장소 이전 주소와 status 안내를 수정한 최종 파일을 [cli-v0.3.1](https://github.com/ELI-team/ELI/releases/tag/cli-v0.3.1)에 제공하고 같은 tarball의 설치 행렬·공개 콘텐츠·브라우저 검증을 완료했어요. 기존 0.3.0 고정 파일은 보존해요. [릴리스 기록](handbook/releases/0.3.1.md)에서 파일·해시·수행 범위와 실제 npm 게시 상태를 구분해요.
 
 ### 수정
 

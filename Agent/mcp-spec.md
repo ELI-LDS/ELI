@@ -448,7 +448,7 @@ sequenceDiagram
 - 로컬 프로덕션 빌드에서 MCP 프로토콜(`initialize`, `tools/list`, `tools/call`)로 도구 일곱 개의 응답을 확인했어요.
 - 실제 Claude Code·Codex에 `claude mcp add --transport http eli-docs http://localhost:3000/mcp`로 연결해 스킬과 함께 쓰는 흐름은 아직 확인하지 않았어요.
 - 하네스의 `/eli-doctor`가 원격 연결 항목을 통과로 보고하는지는 배포한 뒤에 확인해요.
-- 서버는 `main` 푸시마다 배포되고 `main`의 소스를 설명해요. `ui.latest`·`ui.docs`는 `packages/ui/package.json`의 버전이라, UI 콘텐츠를 릴리스하기 전의 변경이 공개된 버전 번호로 보일 수 있어요. 릴리스 태그에서만 배포할지는 아직 정하지 않았어요.
+- 서버는 `main` 푸시마다 배포되고 `main`의 소스를 설명해요. `ui.latest`·`ui.docs`는 `packages/ui/package.json`의 버전이에요. 2026-11-24에 UI 콘텐츠 0.3.0을 공개해 서버와 공개 콘텐츠를 맞췄어요. 그 뒤 `main`에 UI 변경이 병합되면 다음 콘텐츠 릴리스 전까지 다시 어긋나요. 릴리스 태그에서만 배포할지는 아직 정하지 않았어요.
 - 가이드 `install`·`font`·`verify`·`design-system-page`를 읽는 명령은 가이드 원본이 생길 때까지 원격 기준 없이 동작해요.
 
 ## 정하지 않은 것
