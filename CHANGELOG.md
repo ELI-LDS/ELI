@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### CLI 0.5.0·하네스 콘텐츠 0.4.0 — 준비 중 (미게시)
+
+- BREAKING CHANGE: 설치 설정과 기록을 프로젝트 루트에서 `.eli/` 폴더로 옮겼어요. `eli.json`은 `.eli/config.json`, `eli.lock.json`은 `.eli/lock.json`, `eli.harness.json`은 `.eli/harness.json`이에요. 새 CLI와 하네스의 세션 시작 훅은 옛 위치를 읽지 않아요. 기존 프로젝트는 `mkdir .eli && mv eli.json .eli/config.json && mv eli.lock.json .eli/lock.json && mv eli.harness.json .eli/harness.json`으로 옮겨요(있는 파일만). 공식 홍보 전 0.x의 MINOR로 배포해요.
+- `/eli-setup`의 첫 두 질문(서비스 기획, 디자인 레퍼런스)을 질문 도구로 반드시 묻게 했어요. Claude Code는 `AskUserQuestion`을 써요. 사용자가 직접 답하기 전에는 문서·토큰·페이지를 만들지 않고, 코드에서 추정한 내용으로 답을 대신하지 않아요. 설치 뒤 안내와 세션 시작 훅도 같은 내용을 알려요.
+- 실제 Claude Code·Codex가 질문 도구를 띄우는지는 아직 확인하지 않았어요. Codex의 질문 도구 이름은 환경에 따라 다를 수 있어 없으면 질문만 담은 메시지로 대신해요.
+
 ### 컴포넌트 사용 가이드
 
 - 전달받은 Modal·Divider·Tab Markdown을 보존하고 공개 컴포넌트별 JSON·소스 설치 예시를 추가해요. Tab의 빈 원문은 최신 전달본으로 교체해요. 기존 stable 31개는 유지하고 새 3개는 draft로 검증한 뒤 사용자 승인에 따라 stable로 전환해요. 전체 34개 가이드의 내용과 예시를 조회할 수 있는 데이터로 준비하며, 공개 MCP 반영은 배포 후 확인해요.

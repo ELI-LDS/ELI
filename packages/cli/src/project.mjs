@@ -6,8 +6,8 @@ import semver from 'semver';
 import { ensure, CliError } from './errors.mjs';
 import { hash, json, parseJson, safePath } from './registry.mjs';
 
-export const CONFIG = 'eli.json';
-export const RECORD = 'eli.lock.json';
+export const CONFIG = '.eli/config.json';
+export const RECORD = '.eli/lock.json';
 const LOCK = '.eli-install.lock';
 const isObject = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
@@ -51,7 +51,7 @@ function readJson(root, path) {
 export function loadConfig(project) {
   const config = readJson(project.root, CONFIG);
   ensure(config, 'NOT_INITIALIZED', '먼저 eli-design init을 실행해요.');
-  ensure(isObject(config) && Object.keys(config).sort().join(',') === 'directory,registry,registrySha256,schemaVersion,version' && config.schemaVersion === 1 && semver.valid(config.version) && typeof config.registry === 'string' && /^[a-f0-9]{64}$/.test(config.registrySha256), 'INVALID_CONFIG', 'eli.json의 형식을 확인해요.');
+  ensure(isObject(config) && Object.keys(config).sort().join(',') === 'directory,registry,registrySha256,schemaVersion,version' && config.schemaVersion === 1 && semver.valid(config.version) && typeof config.registry === 'string' && /^[a-f0-9]{64}$/.test(config.registrySha256), 'INVALID_CONFIG', '.eli/config.json의 형식을 확인해요.');
   safePath(config.directory);
   targetPath(project.root, config.directory);
   return config;
@@ -192,7 +192,7 @@ export function writeProject(project, changes, recordBefore = undefined, verify 
       ensure((actual === null && before === null) || (actual !== null && before !== null && actual.equals(before)), 'PROJECT_BUSY', '설치 중 설정이나 기록이 변경됐어요.', { path });
       if (actual === null) created.push(writeExclusive(project.root, path, next, directories, agentPaths));
       else if (!actual.equals(Buffer.from(next))) {
-        const temporary = path === RECORD ? 'eli.lock.pending.json' : `${path}.eli-pending`;
+        const temporary = path === RECORD ? '.eli/lock.pending.json' : `${path}.eli-pending`;
         const mode = lstatSync(targetPath(project.root, path, agentPaths)).mode & 0o777;
         created.push(writeExclusive(project.root, temporary, next, directories, agentPaths, mode));
         renameSync(targetPath(project.root, temporary, agentPaths), targetPath(project.root, path, agentPaths));
@@ -205,7 +205,7 @@ export function writeProject(project, changes, recordBefore = undefined, verify 
     for (const { path, before, after, mode } of replaced.reverse()) {
       const current = bytesAt(project.root, path, agentPaths);
       ensure(current?.equals(after), 'PROJECT_BUSY', '복구 중 파일이 변경됐어요. 기존 변경을 확인해요.', { path });
-      const temporary = path === RECORD ? 'eli.lock.pending.json' : `${path}.eli-pending`;
+      const temporary = path === RECORD ? '.eli/lock.pending.json' : `${path}.eli-pending`;
       created.push(writeExclusive(project.root, temporary, before, directories, agentPaths, mode));
       renameSync(targetPath(project.root, temporary, agentPaths), targetPath(project.root, path, agentPaths));
       created.pop();

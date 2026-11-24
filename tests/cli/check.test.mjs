@@ -78,7 +78,7 @@ test('tarball의 실행 파일이 도움말·버전을 제공하고 잘못된 �
 test('init 미리보기는 파일을 쓰지 않고 목록은 공개 컴포넌트만 보여줘요', async () => {
   const path = await fixture();
   await run(path, ['init', '--registry', base, '--dry-run']);
-  assert.ok(!(await readdir(path)).includes('eli.json'));
+  assert.ok(!(await readdir(path)).includes('.eli/config.json'));
   const result = await run(path, ['list', '--registry', base]);
   assert.ok(result.items.some(item => item.id === 'button'));
   assert.ok(!result.items.some(item => item.id.startsWith('_') || item.id === 'tokens'));
@@ -93,10 +93,10 @@ test('일반 status는 초기 설정과 정상 설치를 한글로 설명하고 
   assert.equal(empty.stderr, '');
   assert.ok(empty.stdout.includes('아직 추가한 UI 컴포넌트가 없어요.'));
   assert.ok(empty.stdout.includes('eli-design list'));
-  assert.ok(!(await readdir(path)).includes('eli.lock.json'));
+  assert.ok(!(await readdir(path)).includes('.eli/lock.json'));
   await run(path, ['add', 'button']);
   const expected = await run(path, ['status']);
-  const record = await readFile(join(path, 'eli.lock.json'));
+  const record = await readFile(join(path, '.eli/lock.json'));
   requests.length = 0;
   const healthy = await execFile(process.execPath, [cli, 'status', '--cwd', path]);
   assert.equal(healthy.stderr, '');
@@ -107,7 +107,7 @@ test('일반 status는 초기 설정과 정상 설치를 한글로 설명하고 
   assert.ok(healthy.stdout.includes('하네스 없음'));
   assert.ok(healthy.stdout.includes('등록된 파일이 모두 설치 당시와 같아요.'));
   assert.deepEqual(await run(path, ['status']), expected);
-  assert.deepEqual(await readFile(join(path, 'eli.lock.json')), record);
+  assert.deepEqual(await readFile(join(path, '.eli/lock.json')), record);
   assert.deepEqual(requests, []);
 });
 
@@ -119,8 +119,8 @@ test('일반 status는 수정·누락 경로와 확인 방법을 보여주고 �
   const missing = added.files.find(file => file.path.endsWith('/Button.css')).path;
   await writeFile(join(path, modified), '// 사용자 커스터마이즈\n');
   await rm(join(path, missing));
-  const config = await readFile(join(path, 'eli.json'));
-  const record = await readFile(join(path, 'eli.lock.json'));
+  const config = await readFile(join(path, '.eli/config.json'));
+  const record = await readFile(join(path, '.eli/lock.json'));
   const expected = await run(path, ['status']);
   requests.length = 0;
   const terminal = await execFile(process.execPath, [cli, 'status', '--cwd', path]);
@@ -135,8 +135,8 @@ test('일반 status는 수정·누락 경로와 확인 방법을 보여주고 �
   assert.deepEqual(requests, []);
   assert.equal(await readFile(join(path, modified), 'utf8'), '// 사용자 커스터마이즈\n');
   await assert.rejects(readFile(join(path, missing)), { code: 'ENOENT' });
-  assert.deepEqual(await readFile(join(path, 'eli.json')), config);
-  assert.deepEqual(await readFile(join(path, 'eli.lock.json')), record);
+  assert.deepEqual(await readFile(join(path, '.eli/config.json')), config);
+  assert.deepEqual(await readFile(join(path, '.eli/lock.json')), record);
 });
 
 test('기본 설치 경로는 src 유무만 따르고 기존 폴더 구조를 자동으로 변경하지 않아요', async () => {
@@ -203,10 +203,10 @@ test('Button만 다운로드하고 미리보기·재실행·사용자 수정 상
   const status = await run(path, ['status']);
   assert.deepEqual(requests, []);
   assert.equal(status.files.filter(file => file.state === 'modified').length, 1);
-  const before = await readFile(join(path, 'eli.lock.json'), 'utf8');
+  const before = await readFile(join(path, '.eli/lock.json'), 'utf8');
   assert.equal((await run(path, ['add', 'modal'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal(await readFile(button, 'utf8'), '// 사용자 수정\n');
-  assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), before);
+  assert.equal(await readFile(join(path, '.eli/lock.json'), 'utf8'), before);
 });
 
 test('짧은 import와 충돌하는 기존 파일·폴더 구현을 덮어쓰거나 가리지 않아요', async () => {
@@ -219,7 +219,7 @@ test('짧은 import와 충돌하는 기존 파일·폴더 구현을 덮어쓰거
     const result = await run(path, ['add', 'button'], 1);
     assert.equal(result.error.code, 'FILE_CONFLICT');
     assert.equal(await readFile(target, 'utf8'), 'export const Button = "기존 구현";\n');
-    assert.ok(!(await readdir(path)).includes('eli.lock.json'));
+    assert.ok(!(await readdir(path)).includes('.eli/lock.json'));
   }
 });
 
@@ -233,7 +233,7 @@ test('조합 컴포넌트·여러 개·전체 추가도 같은 원본과 공유 
   const index = JSON.parse(await readFile(join(registry, 'registry.json'), 'utf8'));
   assert.equal(all.entries.length, index.items.filter(item => item.kind === 'component').length);
   assert.ok(all.files.every(file => !file.path.includes('/harness/')));
-  const record = JSON.parse(await readFile(join(path, 'eli.lock.json'), 'utf8'));
+  const record = JSON.parse(await readFile(join(path, '.eli/lock.json'), 'utf8'));
   for (const file of record.files) assert.equal(digest(await readFile(join(path, file.path))), file.sha256);
   assert.equal((await run(path, ['add', '--all', 'button'], 1)).error.code, 'INVALID_ARGUMENT');
 });
@@ -279,16 +279,16 @@ test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 �
   });
   const path = await fixture();
   await run(path, ['init', '--registry', source, '--dir', 'src/components/eli']);
-  const config = await readFile(join(path, 'eli.json'), 'utf8');
+  const config = await readFile(join(path, '.eli/config.json'), 'utf8');
   await run(path, ['add', 'button']);
-  const record = await readFile(join(path, 'eli.lock.json'), 'utf8');
+  const record = await readFile(join(path, '.eli/lock.json'), 'utf8');
   const repeated = await run(path, ['add', 'button']);
   assert.ok(repeated.files.every(file => file.action === 'reuse'));
   const status = await run(path, ['status']);
   assert.equal(status.directory, 'src/components/eli');
   assert.equal(status.entries.find(entry => entry.id === 'button').path, 'src/components/eli/button/Button/Button.tsx');
-  assert.equal(await readFile(join(path, 'eli.json'), 'utf8'), config);
-  assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), record);
+  assert.equal(await readFile(join(path, '.eli/config.json'), 'utf8'), config);
+  assert.equal(await readFile(join(path, '.eli/lock.json'), 'utf8'), record);
   assert.equal(await readFile(join(path, status.entries[0].path), 'utf8'), content);
 });
 
@@ -305,7 +305,7 @@ test('경로 탈출·개발 파일·버전 혼합·순환 의존·내용 변조�
     await init(path, source);
     assert.equal((await run(path, ['add', 'button'], 1)).error.code, expected);
     assert.deepEqual(await readdir(join(path, 'src')), []);
-    assert.ok(!(await readdir(path)).includes('eli.lock.json'));
+    assert.ok(!(await readdir(path)).includes('.eli/lock.json'));
   }
 });
 
@@ -330,9 +330,9 @@ test('심볼릭 링크·기존 파일·중복 설치 프로세스는 기존 내�
   await mkdir(join(path, '.eli-install.lock'));
   assert.equal((await run(path, ['add', 'button'], 1)).error.code, 'PROJECT_BUSY');
   await rm(join(path, '.eli-install.lock'), { recursive: true });
-  await writeFile(join(path, 'eli.lock.json'), '{}');
+  await writeFile(join(path, '.eli/lock.json'), '{}');
   assert.equal((await run(path, ['add', 'button'], 1)).error.code, 'INVALID_RECORD');
-  assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), '{}');
+  assert.equal(await readFile(join(path, '.eli/lock.json'), 'utf8'), '{}');
 });
 
 test('패키지 매니저 혼합·React 누락·지원하지 않는 버전은 파일 추가 전에 알려줘요', async () => {
@@ -356,11 +356,11 @@ test('설치 기록 교체에 실패하면 새 소스를 되돌리고 기존 기
   const path = await fixture();
   await init(path);
   await run(path, ['add', 'button']);
-  const before = await readFile(join(path, 'eli.lock.json'), 'utf8');
-  await writeFile(join(path, 'eli.lock.pending.json'), '기존 파일');
+  const before = await readFile(join(path, '.eli/lock.json'), 'utf8');
+  await writeFile(join(path, '.eli/lock.pending.json'), '기존 파일');
   assert.equal((await run(path, ['add', 'modal'], 1)).error.code, 'FILE_CONFLICT');
-  assert.equal(await readFile(join(path, 'eli.lock.json'), 'utf8'), before);
-  assert.equal(await readFile(join(path, 'eli.lock.pending.json'), 'utf8'), '기존 파일');
+  assert.equal(await readFile(join(path, '.eli/lock.json'), 'utf8'), before);
+  assert.equal(await readFile(join(path, '.eli/lock.pending.json'), 'utf8'), '기존 파일');
   assert.ok(!(await readdir(join(path, 'src/components/ui'))).includes('modal'));
 });
 
@@ -372,11 +372,11 @@ test('잘못된 인자·내부 항목 선택·설정 경로 탈출을 허용하�
     ['init', '--registry', 'http://example.com/registry.json'],
   ]) await run(path, args, 1);
   await init(path);
-  const config = await readFile(join(path, 'eli.json'), 'utf8');
+  const config = await readFile(join(path, '.eli/config.json'), 'utf8');
   assert.equal((await run(path, ['init', '--registry', base, '--dry-run'], 1)).error.code, 'FILE_CONFLICT');
   assert.equal((await run(path, ['add', 'tokens'], 1)).error.code, 'UNKNOWN_ITEM');
   assert.equal((await run(path, ['add', 'button', '--registry', base], 1)).error.code, 'INVALID_ARGUMENT');
-  await writeFile(join(path, 'eli.json'), config.replace('src/components/ui', '../escape'));
+  await writeFile(join(path, '.eli/config.json'), config.replace('src/components/ui', '../escape'));
   assert.equal((await run(path, ['status'], 1)).error.code, 'UNSAFE_PATH');
   assert.deepEqual(await readdir(join(path, 'src')), []);
 });

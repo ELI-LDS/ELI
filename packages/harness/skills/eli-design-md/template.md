@@ -179,7 +179,7 @@ CSS 값을 쓸 때 이 표에서 용도에 맞는 단위를 골라요.
 | --- | --- |
 | UI 소비 방식 | {source 또는 package} |
 | UI 콘텐츠 또는 패키지 | {실제 설치된 버전} |
-| 설치 도구 | {eli.harness.json의 installerVersion. 기록이 없으면 확인 전} |
+| 설치 도구 | {.eli/harness.json의 installerVersion. 기록이 없으면 확인 전} |
 | 복사한 스킬과 훅 | {프로젝트의 `eli` 스킬 폴더에 있는 `VERSION`} |
 | 마지막으로 확인한 날짜 | {YYYY-MM-DD} |
 

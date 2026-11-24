@@ -1,6 +1,6 @@
 {
   "name": "eli-design",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "필요한 ELI 컴포넌트 소스만 프로젝트에 추가해요.",
   "type": "module",
   "license": "MIT",

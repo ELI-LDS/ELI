@@ -7,9 +7,9 @@ import { join, resolve, sep } from 'node:path';
 /** 소스 설치는 npm 의존성 대신 설정·설치 기록의 실제 진입 파일로 확인해요. 네트워크는 사용하지 않아요. */
 function sourceState(dir) {
   let config;
-  try { config = JSON.parse(readFileSync(join(dir, 'eli.json'), 'utf8')); } catch { return null; }
+  try { config = JSON.parse(readFileSync(join(dir, '.eli/config.json'), 'utf8')); } catch { return null; }
   try {
-    const record = JSON.parse(readFileSync(join(dir, 'eli.lock.json'), 'utf8'));
+    const record = JSON.parse(readFileSync(join(dir, '.eli/lock.json'), 'utf8'));
     if (config.schemaVersion !== 1 || record.schemaVersion !== 1 || record.mode !== 'source' || record.version !== config.version || record.registry !== config.registry || record.registrySha256 !== config.registrySha256 || record.directory !== config.directory || !/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(record.version) || !Array.isArray(record.entries) || !Array.isArray(record.files)) throw new Error('invalid source record');
     const root = resolve(dir);
     const paths = new Set(record.files.map(file => file.path));
@@ -50,7 +50,7 @@ function usesEli(dir) {
   }
 }
 
-const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어요(DESIGN.md가 없어요). 사용자가 UI나 디자인 작업을 요청하면 먼저 /eli-setup으로 셋업하자고 제안해요.`;
+const NOT_SET_UP = `- 이 프로젝트는 아직 ELI를 셋업하지 않았어요(DESIGN.md가 없어요). 사용자가 UI나 디자인 작업을 요청하면 먼저 /eli-setup으로 셋업하자고 제안해요. 셋업은 서비스 기획과 디자인 레퍼런스 두 질문을 질문 도구(Claude Code는 AskUserQuestion)로 반드시 묻고, 사용자의 답을 받기 전에는 문서·토큰·페이지를 만들지 않아요.`;
 
 const dir = process.cwd();
 // 훅이 프로젝트 안에 설치되어 있으면 @eli-design/ui를 아직 설치하지 못했어도 ELI를 쓰는 프로젝트예요.
@@ -76,7 +76,7 @@ function skillsNotice(dir) {
       return null;
     }
   };
-  const harness = read('eli.harness.json');
+  const harness = read('.eli/harness.json');
   if (harness) {
     try {
       const record = JSON.parse(harness);
@@ -114,7 +114,7 @@ if (installedInProject || usesEli(dir)) {
   }
   const source = sourceState(dir);
   const sourceNotice = source ? source.valid
-    ? `- UI는 소스 방식으로 설치되어 있어요(콘텐츠 ${source.version}). eli.lock.json의 entries에서 실제 로컬 import를 확인하고 eli-design status로 파일 상태를 확인해요. 전체 @eli-design/ui를 추가하지 않아요.`
+    ? `- UI는 소스 방식으로 설치되어 있어요(콘텐츠 ${source.version}). .eli/lock.json의 entries에서 실제 로컬 import를 확인하고 eli-design status로 파일 상태를 확인해요. 전체 @eli-design/ui를 추가하지 않아요.`
     : '- UI 소스 설정은 있지만 설치 기록이나 진입 파일을 확인하지 못했어요. eli-design status로 확인하고 설치를 완료했다고 추측하지 않아요.' : '';
   const extra = [sourceNotice, designMd === null ? NOT_SET_UP : versionNotice(designMd), skillsNotice(dir)].filter(Boolean);
   process.stdout.write(`${[INSTRUCTIONS, ...extra].join('\n')}\n`);
