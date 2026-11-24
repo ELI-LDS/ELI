@@ -1,0 +1,91 @@
+{
+  "$schema": "../component-guide.schema.json",
+  "schemaVersion": 1,
+  "id": "tab",
+  "name": "Tab",
+  "group": "tab",
+  "status": "stable",
+  "source": {
+    "markdown": "apps/docs/content/source/components/tab.md",
+    "sha256": "2b5695e8fb944f6e1ae3e7124bdb4009984f6cfb6f9864631643f333be641df8"
+  },
+  "summary": "같은 화면의 콘텐츠를 전환하기 위한 개별 탭의 선택 표시와 클릭을 제공해요.",
+  "usage": {
+    "recommended": [
+      "현재 화면 안에서 콘텐츠 영역을 나누고 선택한 내용만 보여줄 때 사용해요.",
+      "여러 탭의 단일 선택과 콘텐츠 패널은 상위 컴포넌트에서 연결해요."
+    ],
+    "avoid": [
+      "다른 페이지 이동에는 NavigationBar·NavigationDrawer를, 폼 값 선택에는 Radio·Select를 사용해요.",
+      "여러 비제어 Tab이 자동으로 하나만 선택되거나 패널·방향키 이동이 자동 연결된다고 가정하지 않아요.",
+      "제어 방식에서 onActiveChange만 연결하고 active를 갱신하지 않는 구성을 피해야 해요."
+    ]
+  },
+  "choices": [],
+  "structure": {
+    "description": "role=tab인 button 안에 한 줄 label을 표시하는 span이 있어요. 연결할 패널은 내부에 포함하지 않아요.",
+    "note": "현재 구현의 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
+  },
+  "content": {
+    "text": [
+      "label은 탭이 표시하는 콘텐츠를 구분할 수 있는 짧고 명확한 이름으로 작성해요."
+    ],
+    "icon": [],
+    "limits": [
+      "라벨은 한 줄이며 넘는 내용은 말줄임표로 표시해요."
+    ]
+  },
+  "interaction": {
+    "states": [
+      "Default",
+      "Active",
+      "Hover",
+      "Pressed",
+      "Disabled"
+    ],
+    "behavior": [
+      "active·onActiveChange로 제어하거나 defaultActive로 초기화해요. 비제어 기본값은 true이며 여러 탭에 그대로 사용하면 모두 선택될 수 있어요.",
+      "클릭 시 onClick을 먼저 실행하고 event.preventDefault()하지 않았다면 현재 상태의 반대 값을 계산해요. 비제어는 내부 상태를 바꾸고 onActiveChange로 다음 상태를 전달해요.",
+      "개별 탭은 재클릭으로 해제될 수 있어요. 그룹에서 항상 하나를 선택하려면 부모가 단일 값을 관리하고 false 전환을 반영하지 않도록 연결해요.",
+      "disabled이면 네이티브 버튼을 비활성화하고 Hover·Pressed 스타일은 적용하지 않아요."
+    ],
+    "limitations": [
+      "탭 그룹·선택 동기화·콘텐츠 패널 생성·표시 전환은 자동 제공하지 않아요.",
+      "그룹의 방향키·Home·End 이동은 구현하지 않아요. 소비 앱이 그룹의 키보드 정책과 포커스를 연결해야 해요.",
+      "전용 Focus 스타일은 없지만 네이티브 버튼의 키보드 포커스를 지원해요."
+    ]
+  },
+  "composition": [
+    {
+      "components": [
+        "Tab"
+      ],
+      "purpose": "상위 tablist와 콘텐츠 tabpanel을 조립해요.",
+      "guidance": "부모가 선택값 하나를 관리하고 각 Tab의 active를 비교해 전달해요. aria-controls·패널 id와 aria-labelledby를 연결하고 선택한 패널만 표시해요."
+    }
+  ],
+  "customization": [
+    "className·style은 루트 button에 적용해요. 내부 라벨의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요.",
+    "aria-selected·children·dangerouslySetInnerHTML은 상속하지 않아요. 선택 여부는 컴포넌트가 aria-selected로 전달해요."
+  ],
+  "accessibility": [
+    "상위 요소의 role=tablist와 영역 설명, 각 탭과 패널의 id·aria-controls·aria-labelledby 관계를 소비 앱에서 연결해요.",
+    "Tab은 role=tab·aria-selected를 제공해요. 그룹의 roving tabIndex·방향키·Home·End와 패널 포커스 정책은 상위 컴포넌트가 담당해요."
+  ],
+  "examples": [
+    {
+      "title": "소비 앱에서 단일 선택·패널·그룹 키보드 조작 연결",
+      "code": "'use client';\n\nimport { useId, useState } from 'react';\nimport type { KeyboardEvent } from 'react';\nimport { Tab } from './components/ui/tab';\n\nconst tabs = [\n  { value: 'courses', label: '내 강의', content: '수강 중인 강의예요.' },\n  { value: 'saved', label: '저장한 강의', content: '저장한 강의예요.' },\n];\n\nexport default function Example() {\n  const prefix = useId();\n  const [selected, setSelected] = useState('courses');\n\n  // Tab 자체가 제공하지 않는 그룹의 이동·단일 선택을 소비 앱에서 연결해요.\n  const onGroupKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {\n    const current = tabs.findIndex(tab => tab.value === selected);\n    const nextIndex = event.key === 'ArrowRight' ? (current + 1) % tabs.length\n      : event.key === 'ArrowLeft' ? (current - 1 + tabs.length) % tabs.length\n      : event.key === 'Home' ? 0\n      : event.key === 'End' ? tabs.length - 1 : undefined;\n    if (nextIndex === undefined) return;\n    const next = tabs[nextIndex];\n    if (!next) return;\n    event.preventDefault();\n    setSelected(next.value);\n    event.currentTarget.querySelectorAll<HTMLButtonElement>('[role=\"tab\"]')[nextIndex]?.focus();\n  };\n\n  return (\n    <>\n      <div role=\"tablist\" aria-label=\"강의 보기\" onKeyDown={onGroupKeyDown}>\n        {tabs.map(tab => (\n          <Tab\n            key={tab.value}\n            id={prefix + '-tab-' + tab.value}\n            aria-controls={prefix + '-panel-' + tab.value}\n            label={tab.label}\n            active={selected === tab.value}\n            tabIndex={selected === tab.value ? 0 : -1}\n            onActiveChange={nextActive => { if (nextActive) setSelected(tab.value); }}\n          />\n        ))}\n      </div>\n      {tabs.map(tab => (\n        <div\n          key={tab.value}\n          id={prefix + '-panel-' + tab.value}\n          role=\"tabpanel\"\n          aria-labelledby={prefix + '-tab-' + tab.value}\n          hidden={selected !== tab.value}\n          tabIndex={0}\n        >\n          {tab.content}\n        </div>\n      ))}\n    </>\n  );\n}"
+    }
+  ],
+  "related": [
+    "NavigationBar",
+    "NavigationDrawer",
+    "Radio",
+    "Select"
+  ],
+  "review": {
+    "questions": [],
+    "implementationGaps": []
+  }
+}

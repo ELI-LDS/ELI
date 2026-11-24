@@ -2,10 +2,15 @@
 
 2026-11-24에 디자이너 원문 21개를 기준으로 공개 컴포넌트 31개의 사용 규칙과 개발자 사용 예시를 대조했어요. 원문은 바이트 그대로 보존했고, 보완한 코드 예시는 디자이너가 작성한 내용으로 표시하지 않아요.
 
+이후 Modal·Divider·Tab 원문을 ZIP으로 추가 전달받아 공개 컴포넌트 34개 모두의 가이드 JSON을 준비했어요. 새 3개도 2026-11-24에 사용자의 진행 요청에 따라 승인해 전체 34개가 stable이에요.
+
 ## 검토할 자료
 
 | 컴포넌트 JSON | 개발자가 보완한 예시 | 승인 상태 |
 | --- | --- | --- |
+| [Modal](../apps/docs/content/components/modal.json) | 외부에서 열고 성공한 행동 뒤 닫기 | 2026-11-24 사용자 승인 |
+| [Divider](../apps/docs/content/components/divider.json) | 설정 그룹 사이의 의미적 구분 | 2026-11-24 사용자 승인 |
+| [Tab](../apps/docs/content/components/tab.json) | 소비 앱에서 단일 선택·패널·그룹 키보드 조작 연결 | 2026-11-24 사용자 승인 |
 | [Alert](../apps/docs/content/components/alert.json) | 지속적으로 유지할 상태 안내 | 2026-11-24 사용자 승인 |
 | [Badge](../apps/docs/content/components/badge.json) | 짧은 상태 표시 | 2026-11-24 사용자 승인 |
 | [Button](../apps/docs/content/components/button.json) | 주요 행동 실행 | 2026-11-24 사용자 승인 |
@@ -65,4 +70,19 @@ Button의 Ghost 기본 배경과 Navigation의 disabled 제거·권장 항목 �
 
 표시용 Tooltip 예시는 트리거 연결 관계만 보여주며 자동 Hover·Focus 열림을 구현했다고 안내하지 않아요. Navigation 예시의 원·채움 원은 소비 앱이 제공하는 outlined·filled 아이콘 자리의 예시예요. 실제 라우팅·저장 요청은 소비 앱에서 연결해요.
 
-Tab은 미작성, Modal·Divider는 원문 미전달 상태라 JSON을 만들지 않았어요. 미제공 문서 때문에 다른 문서의 검토를 막지 않아요.
+## 추가 원문 세 개를 대조했어요
+
+2026-11-24에 modla.zip·divider.zip·tab.zip에서 각각 Markdown 한 개를 가져왔어요. 모달·디바이더 원문을 추가하고 제목·상태만 있던 Tab 원문을 본문이 있는 최신 전달본으로 교체했어요. 이전 Tab 파일은 Git 이력에 남아 있어요. ZIP 안의 Markdown 바이트와 source.sha256을 유지하며 ZIP 자체는 저장소에 넣지 않아요.
+
+| 원문과 차이가 있던 부분 | JSON에서 정리한 내용 |
+| --- | --- |
+| Modal의 상태·닫힘 미지원 설명 | 기존 사용자 합의로 이미 구현된 open·defaultOpen·onOpenChange, Dim·Secondary·Esc 닫힘을 기준으로 정리했어요. Secondary의 preventDefault와 Positive 완료 후 소비 앱의 닫힘 책임을 구분했어요. |
+| Modal의 포커스·dialog 미지원 설명 | 실제 role=dialog·aria-modal·제목/본문 연결·포커스 순환/복귀·배경 잠금을 반영했어요. UI를 이전 동작으로 되돌리지 않았어요. |
+| Modal의 HTML 속성 적용 대상 | 일반 속성·className·style은 Root, width·height는 콘텐츠, aria-label·aria-labelledby·aria-describedby는 dialog에 연결된다는 현재 동작을 적었어요. |
+| 원문의 네이티브 속성 상속 설명 | 현재 타입에서 children·dangerouslySetInnerHTML 등 렌더링할 수 없는 속성을 제외하는 점을 보완했어요. |
+| Divider의 @eli-team/ui 예시 | 기본 소스 설치의 로컬 import로 고쳤어요. 원문 코드는 수정하지 않았어요. |
+| Tab의 개별 토글과 그룹 동작 | 개별 탭의 재클릭 해제를 유지해요. 예시의 단일 선택·패널 연결·방향키·Home/End·tabIndex 처리는 소비 앱 코드이며 Tab의 내장 기능이 아니에요. |
+
+위 차이는 코드와 이미 합의한 API·소스 설치 기준에 따라 정리했어요. 새 디자인 값이나 컴포넌트 API는 추가하지 않았어요. 새 문서 3개는 처음에는 draft로 작성했고, 이후 2026-11-24에 사용자가 다음 진행을 요청해 stable 전환을 승인했어요. 기존 문서의 승인을 자동 확장한 것은 아니에요.
+
+새 예시는 UI 콘텐츠 0.3.0의 실제 레지스트리 소스에서 Modal·Button·Divider·Tab을 복원해 타입·Vite 빌드를 통과했어요. Chromium에서 열기·닫기·표시·Tab 그룹 키보드 조작을 확인했어요. 검증 결과와 실행 범위는 [변환 기록](component-guide-json.md#추가-전달-문서-세-개를-정리했어요)에 남겨요.

@@ -12,8 +12,8 @@ test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
   assert.deepEqual(Object.keys(components[0]), ['name', 'id', 'status', 'description']);
   assert.deepEqual(components.map(item => item.name), components.map(item => item.name).sort());
   assert.ok(components.some(item => item.name === 'Button' && item.id === 'button'));
-  // 가이드가 없는 공개 컴포넌트도 목록에 나오고 상태는 null이에요.
-  assert.equal(components.find(item => item.name === 'Divider').status, null);
+  // 사용자 승인을 반영한 추가 문서도 stable 상태로 알려요.
+  assert.equal(components.find(item => item.name === 'Divider').status, 'stable');
   assert.ok(listComponents({ status: 'STABLE' }).components.length > 0 && listComponents({ status: 'STABLE' }).components.every(item => item.status === 'stable'));
   assert.deepEqual(listComponents({ status: 'review' }).error.allowed, ['draft', 'stable']);
 });
@@ -27,10 +27,13 @@ test('컴포넌트는 요청한 섹션만 줘요', () => {
   assert.equal(basic.status, 'stable');
   // 원문 경로·해시·검토 메모는 응답에 담지 않아요.
   assert.doesNotMatch(JSON.stringify(getComponent({ name: 'Button', sections: basic.available })), /sha256|source\/components|implementationGaps/);
-  // 가이드가 없으면 섹션 없이 설치 정보만 줘요.
-  assert.deepEqual(getComponent({ name: 'Modal' }).available, []);
-  // 문서에 없는 선택 섹션은 오류 없이 빠져요.
-  assert.deepEqual(Object.keys(getComponent({ name: 'Modal', sections: ['examples', 'do-dont'] }).sections), []);
+  // 새 승인본도 요청한 예시·접근성 섹션만 반환해요.
+  const modal = getComponent({ name: 'Modal', sections: ['examples', 'accessibility'] });
+  assert.equal(modal.status, 'stable');
+  assert.deepEqual(Object.keys(modal.sections), ['examples', 'accessibility']);
+  assert.match(modal.sections.examples, /onOpenChange/);
+  assert.match(modal.sections.accessibility, /dialog/);
+
 });
 
 test('없는 이름과 허용하지 않는 값은 allowed와 함께 알려요', () => {
