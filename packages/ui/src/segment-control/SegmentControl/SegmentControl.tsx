@@ -6,13 +6,13 @@ import type { SegmentControlProps } from './SegmentControl.types.js';
 import { useSegmentControl } from './useSegmentControl.js';
 
 /**
- * 2개부터 4개의 옵션 중 하나를 선택해요.
+ * 같은 맥락의 옵션 중 하나를 선택해요. 2~4개를 권장해요.
  *
  * @example 빠른 사용
  * `<SegmentControl aria-label="보기 방식" options={options} onValueChange={setValue} />`
  *
  * ### 주요 설정
- * - `options`: `{ value, label }` 형식의 옵션 2~4개
+ * - `options`: `{ value, label }` 형식의 옵션, 2~4개 권장
  * - `value`: 외부에서 제어하는 선택 값
  * - `defaultValue`: 처음 선택할 값, 기본값은 첫 번째 사용 가능 옵션
  *
