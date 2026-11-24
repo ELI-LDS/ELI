@@ -8,10 +8,12 @@
   <img src=".github/assets/eli-mascot-blink-light.gif" alt="눈을 깜빡이는 엘리" width="300" align="left">
 </picture>
 
-<table role="presentation" width="100%">
-<caption>
-
-<h1 align="center">디자인의 첫 단추, ELI</h1>
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/assets/eli-title-dark.svg">
+  <img src=".github/assets/eli-title-light.svg" alt="디자인의 첫 단추, ELI" width="680">
+</picture>
+</p>
 
 <p align="center">
 작은 조각 하나가 규칙이 되고, 규칙이 모이면 하나의 화면이 돼요.<br>
@@ -28,11 +30,6 @@ ELI가 처음부터 맞춰 끼워 둘게요.
 서비스가 무엇인지 듣고, 디자인 방향을 정하고, 화면을 만들 때마다 그 방향을 지켜요.<br>
 그래서 AI가 만든 티가 나지 않는, 이 서비스만의 화면이 나와요.
 </p>
-
-</caption>
-<colgroup><col width="680"></colgroup>
-<tbody><tr></tr></tbody>
-</table>
 
 <br clear="all">
 </div>
