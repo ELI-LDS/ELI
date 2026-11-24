@@ -45,7 +45,7 @@ UI나 디자인을 만들거나 고치는 요청을 받으면 코드를 쓰기 �
 
 ## 지켜요
 
-- props, 토큰 값, 컴포넌트 이름, import 경로를 기억으로 쓰지 않아요. 매번 `eli-docs`에서 확인해요.
+- props, 토큰 값, 컴포넌트 이름, import 경로를 기억으로 쓰지 않아요. 매번 `eli-docs`에서 확인해요. 도구가 세션에 보이지 않으면 "원격 MCP에 연결해요"의 조회 스크립트로 읽어요.
 - ELI에 맞는 컴포넌트가 있으면 직접 만들지 않고 그 컴포넌트를 써요.
 - 문서에 없는 사용법은 지어내지 않아요. 없다고 사용자에게 말하고 대안을 물어요.
 - 한 요청에서 같은 문서를 두 번 조회하지 않아요.
@@ -122,18 +122,41 @@ ELI를 쓰는 것만으로 좋은 화면이 되지 않아요. 프로젝트가 �
 
 ## 원격 MCP에 연결해요
 
-`eli-docs`의 도구가 보이지 않으면 추측해서 작업하지 않아요. 아래 방법을 사용자에게 안내하고 연결한 뒤 이어서 작업해요.
+`eli-docs`의 도구가 세션에 보이지 않아도 멈추지 않아요. 등록하고, 같은 세션에서 조회 스크립트로 이어서 작업해요. 사용자에게 세션을 새로 열라고 요청하지 않아요.
+
+MCP 서버는 세션을 시작할 때만 불러와요. 세션 중에 등록하면 다음 세션부터 도구로 보여요. 그래서 등록과 지금 세션의 조회를 따로 해요.
+
+### 1. 다음 세션을 위해 등록해요
 
 - 주소: `https://eli-design.dev/mcp`
-- Claude Code: `claude mcp add --transport http eli-docs https://eli-design.dev/mcp`
+- Claude Code: 프로젝트 루트의 `.mcp.json`에 등록해요. `eli-design harness --agent claude`가 이미 등록해 줘요. 없으면 기존 내용을 보존하고 `mcpServers`에 `"eli-docs": { "type": "http", "url": "https://eli-design.dev/mcp" }`를 더해요. `claude` 명령은 VSCode 확장처럼 셸에 없는 환경이 있으니 `claude mcp add`에 의존하지 않아요.
 - Codex: `codex mcp add eli-docs --url https://eli-design.dev/mcp`
 - 그 밖의 에이전트: MCP 설정에 이름 `eli-docs`, 전송 방식 HTTP(Streamable HTTP), 위 주소로 서버를 추가해요.
 
-인증은 필요 없어요. 모든 도구는 읽기 전용이에요.
+인증은 필요 없어요. 모든 도구는 읽기 전용이에요. 서버 이름은 반드시 `eli-docs`로 등록해요. 다른 스킬이 이 이름으로 도구를 찾아요. 이미 등록되어 있으면 다시 추가하지 않아요.
 
-- 서버 이름은 반드시 `eli-docs`로 등록해요. 다른 스킬이 이 이름으로 도구를 찾아요.
-- 추가한 뒤 `list_components`를 불러 응답이 오는지 확인해요. 에이전트를 다시 시작해야 도구가 보일 수 있어요.
-- 주소가 응답하지 않으면 서버 문제로 보고 추측해서 작업하지 않아요. 연결하지 못했다고 알리고 원격 문서가 필요한 단계를 미완료로 남겨요. 다른 주소나 검색 결과의 문서로 대신하지 않아요.
+### 2. 지금 세션에서는 조회 스크립트로 읽어요
+
+도구가 보이지 않는 동안에는 하네스와 함께 설치된 스크립트로 같은 서버의 같은 도구를 불러요. 도구 이름, 입력, 응답은 MCP 도구와 같아요. 이 스킬의 "필요한 만큼만 읽어요"도 그대로 적용해요.
+
+| 에이전트 | 명령 |
+| --- | --- |
+| Claude Code | `node .claude/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'` |
+| Codex | `node .codex/hooks/eli/eli-docs.mjs <도구 이름> '<JSON 입력>'` |
+
+```bash
+node .claude/hooks/eli/eli-docs.mjs list_components
+node .claude/hooks/eli/eli-docs.mjs get_component '{"name":"Button","sections":["examples"]}'
+node .claude/hooks/eli/eli-docs.mjs get_tokens '{"category":"semantic-color","group":"Foreground"}'
+```
+
+- 다른 스킬이 "`get_tokens`로 읽어요"처럼 도구 이름으로 적은 단계는 이 스크립트로 불러도 같은 뜻이에요.
+- 조회용 스크립트를 따로 만들지 않아요. 이 스크립트가 없으면 하네스가 온전히 설치되지 않은 거예요. `npx eli-design@latest status`로 확인해요.
+- 작업을 마칠 때 사용자에게 한 번만 알려요. 이번 세션은 스크립트로 문서를 읽었고, 다음 세션부터 `eli-docs`가 도구로 보여요. Claude Code는 처음에 `.mcp.json`의 서버를 쓸지 묻는 승인 창이 뜰 수 있어요.
+
+### 3. 스크립트로도 읽지 못하면 멈춰요
+
+- 스크립트가 오류로 끝나면 네트워크나 서버 문제예요. 추측해서 작업하지 않아요. 읽지 못했다고 알리고 원격 문서가 필요한 단계를 미완료로 남겨요. 다른 주소나 검색 결과의 문서로 대신하지 않아요.
 - ELI 저장소에서 문서 서버를 직접 개발할 때만 `pnpm dev:docs`의 `http://localhost:3000/mcp`를 써요.
 
 ## 명령

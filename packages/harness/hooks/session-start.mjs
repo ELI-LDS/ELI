@@ -34,7 +34,7 @@ const INSTRUCTIONS = `ELI 하네스: 이 프로젝트는 ELI를 써요.
 - 프로젝트 루트에 DESIGN.md가 있으면 먼저 읽고 따라요. CSS 단위는 DESIGN.md의 단위 기준에서 골라요. 아이콘을 만들 때는 ICON.md도 읽어요.
 - CSS, 마크업, React 코드를 쓰기 전에 eli 스킬의 "화면 코드를 잘 써요"와 references 문서를 읽어요.
 - 화면에 보이는 문구는 예외 없이 UX-WRITING.md의 말투와 용어로 써요. 문구를 쓰기 전에 읽어요. 없으면 /eli-ux-writing으로 먼저 만들어요.
-- eli-docs MCP가 연결되지 않았으면 추측해서 작업하지 않고, eli 스킬의 연결 방법을 사용자에게 안내해요.
+- eli-docs MCP 도구가 세션에 보이지 않아도 멈추거나 추측하지 않아요. 이 훅과 같은 폴더의 eli-docs.mjs로 같은 문서를 읽어요(node <훅 폴더>/eli-docs.mjs <도구 이름> '<JSON 입력>'). 등록 방법은 eli 스킬의 "원격 MCP에 연결해요"에 있어요.
 - 명령: /eli-setup, /eli-doctor, /eli-design-md, /eli-design-system, /eli-verify, /eli-icon, /eli-ux-writing, /eli-update`;
 
 // shortcut: 루트 package.json만 확인해요. 모노레포의 하위 워크스페이스만 @eli-design/ui를 쓰는 경우가 생기면 워크스페이스도 확인해요.
