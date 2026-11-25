@@ -46,7 +46,7 @@ async function loadHarness(project, values, previous) {
     const version = values['harness-version'];
     ensure(semver.valid(version) === version, 'INVALID_ARGUMENT', '하네스 버전을 정확히 지정해요.');
     url = `https://github.com/ELI-team/ELI/releases/download/harness-v${version}/harness.json`;
-  } else url = previous?.registry ?? await latestRelease(downloads, 'harness-v', 'harness.json');
+  } else url = (!values.update && previous?.registry) || await latestRelease(downloads, 'harness-v', 'harness.json');
   url = registryUrl(url, project.root, 'harness.json');
   const bytes = await readResource(url, downloads);
   const manifest = parseJson(bytes.toString('utf8'), '하네스');
@@ -54,8 +54,10 @@ async function loadHarness(project, values, previous) {
   // 이전 저장소 주소가 남은 설치 기록도 태그와 콘텐츠 버전의 대조를 유지해요.
   const tag = new URL(url).pathname.match(/^\/(?:ELI-team|ELI-LDS)\/ELI\/releases\/download\/harness-v([^/]+)\/harness\.json$/)?.[1];
   ensure(!tag || tag === manifest.version, 'VERSION_MISMATCH', '하네스 태그와 파일의 버전이 달라요.');
-  ensure(!previous || previous.version === manifest.version, 'VERSION_MISMATCH', '다른 버전의 하네스로 덮어쓰지 않아요. 기존 설치와 변경 내역을 먼저 확인해요.');
-  ensure(!previous || previous.sha256 === hash(bytes), 'INTEGRITY_MISMATCH', '고정한 하네스 배포 파일이 변경됐어요.');
+  // --update만 다른 버전으로 옮겨요. 같은 버전이면 고정한 배포 파일과 같은지 그대로 확인해요.
+  const changing = Boolean(values.update && previous && previous.version !== manifest.version);
+  ensure(!previous || changing || previous.version === manifest.version, 'VERSION_MISMATCH', '다른 버전의 하네스로 덮어쓰지 않아요. 새 버전으로 옮기려면 harness --update를 사용해요.');
+  ensure(!previous || changing || previous.sha256 === hash(bytes), 'INTEGRITY_MISMATCH', '고정한 하네스 배포 파일이 변경됐어요.');
   const files = new Map();
   for (const file of manifest.files) {
     ensure(object(file) && typeof file.path === 'string' && typeof file.content === 'string', 'INVALID_DATA', '하네스 파일 형식이 잘못됐어요.');
@@ -66,7 +68,7 @@ async function loadHarness(project, values, previous) {
   }
   for (const required of ['INSTALL.md', 'LICENSE', 'skills/eli/SKILL.md', 'skills/eli/VERSION', 'hooks/session-start.mjs', 'hooks/post-edit.mjs']) ensure(files.has(required), 'INVALID_DATA', '필수 하네스 파일이 없어요.', { path: required });
   ensure(files.get('skills/eli/VERSION').trim() === manifest.version, 'VERSION_MISMATCH', '스킬과 하네스 배포 버전이 달라요.');
-  return { url, sha256: hash(bytes), manifest, files, downloads };
+  return { url, sha256: hash(bytes), manifest, files, downloads, changing };
 }
 
 function destinations(bundle, selected) {
@@ -114,24 +116,42 @@ function mergeMcp(before) {
 }
 
 export async function installHarness(project, values) {
-  ensure(['claude', 'codex', 'all'].includes(values.agent), 'INVALID_ARGUMENT', '--agent claude, codex 또는 all을 선택해요. 스킬·훅을 복사하고 해당 에이전트 설정에 훅을 등록해요.');
-  const selected = values.agent === 'all' ? agents : [values.agent];
   const previous = recordOf(project);
+  ensure(!values.update || previous.record, 'NOT_INITIALIZED', '업데이트할 하네스가 없어요. 먼저 harness --agent로 설치해요.');
+  ensure(values.update ? values.agent === undefined || ['claude', 'codex', 'all'].includes(values.agent) : ['claude', 'codex', 'all'].includes(values.agent), 'INVALID_ARGUMENT', '--agent claude, codex 또는 all을 선택해요. 스킬·훅을 복사하고 해당 에이전트 설정에 훅을 등록해요.');
+  const requested = values.agent === 'all' ? agents : values.agent ? [values.agent] : [];
+  // 설치 기록의 버전은 하나라서, 업데이트는 이미 설치한 에이전트를 모두 함께 옮겨요.
+  const selected = values.update ? agents.filter(agent => previous.record.agents.includes(agent) || requested.includes(agent)) : requested;
   const bundle = await loadHarness(project, values, previous.record);
   const contents = destinations(bundle, selected);
   const before = new Map();
   const changes = new Map();
+  const replacements = new Map();
   const result = [];
   const recorded = new Map(previous.record?.files.map(file => [file.path, file]) ?? []);
+  // shortcut: 새 버전에서 빠진 파일은 지우지 않고 기록에서만 빼서 알려요. 스킬을 지우거나 이름을 바꾸는 릴리스가 잦아지면 삭제와 복구를 writeProject에 더해요.
+  const stale = bundle.changing ? [...recorded.keys()].filter(path => !contents.has(path)) : [];
+  for (const path of stale) recorded.delete(path);
+  const conflicts = [];
   for (const [path, content] of contents) {
     const bytes = bytesAt(project.root, path, true);
     before.set(path, bytes);
-    ensure(bytes === null || (hash(bytes) === hash(content) && (!recorded.has(path) || hash(bytes) === recorded.get(path).sha256)), 'FILE_CONFLICT', '기존 스킬·훅과 내용이 달라요. 수정 파일을 덮어쓰지 않아요.', { path });
-    result.push({ path, action: bytes === null ? 'add' : 'reuse' });
-    if (bytes === null) changes.set(path, content);
+    const prior = recorded.get(path);
+    if (bundle.changing) {
+      // 설치 당시와 같은 파일만 새 내용으로 바꿔요. 사용자가 고친 파일이 하나라도 있으면 아무것도 바꾸지 않아요.
+      if (bytes !== null && hash(bytes) !== hash(content) && (!prior || hash(bytes) !== prior.sha256)) conflicts.push(path);
+      const action = bytes === null ? 'add' : hash(bytes) === hash(content) ? 'reuse' : 'replace';
+      result.push({ path, action });
+      if (action !== 'reuse') changes.set(path, content);
+      if (action === 'replace') replacements.set(path, bytes);
+    } else {
+      ensure(bytes === null || (hash(bytes) === hash(content) && (!prior || hash(bytes) === prior.sha256)), 'FILE_CONFLICT', '기존 스킬·훅과 내용이 달라요. 수정 파일을 덮어쓰지 않아요.', { path });
+      result.push({ path, action: bytes === null ? 'add' : 'reuse' });
+      if (bytes === null) changes.set(path, content);
+    }
     recorded.set(path, { path, sha256: hash(content) });
   }
-  const replacements = new Map();
+  ensure(conflicts.length === 0, 'FILE_CONFLICT', '직접 수정한 스킬·훅이 있어 업데이트하지 않았어요. 수정을 유지할지 확인하고, 버릴 파일은 지운 뒤 다시 실행해요.', { paths: conflicts, from: previous.record?.version, to: bundle.manifest.version });
   const settings = selected.map(agent => [agent === 'claude' ? '.claude/settings.json' : '.codex/hooks.json', bytes => mergeSettings(bytes, agent)]);
   if (selected.includes('claude')) settings.push(['.mcp.json', mergeMcp]);
   for (const [path, merge] of settings) {
@@ -147,6 +167,12 @@ export async function installHarness(project, values) {
   if (!values['dry-run']) writeProject(project, changes, undefined, () => {
     for (const [path, bytes] of before) ensure(equals(bytes, bytesAt(project.root, path, true)), 'PROJECT_BUSY', '설치 계획 이후 파일이 변경됐어요.', { path });
   }, { replacements, agentPaths: true });
+  if (values.update) return { command: 'harness', dryRun: Boolean(values['dry-run']), version: record.version, from: previous.record.version, updated: bundle.changing, agents: selected, registry: bundle.url, record: RECORD, files: result, stale, downloads: bundle.downloads, nextSteps: bundle.changing ? [
+    '스킬과 훅이 새 버전으로 바뀌었어요. 이번 세션이 이미 읽은 지침은 이전 버전이에요. 필요한 스킬의 SKILL.md를 다시 읽고, Claude Code는 /reload-skills로 다시 불러와요.',
+    ...(stale.length ? [`새 버전에 없는 파일이 남아 있어요. 쓰지 않는다면 지워요: ${stale.join(', ')}`] : []),
+    ...(selected.includes('codex') ? ['Codex는 /hooks에서 바뀐 훅을 다시 확인하고 신뢰해요.'] : []),
+    'DESIGN.md의 버전 표를 실제 설치된 하네스 버전으로 고쳐요.',
+  ] : ['설치된 하네스가 이미 최신이에요.'] };
   return { command: 'harness', dryRun: Boolean(values['dry-run']), version: record.version, agents: selected, registry: bundle.url, record: RECORD, files: result, downloads: bundle.downloads, nextSteps: [
     // 설치한 세션에서 바로 셋업으로 이어가게 해요. MCP 서버는 세션을 시작할 때만 불러와요.
     ...(selected.includes('claude') ? [

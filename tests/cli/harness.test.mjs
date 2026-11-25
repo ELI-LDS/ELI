@@ -199,6 +199,63 @@ test('소스로 설치된 UI를 훅과 스킬이 인식하고 npm 패키지를 �
   await assert.rejects(readFile(join(project, 'node_modules/@eli-design/ui/package.json')));
 });
 
+/** 같은 묶음에서 버전과 파일 일부만 바꾼 다음 버전을 만들어요. */
+async function nextBundle(version, change = () => {}) {
+  const folder = await mkdtemp(join(work, 'next-'));
+  const data = JSON.parse(await readFile(join(bundle, 'harness.json'), 'utf8'));
+  data.version = version;
+  data.files.find(file => file.path === 'skills/eli/VERSION').content = `${version}\n`;
+  data.files.find(file => file.path === 'skills/eli/SKILL.md').content += `\n<!-- ${version} -->\n`;
+  change(data);
+  for (const file of data.files) file.sha256 = digest(file.content);
+  await writeFile(join(folder, 'harness.json'), JSON.stringify(data));
+  return folder;
+}
+
+test('--update는 설치한 에이전트를 새 버전으로 옮기고 직접 수정한 파일이 있으면 아무것도 바꾸지 않아요', async () => {
+  const project = await fixture();
+  assert.equal(run(project, ['harness', '--update', '--registry', bundle], false).error.code, 'NOT_INITIALIZED');
+  install(project, 'all');
+  const same = run(project, ['harness', '--update', '--registry', bundle]);
+  assert.equal(same.updated, false);
+  assert.ok(same.files.every(file => file.action === 'reuse'));
+
+  const next = await nextBundle('9.9.9', data => {
+    data.files = data.files.filter(file => file.path !== 'skills/eli-icon/template.md');
+    data.files.push({ path: 'skills/eli/references/extra.md', content: '# 새 문서\n' });
+  });
+  // 설치만 다시 하면 여전히 다른 버전을 거부해요.
+  assert.equal(run(project, ['harness', '--registry', next, '--agent', 'all'], false).error.code, 'VERSION_MISMATCH');
+  const plan = run(project, ['harness', '--update', '--registry', next, '--dry-run']);
+  assert.deepEqual([plan.from, plan.version, plan.updated], [harnessVersion, '9.9.9', true]);
+  assert.equal((await readJson(project, '.eli/harness.json')).version, harnessVersion);
+
+  const done = run(project, ['harness', '--update', '--registry', next]);
+  assert.deepEqual(done.agents, ['claude', 'codex']);
+  const action = path => done.files.find(file => file.path === path).action;
+  assert.equal(action('.claude/skills/eli/SKILL.md'), 'replace');
+  assert.equal(action('.agents/skills/eli/references/extra.md'), 'add');
+  assert.equal(action('.claude/skills/eli-verify/SKILL.md'), 'reuse');
+  assert.deepEqual(done.stale, ['.agents/skills/eli-icon/template.md', '.claude/skills/eli-icon/template.md']);
+  assert.match(await readFile(join(project, '.claude/skills/eli/SKILL.md'), 'utf8'), /<!-- 9\.9\.9 -->/);
+  assert.equal((await readFile(join(project, '.agents/skills/eli/VERSION'), 'utf8')).trim(), '9.9.9');
+  const status = run(project, ['status']);
+  assert.equal(status.harness.version, '9.9.9');
+  assert.ok(status.harness.files.every(file => file.state === 'unchanged'));
+  assert.ok(!status.harness.files.some(file => file.path.endsWith('eli-icon/template.md')));
+  assert.match(execFileSync(process.execPath, [cli, 'harness', '--update', '--registry', next, '--cwd', project], { encoding: 'utf8' }), /이미 최신/);
+
+  const edited = '.claude/skills/eli-verify/SKILL.md';
+  await writeFile(join(project, edited), '사용자가 고쳤어요\n');
+  const record = await readFile(join(project, '.eli/harness.json'));
+  const skill = await readFile(join(project, '.claude/skills/eli/SKILL.md'));
+  const blocked = run(project, ['harness', '--update', '--registry', await nextBundle('9.9.10', data => { data.files.find(file => file.path === 'skills/eli-verify/SKILL.md').content += '\n'; })], false);
+  assert.equal(blocked.error.code, 'FILE_CONFLICT');
+  assert.deepEqual(blocked.error.details.paths, [edited]);
+  assert.deepEqual(await readFile(join(project, '.eli/harness.json')), record);
+  assert.deepEqual(await readFile(join(project, '.claude/skills/eli/SKILL.md')), skill);
+});
+
 test('손상·경로 탈출·다른 버전의 하네스를 받지 않아요', async () => {
   for (const [change, code] of [
     [data => { data.files[0].content += 'tamper'; }, 'INTEGRITY_MISMATCH'],

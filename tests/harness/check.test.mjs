@@ -114,6 +114,20 @@ test('색과 테두리의 기준을 핵심 규칙·참고 문서·점검·훅이
   assert.match(runHook(JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } })), /브랜드 색으로 채운 요소는 한 화면에 주요 버튼 하나/);
 });
 
+test('컴포넌트를 키우는 기준과 기록 자리가 연결되어 있어요', () => {
+  const read = (path) => readFileSync(join(harness, path), 'utf8');
+  assert.match(read('skills/eli/references/evolution.md'), /^## 잃으면 안 되는 것$/m);
+  assert.match(read('skills/eli/SKILL.md'), /`references\/evolution\.md`/);
+  assert.match(read('skills/eli-design-md/template.md'), /^## 컴포넌트$/m);
+  assert.match(read('skills/eli-verify/SKILL.md'), /^\| 기록 없는 변형 \|/m);
+});
+
+test('업데이트 스킬은 설치 도구로 하네스의 최신 버전을 확인하고 올려요', () => {
+  const update = readFileSync(join(harness, 'skills/eli-update/SKILL.md'), 'utf8');
+  assert.match(update, /harness --update --dry-run/);
+  assert.match(update, /`get_versions`는 하네스의 최신 버전을 알려주지 않아요/);
+});
+
 test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
   for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
     const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');

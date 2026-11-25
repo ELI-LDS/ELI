@@ -15,12 +15,14 @@ eli-design add button [modal ...]     선택한 UI와 필요한 파일만 추가
 eli-design add --all                   모든 공개 UI 소스를 추가해요
 eli-design status                     설치 경로·버전·사용자 수정을 확인해요
 eli-design harness --agent <선택>     claude / codex / all의 스킬·훅을 설치해요
+eli-design harness --update           설치한 스킬·훅을 최신 하네스로 옮겨요
 
 --cwd <폴더>                          현재 프로젝트 대신 사용할 폴더
 --registry <주소 또는 폴더>           UI의 registry.json 또는 하네스의 harness.json
 --harness-version <버전>              harness에서 사용할 독립 하네스 릴리스
 --content-version <버전>              init/list에서 사용할 GitHub 콘텐츠 릴리스
 --dir <상대 경로>                     init에서 사용할 소스 설치 폴더
+--update                              harness에서 다른 버전으로 옮겨요. 직접 수정한 파일이 있으면 중단해요
 --dry-run                             init/add/harness의 변경 계획만 확인
 --json                                결과만 JSON으로 출력
 --help                                도움말
@@ -70,7 +72,7 @@ async function run() {
     parsed = parseArgs({ allowPositionals: true, options: {
       cwd: { type: 'string' }, registry: { type: 'string' }, 'content-version': { type: 'string' }, dir: { type: 'string' },
       all: { type: 'boolean' }, 'dry-run': { type: 'boolean' }, json: { type: 'boolean' }, help: { type: 'boolean', short: 'h' }, version: { type: 'boolean', short: 'v' },
-      agent: { type: 'string' }, 'harness-version': { type: 'string' },
+      agent: { type: 'string' }, 'harness-version': { type: 'string' }, update: { type: 'boolean' },
     } });
   } catch (error) { throw new CliError('INVALID_ARGUMENT', error.message); }
   const { values, positionals: [command, ...ids] } = parsed;
@@ -81,7 +83,7 @@ async function run() {
   ensure(command === 'add' || (!ids.length && !values.all), 'INVALID_ARGUMENT', '컴포넌트 ID와 --all은 add에서만 사용해요.');
   ensure(command === 'init' || !values.dir, 'INVALID_ARGUMENT', '--dir은 init에서만 사용해요.');
   ensure(['init', 'list', 'harness'].includes(command) || (!values.registry && !values['content-version']), 'INVALID_ARGUMENT', '설치된 UI 버전은 .eli/config.json에 고정돼요. add에서 레지스트리를 바꾸지 않아요.');
-  ensure(command === 'harness' || (!values.agent && !values['harness-version']), 'INVALID_ARGUMENT', '--agent와 --harness-version은 harness에서만 사용해요.');
+  ensure(command === 'harness' || (!values.agent && !values['harness-version'] && !values.update), 'INVALID_ARGUMENT', '--agent, --harness-version, --update는 harness에서만 사용해요.');
   ensure(command !== 'harness' || (!ids.length && !values['content-version'] && !values.all), 'INVALID_ARGUMENT', 'harness는 --agent와 --harness-version으로 선택해요.');
   ensure(!values.registry || !values['content-version'], 'INVALID_ARGUMENT', '--registry와 --content-version 중 하나만 지정해요.');
   ensure(!values.registry || !values['harness-version'], 'INVALID_ARGUMENT', '--registry와 --harness-version 중 하나만 지정해요.');
@@ -139,7 +141,7 @@ try {
   else if (result.command === 'status') process.stdout.write(formatStatus(result));
   else {
     const counts = files => JSON.stringify(files.reduce((sum, file) => { const state = file.action ?? file.state; sum[state] = (sum[state] ?? 0) + 1; return sum; }, {}));
-    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.version ?? result.config?.version ?? '없음'})\n`);
+    process.stdout.write(`${result.dryRun ? '변경 미리보기' : '완료'}: ${result.command} (${result.command === 'harness' ? '하네스' : 'UI'} ${result.updated ? `${result.from} → ` : ''}${result.version ?? result.config?.version ?? '없음'})\n`);
     for (const entry of result.entries ?? []) process.stdout.write(`${entry.export}: ${entry.path}\n`);
     process.stdout.write(`${counts(result.files)}\n`);
     for (const step of result.nextSteps ?? []) process.stdout.write(`${step}\n`);

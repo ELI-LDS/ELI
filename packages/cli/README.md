@@ -113,7 +113,16 @@ npx eli-design@latest harness --agent all
 
 기존 에이전트 설정을 보존하며 훅을 추가해요. 설치 후 표시되는 안내에 따라 스킬을 다시 불러오고, Codex는 `/hooks`에서 훅을 확인·신뢰해요. `--agent claude`는 프로젝트의 `.mcp.json`에 문서 서버 `eli-docs`를 등록해요. 이미 있는 항목과 다른 서버는 바꾸지 않아요. 등록한 MCP 도구는 다음 세션부터 보이고, 설치한 세션에서는 안내된 조회 스크립트로 같은 문서를 읽어요. Codex는 안내된 `codex mcp add` 명령으로 등록해요.
 
-설치 기록은 `.eli/harness.json`에 저장해요. `status --json`으로 수정·누락을 확인할 수 있고, 수정한 스킬·훅을 자동으로 덮어쓰거나 다른 버전으로 업데이트하지 않아요.
+설치 기록은 `.eli/harness.json`에 저장해요. `status --json`으로 수정·누락을 확인할 수 있어요.
+
+설치한 하네스를 새 버전으로 옮길 때는 `--update`를 써요.
+
+```bash
+npx eli-design@latest harness --update --dry-run   # 지금 버전과 최신 버전, 바뀔 파일 미리 보기
+npx eli-design@latest harness --update
+```
+
+설치 당시와 같은 파일만 새 내용으로 바꾸고 이미 설치한 에이전트를 모두 함께 옮겨요. 직접 수정한 스킬·훅이 하나라도 있으면 아무것도 바꾸지 않고 그 파일을 알려줘요. 수정을 버릴 파일은 지운 뒤 다시 실행해요. 강제로 덮어쓰는 옵션은 없어요.
 
 ## 자동화에서 사용하기
 

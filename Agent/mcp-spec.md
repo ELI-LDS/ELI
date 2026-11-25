@@ -353,7 +353,7 @@
 | `/eli-design-system`, `/eli-setup` | `get_tokens`의 분류 네 개, `get_component`의 `examples`·`variants`, 가이드 `install`·`font`·`design-system-page` |
 | `/eli-verify` | `list_components`, `get_tokens`, 섹션 `do-dont`, 가이드 `verify` |
 | `/eli-doctor` | `list_components`가 응답하는지(연결 확인), 가이드 `install`·`font`, `get_versions` |
-| `/eli-update`, `/eli-setup` | `get_versions`의 `ui.latest`·`ui.docs`·`harness.minimum`, 가이드 `install` |
+| `/eli-update`, `/eli-setup` | `get_versions`의 `ui.latest`·`ui.docs`·`harness.minimum`, 가이드 `install`. 하네스의 최신 버전은 이 서버가 아니라 설치 도구의 `harness --update --dry-run`으로 확인해요 |
 | `/eli-icon` | `search`, 가이드 `icon` |
 
 ## 버전 알림의 흐름
