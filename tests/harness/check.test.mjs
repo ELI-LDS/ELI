@@ -102,6 +102,14 @@ test('셋업의 세 질문은 질문 도구로 반드시 묻게 해요', () => {
   assert.match(runHook(JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } })), /AskUserQuestion/);
 });
 
+test('색과 테두리의 기준을 핵심 규칙·참고 문서·점검·훅이 함께 알려요', () => {
+  const read = (path) => readFileSync(join(harness, path), 'utf8');
+  assert.match(read('skills/eli/references/design.md'), /^## 테두리$/m);
+  assert.match(read('skills/eli/SKILL.md'), /^- \*\*테두리:\*\*/m);
+  assert.match(read('skills/eli-verify/SKILL.md'), /^\| 테두리 남용 \|/m);
+  assert.match(runHook(JSON.stringify({ dependencies: { '@eli-design/ui': '0.0.0' } })), /브랜드 색으로 채운 요소는 한 화면에 주요 버튼 하나/);
+});
+
 test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
   for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
     const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');
