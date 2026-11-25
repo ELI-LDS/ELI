@@ -77,9 +77,9 @@ test('가이드 목록과 버전은 항상 같은 형식이에요', () => {
   for (const value of [versions.ui.latest, versions.ui.docs, versions.harness.minimum]) assert.match(value, /^\d+\.\d+\.\d+$/);
 });
 
-test('공통 가이드를 상세 조회하고 검색할 수 있어요', () => {
+test('공통 설치·폰트 가이드를 상세 조회하고 검색할 수 있어요', () => {
   const topics = getGuide().guides.map(guide => guide.topic);
-  assert.deepEqual(topics, ['install']);
+  assert.deepEqual(topics, ['font', 'install']);
   assert.ok(getGuide().guides.every(guide => !('body' in guide)));
   for (const topic of topics) {
     const guide = getGuide({ topic });

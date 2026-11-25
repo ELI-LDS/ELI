@@ -38,7 +38,7 @@ apps/docs/
 ├── content/                  # 공용 영역: 문서 데이터
 │   ├── source/
 │   │   ├── components/       # 전달받은 디자이너 Markdown 원문
-│   │   ├── guides/           # 설치 공통 가이드 Markdown
+│   │   ├── guides/           # 설치·폰트 설정 공통 가이드 Markdown
 │   │   ├── templates/        # 디자이너가 작성한 문서 양식 원본
 │   │   └── versions.json     # 함께 쓸 수 있는 가장 낮은 하네스 버전
 │   ├── components/           # 코드와 대조하고 검토하는 컴포넌트 가이드 JSON
@@ -100,6 +100,6 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 - **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** npm 배포는 시작했지만 버전별 문서 조회는 아직 구현하지 않았어요. 문서 앱을 공개할 때 설명 대상인 게시 버전을 명시하고, 설치 버전과 다르면 차이를 안내해요. `0.x`·정식 릴리스의 운영 기준은 [버전 규칙](versioning.md)을 따라요.
 
-조회 계층과 MCP 도구는 구현되어 있어요. 공통 가이드 원본은 install을 제공하며, 사람용 문서 페이지·GET API와 다른 공통 가이드 원본은 아직 없어요. 데이터의 추가와 공개 배포 반영은 구분하며 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
+조회 계층과 MCP 도구는 구현되어 있어요. 공통 가이드 원본은 install·font를 제공하며, 사람용 문서 페이지·GET API와 다른 공통 가이드 원본은 아직 없어요. 데이터의 추가와 공개 배포 반영은 구분하며 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
 
 현재 가이드의 검토 상태와 담당자 인계 범위는 [검토 기록](../handbook/component-guide-review.md), [연동 인계](../handbook/component-guide-handoff.md)에서 확인해요. 도구 계약은 원격 MCP 규격에만 정의해요.
