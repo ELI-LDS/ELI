@@ -1,6 +1,6 @@
 # 원격 MCP 규격
 
-`apps/docs`의 `/mcp`에서 제공하는 원격 MCP 서버 `eli-docs`의 규격이에요. 도구 일곱 개와 조회 계층은 구현되어 있고 로컬에서 동작해요. `https://eli-design.dev/mcp`에 배포되어 있어요. GET API와 가이드 원본은 아직 없어요. 응답은 소스 설치 방식을 기준으로 해요.
+`apps/docs`의 `/mcp`에서 제공하는 원격 MCP 서버 `eli-docs`의 규격이에요. 도구 일곱 개와 조회 계층은 구현되어 있고 `https://eli-design.dev/mcp`에 배포되어 있어요. GET API는 아직 없고 공통 가이드는 install·font부터 원본을 추가했어요. 새 데이터의 공개 반영은 배포 후 별도로 확인해요. 응답은 소스 설치 방식을 기준으로 해요.
 
 컴포넌트의 사용 기준(섹션)은 검토한 [컴포넌트 가이드 JSON](../apps/docs/content/components)에서, props·토큰·설치 정보는 [레지스트리](registry.md)의 목록·항목 JSON에서 만들어요. 가이드는 사람이 검토하는 자료이고 props·토큰은 코드에서 추출해요. 같은 내용을 두 곳에 복제하지 않아요.
 
@@ -439,7 +439,7 @@ sequenceDiagram
 | 컴포넌트 가이드 | `content/components/` | 34개가 모두 `stable`이에요. 2026-11-24에 31개를 승인하고 같은 날 Divider·Modal·Tab을 추가해 승인했어요 |
 | 조회 함수 | `content/query.ts` | 구현했어요 |
 | MCP 도구 | `backend/mcp/server.ts` | 일곱 개를 등록했어요 |
-| 가이드 원본 | `content/source/guides/` | 아직 없어요. 목록은 빈 배열, 주제 조회는 `not_found`예요 |
+| 가이드 원본 | `content/source/guides/` | install·font 원본을 제공해요. 다른 주제는 아직 없으며 해당 조회는 `not_found`예요. 원본 추가와 공개 배포 반영은 구분해요 |
 | GET API | `app/api/v1/` | 아직 없어요. 사람용 페이지가 필요로 할 때 같은 조회 함수로 만들어요 |
 | 배포와 도메인 | Cloudflare Workers, `eli-design.dev` | 배포했어요. 2026-11-24에 공개 주소에서 도구 일곱 개의 응답을 확인했어요 |
 
@@ -447,10 +447,10 @@ sequenceDiagram
 
 - 조회 함수·오류 응답·생성 스크립트는 `pnpm test:docs`로 자동 검사해요.
 - 로컬 프로덕션 빌드에서 MCP 프로토콜(`initialize`, `tools/list`, `tools/call`)로 도구 일곱 개의 응답을 확인했어요.
-- 실제 Claude Code·Codex에 `claude mcp add --transport http eli-docs http://localhost:3000/mcp`로 연결해 스킬과 함께 쓰는 흐름은 아직 확인하지 않았어요.
+- 공개 MCP와 실제 Codex의 문서 조회·소비 앱 생성·실행은 [검증 보고서](../handbook/audits/2026-11-24-harness-verification.md)의 범위에서 확인했어요. Claude 세션·자동 스킬 선택·훅 신뢰 등 남은 항목을 구분해요.
 - 하네스의 `/eli-doctor`가 원격 연결 항목을 통과로 보고하는지는 배포한 뒤에 확인해요.
 - 서버는 `main` 푸시마다 배포되고 `main`의 소스를 설명해요. `ui.latest`·`ui.docs`는 `packages/ui/package.json`의 버전이에요. 2026-11-24에 UI 콘텐츠 0.3.0을 공개해 서버와 공개 콘텐츠를 맞췄어요. 그 뒤 `main`에 UI 변경이 병합되면 다음 콘텐츠 릴리스 전까지 다시 어긋나요. 릴리스 태그에서만 배포할지는 아직 정하지 않았어요.
-- 가이드 `install`·`font`·`verify`·`design-system-page`를 읽는 명령은 가이드 원본이 생길 때까지 원격 기준 없이 동작해요.
+- 가이드 install·font의 조회·검색은 원본 추가와 함께 검사해요. verify·design-system-page·icon은 아직 원본이 없으며 하네스의 기존 대체 절차와 미확인 범위 보고를 유지해요.
 
 ## 정하지 않은 것
 

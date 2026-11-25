@@ -50,6 +50,10 @@
 
 ## 담당자가 이어서 확인해요
 
+설치·폰트의 공통 원본은 [install](../apps/docs/content/source/guides/install.md)·[font](../apps/docs/content/source/guides/font.md)에 추가했어요. 기존 get_guide·검색을 그대로 사용하며 조회·검색 검사 9개와 Worker 빌드를 통과했어요. Pretendard 1.3.9의 안내한 CSS import·Vite 빌드·Chromium 실제 글꼴 렌더링을 임시 앱에서 확인하고 앱은 삭제했어요. 다른 프레임워크·브라우저의 전체 행렬이나 공개 배포 반영을 완료했다는 뜻은 아니에요.
+
+install 가이드에는 상속 prop을 조회하지 못했을 때 extends·제외 목록·로컬 타입을 확인하는 현재 절차도 담았어요. 오류 문구나 상속 prop 조회 범위를 바꾸는 API 개선은 위 검증 보고서의 담당자 검토 항목으로 남겨요. 하네스의 기존 폰트 대체 안내나 MCP 도구 구현은 수정하지 않았어요.
+
 Button·Select·Modal의 실제 에이전트 검증은 [실행 체크리스트](harness-guide-acceptance.md)를 사용해요. 실행 요청·관찰할 결과·기록 양식과 공개 MCP 사전 확인 범위를 구분해 두었어요. 체크리스트 작성만으로 실제 세션 검증을 완료한 것으로 표시하지 않아요.
 
 공개 CLI 설치와 Codex의 조회·선택·임시 앱 생성·실행을 확인한 결과는 [2026-11-24 검증 보고서](audits/2026-11-24-harness-verification.md)에 있어요. 첫 생성에서 발견한 문제와 피드백 후 결과, Claude 세션 등 남은 범위와 상속 prop 조회의 안내 개선 항목도 함께 확인해요.
