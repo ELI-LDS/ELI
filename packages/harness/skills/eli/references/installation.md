@@ -10,8 +10,8 @@
 - UI는 `npx eli-design@latest init` 후 필요한 항목만 `add`로 추가해요. 전체는 사용자가 원할 때만 `add --all`을 사용해요. React는 소비 앱이 먼저 준비해요.
 - 스킬과 훅의 설치 기록은 `.eli/harness.json`이에요. `installerVersion`은 설치 도구, `version`은 하네스 버전이에요. UI 콘텐츠 버전과 같아야 한다고 판단하지 않아요. 복사한 `eli` 스킬의 `VERSION`은 하네스 버전과 비교해요.
 - 하네스 설치는 `npx eli-design@latest harness --agent claude`, `--agent codex` 또는 `--agent all`로 명시적으로 선택해요. UI 추가 명령에는 하네스가 따라오지 않아요. Codex 훅은 등록 후 사용자가 `/hooks`에서 확인하고 신뢰해야 해요.
-- UI 소스 업데이트와 다른 버전의 하네스로 덮어쓰는 명령은 아직 제공하지 않아요. 새 버전의 변경 내역과 사용자 수정 파일을 확인하고 이전 계획부터 제안해요. 전체 패키지 설치나 강제 파일 복사로 대신하지 않아요.
-- 원격 MCP `get_versions`의 `ui.latest`·`ui.docs`는 UI 콘텐츠 버전이에요. `.eli/config.json`에 고정된 콘텐츠 버전과 비교해요. 설치 도구(`eli-design`)의 npm 버전이나 하네스 버전과 비교하지 않아요. `harness.minimum`은 `.eli/harness.json`의 `version`과 비교해요.
+- 하네스는 `npx eli-design@latest harness --update`로 최신 버전으로 옮겨요. 설치 당시와 같은 파일만 바꾸고, 직접 수정한 파일이 있으면 아무것도 바꾸지 않아요. 절차는 `eli-update` 스킬을 따라요. UI 소스를 다른 버전으로 옮기는 명령은 아직 없어요. 전체 패키지 설치나 강제 파일 복사로 대신하지 않아요.
+- 원격 MCP `get_versions`의 `ui.latest`·`ui.docs`는 UI 콘텐츠 버전이에요. `.eli/config.json`에 고정된 콘텐츠 버전과 비교해요. 설치 도구(`eli-design`)의 npm 버전이나 하네스 버전과 비교하지 않아요. `harness.minimum`은 `.eli/harness.json`의 `version`과 비교해요. `get_versions`는 하네스의 최신 버전을 알려주지 않아요. 하네스의 최신 버전은 `harness --update --dry-run`으로 확인해요.
 
 `DESIGN.md`에는 UI 소비 방식, 실제 import 위치, UI 콘텐츠·설치 도구·하네스 버전과 마지막으로 확인한 날짜를 구분해 적어요. 설치된 로컬 UI와 MCP 문서가 맞지 않으면 확인 없이 문서의 props를 코드에 적용하지 않아요.
 

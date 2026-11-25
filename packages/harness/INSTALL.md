@@ -6,6 +6,8 @@
 
 npm에 게시된 CLI는 `npx eli-design@latest harness --agent claude`, `--agent codex` 또는 `--agent all`로 전체 스킬·훅 복사와 설정 병합을 함께 처리해요. 저장소에서는 `pnpm build:harness`, `pnpm build:cli` 후 `node packages/cli/dist/cli.mjs harness --registry <ELI 저장소 절대 경로>/.artifacts/harness --agent <선택> --cwd <프로젝트>`로 확인해요. `--dry-run`으로 쓰기 전 계획을 볼 수 있어요.
 
+설치한 하네스를 새 버전으로 옮길 때는 `npx eli-design@latest harness --update`를 써요. 직접 수정한 스킬·훅이 있으면 아무것도 바꾸지 않고 알려줘요.
+
 CLI로 설치했다면 `.eli/harness.json`과 `eli-design status --json`으로 결과를 확인하고 아래 수동 복사를 반복하지 않아요. 스킬은 Claude Code의 `.claude/skills`, Codex의 `.agents/skills`에 있고 훅은 각 프로젝트의 `.claude/hooks/eli`, `.codex/hooks/eli`에 있어요. Codex 훅은 `/hooks`에서 사용자가 확인하고 신뢰해야 실행돼요. `--agent claude`는 프로젝트의 `.mcp.json`에 문서 서버 `eli-docs`도 등록해요. Codex의 MCP는 4번대로 따로 등록해요.
 
 기존 `@eli-design/ui`는 종료 예정이며 신규 설치에 사용하지 않아요. 아래 수동 절차는 이미 설치된 이전 패키지를 점검하거나 개발용 원본에서 직접 설치할 때만 적용해요. 소스로 설치된 UI를 인식하는 기준은 `skills/eli/references/installation.md`를 따라요.

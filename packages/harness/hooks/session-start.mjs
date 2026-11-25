@@ -67,7 +67,7 @@ function versionNotice(designMd, now = Date.now()) {
   if (!date) return '- DESIGN.md에 버전 기록이 없어요. 작업을 마친 뒤 /eli-update로 쓰는 버전과 확인한 날짜를 기록하자고 안내해요.';
   const days = Math.floor((now - Date.parse(date)) / 86_400_000);
   if (!(days > STALE_DAYS)) return '';
-  return `- ELI 버전을 마지막으로 확인한 지 ${days}일 지났어요(${date}). 사용자에게 알리고 /eli-update로 새 버전이 있는지 확인해요.`;
+  return `- ELI 버전을 마지막으로 확인한 지 ${days}일 지났어요(${date}). 사용자에게 알리고 /eli-update로 하네스·UI 콘텐츠의 새 버전이 있는지 각각 확인해요.`;
 }
 
 // 스킬은 패키지에서 프로젝트로 복사해 써요. 패키지를 올린 뒤 스킬을 다시 복사하지 않았으면 알려요.

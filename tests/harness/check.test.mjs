@@ -122,6 +122,12 @@ test('컴포넌트를 키우는 기준과 기록 자리가 연결되어 있어�
   assert.match(read('skills/eli-verify/SKILL.md'), /^\| 기록 없는 변형 \|/m);
 });
 
+test('업데이트 스킬은 설치 도구로 하네스의 최신 버전을 확인하고 올려요', () => {
+  const update = readFileSync(join(harness, 'skills/eli-update/SKILL.md'), 'utf8');
+  assert.match(update, /harness --update --dry-run/);
+  assert.match(update, /`get_versions`는 하네스의 최신 버전을 알려주지 않아요/);
+});
+
 test('문서 초안이 있고 스킬이 초안을 가져다 써요', () => {
   for (const dir of ['eli-design-md', 'eli-icon', 'eli-ux-writing']) {
     const template = readFileSync(join(harness, 'skills', dir, 'template.md'), 'utf8');
