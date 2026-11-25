@@ -299,7 +299,7 @@ ELI/
 
 세부 절차는 [Git 규칙](Agent/branch.md), 컴포넌트 구현은 [컴포넌트 지침](Agent/components.md), 디자인 전달은 [디자이너 협업 가이드](handbook/designer-guide.md)를 참고해요.
 
-미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. npm `latest`인 CLI 0.5.0의 고정 파일·검증 범위는 [릴리스 기록](handbook/releases/0.5.0.md), 이전 CLI는 [0.2.0](handbook/releases/0.2.0.md)·[0.3.0 후보](handbook/releases/0.3.0.md)·[0.3.1](handbook/releases/0.3.1.md)·[0.4.0](handbook/releases/0.4.0.md)에서 확인해요. UI 콘텐츠 0.3.0과 하네스 0.4.0의 공개 기록은 CHANGELOG와 각 GitHub Release에 있어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
+미배포 변경은 [CHANGELOG](CHANGELOG.md)의 `Unreleased`에 기록하고 릴리스 준비 때 대상별 구역으로 옮겨요. npm `latest`인 CLI 0.5.0의 고정 파일·검증 범위는 [릴리스 기록](handbook/releases/0.5.0.md), 이전 CLI는 [0.2.0](handbook/releases/0.2.0.md)·[0.3.0 후보](handbook/releases/0.3.0.md)·[0.3.1](handbook/releases/0.3.1.md)·[0.4.0](handbook/releases/0.4.0.md)에서 확인해요. UI 콘텐츠 0.3.0과 하네스 0.5.0의 공개 기록은 CHANGELOG와 각 GitHub Release에 있어요. 버전 증가 정책은 [버전 규칙](Agent/versioning.md), 실제 게시·확인·복구 순서는 [릴리스 절차](handbook/releasing.md)에서 관리해요. npm 담당자는 [게시 안내](handbook/npm-publishing.md)에 따라 검증된 파일의 게시와 태그 변경만 맡아요. 일반 PR 병합으로 npm 버전이 자동 갱신되지는 않아요.
 
 ## 라이선스
 
