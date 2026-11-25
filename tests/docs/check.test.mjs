@@ -77,6 +77,20 @@ test('가이드 목록과 버전은 항상 같은 형식이에요', () => {
   for (const value of [versions.ui.latest, versions.ui.docs, versions.harness.minimum]) assert.match(value, /^\d+\.\d+\.\d+$/);
 });
 
+test('공통 가이드를 상세 조회하고 검색할 수 있어요', () => {
+  const topics = getGuide().guides.map(guide => guide.topic);
+  assert.deepEqual(topics, ['install']);
+  assert.ok(getGuide().guides.every(guide => !('body' in guide)));
+  for (const topic of topics) {
+    const guide = getGuide({ topic });
+    assert.equal(guide.topic, topic);
+    assert.ok(guide.title && guide.description && guide.body.trim().length);
+    const results = search({ q: guide.title, limit: 20 }).results;
+    assert.ok(results.some(result => result.kind === 'guide' && result.id === topic));
+  }
+  assert.equal(getGuide({ topic: 'icon' }).error.code, 'not_found');
+});
+
 test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대로 나눠요', () => {
   const guide = {
     schemaVersion: 1, id: 'button', name: 'Button', status: 'draft', source: { markdown: null, sha256: null }, summary: '요약이에요.',
