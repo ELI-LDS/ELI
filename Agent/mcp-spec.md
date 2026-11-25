@@ -447,7 +447,7 @@ sequenceDiagram
 
 - 조회 함수·오류 응답·생성 스크립트는 `pnpm test:docs`로 자동 검사해요.
 - 로컬 프로덕션 빌드에서 MCP 프로토콜(`initialize`, `tools/list`, `tools/call`)로 도구 일곱 개의 응답을 확인했어요.
-- 실제 Claude Code·Codex에 `claude mcp add --transport http eli-docs http://localhost:3000/mcp`로 연결해 스킬과 함께 쓰는 흐름은 아직 확인하지 않았어요.
+- 공개 MCP와 실제 Codex의 문서 조회·소비 앱 생성·실행은 [검증 보고서](../handbook/audits/2026-11-24-harness-verification.md)의 범위에서 확인했어요. Claude 세션·자동 스킬 선택·훅 신뢰 등 남은 항목을 구분해요.
 - 하네스의 `/eli-doctor`가 원격 연결 항목을 통과로 보고하는지는 배포한 뒤에 확인해요.
 - 서버는 `main` 푸시마다 배포되고 `main`의 소스를 설명해요. `ui.latest`·`ui.docs`는 `packages/ui/package.json`의 버전이에요. 2026-11-24에 UI 콘텐츠 0.3.0을 공개해 서버와 공개 콘텐츠를 맞췄어요. 그 뒤 `main`에 UI 변경이 병합되면 다음 콘텐츠 릴리스 전까지 다시 어긋나요. 릴리스 태그에서만 배포할지는 아직 정하지 않았어요.
 - 가이드 install·font의 조회·검색은 원본 추가와 함께 검사해요. verify·design-system-page·icon은 아직 원본이 없으며 하네스의 기존 대체 절차와 미확인 범위 보고를 유지해요.
