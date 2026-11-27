@@ -190,6 +190,20 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     }
   }
 
+  // 직접 import하지 않는 조립 부품도 기본 설치만으로 사용할 수 있게 해요.
+  // 파일 소유권과 실제 소스 참조는 유지하고, 설치 관계만 같은 의존성 계약에 합쳐요.
+  const compositions = catalog.compositions === undefined ? {} : catalog.compositions;
+  assert.ok(compositions && typeof compositions === 'object' && !Array.isArray(compositions), '조립 관계는 항목별 객체여야 해요.');
+  for (const [id, dependencies] of Object.entries(compositions)) {
+    const item = items.get(id);
+    assert.equal(item?.kind, 'component', `조립 기준이 공개 컴포넌트가 아니에요: ${id}`);
+    assert.ok(Array.isArray(dependencies) && dependencies.length > 0 && new Set(dependencies).size === dependencies.length, `조립 항목이 비었거나 중복돼요: ${id}`);
+    for (const dependency of dependencies) {
+      assert.ok(dependency !== id && items.get(dependency)?.kind === 'component', `잘못된 조립 부품: ${id} → ${dependency}`);
+      item.dependencies.add(dependency);
+    }
+  }
+
   // 선택 설치한 소스에도 원래 라이선스를 함께 전달해요.
   const tokens = items.get('tokens');
   assert.ok(tokens?.files.size, '공통 토큰이 참조되지 않았어요.');

@@ -60,6 +60,8 @@ npx eli-design@latest add select
 npx eli-design@latest add modal select
 ```
 
+다음 릴리스 후보에서는 `add fab`로 FAB 메뉴 구성을, `add navigation-drawer`로 Drawer의 Category·Menu·Item을 함께 설치하도록 보완했어요. 이 변경은 아직 게시 전이며 새 CLI와 UI 콘텐츠가 함께 공개된 뒤 사용할 수 있어요. 기존 고정 버전의 설치 범위를 바꾸지는 않아요.
+
 전체 컴포넌트가 필요할 때만 `--all`을 사용해요. 하네스는 포함하지 않아요.
 
 ```bash

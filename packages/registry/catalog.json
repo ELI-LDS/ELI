@@ -1,5 +1,9 @@
 {
   "schemaVersion": 1,
   "reservedKinds": ["harness"],
-  "shared": [{ "id": "tokens", "directory": "tokens" }]
+  "shared": [{ "id": "tokens", "directory": "tokens" }],
+  "compositions": {
+    "fab": ["fab-menu", "fab-menu-segment"],
+    "navigation-drawer": ["navigation-drawer-category", "navigation-drawer-menu", "navigation-drawer-item"]
+  }
 }

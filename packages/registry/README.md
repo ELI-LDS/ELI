@@ -2,7 +2,7 @@
 
 기존 컴포넌트 소스에서 CLI용 JSON을 만드는 비공개 배포 도구 영역이에요. npm 패키지나 CLI 실행 파일이 아니에요.
 
-- `catalog.json`: 생성 정책과 하네스 항목 종류 예약
+- `catalog.json`: 생성 정책·공유 토큰·기본 설치에 함께 제공할 조립 부품·하네스 항목 종류 예약
 - `schema.json`: 목록·상세 JSON의 공개 규격
 - 생성: `pnpm build:registry`
 - 검증: `pnpm test:registry`

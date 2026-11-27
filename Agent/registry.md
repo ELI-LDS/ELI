@@ -14,7 +14,7 @@
 ## 원본과 생성물을 구분해요
 
 - 컴포넌트 원본은 `packages/ui/src`, 공개 컴포넌트의 기준은 `packages/ui/package.json`의 `exports`예요.
-- `packages/registry/catalog.json`은 규격 버전·공유 토큰 경로·예약된 항목 종류만 관리해요. 컴포넌트 명단과 의존 파일 목록을 수동 복제하지 않아요.
+- `packages/registry/catalog.json`은 규격 버전·공유 토큰 경로·예약된 항목 종류와 조립 관계(`compositions`)를 관리해요. 공개 컴포넌트 명단·파일 목록·실제 import 의존성을 수동 복제하지 않아요.
 - `pnpm build:registry`가 `.artifacts/registry/registry.json`과 항목별 JSON을 생성해요. 생성물은 직접 고치거나 Git에 올리지 않아요.
 - `packages/registry/schema.json`은 목록과 상세 JSON의 공개 JSON Schema예요. 규격을 호환되지 않게 바꾸면 `schemaVersion`을 올리고 CLI 담당자와 먼저 맞춰요.
 - UI 원본과 개발 도구의 실행 의존성은 추가하지 않아요. 레지스트리 생성기는 기존 TypeScript 개발 의존성과 Node.js 기본 API를 사용해요.
@@ -32,6 +32,16 @@ TypeScript의 import·재수출·타입 참조와 CSS의 `@import`·`url()`을 �
 생성기에서 TS import·재수출·타입 참조·URL과 CSS의 `@import`·`url()`을 설치 위치에 맞춰 상대경로로 보정해요. 일반 TS 모듈 import의 `.js` 확장자는 제거하고 CSS·SVG 확장자와 URL의 query·fragment는 유지해요. JSDoc·한국어 주석·`'use client'`와 실제 컴포넌트 동작을 보존하고 변환한 UTF-8 바이트로 해시를 계산해요. 원본 소스는 수정하지 않으며 이 변환을 소비 프로젝트 설정으로 떠넘기지 않아요. 경로가 충돌하면 생성하지 않아요.
 
 ## CLI가 읽는 계약
+
+### 조립 부품도 같은 설치 그래프로 연결해요
+
+기본 항목 하나를 요청했을 때 함께 제공해야 하는 공개 부품은 `catalog.json`의 `compositions`에 명시해요. 생성기는 이를 실제 참조로 찾은 `dependencies`에 합쳐요. 새 집계 항목·중복 소스·전달용 barrel을 만들지 않고 기존 진입 파일과 단독 부품 설치도 유지해요. 같은 폴더라는 이유만으로 형제 컴포넌트를 추가하지 않아요.
+
+부모는 부품을 설치하고 부품은 부모를 import할 수 있어 설치 그래프가 서로를 참조할 수 있어요. CLI는 파일·해시·버전·외부 요구 사항을 검증한 항목을 먼저 기록하고 한 번씩만 탐색해요. 자기 참조·없는 항목·하네스 포함·파일 소유권 중복은 거부하고, 전체 선택 검증이 끝나기 전에는 파일을 쓰지 않아요. 설치 관계와 소스의 런타임 순환 import는 구분해요.
+
+이 계약은 기존 JSON 필드를 사용하므로 규격 버전은 유지해요. 단, 기존 게시 CLI는 서로를 참조하는 설치 그래프를 거부하므로 새 조립 콘텐츠 공개 전에 보완한 CLI를 먼저 게시하고 호환되는 기본 콘텐츠 주소를 맞춰요. 이미 게시한 태그·asset을 덮어쓰지 않으며 현재 코드 검증을 공개 `@latest` 지원 완료로 안내하지 않아요.
+
+### 목록과 상세 데이터를 구분해요
 
 목록 JSON에는 `schemaVersion`, `version`, `license`, `reservedKinds`, `items`가 있어요. 각 목록 항목은 `id`, `kind`, `name`, `description`, `filename`, `sha256`을 제공해요. 목록에는 실제 소스를 담지 않아요.
 
