@@ -21,8 +21,14 @@ const mode = new URL(location.href).searchParams.get('font');
 if (mode !== 'default') {
   // 앱에서 이미 연결한 웹폰트가 있는 상황을 재현해요. ELI CSS는 변경하지 않아요.
   const family = mode.startsWith('variable') ? 'Pretendard Variable' : 'Pretendard';
-  const existing = new FontFace(family, 'url("/existing-pretendard.woff2")', { weight: '100 900', display: 'swap' });
-  document.fonts.add(mode.endsWith('loading') ? existing : await existing.load());
+  if (mode.endsWith('loading')) {
+    const style = document.createElement('style');
+    style.textContent = '@font-face { font-family: "' + family + '"; src: url("/existing-pretendard.woff2"); font-weight: 100 900; font-display: swap; }';
+    document.head.append(style);
+  } else {
+    const existing = new FontFace(family, 'url("/existing-pretendard.woff2")', { weight: '100 900', display: 'swap' });
+    document.fonts.add(await existing.load());
+  }
 }
 createRoot(document.getElementById('root')!).render(<Button icon={null}>한글과 ELI 123</Button>);
 `);
@@ -53,10 +59,23 @@ try {
           const requests = [];
           const errors = [];
           page.on('request', request => { if (request.url().includes('.woff2')) requests.push(new URL(request.url()).pathname); });
+          page.on('requestfailed', request => { if (request.url().includes('.woff2')) errors.push(`${request.url()}: ${request.failure()?.errorText}`); });
           page.on('pageerror', error => errors.push(error.message));
           await page.goto(`${url}?font=${mode}`);
           await page.getByRole('button', { name: '한글과 ELI 123' }).waitFor();
-          await page.evaluate(async () => Promise.race([document.fonts.ready, new Promise((_, reject) => setTimeout(() => reject(new Error(JSON.stringify([...document.fonts].map(font => ({ family: font.family, status: font.status }))))), 15_000))]));
+          // 다른 대체 글꼴의 상태가 아니라 검증 대상 글꼴의 디코딩 완료를 확인해요.
+          const family = mode === 'default' ? '_eli-pretendard-variable' : mode.startsWith('variable') ? 'Pretendard Variable' : 'Pretendard';
+          await page.evaluate(async family => {
+            const face = [...document.fonts].find(font => font.family.replace(/^["']|["']$/g, '') === family);
+            if (!face) throw new Error(`등록되지 않은 글꼴: ${family}`);
+            let timeout;
+            try {
+              await Promise.race([face.load(), new Promise((_, reject) => {
+                timeout = setTimeout(() => reject(new Error(`글꼴 로딩 시간 초과: ${family}`)), 15_000);
+              })]);
+              if (face.status !== 'loaded' || !document.fonts.check(`600 16px "${family}"`, '한글과 ELI 123')) throw new Error(`글꼴을 사용할 수 없어요: ${family}`);
+            } finally { clearTimeout(timeout); }
+          }, family);
           const stack = await page.getByText('한글과 ELI 123', { exact: true }).evaluate(element => getComputedStyle(element).fontFamily);
           assert.ok(stack.indexOf('Pretendard Variable') < stack.indexOf('_eli-pretendard-variable'));
           assert.ok(stack.indexOf('Pretendard,') < stack.indexOf('_eli-pretendard-variable'));
