@@ -107,7 +107,8 @@ try {
       const input = page.getByRole('searchbox', { name: '컴포넌트 검색' });
       await expect(input).toBeFocused();
       await input.fill('내비');
-      await expect(search.getByRole('button', { name: /Navigation Bar/ })).toBeVisible();
+      await expect(search.getByRole('button', { name: 'Navigation Bar', exact: true })).toBeVisible();
+      await expect(search.getByRole('button', { name: 'Navigation Bar Glass', exact: true })).toBeVisible();
       await page.screenshot({ path: join(work, `${name}-search-results.png`) });
       await input.fill('캘린더');
       await expect(page.getByText('검색 결과가 없어요.')).toBeVisible();

@@ -205,3 +205,8 @@ Foundation 정리 후 문서 검사 24개 통과·기존 설치 소비 TODO 2개
 ### 홈 확인용 진입점
 
 홈 시안 구현 전 `/`에는 `Foundation 확인하기` 버튼만 표시하고 `/foundation/color`로 이동해요. 화면은 `pages/home`에 두고 라우트는 연결만 담당하며, 설치한 ELI Button을 재사용해요. 홈페이지 디자인 구현 완료를 뜻하지 않아요. 관련 린트·문서 형식과 로컬 브라우저의 실제 이동을 확인했고 전체 빌드는 반복하지 않았어요.
+
+
+### PR 준비 시 최종 검증
+
+2026-11-27 최종 변경에서 `pnpm check`, `pnpm build:docs`, `pnpm test:registry`와 문서 검사(24개 통과·실제 설치 소비 TODO 2개)를 확인했어요. Chromium·WebKit·설치된 Chrome에서 컴포넌트 25개 문서와 Foundation 네 화면, Chromium·WebKit에서 모바일 메뉴·검색·필터·포커스·모션을 확인했어요. Navigation Bar와 Glass의 검색 결과를 각각 정확한 이름으로 검사해요. 수정 Markdown 상대 링크 226개와 `git diff --check`도 확인했어요. 내부 UI tarball은 압축 142,712 B·해제 533,667 B·327개 파일이며 전체 설치 다운로드량과 구분해요. 실제 Safari·Edge·모바일 실기기, 색상 대비 전체 적합성과 공개 배포는 이번 결과에 포함하지 않아요. FAB·Drawer의 구성 요소 자동 설치는 별도 브랜치 작업이며 이 문서 PR의 TODO는 유지해요.
