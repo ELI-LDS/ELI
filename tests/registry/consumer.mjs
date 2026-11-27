@@ -58,7 +58,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
+await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab', 'navigation-drawer', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -73,6 +73,9 @@ import { TextField } from '../ui/text-field';
 import { Button } from '../ui/button';
 import { Select } from '../ui/select';
 import { FabMenu } from '../ui/fab-menu';
+import { NavigationDrawer } from '../ui/navigation-drawer';
+import { NavigationDrawerCategory } from '../ui/navigation-drawer-category';
+import { NavigationDrawerMenu } from '../ui/navigation-drawer-menu';
 import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import { Radio } from '../ui/radio';
@@ -97,7 +100,7 @@ export function Client() {
   if (apiTest) return <ApiContractsFixture />;
   if (modalTest) return <ModalFixture />;
   if (textTest) return <TextFieldFixture />;
-  return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
+  return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><NavigationDrawer aria-label="소스 Drawer"><NavigationDrawerCategory label="문서" /><NavigationDrawerMenu label="소스 메뉴" value="main" subItems={[{ label: "소스 하위", value: "sub" }]} /></NavigationDrawer><FabMenu label="소스 추가" items={[{ id: 'first', label: '소스 액션' }]} /></>;
 }`);
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
 import { Badge } from '../ui/badge';
@@ -156,11 +159,16 @@ try {
   await page.getByRole('button', { name: /소스 선택/ }).click();
   await page.getByRole('option', { name: '소스 옵션' }).click();
   await page.getByRole('button', { name: /소스 선택 소스 옵션/ }).waitFor();
+  await page.getByRole('button', { name: '소스 메뉴', exact: true }).click();
+  await page.getByRole('button', { name: '소스 하위', exact: true }).click();
+  assert.equal(await page.getByRole('button', { name: '소스 하위', exact: true }).getAttribute('aria-current'), 'page');
+  await page.getByRole('button', { name: '소스 추가', exact: true }).click();
+  await page.getByRole('button', { name: '소스 액션', exact: true }).click();
   await checkModal(page, url);
   await checkTextField(page, url);
   await checkApiContracts(page, url);
   assert.deepEqual(errors, []);
-  console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select 상호작용·CSS 연결을 검증했어요.');
+  console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select/FAB/Drawer 상호작용·CSS 연결을 검증했어요.');
 } finally {
   await browser?.close();
   server.kill('SIGTERM');

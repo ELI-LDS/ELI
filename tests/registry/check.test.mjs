@@ -99,6 +99,26 @@ test('같은 원본의 생성 결과는 바이트와 해시가 같아요', () =>
   assert.deepEqual(generateRegistry().artifacts, generateRegistry().artifacts);
 });
 
+test('조립 기준 하나로 부품을 모두 받고 관계없는 컴포넌트는 받지 않아요', async () => {
+  for (const [id, parts] of [
+    ['fab', ['fab', 'fab-menu', 'fab-menu-segment']],
+    ['navigation-drawer', ['navigation-drawer', 'navigation-drawer-category', 'navigation-drawer-menu', 'navigation-drawer-item']],
+  ]) {
+    const { selected, files } = await selectFiles(directory, [id]);
+    assert.deepEqual([...selected.values()].filter(item => item.kind === 'component').map(item => item.id).sort(), [...parts].sort());
+    for (const part of parts) assert.ok(files.has(`${part}.tsx`), part);
+    assert.equal([...selected.keys()].filter(id => id === 'tokens').length, 1);
+    assert.ok(![...selected.keys()].some(id => ['button', 'modal', 'harness'].includes(id)));
+  }
+});
+
+test('없는 항목·자기 자신·중복·비공개 부품을 조립 관계로 등록하지 못해요', async () => {
+  const catalog = JSON.parse(await readFile(join(root, 'packages/registry/catalog.json'), 'utf8'));
+  for (const compositions of [
+    { missing: ['fab'] }, { fab: ['fab'] }, { fab: ['fab-menu', 'fab-menu'] }, { fab: ['tokens'] },
+  ]) assert.throws(() => generateRegistry({ catalog: { ...catalog, compositions } }), /조립/);
+});
+
 test('소스 배치를 줄여도 타입 참조·재수출·URL·CSS 연결과 주석을 보존해요', async () => {
   const fixture = await mkdtemp(join(tmpdir(), 'eli-registry-paths-'));
   const sourceRoot = join(fixture, 'src');

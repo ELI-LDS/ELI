@@ -20,6 +20,8 @@ const scenarios = [
   { id: 'button', name: 'Button', commands: [['add', 'button']] },
   { id: 'modal', name: 'Modal (Button·Dim 포함)', commands: [['add', 'modal']] },
   { id: 'sequential', name: 'Button → Modal → Select', commands: [['add', 'button'], ['add', 'modal'], ['add', 'select']] },
+  { id: 'fab', name: 'FAB (Menu·Segment 포함)', commands: [['add', 'fab']] },
+  { id: 'navigation-drawer', name: 'Drawer (Category·Menu·Item 포함)', commands: [['add', 'navigation-drawer']] },
   { id: 'all', name: '전체 컴포넌트', commands: [['add', '--all']] },
   { id: 'harness', name: '하네스 (Claude Code·Codex)', commands: [['harness', '--agent', 'all']], harness: true, onlyHarness: true },
   { id: 'button-harness', name: 'Button + 하네스', commands: [['add', 'button'], ['harness', '--agent', 'all']], harness: true },

@@ -254,12 +254,12 @@ test('모든 공개 컴포넌트를 각각 새 프로젝트에 단독 선택해 
   }
 });
 
-async function changedRegistry(change) {
+async function changedRegistry(change, id = 'button') {
   const path = await mkdtemp(join(artifacts, 'registry-'));
   await cp(registry, path, { recursive: true });
   const indexPath = join(path, 'registry.json');
   const index = JSON.parse(await readFile(indexPath, 'utf8'));
-  const descriptor = index.items.find(item => item.id === 'button');
+  const descriptor = index.items.find(item => item.id === id);
   const itemPath = join(path, descriptor.filename);
   const item = JSON.parse(await readFile(itemPath, 'utf8'));
   change(index, item);
@@ -292,7 +292,42 @@ test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 �
   assert.equal(await readFile(join(path, status.entries[0].path), 'utf8'), content);
 });
 
-test('경로 탈출·개발 파일·버전 혼합·순환 의존·내용 변조를 쓰기 전에 거부해요', async () => {
+test('기본 조립 항목만 요청해도 부품을 모두 설치하고 재요청은 파일을 바꾸지 않아요', async () => {
+  for (const [id, parts] of [
+    ['fab', ['fab', 'fab-menu', 'fab-menu-segment']],
+    ['navigation-drawer', ['navigation-drawer', 'navigation-drawer-category', 'navigation-drawer-menu', 'navigation-drawer-item']],
+  ]) {
+    const path = await fixture();
+    await init(path);
+    requests.length = 0;
+    const added = await run(path, ['add', id]);
+    assert.deepEqual(added.requested, [id]);
+    assert.deepEqual(added.entries.map(item => item.id).sort(), [...parts].sort());
+    const expected = await selectFiles(registry, [id]);
+    for (const [name, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', name), 'utf8'), content);
+    assert.equal(new Set(requests).size, requests.length, '공유 항목은 한 번만 다운로드해요.');
+    assert.ok(!requests.some(url => /button|modal|harness/.test(url)));
+    const repeated = await run(path, ['add', ...parts]);
+    assert.ok(repeated.files.every(file => file.action === 'reuse'));
+    for (const [name, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', name), 'utf8'), content);
+    const partFirst = await fixture();
+    await init(partFirst);
+    await run(partFirst, ['add', parts[1]]);
+    await run(partFirst, ['add', id]);
+    for (const [name, content] of expected.files) assert.equal(await readFile(join(partFirst, 'src/components/ui', name), 'utf8'), content);
+  }
+});
+
+test('조립 부품의 소스가 변조되면 기준 항목도 파일에 쓰지 않아요', async () => {
+  const source = await changedRegistry((_, item) => { item.files[0].content += 'tampered'; }, 'fab-menu-segment');
+  const path = await fixture();
+  await init(path, source);
+  assert.equal((await run(path, ['add', 'fab'], 1)).error.code, 'INTEGRITY_MISMATCH');
+  assert.deepEqual(await readdir(join(path, 'src')), []);
+  assert.deepEqual(await readdir(join(path, '.eli')), ['config.json']);
+});
+
+test('경로 탈출·개발 파일·버전 혼합·자기 참조·내용 변조를 쓰기 전에 거부해요', async () => {
   for (const [mutate, expected] of [
     [(_, item) => { item.files[0].path = '../outside.ts'; }, 'UNSAFE_PATH'],
     [(_, item) => { item.files[0].path = 'button/Button.test.tsx'; }, 'UNSAFE_PATH'],
