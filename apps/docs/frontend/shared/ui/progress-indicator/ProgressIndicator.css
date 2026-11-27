@@ -1,0 +1,83 @@
+@import '../tokens/index.css';
+
+/* Figma의 막대형 Indeterminate 너비 변화를 그대로 사용해요. */
+@keyframes eli-progress-indicator-width {
+  0% {
+    width: 0;
+    animation-timing-function: cubic-bezier(0.681, 0, 0.72, 1);
+  }
+
+  50%,
+  100% {
+    width: 100%;
+  }
+}
+
+/* Figma의 막대형 Indeterminate 이동을 그대로 사용해요. */
+@keyframes eli-progress-indicator-translate {
+  0% {
+    translate: 0 0;
+  }
+
+  30% {
+    translate: 0 0;
+    animation-timing-function: cubic-bezier(0.483, 0, 0.164, 1);
+  }
+
+  100% {
+    translate: 100% 0;
+  }
+}
+
+@layer components {
+  /* 공통 Track */
+  .eli-progress-indicator {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    height: 8px;
+    border-radius: var(--eli-layout-scale-1, 4px);
+    background: var(--eli-background-subtle, #eaf0f9);
+  }
+
+  /* Active Indicator */
+  .eli-progress-indicator__active {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    border-radius: var(--eli-layout-scale-1, 4px);
+    background: var(--eli-background-strong, #c4cedc);
+  }
+
+  .eli-progress-indicator[data-state='determinate'] .eli-progress-indicator__active {
+    transition: width 1.022094s ease-out;
+  }
+
+  /* 진행률을 알 수 없는 반복 애니메이션 */
+  .eli-progress-indicator[data-state='indeterminate'] .eli-progress-indicator__active {
+    width: 0;
+    animation:
+      eli-progress-indicator-width 2s linear infinite,
+      eli-progress-indicator-translate 2s linear infinite;
+    will-change: width, translate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-progress-indicator[data-state='indeterminate'] .eli-progress-indicator__active {
+      width: 40%;
+      translate: 0 0;
+      animation: none;
+      will-change: auto;
+    }
+
+    .eli-progress-indicator[data-state='determinate'] .eli-progress-indicator__active {
+      transition-duration: 0.01ms;
+    }
+  }
+}

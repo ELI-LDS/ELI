@@ -1,0 +1,59 @@
+@import '../tokens/index.css';
+
+@layer components {
+  /* FAB의 기본 크기와 모양을 관리해요. */
+  .eli-fab {
+    box-sizing: border-box;
+    display: inline-flex;
+    min-width: 56px;
+    height: 56px;
+    padding: 0 var(--eli-layout-scale-4, 16px);
+    justify-content: center;
+    align-items: center;
+    gap: var(--eli-layout-scale-1, 4px);
+    border: 0;
+    border-radius: var(--eli-layout-scale-2, 8px);
+    color: var(--eli-foreground-inverse, #fff);
+    background: var(--eli-background-interaction-brand-default, #3584fb);
+    filter:
+      drop-shadow(1px 2px 1.5px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)))
+      drop-shadow(1px 6px 6px var(--eli-effect-fab, rgba(2, 8, 18, 0.2)));
+    cursor: pointer;
+  }
+
+  .eli-fab__icon {
+    position: relative;
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eli-fab__icon > :is(svg, img),
+  .eli-fab__icon-layer > :is(svg, img) {
+    width: 24px;
+    height: 24px;
+  }
+
+  /*
+   * 아이콘 교차 전환: 닫힘 아이콘(+)은 45° 돌며 사라지고, 열림 아이콘(×)은 -45°에서 돌아 들어와요.
+   * 두 층을 겹쳐두고 opacity와 transform만 바꿔요.
+   */
+  .eli-fab__icon-layer {
+    position: absolute;
+    inset: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .eli-fab__label {
+    overflow: hidden;
+    min-width: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+}

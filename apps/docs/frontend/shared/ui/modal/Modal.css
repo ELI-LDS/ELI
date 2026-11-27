@@ -1,0 +1,76 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* 화면 전체 영역 */
+.eli-modal {
+  box-sizing: border-box;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--eli-layout-scale-4, 16px);
+  justify-content: center;
+  align-items: center;
+}
+
+/* 콘텐츠 */
+.eli-modal__content {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  width: 100%;
+  /* 현재 최대 너비는 유지하고 작은 화면에서는 부모 너비에 맞춰요. */
+  max-width: 343px;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: var(--eli-layout-scale-5, 20px) var(--eli-layout-scale-4, 16px)
+    var(--eli-layout-scale-4, 16px);
+  flex-direction: column;
+  align-items: center;
+  gap: var(--eli-layout-scale-5, 20px);
+  border-radius: var(--eli-layout-scale-4, 16px);
+  background: var(--eli-background-default, #fff);
+}
+
+/* 텍스트 영역 */
+.eli-modal__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--eli-layout-scale-2, 8px);
+  align-self: stretch;
+}
+
+/* 제목 */
+.eli-modal__title {
+  align-self: stretch;
+  color: var(--eli-foreground-strong, #020812);
+  text-align: center;
+}
+
+/* 본문 목록 */
+.eli-modal__descriptions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  color: var(--eli-foreground-default, #4b5668);
+  text-align: center;
+}
+
+/* 본문 문장 */
+.eli-modal__description {
+  width: 100%;
+  overflow-wrap: break-word;
+}
+
+/* 버튼 영역 */
+.eli-modal__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--eli-layout-scale-2, 8px);
+  align-self: stretch;
+}
+}

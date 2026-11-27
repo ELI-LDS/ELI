@@ -1,0 +1,125 @@
+@import '../tokens/index.css';
+
+@property --eli-loading-indicator-cycle-rotate {
+  syntax: '<angle>';
+  initial-value: 0rad;
+  inherits: false;
+}
+
+/* Continuous는 반복 경계에서 감속하지 않고 같은 속도로 회전해요. */
+@keyframes eli-loading-indicator-continuous-rotate {
+  from {
+    transform: rotate(0turn);
+  }
+
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* Cycle은 Figma에서 전달된 두 단계 가감속을 2초 동안 재생해요. */
+@keyframes eli-loading-indicator-cycle-rotate {
+  0% {
+    --eli-loading-indicator-cycle-rotate: -12.566rad;
+    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  50% {
+    --eli-loading-indicator-cycle-rotate: -6.283rad;
+    animation-timing-function: cubic-bezier(0, 0, 0.448, 1);
+  }
+
+  100% {
+    --eli-loading-indicator-cycle-rotate: -0.008rad;
+  }
+}
+
+@layer components {
+  /* 공통 원형 영역 */
+  .eli-loading-indicator {
+    position: relative;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 40px;
+    height: 40px;
+    flex: none;
+  }
+
+  .eli-loading-indicator__determinate,
+  .eli-loading-indicator__track,
+  .eli-loading-indicator__active {
+    position: absolute;
+    inset: 0;
+    display: block;
+  }
+
+  /* 진행률 변경 시 Figma의 Determinate Smart Animate처럼 원형 선을 이어서 그려요. */
+  .eli-loading-indicator__determinate {
+    transform: rotate(-90deg);
+  }
+
+  .eli-loading-indicator__determinate-track,
+  .eli-loading-indicator__determinate-active {
+    fill: none;
+    stroke-width: 6;
+  }
+
+  .eli-loading-indicator__determinate-track {
+    stroke: var(--eli-background-subtle, #eaf0f9);
+  }
+
+  .eli-loading-indicator__determinate-active {
+    stroke: var(--eli-background-strong, #c4cedc);
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.022094s ease-out;
+  }
+
+  /* 0%에서는 둥근 선 끝이 점처럼 보이지 않도록 Active Indicator를 숨겨요. */
+  .eli-loading-indicator[data-progress='0'] .eli-loading-indicator__determinate-active {
+    visibility: hidden;
+  }
+
+  /* Indeterminate Track */
+  .eli-loading-indicator__track {
+    background: url('./indeterminate-track.svg') center / 40px 40px no-repeat;
+  }
+
+  /* Indeterminate Active Indicator */
+  .eli-loading-indicator__active {
+    will-change: transform;
+  }
+
+  .eli-loading-indicator[data-variant='continuous']
+    .eli-loading-indicator__active {
+    animation: eli-loading-indicator-continuous-rotate 1s linear infinite;
+  }
+
+  .eli-loading-indicator[data-variant='cycle']
+    .eli-loading-indicator__active {
+    transform: rotate(var(--eli-loading-indicator-cycle-rotate, -12.566rad));
+    animation: eli-loading-indicator-cycle-rotate 2s linear infinite;
+  }
+
+  .eli-loading-indicator__active::before {
+    position: absolute;
+    inset: 0.49% 50% 50% 0.49%;
+    background: url('./indeterminate-active.svg') center / 100% 100% no-repeat;
+    content: '';
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-loading-indicator__active {
+      transform: rotate(0rad);
+      animation: none;
+      will-change: auto;
+    }
+
+    .eli-loading-indicator__determinate-active {
+      transition-duration: 0.01ms;
+    }
+  }
+}

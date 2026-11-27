@@ -1,0 +1,13 @@
+.docs-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  overflow: hidden;
+  font-family: var(--eli-font-family-sans);
+  color: var(--eli-foreground-strong);
+}
+.docs-overlay[hidden] { display: none; }
+.docs-overlay__backdrop { position: absolute; inset: 0; background: var(--eli-effect-dim); }
+.docs-overlay__panel { position: absolute; box-sizing: border-box; outline: none; }
+.docs-overlay__close { display: inline-flex; width: 24px; height: 24px; padding: 0; border: 0; background: transparent; cursor: pointer; }
+.docs-overlay__close:focus-visible { outline: 2px solid var(--eli-border-interaction-focused); outline-offset: 4px; }

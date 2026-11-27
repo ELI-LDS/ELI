@@ -1,0 +1,21 @@
+.doc-toc { min-width: 0; font-family: var(--eli-font-family-sans); font-size: var(--eli-font-size-label-02); line-height: 1.5; }
+.doc-toc ul { display: grid; gap: var(--eli-layout-scale-1); margin: 0; padding: 0; list-style: none; }
+.doc-toc > ul { border-left: 1px solid var(--eli-border-divider); }
+.doc-toc li { min-width: 0; }
+.doc-toc ul ul a { padding-left: var(--eli-layout-scale-6); }
+.doc-toc a { white-space: nowrap; position: relative; display: block; padding: var(--eli-layout-scale-2) var(--eli-layout-scale-3); border-radius: 0 var(--eli-layout-scale-1) var(--eli-layout-scale-1) 0; color: var(--eli-foreground-default); text-decoration: none; transition: color 150ms ease-out; }
+/* 크기·굵기·배경을 바꾸지 않고 Primary 글자색과 현재 구역 표시선을 사용해요. */
+.doc-toc a::before { position: absolute; content: ''; inset: 0 auto 0 -1px; width: 2px; background: var(--eli-border-brand); transform: scaleY(0); transition: transform 150ms ease-out; }
+.doc-toc a:hover, .doc-toc a:focus-visible { color: var(--eli-foreground-brand); }
+.doc-toc a[aria-current='location'] { color: var(--eli-foreground-brand); }
+.doc-toc a[aria-current='location']::before { transform: scaleY(1); }
+.doc-toc a:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 2px; }
+.doc-toc--sidebar > p { margin: 0 0 var(--eli-layout-scale-4); color: var(--eli-foreground-strong); font-weight: var(--eli-font-weight-semibold); }
+@media (min-width: 1280px) {
+  /* 기본 앵커·URL·키보드 동작을 유지하며 문서 안에서 부드럽게 이동해요. */
+  html:has(.doc-toc) { scroll-behavior: smooth; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:has(.doc-toc) { scroll-behavior: auto; }
+  .doc-toc a, .doc-toc a::before { transition: none; }
+}

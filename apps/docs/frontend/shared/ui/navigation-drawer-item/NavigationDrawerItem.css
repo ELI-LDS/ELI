@@ -1,0 +1,148 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* Drawer의 이동 항목 */
+.eli-navigation-drawer-item {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 56px;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  border: 0;
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: transparent;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  text-align: left;
+}
+
+/* Main Menu */
+.eli-navigation-drawer-item[data-variant='main-menu'] {
+  padding: 0 var(--eli-layout-scale-4, 16px);
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+/* Sub Menu */
+.eli-navigation-drawer-item[data-variant='sub-menu'] {
+  padding: 0 var(--eli-layout-scale-4, 16px) 0 52px;
+  cursor: pointer;
+}
+
+/* 아이콘과 라벨 묶음 */
+.eli-navigation-drawer-item__content {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: var(--eli-layout-scale-3, 12px);
+}
+
+/* 좌우 아이콘 */
+.eli-navigation-drawer-item__left-icon,
+.eli-navigation-drawer-item__right-icon {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  align-items: center;
+  justify-content: center;
+  color: inherit;
+}
+
+/* Main Menu의 펼침 아이콘 */
+.eli-navigation-drawer-item[data-variant='main-menu']
+  .eli-navigation-drawer-item__right-icon {
+  color: var(--eli-foreground-subtle, #8b98aa);
+  transform: rotate(0deg);
+  transition: transform 150ms cubic-bezier(0.4, 0, 1, 1);
+}
+
+.eli-navigation-drawer-item[data-variant='main-menu']
+  .eli-navigation-drawer-item__right-icon[data-expanded='true'] {
+  transform: rotate(180deg);
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 한 줄 라벨 */
+.eli-navigation-drawer-item__label {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Main Menu가 여닫는 Sub Menu 목록 */
+.eli-navigation-drawer-item__sub-items {
+  display: grid;
+  width: 100%;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition:
+    grid-template-rows 150ms cubic-bezier(0.4, 0, 1, 1),
+    opacity 150ms cubic-bezier(0.4, 0, 1, 1),
+    transform 150ms cubic-bezier(0.4, 0, 1, 1),
+    visibility 0s linear 150ms;
+}
+
+.eli-navigation-drawer-item__sub-items[data-expanded='true'] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+  transition:
+    grid-template-rows 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s;
+}
+
+/* 0fr 상태에서 내용 높이를 완전히 접고, 항목 수에 따라 자연스럽게 늘어나게 해요. */
+.eli-navigation-drawer-item__sub-items-inner {
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+  flex-direction: column;
+}
+
+/* 활성 메뉴 */
+.eli-navigation-drawer-item[data-active='true'] {
+  background: var(--eli-background-subtle, #eaf0f9);
+  color: var(--eli-foreground-strong, #020812);
+}
+
+/* 활성 메뉴 / Hover */
+.eli-navigation-drawer-item[data-active='true']:is(button):hover {
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
+}
+
+/* 활성 메뉴 / Pressed */
+.eli-navigation-drawer-item[data-active='true']:is(button):active {
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+}
+
+/* 비활성 메뉴 / Hover */
+.eli-navigation-drawer-item[data-active='false']:is(button):hover {
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
+}
+
+/* 비활성 메뉴 / Pressed */
+.eli-navigation-drawer-item[data-active='false']:is(button):active {
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eli-navigation-drawer-item__right-icon,
+  .eli-navigation-drawer-item__sub-items,
+  .eli-navigation-drawer-item__sub-items[data-expanded='true'] {
+    transition-duration: 0.01ms;
+  }
+}
+}

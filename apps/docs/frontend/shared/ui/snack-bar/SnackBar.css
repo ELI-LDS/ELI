@@ -1,0 +1,40 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* Base Layout */
+.eli-snackbar {
+  box-sizing: border-box;
+  display: flex;
+  width: 343px;
+  max-width: 100%;
+  padding: var(--eli-layout-scale-3, 12px) var(--eli-layout-scale-4, 16px);
+  align-items: center;
+  gap: var(--eli-layout-scale-4, 16px);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  background: var(--eli-background-subtle, #f4f8fe);
+  box-shadow: 0 2px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
+}
+
+/* Content / Message */
+.eli-snackbar__message {
+  display: -webkit-box;
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: var(--eli-foreground-default, #4b5668);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* Content / Action */
+.eli-snackbar__action {
+  display: flex;
+  align-items: center;
+  gap: var(--eli-layout-scale-4, 16px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--eli-foreground-brand, #3584fb);
+}
+}

@@ -1,0 +1,52 @@
+'use client';
+
+import './text-area/TextArea.css';
+import type { TextAreaProps } from './text-area/TextArea.types';
+
+/**
+ * 여러 줄의 내용을 입력해요.
+ *
+ * @example 빠른 사용
+ * `<TextArea label="소개" placeholder="소개를 입력하세요" />`
+ *
+ * ### 주요 설정
+ * - `label`: 입력 영역 이름, 기본값은 `라벨`
+ * - `placeholder`: 값이 없을 때의 안내 문구
+ * - `disabled`: `true`이면 비활성화해요.
+ *
+ * ### 내용과 동작
+ * - `ref`: 실제 입력 요소를 가리켜 focus() 같은 입력 동작에 사용해요.
+ * - `value`, `defaultValue`: 입력 값
+ * - `onChange`: 입력 값이 바뀔 때 실행할 함수
+ *
+ * ### 스타일 변경
+ * - `className`: 바깥 label의 너비·배치 등을 바꿔요. 내부 textarea의 배경·테두리·글자 크기·높이에 직접 적용되지 않아요.
+ * - `style`: 같은 바깥 label의 인라인 스타일로, 같은 속성의 일반 클래스보다 우선해요.
+ */
+export function TextArea(props: TextAreaProps) {
+  const {
+    className,
+    disabled = false,
+    label = '라벨',
+    placeholder = '내용을 입력하세요',
+    style,
+    ...textAreaProps
+  } = props;
+  const textAreaClassName = ['eli-text-area', className].filter(Boolean).join(' ');
+  const inputClassName = [
+    'eli-text-area__input',
+    disabled ? 'eli-typo-label-medium' : 'eli-typo-body-medium',
+  ].join(' ');
+
+  return (
+    <label className={textAreaClassName} style={style}>
+      <span className="eli-text-area__label eli-typo-label-medium">{label}</span>
+      <textarea
+        {...textAreaProps}
+        className={inputClassName}
+        disabled={disabled}
+        placeholder={placeholder}
+      />
+    </label>
+  );
+}

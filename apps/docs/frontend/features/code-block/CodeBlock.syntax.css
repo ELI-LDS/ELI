@@ -1,0 +1,25 @@
+/* 문법 분류에 기존 팔레트를 연결해 코드 전용 색상 값을 중복 선언하지 않아요. */
+.docs-code-block .token.comment,
+.docs-code-block .token.prolog,
+.docs-code-block .token.doctype { color: var(--eli-color-neutral-700); }
+
+.docs-code-block .token.keyword,
+.docs-code-block .token.selector { color: var(--eli-color-blue-700); }
+
+.docs-code-block .token.tag,
+.docs-code-block .token.class-name,
+.docs-code-block .token.function { color: var(--eli-color-red-600); }
+
+.docs-code-block .token.attr-name,
+.docs-code-block .token.property { color: var(--eli-color-blue-700); }
+
+.docs-code-block .token.string,
+.docs-code-block .token.attr-value,
+.docs-code-block .token.template-string { color: var(--eli-color-green-700); }
+
+.docs-code-block .token.boolean,
+.docs-code-block .token.number,
+.docs-code-block .token.constant { color: var(--eli-color-yellow-800); }
+
+.docs-code-block .token.operator,
+.docs-code-block .token.punctuation { color: var(--eli-foreground-default); }

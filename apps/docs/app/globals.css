@@ -1,0 +1,4 @@
+/* 문서 페이지의 모바일 16px 여백을 브라우저 기본 body 여백과 중복 적용하지 않아요. */
+body { margin: 0; }
+/* 문서 끝의 탄성 스크롤이 고정 헤더를 흔들지 않게 세로 overscroll만 제한해요. */
+html { overscroll-behavior-y: none; }

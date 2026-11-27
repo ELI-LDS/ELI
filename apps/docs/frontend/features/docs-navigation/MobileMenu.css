@@ -1,0 +1,12 @@
+.docs-mobile-menu-overlay .docs-overlay__panel {
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--eli-layout-scale-4) var(--eli-layout-scale-4);
+  background: var(--eli-background-default);
+}
+.docs-mobile-menu__header { display: flex; height: 64px; align-items: center; justify-content: space-between; }
+.docs-mobile-menu__header a { display: inline-flex; }
+.docs-navigation--mobile { width: 100%; }
+.docs-navigation--mobile .eli-navigation-drawer-item[data-variant='main-menu'] { color: var(--eli-foreground-strong); }
+.docs-navigation__pending--main { color: var(--eli-foreground-strong); }

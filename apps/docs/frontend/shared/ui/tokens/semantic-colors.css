@@ -1,0 +1,58 @@
+/* Primitive 색상에 의미, 상호작용 상태와 효과를 연결해요. */
+
+:root {
+  /* Foreground */
+  --eli-foreground-strong: var(--eli-color-neutral-900);
+  --eli-foreground-default: var(--eli-color-neutral-700);
+  --eli-foreground-subtle: var(--eli-color-neutral-500);
+  --eli-foreground-disabled: rgb(from var(--eli-color-neutral-700) r g b / 30%);
+  --eli-foreground-brand: var(--eli-color-blue-500);
+  --eli-foreground-brand-disabled: rgb(from var(--eli-color-blue-500) r g b / 30%);
+  --eli-foreground-inverse: var(--eli-color-static-white);
+  --eli-foreground-inverse-disabled: rgb(from var(--eli-color-static-white) r g b / 80%);
+  --eli-foreground-error: var(--eli-color-red-500);
+  --eli-foreground-success: var(--eli-color-green-700);
+  --eli-foreground-caution: var(--eli-color-yellow-600);
+
+  /* Background */
+  --eli-background-default: var(--eli-color-static-white);
+  --eli-background-default-alpha: rgb(from var(--eli-color-static-white) r g b / 90%);
+  --eli-background-subtle: var(--eli-color-neutral-100);
+  --eli-background-strong: var(--eli-color-neutral-300);
+  --eli-background-error: var(--eli-color-red-50);
+  --eli-background-success: var(--eli-color-green-50);
+  --eli-background-caution: var(--eli-color-yellow-50);
+
+  /* Background / Interaction / Brand */
+  --eli-background-interaction-brand-default: var(--eli-color-blue-500);
+  --eli-background-interaction-brand-hover: var(--eli-color-blue-400);
+  --eli-background-interaction-brand-hover-alpha: rgb(from var(--eli-color-blue-500) r g b / 10%);
+  --eli-background-interaction-brand-pressed: var(--eli-color-blue-600);
+  --eli-background-interaction-brand-pressed-alpha: rgb(from var(--eli-color-blue-500) r g b / 20%);
+  --eli-background-interaction-brand-disabled: rgb(from var(--eli-color-blue-500) r g b / 30%);
+
+  /* Background / Interaction / Neutral */
+  --eli-background-interaction-neutral-default: var(--eli-color-neutral-100);
+  --eli-background-interaction-neutral-hover: var(--eli-color-neutral-75);
+  --eli-background-interaction-neutral-pressed: var(--eli-color-neutral-200);
+  --eli-background-interaction-neutral-disabled: rgb(from var(--eli-color-neutral-100) r g b / 70%);
+
+  /* Border */
+  --eli-border-default: var(--eli-color-neutral-500);
+  --eli-border-subtle: var(--eli-color-neutral-300);
+  --eli-border-brand: var(--eli-color-blue-500);
+  --eli-border-brand-disabled: rgb(from var(--eli-color-blue-500) r g b / 30%);
+  --eli-border-divider: var(--eli-color-neutral-100);
+
+  /* Border / Interaction */
+  --eli-border-interaction-default: var(--eli-color-neutral-400);
+  --eli-border-interaction-focused: var(--eli-color-neutral-700);
+  --eli-border-interaction-disabled: var(--eli-color-neutral-300);
+  --eli-border-interaction-error: var(--eli-color-red-500);
+  --eli-border-interaction-success: var(--eli-color-green-500);
+
+  /* Effect */
+  --eli-effect-dim: rgb(from var(--eli-color-neutral-900) r g b / 40%);
+  --eli-effect-shadow: rgb(from var(--eli-color-neutral-700) r g b / 20%);
+  --eli-effect-fab: rgb(from var(--eli-color-neutral-900) r g b / 20%);
+}

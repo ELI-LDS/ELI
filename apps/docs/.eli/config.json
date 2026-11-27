@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "registry": "https://github.com/ELI-team/ELI/releases/download/v0.3.0/registry.json",
+  "registrySha256": "ede4630ddc7f83e3e31cdd8ec90610f54731594d89d89532dcc06d586f7e0c2e",
+  "version": "0.3.0",
+  "directory": "frontend/shared/ui"
+}

@@ -1,0 +1,82 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* 화면의 콘텐츠를 전환하는 개별 Tab */
+.eli-tab {
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  min-width: 0;
+  height: 48px;
+  padding: 0 var(--eli-layout-scale-4, 16px);
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  cursor: pointer;
+  transition:
+    color 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+/* 비활성 Tab의 1px 하단 선 */
+.eli-tab::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: var(--eli-border-subtle, #c4cedc);
+  content: '';
+  transition:
+    height 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+.eli-tab:active:not(:disabled),
+.eli-tab:active:not(:disabled)::after {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+/* 선택된 Tab */
+.eli-tab[data-active='true'] {
+  color: var(--eli-foreground-strong, #020812);
+}
+
+.eli-tab[data-active='true']::after {
+  height: 2px;
+  background: var(--eli-border-default, #8b98aa);
+}
+
+/* Hover */
+.eli-tab:hover:not(:disabled) {
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
+}
+
+/* Pressed */
+.eli-tab:active:not(:disabled) {
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+}
+
+/* Tab 이름은 한 줄로 표시해요. */
+.eli-tab__label {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-tab,
+    .eli-tab::after {
+      transition-duration: 0.01ms;
+    }
+  }
+}

@@ -1,0 +1,88 @@
+@layer components {
+/* 상태 전환 값 */
+.eli-toggle,
+.eli-toggle__switch {
+  transition-duration: 0.496164s;
+  transition-timing-function: linear(
+    0,
+    0.03,
+    0.1077,
+    0.2165,
+    0.342,
+    0.4728,
+    0.6001,
+    0.7175,
+    0.8208,
+    0.9077,
+    0.9776,
+    1.0307,
+    1.0684,
+    1.0925,
+    1.1051,
+    1.1084,
+    1.1047,
+    1.096,
+    1.084,
+    1.0703,
+    1.0561,
+    1.0424,
+    1.0297,
+    1.0187,
+    1.0094,
+    1.0019,
+    0.9963,
+    0.9923,
+    0.9898,
+    0.9885,
+    0.9882,
+    0.9887,
+    0.9897,
+    0.991,
+    0.9925,
+    0.994,
+    0.9955,
+    0.9969,
+    0.9981,
+    0.9991,
+    0.9998,
+    1.0004,
+    1.0009,
+    1.0011,
+    1.0012,
+    1.0013,
+    1.0012,
+    1.0011,
+    1.001,
+    1.0008,
+    1.0006
+  );
+}
+
+/* 트랙 색상 전환 */
+.eli-toggle {
+  transition-property: background-color;
+}
+
+/* Switch 위치 전환 */
+.eli-toggle__switch {
+  transform: translateX(0);
+  transition-property: transform;
+}
+
+/* On 상태 */
+.eli-toggle[data-state='on'] {
+  background-color: var(--eli-background-interaction-brand-default, #3584fb);
+}
+
+.eli-toggle[data-state='on'] .eli-toggle__switch {
+  transform: translateX(20px);
+}
+
+/* 모션 감소 설정 */
+@media (prefers-reduced-motion: reduce) {
+  .eli-toggle,
+  .eli-toggle__switch {
+    transition-duration: 0.01ms;
+  }
+}
+}

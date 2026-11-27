@@ -1,0 +1,92 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* Base Layout */
+.eli-menu-item {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 54px;
+  padding: var(--eli-layout-scale-5, 20px);
+  align-items: center;
+  gap: var(--eli-layout-scale-2, 8px);
+  border: 0;
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-strong, #020812);
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 150ms ease-in;
+}
+
+.eli-menu-item:active:not(:disabled) {
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+/* Text */
+.eli-menu-item__text {
+  display: flex;
+  min-width: 0;
+  flex: 1 0 0;
+  align-items: center;
+  overflow: hidden;
+}
+
+.eli-menu-item__label {
+  min-width: 0;
+  flex: 1 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Left Icon */
+.eli-menu-item__left-icon {
+  display: inline-flex;
+  width: var(--eli-layout-scale-5, 20px);
+  height: var(--eli-layout-scale-5, 20px);
+  flex: 0 0 var(--eli-layout-scale-5, 20px);
+  align-items: center;
+  justify-content: center;
+  color: var(--eli-foreground-default, #4b5668);
+  transform-origin: center;
+}
+
+/* Shortcut */
+.eli-menu-item__shortcut {
+  flex: 0 0 auto;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+
+/* Right Icon */
+.eli-menu-item__right-icon {
+  display: inline-flex;
+  width: var(--eli-layout-scale-6, 24px);
+  height: var(--eli-layout-scale-6, 24px);
+  flex: 0 0 var(--eli-layout-scale-6, 24px);
+  align-items: center;
+  justify-content: center;
+  color: var(--eli-foreground-subtle, #8b98aa);
+  transform-origin: center;
+}
+
+/* State / Hover */
+.eli-menu-item:hover:not(:disabled) {
+  background: var(--eli-background-interaction-neutral-hover, #eff4fb);
+}
+
+/* State / Pressed */
+.eli-menu-item:active:not(:disabled) {
+  background: var(--eli-background-interaction-neutral-pressed, #d9e1ec);
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-menu-item {
+      transition-duration: 0.01ms;
+    }
+  }
+}

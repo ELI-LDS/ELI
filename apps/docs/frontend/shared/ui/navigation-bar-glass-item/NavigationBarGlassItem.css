@@ -1,0 +1,73 @@
+@import '../tokens/index.css';
+
+@layer components {
+.eli-navigation-bar-glass-item {
+  box-sizing: border-box;
+  display: flex;
+  position: relative;
+  z-index: 1;
+  width: auto;
+  min-width: 0;
+  height: var(--eli-navigation-bar-glass-item-height, var(--eli-layout-scale-12, 48px));
+  padding: 10px 0;
+  flex: 1 0 0;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: var(--eli-layout-scale-999, 999px);
+  background: transparent;
+  color: var(--eli-foreground-strong, #020812);
+  cursor: pointer;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.eli-navigation-bar-glass-item__icon {
+  position: relative;
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s ease;
+}
+
+.eli-navigation-bar-glass-item__glyph {
+  /* 두 아이콘을 겹쳐 opacity만 전환해 아이콘 변경을 부드럽게 보여줘요. */
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.eli-navigation-bar-glass-item__glyph[data-visible='true'] {
+  opacity: 1;
+}
+
+.eli-navigation-bar-glass-item__glyph > svg {
+  width: 28px;
+  height: 28px;
+}
+
+.eli-navigation-bar-glass-item[data-hot='true'] .eli-navigation-bar-glass-item__icon {
+  transform: scale(1.12);
+}
+
+.eli-navigation-bar-glass-item:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--eli-foreground-strong, #020812);
+  outline-offset: -3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eli-navigation-bar-glass-item__icon,
+  .eli-navigation-bar-glass-item__glyph {
+    transition: none;
+  }
+}
+}

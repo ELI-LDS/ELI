@@ -1,0 +1,71 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* Base Layout */
+.eli-alert {
+  box-sizing: border-box;
+  display: flex;
+  width: 323px;
+  max-width: 100%;
+  padding: var(--eli-layout-scale-3, 12px) var(--eli-layout-scale-4, 16px);
+  align-items: flex-start;
+  gap: var(--eli-layout-scale-3, 12px);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  box-shadow: 0 2px 8px 0 var(--eli-effect-shadow, rgba(75, 86, 104, 0.2));
+}
+
+/* Content / Icon */
+.eli-alert__icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+}
+
+/* Content / Icon / Success: 체크 아이콘을 디자인 크기 15×12에 맞춰요. */
+.eli-alert[data-status='success'] .eli-alert__icon > svg {
+  width: 15px;
+  height: auto;
+}
+
+/* Content / Text */
+.eli-alert__content {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  gap: var(--eli-layout-scale-1, 4px);
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.eli-alert__title,
+.eli-alert__message {
+  margin: 0;
+}
+
+/* Status / Error */
+.eli-alert[data-status='error'] {
+  background: var(--eli-background-error, #faeded);
+  color: var(--eli-foreground-error, #cf1111);
+}
+
+/* Status / Success */
+.eli-alert[data-status='success'] {
+  background: var(--eli-background-success, #e8f6e8);
+  color: var(--eli-foreground-success, #177214);
+}
+
+/* Status / Caution */
+.eli-alert[data-status='caution'] {
+  background: var(--eli-background-caution, #fffae0);
+  color: var(--eli-foreground-caution, #c27700);
+}
+
+/* Status / Info */
+.eli-alert[data-status='info'] {
+  background: var(--eli-background-subtle, #f4f8fe);
+  color: var(--eli-foreground-subtle, #8b98aa);
+}
+}

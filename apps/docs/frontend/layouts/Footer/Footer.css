@@ -1,0 +1,17 @@
+.docs-footer {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 96px;
+  padding: var(--eli-layout-scale-4);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid var(--eli-border-divider);
+  background: var(--eli-background-default);
+  color: var(--eli-foreground-subtle);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.docs-footer p { margin: 0; }
