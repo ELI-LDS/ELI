@@ -1,0 +1,21 @@
+.foundation-subtitle { color: var(--eli-foreground-strong); font-size: var(--eli-size-20); }
+.foundation-demo { padding: var(--eli-layout-scale-6); border-radius: var(--eli-layout-scale-4); background: var(--eli-background-subtle); }
+.foundation-scale { display: grid; gap: var(--eli-layout-scale-2); }
+.foundation-scale__row { display: grid; grid-template-columns: 112px minmax(0, 1fr) 64px; align-items: center; gap: var(--eli-layout-scale-6); min-height: 32px; }
+.foundation-scale__track { display: flex; align-items: center; }
+.foundation-scale__bar { display: block; height: 16px; background: var(--eli-foreground-default); }
+.foundation-spacing-group { display: grid; gap: var(--eli-layout-scale-6); }
+.foundation-spacing { display: flex; flex-wrap: wrap; gap: var(--eli-layout-scale-4); }
+.foundation-spacing figure { display: grid; width: 208px; gap: var(--eli-layout-scale-2); }
+.foundation-spacing__padding { box-sizing: border-box; display: flex; width: 208px; height: 144px; border-radius: var(--eli-layout-scale-2); background: var(--eli-background-strong); }
+.foundation-spacing__padding > span { display: grid; flex: 1; place-items: center; background: var(--eli-background-default); color: var(--eli-foreground-default); }
+.foundation-spacing__gap { display: flex; box-sizing: border-box; height: 112px; padding: var(--eli-layout-scale-4); align-items: center; border-radius: var(--eli-layout-scale-2); background: var(--eli-background-default); }
+.foundation-spacing__gap > div { display: flex; }
+.foundation-spacing__gap span { display: grid; box-sizing: border-box; width: 64px; height: 40px; place-items: center; border: 1px solid var(--eli-border-default); border-radius: var(--eli-layout-scale-1); background: var(--eli-background-subtle); }
+.foundation-radius { display: grid; grid-template-columns: repeat(6, minmax(80px, 1fr)); gap: var(--eli-layout-scale-6); }
+.foundation-radius figure { display: grid; justify-items: center; gap: var(--eli-layout-scale-3); text-align: center; }
+.foundation-radius__shape { width: 64px; height: 64px; background: var(--eli-foreground-default); }
+@media (max-width: 767px) {
+  .foundation-scale__row { grid-template-columns: 80px minmax(0, 1fr) 48px; gap: var(--eli-layout-scale-6); }
+  .foundation-radius { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
