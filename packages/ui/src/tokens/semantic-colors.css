@@ -16,6 +16,7 @@
 
   /* Background */
   --eli-background-default: var(--eli-color-static-white);
+  --eli-background-default-alpha: rgb(from var(--eli-color-static-white) r g b / 90%);
   --eli-background-subtle: var(--eli-color-neutral-100);
   --eli-background-strong: var(--eli-color-neutral-300);
   --eli-background-error: var(--eli-color-red-50);
@@ -32,7 +33,7 @@
 
   /* Background / Interaction / Neutral */
   --eli-background-interaction-neutral-default: var(--eli-color-neutral-100);
-  --eli-background-interaction-neutral-hover: var(--eli-color-neutral-50);
+  --eli-background-interaction-neutral-hover: var(--eli-color-neutral-75);
   --eli-background-interaction-neutral-pressed: var(--eli-color-neutral-200);
   --eli-background-interaction-neutral-disabled: rgb(from var(--eli-color-neutral-100) r g b / 70%);
 

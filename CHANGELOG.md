@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### UI 콘텐츠 — 다음 MINOR 대상
+
+- Figma 기준으로 Neutral 50을 `#F4F8FE`로 바로잡고 Neutral 75(`#EFF4FB`)와 `Background/DefaultAlpha`(흰색 90%)를 추가했어요. Neutral Hover는 75를 참조해 기존 표시색을 유지해요. 원시 Neutral 50을 직접 사용한 소비 소스의 색상은 달라지므로 다음 `0.x` MINOR 릴리스에 포함해요. 기존 배포 파일·태그·버전은 변경하지 않았어요.
+
 ### 컴포넌트 사용 가이드
 
 - 전달받은 Modal·Divider·Tab Markdown을 보존하고 공개 컴포넌트별 JSON·소스 설치 예시를 추가해요. Tab의 빈 원문은 최신 전달본으로 교체해요. 기존 stable 31개는 유지하고 새 3개는 draft로 검증한 뒤 사용자 승인에 따라 stable로 전환해요. 전체 34개 가이드의 내용과 예시를 조회할 수 있는 데이터로 준비하며, 공개 MCP 반영은 배포 후 확인해요.
