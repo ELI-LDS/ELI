@@ -1,6 +1,6 @@
 # 릴리스 절차
 
-기본 소스 배포는 **npm의 `eli-design` 설치 도구와 GitHub Release의 UI·하네스 콘텐츠**로 나눠 진행해요. 기존 전체 패키지 `@eli-design/ui`는 종료 예정이며 새 UI npm 릴리스를 병행하는 방식으로 안내하지 않아요. 버전·태그 이름은 [버전 규칙](../Agent/versioning.md#설치-도구와-콘텐츠-버전을-구분해요), 검사 범위는 [검증 기준](../Agent/testing.md), 선택 설치 데이터는 [레지스트리 지침](../Agent/registry.md)을 따라요.
+기본 소스 배포는 **npm의 `eli-design` 설치 도구와 GitHub Release의 UI·하네스 콘텐츠**로 나눠 진행해요. 기존 전체 패키지 `@eli-design/ui`는 npm에서 삭제됐으며 새 UI npm 릴리스를 병행하는 방식으로 안내하지 않아요. 버전·태그 이름은 [버전 규칙](../Agent/versioning.md#설치-도구와-콘텐츠-버전을-구분해요), 검사 범위는 [검증 기준](../Agent/testing.md), 선택 설치 데이터는 [레지스트리 지침](../Agent/registry.md)을 따라요.
 
 지침 작성·일반 PR 병합·Storybook 배포만으로 npm에 게시하지 않아요. 실제 릴리스 요청이 있을 때 아래 절차를 실행해요. 이번 지침을 추가했다고 릴리스 자동화나 이미 게시된 버전의 기록이 복구되는 것은 아니에요.
 
@@ -10,7 +10,7 @@
 
 설치 도구의 `cli-v{버전}` GitHub Release에 검증한 tarball·`SHA256SUMS`·원본 SHA와 integrity를 담은 `release.json`을 제공해요. UI 소스 콘텐츠의 `v{버전}` Release에는 개별 JSON, 하네스의 `harness-v{버전}` Release에는 `harness.json`을 제공해요. 파일 전달은 npm 게시 완료와 구분하고, 이미 고정한 파일을 담당자의 환경에서 다시 빌드하지 않아요.
 
-npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 공개 명령을 검사하고 결과를 전달해요. 통과한 뒤 담당자가 `latest`로 승격해요. 단계별 담당·명령·중단 기준은 [npm 담당자 안내](npm-publishing.md)를 따라요. 기존 `@eli-design/ui`의 삭제·사용 중단은 하네스 담당자와 별도로 결정하며 이번 CLI 게시에 묶지 않아요.
+npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 공개 명령을 검사하고 결과를 전달해요. 통과한 뒤 담당자가 `latest`로 승격해요. 단계별 담당·명령·중단 기준은 [npm 담당자 안내](npm-publishing.md)를 따라요. 기존 npm `@eli-design/ui`는 삭제됐으며 신규 게시·조회 성공을 CLI 릴리스의 조건으로 두지 않아요.
 
 ## CLI와 UI 소스 콘텐츠를 배포해요
 
@@ -22,7 +22,6 @@ npm 담당자가 `next`로 게시하면 릴리스 준비자가 같은 버전의 
 
 ```bash
 npm view eli-design versions dist-tags --json
-npm view @eli-design/ui versions dist-tags --json
 gh release list
 gh repo view ELI-team/ELI --json visibility
 ```
@@ -98,11 +97,11 @@ CLI의 `cli-v{버전}` 태그도 고정한 도구 SHA를 가리키게 해요. CL
 
 하네스 독립 배포는 `harness-v{버전}`으로 구분해요. MCP 응답 변경과 실제 에이전트 동작은 해당 담당자가 별도로 확인해요. 이 항목을 작성한 것만으로 배포 패키지명·태그·설치 안내가 전환된 것은 아니에요.
 
-## 종료 예정인 전체 패키지를 구분해요
+## 삭제된 전체 패키지를 구분해요
 
 `@eli-design/ui`를 신규 배포 대상에 포함하지 않아요. UI 콘텐츠 변경은 GitHub의 소스 콘텐츠 릴리스로 제공하고, 전체 UI도 `add --all`로 추가해요.
 
-현재 내부 workspace와 검사 코드가 기존 이름을 참조하므로 패키지 manifest·exports·빌드·검사를 문서 작업에서 임의로 삭제하지 않아요. npm의 deprecate·삭제와 내부 연결 정리는 별도 작업으로 검토해요. 기존 사용자 프로젝트의 의존성·lockfile·수정 소스도 자동으로 지우지 않아요.
+현재 내부 workspace와 검사 코드가 기존 이름을 참조하므로 패키지 manifest·exports·빌드·검사를 문서 작업에서 임의로 삭제하지 않아요. npm 삭제는 완료됐으며 내부 연결 정리는 별도 작업이에요. 기존 사용자 프로젝트의 의존성·lockfile·수정 소스도 자동으로 지우지 않아요.
 
 ## 4. 중단과 복구를 구분해요
 

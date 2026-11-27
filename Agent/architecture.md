@@ -2,11 +2,11 @@
 
 ## 소스 설치와 기존 전체 패키지를 구분해요
 
-`packages/ui/src`는 선택 설치와 기존 전체 패키지가 공유하는 UI 원본이에요. npm의 `eli-design` 설치 도구는 GitHub Release의 UI·하네스 콘텐츠를 각각 선택해 받아요. 기존 `@eli-design/ui` 전체 패키지에는 공통 토큰과 하네스를 포함해요. `apps/storybook`과 `apps/docs`는 비공개 앱이에요. npm 배포 단계와 공식 홍보 시점의 버전 전환은 [버전 규칙](versioning.md)에서 관리해요.
+`packages/ui/src`는 선택 설치 콘텐츠와 내부 workspace 빌드가 공유하는 UI 원본이에요. npm의 `eli-design` 설치 도구는 GitHub Release의 UI·하네스 콘텐츠를 각각 선택해 받아요. 기존 npm `@eli-design/ui`는 삭제됐지만 내부 workspace와 검사 도구에는 그 이름이 남아 있어요. 내부 이름을 사용한다는 이유로 npm 설치가 가능하다고 안내하지 않아요. `apps/storybook`과 `apps/docs`는 비공개 앱이에요. npm 배포 단계와 공식 홍보 시점의 버전 전환은 [버전 규칙](versioning.md)에서 관리해요.
 
-현재는 외부 사용자가 없는 실험 단계예요. 기존 전체 패키지는 종료 예정이며 이 패키지 구성은 현재 내부 구현 상태를 설명해요. 소스 배포에 맞춰 패키지명·역할·공개 경로를 바꿀 수 있어요. 하네스 배포 구조가 달라지면 담당 개발자와 연결 계약을 먼저 맞춰요.
+현재는 외부 사용자가 없는 실험 단계예요. 기존 전체 패키지는 npm에서 삭제됐으며 이 패키지 구성은 현재 내부 구현 상태를 설명해요. 소스 배포에 맞춰 패키지명·역할·공개 경로를 바꿀 수 있어요. 하네스 배포 구조가 달라지면 담당 개발자와 연결 계약을 먼저 맞춰요.
 
-공개 컴포넌트는 `packages/ui/src/{그룹}/{컴포넌트}/`에서 관리하고 그룹의 `index.ts`로 내보내요. 현재 실험 패키지는 `@eli-design/ui/{그룹}`에서 가져와요. 실제 공개 경로는 `packages/ui/package.json`의 `exports`를 기준으로 확인해요.
+공개 컴포넌트는 `packages/ui/src/{그룹}/{컴포넌트}/`에서 관리하고 그룹의 `index.ts`로 내보내요. 원본의 심벌과 내부 그룹 경로는 `packages/ui/package.json`의 `exports`, 사용자 설치 경로는 레지스트리의 `entry`와 소비 앱의 설치 기록을 기준으로 확인해요.
 
 하나의 그룹에 역할이 가까운 컴포넌트를 함께 둘 수 있어요. 각 컴포넌트의 타입·구조·스타일·Hook은 PascalCase 컴포넌트 폴더 안에서 관리하고, 그룹 진입점에서는 외부에 필요한 심벌만 공개해요.
 
@@ -23,20 +23,20 @@
 | 용도 | 주소 |
 | --- | --- |
 | 원본 저장소 | [ELI-team/ELI](https://github.com/ELI-team/ELI) |
-| 공식 웹사이트·문서 앱 | [eli-design.dev](https://eli-design.dev) — 웹페이지 제작 예정 |
-| 원격 MCP `eli-docs` | `https://eli-design.dev/mcp` — 배포됨. 같은 주소의 웹페이지는 제작 전이에요 |
+| 공식 웹사이트·문서 앱 | [eli-design.dev](https://eli-design.dev) — Foundation·컴포넌트 상세 페이지 로컬 구현·공개 배포 전 |
+| 원격 MCP `eli-docs` | `https://eli-design.dev/mcp` — 배포됨. 웹사이트 페이지 배포와 구분해요 |
 | 컴포넌트 검수·Storybook | [storybook.eli-design.dev](https://storybook.eli-design.dev) |
 
 저장소 링크·clone 안내·패키지 repository·CLI의 GitHub Release API와 asset 주소는 현재 원본 저장소를 기준으로 맞춰요. 이전 주소가 남은 사용자 설치 기록은 임의로 고쳐 쓰지 않고 기존 버전·해시 검증을 유지해요. 이미 고정한 태그·배포 파일·검증 기록의 원본 SHA와 해시를 주소 변경 때문에 다시 만들지 않아요.
 
-웹페이지는 아직 제작 전이며 `eli-design.dev`는 향후 사용할 주소예요. 도메인을 구매하거나 문서에 링크를 추가한 것과 앱 배포 완료는 구분해요. 웹사이트는 실제 응답과 콘텐츠를 확인하기 전까지 준비 중으로 안내해요. Storybook의 배포와 Git 연결 확인은 [배포 검증](testing.md#storybook-배포를-확인해요)에서 관리해요. Cloudflare Worker 리소스 이름을 GitHub 조직명이나 도메인에 맞추기 위해 임의로 바꾸지 않아요.
+Foundation·컴포넌트 상세 페이지를 로컬에서 구현했고 홈페이지·데스크톱 검색은 준비 중이에요. `eli-design.dev`의 웹페이지 공개 배포는 아직 확인하지 않았어요. 도메인을 구매하거나 문서에 링크를 추가한 것과 앱 배포 완료는 구분해요. 웹사이트는 실제 응답과 콘텐츠를 확인하기 전까지 준비 중으로 안내해요. Storybook의 배포와 Git 연결 확인은 [배포 검증](testing.md#storybook-배포를-확인해요)에서 관리해요. Cloudflare Worker 리소스 이름을 GitHub 조직명이나 도메인에 맞추기 위해 임의로 바꾸지 않아요.
 
 ## 소스 설치를 기본으로 사용해요
 
 ELI의 기본 소비 방식은 shadcn/ui처럼 필요한 컴포넌트 소스를 소비 프로젝트에 추가하는 방식이에요. 전체를 원하면 같은 소스 설치 흐름에서 모든 공개 컴포넌트를 명시적으로 선택할 수 있어야 해요. UI 원본은 `packages/ui/src` 한 곳에서 관리하고 배포 방식별로 구현을 복제하지 않아요.
 
 - **소스 방식 — 기본:** 필요한 컴포넌트 하나·여러 개 또는 전체와 공통 토큰·실제 의존 파일을 소비 프로젝트에 추가해요. 설치된 로컬 파일에서 import하고 사용자가 직접 수정해요. `packages/registry`는 배포 JSON을 생성하고 `packages/cli`는 npm의 `eli-design`으로 실행해요. CLI·UI 콘텐츠·하네스의 게시 상태와 실제 검증 범위는 [릴리스 기록](../handbook/releases/0.2.0.md)에서 구분해요. 데이터와 연동 계약은 [레지스트리 지침](registry.md)에서 관리해요.
-- **패키지 방식 — 종료 예정:** 기존 npm `@eli-design/ui`는 종료하고 사용자 배포는 `eli-design` 소스 설치로 통일해요. 신규 설치 대안으로 안내하지 않아요. 현재 원본·내부 workspace·호환 검사에 남은 이름과 연결은 구조 변경 작업에서 별도로 정리하며 npm 삭제가 완료된 것으로 표현하지 않아요.
+- **기존 패키지 방식 — npm 삭제됨:** 사용자 배포는 `eli-design` 소스 설치로 통일해요. 기존 npm `@eli-design/ui`를 신규 설치 대안으로 안내하지 않아요. UI 원본·내부 workspace·호환 검사에 남은 이름과 연결은 보존하고 별도 구조 변경에서 정리해요. 과거 게시·검증 기록은 당시 사실을 유지해요.
 
 `@eli-design/ui/button` 같은 하위 경로 import는 소비 앱의 번들 분리에 도움을 줄 수 있지만, npm tarball에서 Button 파일만 다운로드한다는 뜻은 아니에요. 실제로 한 컴포넌트만 내려받으려면 shadcn/ui처럼 CLI가 레지스트리 항목의 소스와 필요한 파일을 소비 프로젝트에 복사하는 별도 배포 경로가 필요해요.
 
@@ -68,7 +68,7 @@ TypeScript는 ESM과 타입 선언을 만들고 `scripts/build-ui.mjs`는 CSS를
 
 ## 폰트 로딩을 분리해요
 
-`@eli-design/ui`는 `--eli-font-family-sans`와 fallback만 제공해요. 폰트 파일을 패키지에 넣거나 CDN에서 자동으로 불러오지 않아요. 이를 통해 컴포넌트 패키지 용량과 소비 앱의 폰트 로딩 정책을 분리해요.
+설치하는 UI 소스는 `--eli-font-family-sans`와 fallback만 제공해요. 폰트 파일이나 CDN import를 UI 콘텐츠에 넣지 않아요. 이를 통해 UI 소스 용량과 소비 앱의 폰트 로딩 정책을 분리해요.
 
 현재 CLI는 폰트를 자동 설치하지 않으므로 소비 앱이 Pretendard를 직접 연결해요. 추후 폰트 초기 설정 도구를 구현한다면 프레임워크를 확인하고 전역 진입점에 한 번 연결해요. 이미 같은 폰트가 설정되어 있으면 다시 추가하지 않아요. MCP는 이 과정을 안내할 수 있지만 재현 가능한 설치와 파일 변경은 초기 설정 도구가 담당해요.
 
@@ -80,4 +80,4 @@ UI 원본과 기존 전체 UI 패키지에는 실행 `dependencies`가 없어요
 
 ## 현재 상태와 예정된 기능
 
-색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`에는 컴포넌트 가이드 JSON·공통 조회 계층·원격 MCP를 구현했고 MCP는 배포되어 있어요. 사용자용 문서·랜딩 웹페이지는 아직 제작 전이에요. 문서 원본·API·MCP 구조는 [문서 앱 지침](docs.md), 실제 공개 주소는 [주소 표](#저장소와-공개-주소를-구분해요)에서 확인해요. UI·하네스 선택 설치와 소비 검사는 구현되어 있어요. 각 버전의 공개 상태는 릴리스 기록을 확인해요. 폰트 초기 설정 도구와 npm 배포 자동화는 아직 없어요.
+색상·타이포그래피·레이아웃 토큰을 패키지에 포함하고 실제 tarball의 Vite 소비와 서버 렌더링을 검증해요. Next.js App Router에서는 프로덕션 빌드·Server Component의 직접 import·Client Component의 이벤트 연결·프로덕션 서버 HTML·CSS 자동 연결·브라우저 hydration을 별도로 검증해요. 같은 tarball의 npm·pnpm·Yarn Classic·Yarn Modern·Bun 소비 행렬도 자동 검사해요. 구현된 컴포넌트와 확정되지 않은 디자인은 루트 README에서 구분해요. Storybook은 Cloudflare Worker에 정적 파일로 배포하며 사용자 지정 도메인에서 확인해요. `apps/docs`에는 컴포넌트 가이드 JSON·공통 조회 계층·원격 MCP를 구현했고 MCP는 배포되어 있어요. Foundation·컴포넌트 상세 페이지와 모바일 탐색은 로컬에서 구현했고 홈페이지·데스크톱 검색·실제 공개 배포는 준비 중이에요. 문서 원본·API·MCP 구조는 [문서 앱 지침](docs.md), 실제 공개 주소는 [주소 표](#저장소와-공개-주소를-구분해요)에서 확인해요. UI·하네스 선택 설치와 소비 검사는 구현되어 있어요. 각 버전의 공개 상태는 릴리스 기록을 확인해요. 폰트 초기 설정 도구와 npm 배포 자동화는 아직 없어요.
