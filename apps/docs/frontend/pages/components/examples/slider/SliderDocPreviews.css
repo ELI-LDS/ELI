@@ -1,0 +1,6 @@
+/* 절대 배치된 값 표시를 문서의 배치 크기에 포함해 숫자까지 중앙에 놓이게 해요. */
+.docs-slider-preview {
+  box-sizing: border-box;
+  width: min(calc(343px + 2 * var(--eli-layout-scale-6)), 100%);
+  padding: calc(var(--eli-layout-scale-12) + var(--eli-layout-scale-1)) var(--eli-layout-scale-6) 0;
+}

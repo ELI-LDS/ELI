@@ -1,0 +1,11 @@
+/* Figma에서 확정한 시간과 easing을 유지하고 배치와 별도로 관리해요. */
+.docs-filter-overlay .docs-overlay__panel { animation: docs-sheet-in 200ms ease-out both; }
+.docs-filter-overlay .docs-overlay__panel[data-closing='true'] { animation-name: docs-sheet-out; }
+@keyframes docs-sheet-in { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes docs-sheet-out { from { transform: translateY(0); } to { transform: translateY(100%); } }
+@media (prefers-reduced-motion: reduce) {
+  .docs-filter-overlay, .docs-filter-overlay .docs-overlay__panel { animation-duration: 0.01ms; }
+}
+@media (min-width: 768px) {
+  .docs-filter-overlay .docs-overlay__panel { animation: none; }
+}

@@ -1,0 +1,4 @@
+.docs-demo__row { display: flex; flex-wrap: wrap; gap: var(--eli-layout-scale-2); align-items: center; justify-content: center; }
+.docs-demo__stack { display: flex; flex-direction: column; gap: var(--eli-layout-scale-6); align-items: center; }
+.docs-demo__narrow { width: min(343px, 100%); }
+.docs-demo__tabs { display: flex; border-bottom: 1px solid var(--eli-border-subtle); }

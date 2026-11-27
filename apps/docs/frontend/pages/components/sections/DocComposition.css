@@ -1,0 +1,43 @@
+.doc-composition {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0;
+  padding: var(--eli-layout-scale-6);
+  border: 1px solid var(--eli-border-subtle);
+  border-radius: var(--eli-layout-scale-4);
+  background: var(--eli-background-subtle);
+}
+.doc-composition__caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--eli-layout-scale-3); margin-bottom: var(--eli-layout-scale-5); }
+.doc-composition__caption > strong { min-width: 0; overflow-wrap: anywhere; }
+.doc-composition__mode { color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); }
+.doc-composition__parts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); align-items: start; gap: var(--eli-layout-scale-4); margin: 0; padding: 0; list-style: none; }
+.doc-composition__part { display: flex; box-sizing: border-box; min-width: 0; padding: var(--eli-layout-scale-5); flex-direction: column; align-items: flex-start; gap: var(--eli-layout-scale-2); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-2); background: var(--eli-background-default); }
+.doc-composition__name { font-size: var(--eli-font-size-label-02); overflow-wrap: anywhere; }
+.doc-composition__part > p { font-size: var(--eli-font-size-label-02); color: var(--eli-foreground-default); }
+.doc-composition__labels { display: flex; min-height: 20px; flex-wrap: wrap; gap: var(--eli-layout-scale-1); }
+.doc-composition__labels > span { padding: 1px var(--eli-layout-scale-2); border-radius: var(--eli-layout-scale-999); background: var(--eli-background-subtle); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); }
+.doc-composition__source { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--eli-layout-scale-1); margin-top: var(--eli-layout-scale-2); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); }
+.doc-composition__internal { box-sizing: border-box; display: grid; align-self: stretch; min-width: 0; gap: var(--eli-layout-scale-2); margin-top: var(--eli-layout-scale-3); padding: var(--eli-layout-scale-3); border: 1px dashed var(--eli-border-subtle); border-radius: var(--eli-layout-scale-2); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); overflow-wrap: anywhere; }
+/* 장식용 미니어처는 실제 UI와 분리해 조립 부품의 역할만 보여줘요. */
+.doc-composition__visual { position: relative; box-sizing: border-box; display: grid; width: 100%; height: 64px; align-content: center; gap: 6px; padding: 12px; margin-bottom: var(--eli-layout-scale-2); border-radius: var(--eli-layout-scale-2); background: var(--eli-background-subtle); }
+.doc-composition__visual > span { display: block; width: 64%; height: 5px; border-radius: var(--eli-layout-scale-1); background: var(--eli-border-subtle); }
+.doc-composition__visual > span:nth-child(2) { width: 42%; }
+.doc-composition__visual > span:nth-child(3) { width: 54%; }
+.doc-composition__visual[data-visual='category'] > span:first-child { width: 38%; background: var(--eli-foreground-subtle); }
+.doc-composition__visual[data-visual='category'] > span:last-child { display: none; }
+.doc-composition__visual[data-visual='menu'] { padding-left: 44px; }
+.doc-composition__visual[data-visual='menu'] > span:first-child { position: absolute; left: 12px; top: 22px; width: 20px; height: 20px; background: var(--eli-background-interaction-brand-hover-alpha); border: 1px solid var(--eli-border-brand); }
+.doc-composition__visual[data-visual='item'] { justify-items: center; }
+.doc-composition__visual[data-visual='item'] > span:first-child { width: 20px; height: 20px; background: var(--eli-border-brand); border-radius: var(--eli-layout-scale-1); }
+.doc-composition__visual[data-visual='item'] > span:nth-child(2) { width: 36px; }
+.doc-composition__visual[data-visual='item'] > span:last-child { display: none; }
+.doc-composition__visual[data-visual='button'] { justify-items: center; background: var(--eli-background-interaction-brand-hover-alpha); }
+.doc-composition__visual[data-visual='button'] > span:first-child { width: 48px; height: 8px; background: var(--eli-border-brand); }
+.doc-composition__visual[data-visual='button'] > span:not(:first-child) { display: none; }
+.doc-composition__visual[data-visual='dim'] { justify-items: center; background: var(--eli-foreground-subtle); }
+.doc-composition__visual[data-visual='dim'] > span:first-child { width: 52px; height: 32px; background: var(--eli-background-default); }
+.doc-composition__visual[data-visual='dim'] > span:not(:first-child) { display: none; }
+@media (max-width: 767px) {
+  .doc-composition { padding: var(--eli-layout-scale-4); }
+  .doc-composition__part { padding: var(--eli-layout-scale-4); }
+}

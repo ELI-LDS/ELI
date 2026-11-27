@@ -1,0 +1,100 @@
+.doc-page { display: flex; min-width: 0; flex-direction: column; gap: var(--eli-layout-scale-12); font-family: var(--eli-font-family-sans); font-size: var(--eli-font-size-body-01); font-weight: var(--eli-font-weight-regular); line-height: 1.5; }
+.doc-page :is(h1, h2, h3, h4, p) { margin: 0; }
+.doc-intro { display: grid; gap: var(--eli-layout-scale-4); }
+.doc-intro h1, .doc-section__intro :is(h2,h3) { color: var(--eli-foreground-strong); }
+.doc-intro > p { color: var(--eli-foreground-default); }
+.doc-section { display: flex; min-width: 0; flex-direction: column; gap: var(--eli-layout-scale-6); }
+.doc-section__intro { display: grid; gap: var(--eli-layout-scale-3); }
+.doc-section__intro [id] { scroll-margin-top: 96px; overflow-wrap: anywhere; }
+.doc-section__intro [id]:focus { outline: none; }
+.doc-section__intro [id]:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 4px; border-radius: var(--eli-layout-scale-1); }
+.doc-section[data-level='3'] + .doc-section[data-level='3'] { margin-top: var(--eli-layout-scale-4); }
+.doc-example__preview { position: relative; display: flex; box-sizing: border-box; min-height: 128px; min-width: 0; padding: var(--eli-layout-scale-6); flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--eli-layout-scale-4); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-2); background: var(--eli-background-default); }
+.doc-page .eli-modal { z-index: 100; }
+.doc-details { min-width: 0; padding: var(--eli-layout-scale-4); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-2); }
+.doc-details > summary { color: var(--eli-foreground-strong); font-size: var(--eli-font-size-label-02); font-weight: var(--eli-font-weight-medium); cursor: pointer; }
+.doc-details > summary:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 4px; }
+.doc-details[open] > summary { margin-bottom: var(--eli-layout-scale-4); }
+.doc-details > p { margin-bottom: var(--eli-layout-scale-3); }
+.doc-prose { display: grid; min-width: 0; gap: var(--eli-layout-scale-4); overflow-wrap: anywhere; }
+.doc-prose ul { display: grid; gap: var(--eli-layout-scale-2); padding-left: var(--eli-layout-scale-5); margin: 0; }
+.doc-page code:not(pre code), .doc-installation code:not(pre code) { font-family: 'Geist Mono', monospace; font-size: .875em; overflow-wrap: anywhere; }
+/* 본문의 코드 식별자와 문장의 핵심 판단 기준은 서로 다르게 강조해요. */
+:is(.doc-section__intro, .doc-prose, .doc-api__description) code { padding: 2px 4px; border-radius: var(--eli-layout-scale-1); background: var(--eli-background-subtle); color: var(--eli-foreground-strong); }
+.doc-page strong { color: var(--eli-foreground-strong); font-weight: var(--eli-font-weight-semibold); }
+.doc-guidance { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--eli-layout-scale-8); word-break: keep-all; overflow-wrap: anywhere; }
+.doc-guidance :is(h3, h4, dt) { color: var(--eli-foreground-strong); }
+.doc-guidance > section + section { padding-top: var(--eli-layout-scale-6); }
+.doc-guidance > .doc-guidance__usage + .doc-guidance__usage:not([data-kind='choices']) { border-top: 1px solid var(--eli-border-divider); }
+/* 다른 구역 구분선이 함께 로드돼도 선택 기준 제목 위에는 선을 표시하지 않아요. */
+.doc-guidance > [data-kind='choices'], .doc-guidance > .doc-guidance__choices { border-top: 0; }
+.doc-guidance__usage { display: grid; align-content: start; gap: var(--eli-layout-scale-4); }
+.doc-guidance__usage li + li { margin-top: var(--eli-layout-scale-1); }
+.doc-guidance__choices { grid-column: 1 / -1; display: grid; gap: var(--eli-layout-scale-4); }
+/* 카드 외곽선 없이 기존 가로 구분선·여백·타이포 위계로 항목을 구분해요. */
+.doc-guidance__choices dl { display: grid; margin: 0; border-top: 1px solid var(--eli-border-divider); }
+.doc-guidance__choice { padding-block: var(--eli-layout-scale-4); border-bottom: 1px solid var(--eli-border-divider); }
+.doc-guidance__choice dt { margin-bottom: var(--eli-layout-scale-3); font-weight: var(--eli-font-weight-bold); }
+.doc-guidance__choice dd > p { color: var(--eli-foreground-default); }
+.doc-guidance__choice dd { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: var(--eli-layout-scale-4); margin: 0; }
+.doc-guidance__props { display: flex; flex-wrap: wrap; align-content: start; gap: var(--eli-layout-scale-2); }
+.doc-guidance__props code { height: fit-content; padding: 2px var(--eli-layout-scale-2); border-radius: var(--eli-layout-scale-1); background: var(--eli-background-subtle); color: var(--eli-foreground-strong); white-space: nowrap; }
+.doc-api { display: grid; gap: var(--eli-layout-scale-8); }
+/* 속성명 → 타입·기본값 → 설명 순서로 위계를 나눠 한 번에 읽어요. */
+.doc-api__list { display: grid; gap: var(--eli-layout-scale-6); margin: 0; }
+.doc-api__prop { padding: 0; }
+.doc-api__name { display: flex; min-width: 0; flex-wrap: wrap; align-items: center; gap: var(--eli-layout-scale-2); margin-bottom: var(--eli-layout-scale-2); color: var(--eli-foreground-strong); }
+.doc-page .doc-api__name > code { font-size: var(--eli-font-size-label-01); font-weight: var(--eli-font-weight-semibold); white-space: nowrap; }
+.doc-api__requirement { display: inline-flex; align-items: center; padding: 2px var(--eli-layout-scale-2); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-999); background: var(--eli-background-subtle); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); font-weight: var(--eli-font-weight-medium); line-height: 1.5; white-space: nowrap; }
+.doc-api__requirement[data-required='true'] { border-color: var(--eli-border-brand); background: var(--eli-background-interaction-brand-hover-alpha); color: var(--eli-foreground-strong); }
+.doc-api__prop > dd { display: grid; min-width: 0; margin: 0; gap: var(--eli-layout-scale-3); }
+.doc-api__meta { display: flex; flex-wrap: wrap; gap: var(--eli-layout-scale-2) var(--eli-layout-scale-5); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-02); }
+.doc-api__meta > div { display: flex; min-width: 0; flex-wrap: wrap; align-items: baseline; gap: var(--eli-layout-scale-2); }
+.doc-api__meta > div > span { flex-shrink: 0; }
+.doc-api__meta code { color: var(--eli-foreground-strong); }
+/* 허용 값은 pill 대신 배경 없는 리터럴과 구분자로 표시해 필수·선택 표시와 구별해요. */
+.doc-api__values { max-width: 100%; white-space: normal; }
+.doc-api__literal { display: inline-block; color: var(--eli-color-blue-700); font-weight: var(--eli-font-weight-medium); white-space: nowrap; }
+.doc-api__separator { margin-left: var(--eli-layout-scale-1); color: var(--eli-foreground-default); font-weight: var(--eli-font-weight-regular); }
+.doc-api__default { padding: 2px var(--eli-layout-scale-2); border-radius: var(--eli-layout-scale-1); background: var(--eli-background-subtle); }
+.doc-api__type { white-space: pre-wrap; }
+.doc-api__description { font-size: var(--eli-font-size-body-02); color: var(--eli-foreground-default); overflow-wrap: anywhere; }
+.doc-installation, .doc-installation__commands { display: grid; min-width: 0; gap: var(--eli-layout-scale-4); }
+.doc-installation__tabs { display: flex; overflow-x: auto; border-bottom: 1px solid var(--eli-border-subtle); }
+.doc-installation__tabs .eli-tab { flex-shrink: 0; }
+.doc-note { color: var(--eli-foreground-default); font-size: var(--eli-font-size-body-02); }
+@media (max-width: 767px) {
+  .doc-guidance { gap: var(--eli-layout-scale-6); }
+  .doc-guidance__choice dd { grid-template-columns: minmax(0, 1fr); gap: var(--eli-layout-scale-3); }
+  .doc-page { gap: var(--eli-layout-scale-8); }
+  .doc-section { gap: var(--eli-layout-scale-4); }
+  .doc-example__preview { padding: var(--eli-layout-scale-4); }
+}
+
+.doc-guide-content { display: grid; gap: var(--eli-layout-scale-6); }
+.docs-demo__fab-menu { display: flex; width: 100%; min-height: 224px; align-items: flex-end; justify-content: flex-end; }
+
+.doc-example__preview > * { min-width: 0; max-width: 100%; }
+.doc-details > .doc-details { margin-top: var(--eli-layout-scale-4); }
+
+.doc-intro__heading { display: flex; flex-wrap: wrap; align-items: center; gap: var(--eli-layout-scale-3); }
+.doc-platform { display: inline-flex; flex-shrink: 0; align-items: center; padding: 2px var(--eli-layout-scale-2); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-999); background: var(--eli-background-subtle); color: var(--eli-foreground-default); font-size: var(--eli-font-size-label-03); font-weight: var(--eli-font-weight-medium); line-height: 1.5; white-space: nowrap; }
+.doc-api__fields { margin-top: var(--eli-layout-scale-4); }
+.doc-api__fields > summary { color: var(--eli-color-blue-700); cursor: pointer; }
+.doc-api__fields > summary:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 4px; }
+.doc-api__fields dl { display: grid; gap: var(--eli-layout-scale-2); margin: var(--eli-layout-scale-3) 0 0; }
+.doc-api__fields dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--eli-layout-scale-3); padding-block: var(--eli-layout-scale-1); }
+.doc-api__fields dt { display: flex; flex-wrap: wrap; align-items: center; gap: var(--eli-layout-scale-2); color: var(--eli-foreground-strong); }
+.doc-api__fields dt > span { font-size: var(--eli-font-size-label-03); color: var(--eli-foreground-default); }
+.doc-api__fields dd { margin: 0; overflow-wrap: anywhere; color: var(--eli-foreground-default); }
+
+/* 시각적인 선택지는 실제 UI와 값만으로 비교하고 정확한 타입은 전체 속성에 모아요. */
+:is([aria-labelledby='properties'], [aria-labelledby='interactions']) > .doc-section > .doc-section__intro > h3 { font-size: var(--eli-size-20); }
+.doc-property__meta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--eli-layout-scale-3); font-size: var(--eli-font-size-label-02); color: var(--eli-foreground-default); }
+.doc-property__meta > span > code { margin-left: var(--eli-layout-scale-1); color: var(--eli-foreground-strong); }
+.doc-preview-case { display: grid; justify-items: center; align-content: center; gap: var(--eli-layout-scale-3); padding: var(--eli-layout-scale-2); }
+.doc-preview-case > code { color: var(--eli-foreground-default); }
+.doc-preview-case--wide { box-sizing: border-box; width: 100%; justify-items: stretch; }
+.doc-preview-case--wide > code { justify-self: center; }
+.doc-api__category { display: grid; min-width: 0; gap: var(--eli-layout-scale-3); }
+.doc-api__category + .doc-api__category { padding-top: var(--eli-layout-scale-6); border-top: 1px solid var(--eli-border-divider); }
