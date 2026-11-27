@@ -26,9 +26,10 @@ export async function selectFiles(directory, requested) {
     for (const dependency of item.dependencies) await visit(dependency);
     for (const file of item.files) {
       assert.ok(!file.path.startsWith('/') && !file.path.includes('\\') && file.path.split('/').every(part => part && part !== '.' && part !== '..'));
-      assert.equal(hash(file.content), file.sha256);
-      if (files.has(file.path)) assert.equal(files.get(file.path), file.content, `공유 파일이 충돌해요: ${file.path}`);
-      files.set(file.path, file.content);
+      const content = file.encoding === 'base64' ? Buffer.from(file.content, 'base64') : file.content;
+      assert.equal(hash(content), file.sha256);
+      if (files.has(file.path)) assert.deepEqual(files.get(file.path), content, `공유 파일이 충돌해요: ${file.path}`);
+      files.set(file.path, content);
     }
   }
   for (const id of requested) await visit(id);

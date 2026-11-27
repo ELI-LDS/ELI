@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### Pretendard Variable 기본 제공 — 다음 CLI·UI 콘텐츠 MINOR 대상
+
+- 소스 설치에 Pretendard Variable 1.3.9 원본 WOFF2(2,057,688 B)와 OFL 라이선스를 공통으로 포함해요. 기존 Pretendard Variable·Pretendard를 우선하고 없으면 같은 원본을 로딩해요. 기존 웹폰트 등록·전역 설정·npm 의존성은 변경하지 않으며 여러 UI를 추가해도 한 번만 복사해요.
+- 재설치·추가 UI 설치 때는 설치된 폰트 원본과 최소 메타데이터를 목록 해시까지 대조해 큰 폰트 JSON을 다시 받지 않아요. 수정된 원본·메타데이터는 원격에서 재검증하고 사용자 파일을 보존해요.
+- 바이너리 파일 전달은 레지스트리 v2의 base64·원본 바이트 해시를 사용해요. 새 CLI는 기존 v1 텍스트 콘텐츠도 지원하고, 잘못된 인코딩·해시·경로·버전은 파일 쓰기 전에 거부해요. **BREAKING CHANGE:** 새 v2 콘텐츠에는 호환 CLI가 필요하며 구 CLI에 제공하지 않아요. 기존 Release·현재 npm 버전·기존 설치는 변경하지 않았어요. CLI와 새 콘텐츠 공개는 별도 릴리스예요.
+
 ### 구성 요소 선택 설치 — 다음 CLI·UI 콘텐츠 MINOR 대상
 
 - `add fab`로 FabMenu·FabMenuSegment를, `add navigation-drawer`로 Category·Menu·Item을 함께 받을 수 있도록 조립 관계를 명시했어요. 직접 부품을 요청하는 기존 설치·짧은 진입 파일·파일 소유권은 유지하고 무관한 UI나 하네스는 포함하지 않아요.

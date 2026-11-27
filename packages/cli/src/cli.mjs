@@ -3,7 +3,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 import { CliError, ensure } from './errors.mjs';
 import { json, latestRegistry, loadRegistry, registryUrl, releaseRegistry, safePath, selectItems } from './registry.mjs';
-import { CONFIG, RECORD, applyPlan, checkPeers, createPlan, defaultDirectory, loadConfig, loadRecord, projectAt, projectManager, statusOf, targetPath, writeProject } from './project.mjs';
+import { CONFIG, RECORD, applyPlan, checkPeers, createPlan, defaultDirectory, loadConfig, loadRecord, projectAt, projectManager, restoreAssetItem, statusOf, targetPath, writeProject } from './project.mjs';
 import { harnessStatus, installHarness } from './harness.mjs';
 
 const manifest = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
@@ -120,7 +120,7 @@ async function run() {
   ensure((values.all && ids.length === 0) || (!values.all && ids.length > 0), 'INVALID_ARGUMENT', '컴포넌트 ID 또는 --all 중 하나를 선택해요.');
   const requested = [...new Set(values.all ? components.map(item => item.id) : ids)].sort();
   const previous = loadRecord(project, config);
-  const selection = await selectItems(registry, requested);
+  const selection = await selectItems(registry, requested, (id, expectedHash) => restoreAssetItem(project, config, previous, id, expectedHash));
   const dependencies = checkPeers(project, selection.peers);
   const plan = createPlan(project, config, registry, selection, requested, previous);
   if (!values['dry-run']) applyPlan(project, config, selection, plan, previous);

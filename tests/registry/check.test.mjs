@@ -52,6 +52,10 @@ test('공개 항목과 공유 파일 전체가 규격·버전·해시를 지켜�
       assert.ok(!owned.has(file.path), `파일 소유자가 둘이에요: ${file.path}`);
       owned.add(file.path);
       if (file.path !== 'LICENSE') {
+        if (file.encoding === 'base64') {
+          assert.deepEqual(Buffer.from(file.content, 'base64'), await readFile(join(root, 'packages/ui/src', sources.get(file.path))));
+          continue;
+        }
         const original = await readFile(join(root, 'packages/ui/src', sources.get(file.path)), 'utf8');
         if (file.path.endsWith('.svg')) assert.equal(file.content, original);
         // 경로 보정이 주석과 클라이언트 경계를 훼손하면 안 돼요.
@@ -78,6 +82,22 @@ test('Button만 선택하면 형제 컴포넌트와 하네스가 없어요', asy
   assert.match(files.get('button/Button.css'), /@import '\.\.\/tokens\/index.css'/);
   assert.ok(![...files.keys()].some(path => path.includes('button/Button/')));
   assert.ok(![...files.keys()].some(path => /IconButton|modal\/|harness|stories|node_modules/.test(path)));
+});
+
+test('폰트 원본·라이선스는 한 번만 제공하고 기존 Pretendard를 우선해요', async () => {
+  const { selected, files } = await selectFiles(directory, ['button', 'modal', 'select']);
+  assert.equal([...selected.keys()].filter(id => id === '_font-pretendard').length, 1);
+  assert.ok(files.has('font/OFL.txt'));
+  const bytes = files.get('font/PretendardVariable.woff2');
+  assert.ok(Buffer.isBuffer(bytes));
+  assert.equal(sha256(bytes), '9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4');
+  assert.match(files.get('tokens/typography.css'), /"Pretendard Variable", Pretendard, "_eli-pretendard-variable"/);
+  assert.match(files.get('font/index.css'), /font-family: "_eli-pretendard-variable"/);
+  assert.match(files.get('font/OFL.txt'), /SIL OPEN FONT LICENSE/);
+  const font = JSON.parse((await readFile(join(directory, '_font-pretendard.json'), 'utf8')));
+  assert.equal(font.schemaVersion, 2);
+  assert.ok(matches(font, schema));
+  assert.ok(!matches({ ...font, schemaVersion: 1 }, schema), 'v1은 바이너리를 받지 않아요.');
 });
 
 test('조합 컴포넌트와 타입·CSS·SVG 의존 파일을 함께 제공해요', async () => {

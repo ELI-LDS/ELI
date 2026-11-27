@@ -261,6 +261,13 @@ const layeredStyleSheets = [
 for (const styleSheetPath of layeredStyleSheets) {
   assert.match(await readFile(join(installedPackage, styleSheetPath), 'utf8'), /@layer components/);
 }
+assert.deepEqual(
+  await readFile(join(installedPackage, 'dist/font/PretendardVariable.woff2')),
+  await readFile(join(root, 'packages/ui/src/font/PretendardVariable.woff2')),
+);
+assert.match(await readFile(join(installedPackage, 'dist/font/index.css'), 'utf8'), /@font-face/);
+assert.match(await readFile(join(installedPackage, 'dist/font/OFL.txt'), 'utf8'), /SIL OPEN FONT LICENSE/);
+assert.equal(files.filter(path => path.endsWith('.woff2')).length, 1);
 
 assert.match(
   await readFile(join(installedPackage, 'dist/button/Button/Button.types.d.ts'), 'utf8'),

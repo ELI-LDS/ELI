@@ -250,7 +250,7 @@ test('모든 공개 컴포넌트를 각각 새 프로젝트에 단독 선택해 
     assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/ui/${file}`).sort());
     const entry = added.entries.find(item => item.id === component.id);
     assert.ok(entry, component.id);
-    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', file), 'utf8'), content, `${component.id}: ${file}`);
+    for (const [file, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', file)), Buffer.from(content), `${component.id}: ${file}`);
   }
 });
 
@@ -272,7 +272,9 @@ async function changedRegistry(change, id = 'button') {
 
 test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 변경하지 않아요', async () => {
   const content = 'export function Button() { return null; }\n';
-  const source = await changedRegistry((_, item) => {
+  const source = await changedRegistry((index, item) => {
+    index.schemaVersion = 1;
+    item.schemaVersion = 1;
     item.entry.path = 'button/Button/Button.tsx';
     item.dependencies = [];
     item.files = [{ path: item.entry.path, content, sha256: digest(content) }];
@@ -304,17 +306,17 @@ test('기본 조립 항목만 요청해도 부품을 모두 설치하고 재요�
     assert.deepEqual(added.requested, [id]);
     assert.deepEqual(added.entries.map(item => item.id).sort(), [...parts].sort());
     const expected = await selectFiles(registry, [id]);
-    for (const [name, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', name), 'utf8'), content);
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', name)), Buffer.from(content));
     assert.equal(new Set(requests).size, requests.length, '공유 항목은 한 번만 다운로드해요.');
     assert.ok(!requests.some(url => /button|modal|harness/.test(url)));
     const repeated = await run(path, ['add', ...parts]);
     assert.ok(repeated.files.every(file => file.action === 'reuse'));
-    for (const [name, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', name), 'utf8'), content);
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', name)), Buffer.from(content));
     const partFirst = await fixture();
     await init(partFirst);
     await run(partFirst, ['add', parts[1]]);
     await run(partFirst, ['add', id]);
-    for (const [name, content] of expected.files) assert.equal(await readFile(join(partFirst, 'src/components/ui', name), 'utf8'), content);
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(partFirst, 'src/components/ui', name)), Buffer.from(content));
   }
 });
 
@@ -325,6 +327,60 @@ test('조립 부품의 소스가 변조되면 기준 항목도 파일에 쓰지 
   assert.equal((await run(path, ['add', 'fab'], 1)).error.code, 'INTEGRITY_MISMATCH');
   assert.deepEqual(await readdir(join(path, 'src')), []);
   assert.deepEqual(await readdir(join(path, '.eli')), ['config.json']);
+});
+
+test('기존 폰트 설정을 보존하고 공통 폰트는 원본 바이트로 한 번만 설치해요', async () => {
+  const path = await fixture();
+  const original = '@font-face { font-family: "Pretendard Variable"; src: url("./existing.woff2"); }';
+  await writeFile(join(path, 'src/existing-font.css'), original);
+  const before = await readFile(join(path, 'package.json'), 'utf8');
+  await init(path);
+  await run(path, ['add', 'button']);
+  const next = await run(path, ['add', 'modal']);
+  assert.ok(!next.downloads.some(item => item.url.endsWith('/_font-pretendard.json')), '설치된 공통 폰트는 다시 다운로드하지 않아요.');
+  const record = JSON.parse(await readFile(join(path, '.eli/lock.json'), 'utf8'));
+  assert.ok(JSON.stringify(record.assetItems).length < 10_000);
+  assert.ok(record.assetItems.every(item => item.files.every(file => !('content' in file))));
+  const fonts = record.files.filter(file => file.path.endsWith('.woff2'));
+  assert.equal(fonts.length, 1);
+  assert.equal(digest(await readFile(join(path, fonts[0].path))), '9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4');
+  assert.equal(await readFile(join(path, 'src/existing-font.css'), 'utf8'), original);
+  assert.equal(await readFile(join(path, 'package.json'), 'utf8'), before);
+  assert.ok((await run(path, ['status'])).files.every(file => file.state === 'unchanged'));
+});
+
+test('폰트 메타데이터가 달라지면 원격 해시로 재검증하고 수정한 폰트는 보존해요', async () => {
+  const path = await fixture();
+  await init(path);
+  await run(path, ['add', 'button']);
+  const file = join(path, '.eli/lock.json');
+  const record = JSON.parse(await readFile(file, 'utf8'));
+  record.assetItems[0].description = '변경한 캐시';
+  await writeFile(file, JSON.stringify(record));
+  const repaired = await run(path, ['add', 'modal']);
+  assert.ok(repaired.downloads.some(item => item.url.endsWith('/_font-pretendard.json')));
+  const healthy = JSON.parse(await readFile(file, 'utf8'));
+  const font = healthy.files.find(file => file.path.endsWith('.woff2')).path;
+  await writeFile(join(path, font), '사용자가 변경한 폰트');
+  const before = await readFile(file, 'utf8');
+  assert.equal((await run(path, ['add', 'select'], 1)).error.code, 'FILE_CONFLICT');
+  assert.equal(await readFile(join(path, font), 'utf8'), '사용자가 변경한 폰트');
+  assert.equal(await readFile(file, 'utf8'), before);
+});
+
+test('바이너리의 잘못된 인코딩·해시·버전·경로는 파일 쓰기 전에 거부해요', async () => {
+  for (const [change, expected] of [
+    [item => { item.files.find(file => file.encoding).content += 'x'; }, 'INVALID_DATA'],
+    [item => { item.files.find(file => file.encoding).sha256 = '0'.repeat(64); }, 'INTEGRITY_MISMATCH'],
+    [item => { item.schemaVersion = 1; }, 'INVALID_DATA'],
+    [item => { item.files.find(file => file.encoding).path = '../outside.woff2'; }, 'UNSAFE_PATH'],
+  ]) {
+    const source = await changedRegistry((_, item) => change(item), '_font-pretendard');
+    const path = await fixture();
+    await init(path, source);
+    assert.equal((await run(path, ['add', 'button'], 1)).error.code, expected);
+    assert.deepEqual(await readdir(join(path, 'src')), []);
+  }
 });
 
 test('경로 탈출·개발 파일·버전 혼합·자기 참조·내용 변조를 쓰기 전에 거부해요', async () => {

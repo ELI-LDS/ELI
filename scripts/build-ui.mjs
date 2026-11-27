@@ -13,7 +13,7 @@ export async function buildUi(directory = join(root, 'packages/ui')) {
       const input = join(source, entry.name);
       const output = join(target, entry.name);
       if (entry.isDirectory()) await copyAssets(input, output);
-      else if (/\.(css|svg)$/.test(entry.name) && !/\.(test|stories)\./.test(entry.name)) {
+      else if ((/\.(css|svg|woff2)$/.test(entry.name) || entry.name === 'OFL.txt') && !/\.(test|stories)\./.test(entry.name)) {
         await mkdir(target, { recursive: true });
         await cp(input, output);
       }

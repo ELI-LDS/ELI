@@ -99,7 +99,7 @@ export async function loadRegistry(url, expected = {}) {
   const bytes = await readResource(url, downloads);
   const indexHash = hash(bytes);
   const index = parseJson(bytes.toString('utf8'), '레지스트리');
-  ensure(matches(index, schema.$defs.index, schema) && semver.valid(index.version), 'INVALID_DATA', '지원하는 레지스트리 v1 목록이 아니에요.');
+  ensure(matches(index, schema.$defs.index, schema) && semver.valid(index.version), 'INVALID_DATA', '지원하는 레지스트리 v1/v2 목록이 아니에요.');
   const location = new URL(url);
   // 이전 저장소 주소가 남은 설치 기록도 태그와 콘텐츠 버전의 대조를 유지해요.
   const tag = location.hostname === 'github.com' && location.pathname.match(/^\/(?:ELI-team|ELI-LDS)\/ELI\/releases\/download\/v([^/]+)\/registry\.json$/)?.[1];
@@ -117,7 +117,7 @@ export async function loadRegistry(url, expected = {}) {
   return { url, index, indexHash, descriptors, downloads };
 }
 
-export async function selectItems(registry, requested) {
+export async function selectItems(registry, requested, restoreAsset = () => null) {
   const selected = new Map();
   const files = new Map();
   const peers = new Map();
@@ -125,7 +125,7 @@ export async function selectItems(registry, requested) {
     if (selected.has(id)) return;
     const descriptor = registry.descriptors.get(id);
     ensure(descriptor && descriptor.kind !== 'harness', 'UNKNOWN_ITEM', '컴포넌트 또는 의존 항목이 없어요.', { id });
-    const bytes = await readResource(new URL(descriptor.filename, registry.url).href, registry.downloads);
+    const bytes = restoreAsset(id, descriptor.sha256) ?? await readResource(new URL(descriptor.filename, registry.url).href, registry.downloads);
     ensure(hash(bytes) === descriptor.sha256, 'INTEGRITY_MISMATCH', '항목 JSON의 해시가 달라요.', { id });
     const item = parseJson(bytes.toString('utf8'), id);
     ensure(matches(item, schema.$defs.item, schema), 'INVALID_DATA', '항목 JSON의 규격이 잘못됐어요.', { id });
@@ -134,10 +134,16 @@ export async function selectItems(registry, requested) {
     ensure(!item.dependencies.includes(id), 'INVALID_DATA', '항목이 자기 자신을 설치 의존성으로 지정했어요.', { id });
     for (const file of item.files) {
       safePath(file.path);
-      ensure(file.path === 'LICENSE' || (/\.(ts|tsx|css|svg)$/.test(file.path) && !/\.(test|spec|stories)\./.test(file.path)), 'UNSAFE_PATH', '개발 파일은 설치하지 않아요.', { path: file.path });
-      ensure(hash(file.content) === file.sha256, 'INTEGRITY_MISMATCH', '소스 파일의 해시가 달라요.', { path: file.path });
+      const binary = file.encoding === 'base64';
+      ensure(file.path === 'LICENSE' || file.path.endsWith('/OFL.txt') || (/\.(ts|tsx|css|svg|woff2)$/.test(file.path) && !/\.(test|spec|stories)\./.test(file.path)), 'UNSAFE_PATH', '개발 파일은 설치하지 않아요.', { path: file.path });
+      ensure(binary === file.path.endsWith('.woff2') && (!binary || item.schemaVersion === 2), 'INVALID_DATA', '폰트는 v2의 base64 파일로 제공해요.', { path: file.path });
+      // JSON 안의 base64는 전달 형식이에요. 해시·설치 기록·파일 쓰기는 원본 바이트를 기준으로 해요.
+      const content = binary ? Buffer.from(file.content, 'base64') : file.content;
+      ensure(!binary || content.toString('base64') === file.content, 'INVALID_DATA', '폰트 인코딩을 확인해요.', { path: file.path });
+      ensure(hash(content) === file.sha256, 'INTEGRITY_MISMATCH', '소스 파일의 해시가 달라요.', { path: file.path });
+      ensure(!binary || (content.length >= 48 && content.toString('ascii', 0, 4) === 'wOF2'), 'INVALID_DATA', 'WOFF2 원본을 확인해요.', { path: file.path });
       ensure(!files.has(file.path), 'INVALID_DATA', '파일 소유자가 중복돼요.', { path: file.path });
-      files.set(file.path, { ...file, owner: id });
+      files.set(file.path, { ...file, content, owner: id });
     }
     if (item.entry) ensure(files.get(safePath(item.entry.path))?.owner === id && /^[A-Za-z_$][\w$]*$/.test(item.entry.export), 'INVALID_DATA', '공개 진입 파일이 없어요.', { id });
     for (const [name, range] of Object.entries(item.peerDependencies)) {

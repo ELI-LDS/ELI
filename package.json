@@ -14,7 +14,7 @@
     "test:cli": "pnpm build:registry && pnpm build:harness && pnpm build:cli && node --test tests/cli/*.test.mjs",
     "test:cli:consumer": "pnpm build:registry && pnpm build:cli && node tests/registry/consumer.mjs --cli",
     "test:cli:package-managers": "pnpm build:registry && pnpm build:harness && pnpm build:cli && node tests/cli/package-managers.mjs --prepare && node tests/cli/package-managers.mjs --all",
-    "test:registry": "pnpm build:registry && node --test tests/registry/check.test.mjs && node tests/registry/consumer.mjs",
+    "test:registry": "pnpm build:registry && node --test tests/registry/check.test.mjs && node tests/registry/consumer.mjs && node tests/registry/fonts.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "lint": "eslint .",
     "build:storybook": "pnpm --filter @eli/storybook build",

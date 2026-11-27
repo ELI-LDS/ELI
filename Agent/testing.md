@@ -190,3 +190,7 @@ Cloudflare 대시보드에서 **Workers & Pages → eli-lds-storybook → Settin
 저장소 이전 후에는 Cloudflare의 연결 저장소와 GitHub App 권한도 새 조직을 기준으로 확인해요. 공개 도메인의 기존 화면이 열린다는 사실만으로 새 저장소의 자동 배포 연결까지 완료됐다고 판단하지 않아요.
 
 설정을 마친 뒤 PR을 `main`에 병합해 Cloudflare **Deployments**에서 빌드 성공과 `https://storybook.eli-design.dev`의 실제 Storybook 화면을 확인해요. 실패한 빌드는 설정을 수정한 후 **Retry**로 다시 실행할 수 있어요. 이 설정은 npm 패키지를 게시하지 않아요.
+
+## 폰트 기본 제공을 확인해요
+
+공식 원본의 WOFF2 해시·OFL 동봉·공통 파일 단일 설치와 v1/v2 호환을 확인해요. 잘못된 base64·원본 해시·경로·버전을 쓰기 전에 거부하고, status가 원본 바이트의 사용자 수정을 감지하는지 확인해요. `test:registry`의 폰트 소비 검사는 실제 번들에서 원본 로딩과 기존 Variable/Pretendard 이름 우선·추가 요청 방지를 Chromium·WebKit으로 확인해요. Next.js의 기존 폰트 변수 연결·SSR/hydration도 소비 검사에 포함해요. 폰트가 들어가는 최초 다운로드량은 기존 UI-only 수치와 다시 측정해요.

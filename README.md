@@ -152,7 +152,7 @@ export function SaveButton() {
 }
 ```
 
-기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. [스타일 적용 위치·우선순위와 상태별 예시](packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 확인해요. React와 폰트는 소비 앱에서 준비해요.
+기본 CSS와 공통 토큰은 컴포넌트에 연결돼 있어 별도 CSS import가 필요 없어요. `className`과 `style`로 일반 CSS·CSS Modules·Tailwind CSS·Emotion·vanilla-extract 스타일을 적용할 수 있어요. [스타일 적용 위치·우선순위와 상태별 예시](packages/ui/README.md#컴포넌트-스타일을-바꿔요)를 확인해요. React는 소비 앱에서 준비해요. 폰트의 현재 공개 상태와 다음 기본 제공 방식은 아래 안내를 확인해요.
 
 기존 `@/* → src/*` 별칭을 쓰는 앱에서는 `@/components/ui/button`으로 가져올 수도 있어요. 원하는 설치 위치는 초기화할 때 `--dir`로 지정해요. [CLI 사용법](packages/cli/README.md)을 참고해요.
 
@@ -183,19 +183,19 @@ CLI 0.2.0은 저장소 이전 뒤로 콘텐츠를 받지 못하고, 하네스만
 
 ### 폰트
 
-UI 소스와 기존 전체 패키지는 폰트 파일이나 CDN import를 포함하지 않아요. 패키지 크기와 소비 앱의 폰트 정책을 분리하기 위해서예요. 컴포넌트는 `--eli-font-family-sans` 변수의 글꼴을 쓰고, 이 변수의 기본값은 Pretendard Variable과 시스템 글꼴이에요. ELI의 글자 크기, 줄 높이, 자간은 Pretendard에 맞춰져 있어서 글꼴은 Pretendard로 고정이에요.
+현재 공개 UI 콘텐츠 0.3.0은 폰트 파일을 포함하지 않으므로 Pretendard를 앱에서 연결해요. **다음 v2 콘텐츠 후보**는 Pretendard Variable 1.3.9 원본 WOFF2와 OFL 라이선스·CSS 로딩을 함께 제공해요. 아직 게시하지 않았으며 새 CLI·콘텐츠 릴리스 후 적용돼요. 기존에 복사한 소스를 자동으로 바꾸지는 않아요.
 
-[Pretendard 공식 안내](https://github.com/orioncactus/pretendard)의 가변 다이나믹 서브셋을 전역 진입점에서 한 번 불러와요. CLI는 폰트를 자동 설치하지 않아요. 하네스의 셋업 절차로 연결하거나 앱에서 직접 불러와요.
+새 설치는 기존 `Pretendard Variable`·`Pretendard`를 우선하고 없으면 동봉한 같은 원본을 사용해요. 여러 UI를 추가해도 폰트는 한 번만 복사하고, 폰트 npm 패키지·CDN·별도 CSS import를 요구하지 않아요. CSS 내부 별칭은 기존 웹폰트 등록을 덮어쓰지 않기 위한 구분이며 별도의 글꼴이 아니에요. 기존 파일·전역 진입점·폰트 설정도 변경하지 않아요.
 
-```bash
-npm i pretendard
+`next/font`로 기존 글꼴이 다른 이름에 등록돼 있다면 앱의 CSS 변수를 연결할 수 있어요. 기존 설정을 제거하거나 ELI가 별칭을 추측할 필요가 없어요.
+
+```css
+body {
+  --eli-font-family-sans: var(--app-pretendard);
+}
 ```
 
-```ts
-import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
-```
-
-Next.js의 `next/font/local`로 불러오면 글꼴이 다른 이름으로 등록돼서 ELI 컴포넌트에 적용되지 않아요. 위의 CSS import를 써요.
+현재 공개 v1 콘텐츠의 직접 연결 방법은 [Pretendard 공식 안내](https://github.com/orioncactus/pretendard)를 참고해요. 폰트는 [OFL-1.1](https://github.com/orioncactus/pretendard/blob/v1.3.9/LICENSE), UI 코드는 MIT로 구분해요.
 
 ### 지원 환경
 
