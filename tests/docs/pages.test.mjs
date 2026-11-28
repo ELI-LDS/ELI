@@ -302,3 +302,9 @@ test('문서 앱의 실제 설치 파일과 소유권·진입점·기록 해시�
   }
   for (const id of ['filter-chip', 'removable-chip', ...Object.keys(componentRouteAliases)]) assert.ok(!record.requested.includes(id));
 });
+
+
+test('메뉴의 표시 이름과 페이지의 공개 컴포넌트 이름이 일치해요', () => {
+  const normalize = name => name.replace(/\s/g, '').toLowerCase();
+  for (const page of componentPages) assert.equal(normalize(page.label), normalize(getDocPage(page.id).name), page.id);
+});

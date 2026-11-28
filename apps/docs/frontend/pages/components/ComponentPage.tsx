@@ -22,9 +22,10 @@ export function ComponentPage({ document }: { document: DocPage }) {
   const basic = document.examples[0]!;
   const previews: Record<string, DocPreview> = docPreviews[document.id];
   const BasicPreview = previews[basic.id]!;
+  // 서버 경계를 넘는 자식 배열에서도 속성·주의사항 블록을 서로 구분해요.
   const references = [{ ...document, isPart: false }, ...document.related].map(item => document.related.length ? <DocSection {...(item.isPart ? { description: item.summary } : {})} id={`api-${item.id}`} key={item.id} level={3} title={item.name}>
-    <PropsReference api={item.api} headingLevel={4} />
-    {item.isPart && item.composition ? <details className="doc-details"><summary>조립 시 주의사항과 동작</summary><DocProse markdown={item.composition} /></details> : null}
+    <PropsReference api={item.api} headingLevel={4} key={`${item.id}-props`} />
+    {item.isPart && item.composition ? <details className="doc-details" key={`${item.id}-composition`}><summary>조립 시 주의사항과 동작</summary><DocProse markdown={item.composition} /></details> : null}
   </DocSection> : <PropsReference api={item.api} key={item.id} />);
   return <DocsLayout className="docs-shell--guide" menuAction={<MobileMenu />} navigation={<DocsNavigation />} searchAction={<DocsSearch />} toc={document.hasToc ? <DocToc items={document.headings} /> : undefined}>
     <article className="doc-page">

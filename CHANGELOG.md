@@ -10,6 +10,12 @@
 - 비동기 작업 완료 후 닫으려면 await 전에 기본 닫힘을 취소하고 성공 시 open을 갱신해요. 이전 기본 동작과 달라지는 다음 UI 콘텐츠 MINOR 대상이며 실제 버전 증가·배포는 별도예요.
 
 
+### 독스 표시 보완
+
+- SegmentControl의 메뉴·검색 결과·페이지 제목을 같은 이름으로 표시해요.
+- Drawer·FAB 속성 구역의 자식 블록에 key를 추가해 개발 화면의 목록 경고를 해결해요.
+
+
 ### UI 콘텐츠 · 설치 이름과 Chip API 정리
 
 - `Chip` 하나에서 `variant="selectable" | "filter" | "removable"`로 역할을 선택해요. 기본은 selectable이며 기존 스타일·동작을 유지해요. 별도 FilterChip·RemovableChip export와 설치 항목을 제거하고 옵션 타입은 ChipOption으로 제공해요.

@@ -15,7 +15,7 @@ export const componentPages = [
   { id: 'drawer', label: 'Navigation Drawer', korean: '내비게이션 드로어' },
   { id: 'indicator', label: 'Progress Indicator', korean: '프로그레스 인디케이터' },
   { id: 'radio', label: 'Radio', korean: '라디오' },
-  { id: 'segment-control', label: 'Segment Button', korean: '세그먼트 버튼' },
+  { id: 'segment-control', label: 'SegmentControl', korean: '세그먼트 컨트롤' },
   { id: 'select', label: 'Select', korean: '셀렉트' },
   { id: 'slider', label: 'Slider', korean: '슬라이더' },
   { id: 'snackbar', label: 'Snackbar', korean: '스낵바' },

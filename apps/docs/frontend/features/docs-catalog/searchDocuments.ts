@@ -4,6 +4,7 @@ import { componentPages, componentRouteAliases } from './catalog.ts';
 const normalize = (text: string) => text.toLowerCase().replace(/[\s-]/g, '');
 const groupedNames: Record<string, string> = {
   chip: 'FilterChip RemovableChip 필터 칩 리무버블 칩',
+  'segment-control': 'Segment Button 세그먼트 버튼',
   fab: 'FabMenu FabMenuSegment 플로팅 액션 버튼 메뉴',
   'navigation-bar': 'NavigationBarGlass NavigationBarItem NavigationBarGlassItem 글래스',
   'drawer': 'NavigationDrawerMenu NavigationDrawerItem NavigationDrawerCategory',
