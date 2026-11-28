@@ -60,11 +60,34 @@ export function loadGuides(directory, components, repository) {
 /** `{Name}Props`와 같은 파일 묶음의 로컬 타입을 따라가 직접 정의한 props만 모아요. */
 export function parseProps(name, files) {
   const declarations = new Map();
+  const defaults = new Map();
   for (const file of files) {
     if (!/\.tsx?$/.test(file.path)) continue;
     const source = ts.createSourceFile(file.path, file.content, ts.ScriptTarget.Latest, true);
     for (const statement of source.statements) {
       if ((ts.isInterfaceDeclaration(statement) || ts.isTypeAliasDeclaration(statement)) && !declarations.has(statement.name.text)) declarations.set(statement.name.text, statement);
+      // 공개 함수의 Props 분할 대입만 읽고 Hook·다른 컴포넌트의 초깃값은 섞지 않아요.
+      if (ts.isFunctionDeclaration(statement) && statement.name?.text === name) {
+        const parameter = statement.parameters[0];
+        const readBinding = binding => {
+          if (!ts.isObjectBindingPattern(binding)) return;
+          for (const element of binding.elements) {
+            if (element.dotDotDotToken || !element.initializer) continue;
+            const key = element.propertyName ?? element.name;
+            if (ts.isIdentifier(key) || ts.isStringLiteral(key)) defaults.set(key.text, oneLine(element.initializer.getText()));
+          }
+        };
+        if (parameter) readBinding(parameter.name);
+        if (parameter && ts.isIdentifier(parameter.name)) {
+          const parameterName = parameter.name.text;
+          for (const bodyStatement of statement.body?.statements ?? []) {
+            if (!ts.isVariableStatement(bodyStatement)) continue;
+            for (const declaration of bodyStatement.declarationList.declarations) {
+              if (declaration.initializer && ts.isIdentifier(declaration.initializer) && declaration.initializer.text === parameterName) readBinding(declaration.name);
+            }
+          }
+        }
+      }
     }
   }
   const root = declarations.get(`${name}Props`);
@@ -88,10 +111,11 @@ export function parseProps(name, files) {
 
   const props = new Map();
   const inherited = [];
-  const addMembers = members => {
+  const addMembers = (members, accepts = () => true) => {
     for (const member of members) {
       if (!ts.isPropertySignature(member) || !member.type) continue;
       const propName = ts.isStringLiteral(member.name) ? member.name.text : member.name.getText();
+      if (!accepts(propName)) continue;
       const required = !member.questionToken;
       const type = expand(member.type.getText()).replace(required ? /$^/ : / \| undefined$/, '');
       const previous = props.get(propName);
@@ -113,19 +137,31 @@ export function parseProps(name, files) {
       });
     }
   };
-  const visit = type => {
-    if (ts.isTypeLiteralNode(type)) return addMembers(type.members);
-    if (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type)) return type.types.forEach(visit);
-    if (ts.isParenthesizedTypeNode(type)) return visit(type.type);
+  const visit = (type, accepts = () => true, recordInheritance = true) => {
+    if (ts.isTypeLiteralNode(type)) return addMembers(type.members, accepts);
+    if (ts.isUnionTypeNode(type) || ts.isIntersectionTypeNode(type)) return type.types.forEach(member => visit(member, accepts, recordInheritance));
+    if (ts.isParenthesizedTypeNode(type)) return visit(type.type, accepts, recordInheritance);
+    const utility = ts.isTypeReferenceNode(type) ? type.typeName : ts.isExpressionWithTypeArguments(type) ? type.expression : undefined;
+    const [base, keys] = type.typeArguments ?? [];
+    if (utility && ts.isIdentifier(utility) && ['Omit', 'Pick'].includes(utility.text) && base && keys && ts.isTypeReferenceNode(base) && ts.isIdentifier(base.typeName) && !base.typeArguments) {
+      const local = declarations.get(base.typeName.text);
+      const literals = ts.isUnionTypeNode(keys) ? keys.types : [keys];
+      if (local && literals.every(key => ts.isLiteralTypeNode(key) && ts.isStringLiteral(key.literal))) {
+        const names = new Set(literals.map(key => key.literal.text));
+        // React 기본 속성은 임의로 풀지 않고, 실제 파일이 있는 ELI 상속 타입만 선택·제외해 읽어요.
+        if (recordInheritance) inherited.push(oneLine(type.getText()));
+        return visitDeclaration(local, name => accepts(name) && (utility.text === 'Omit' ? !names.has(name) : names.has(name)), false);
+      }
+    }
     const id = type.typeArguments ? undefined : ts.isTypeReferenceNode(type) ? type.typeName : ts.isExpressionWithTypeArguments(type) ? type.expression : undefined;
     const local = id && ts.isIdentifier(id) ? declarations.get(id.text) : undefined;
-    if (local) return visitDeclaration(local);
-    inherited.push(oneLine(type.getText()));
+    if (local) return visitDeclaration(local, accepts, recordInheritance);
+    if (recordInheritance) inherited.push(oneLine(type.getText()));
   };
-  const visitDeclaration = node => {
-    if (ts.isTypeAliasDeclaration(node)) return visit(node.type);
-    addMembers(node.members);
-    for (const clause of node.heritageClauses ?? []) clause.types.forEach(visit);
+  const visitDeclaration = (node, accepts = () => true, recordInheritance = true) => {
+    if (ts.isTypeAliasDeclaration(node)) return visit(node.type, accepts, recordInheritance);
+    addMembers(node.members, accepts);
+    for (const clause of node.heritageClauses ?? []) clause.types.forEach(type => visit(type, accepts, recordInheritance));
   };
   visitDeclaration(root);
   // variant별 유니언의 한쪽에만 필요한 속성을 모든 사용법의 필수값으로 안내하지 않아요.
@@ -145,12 +181,22 @@ export function parseProps(name, files) {
       }
       return names;
     }
+    const utility = ts.isTypeReferenceNode(node) ? node.typeName : ts.isExpressionWithTypeArguments(node) ? node.expression : undefined;
+    const [base, keys] = node.typeArguments ?? [];
+    if (utility && ts.isIdentifier(utility) && ['Omit', 'Pick'].includes(utility.text) && base && keys) {
+      const literals = ts.isUnionTypeNode(keys) ? keys.types : [keys];
+      if (literals.every(key => ts.isLiteralTypeNode(key) && ts.isStringLiteral(key.literal))) {
+        const names = new Set(literals.map(key => key.literal.text));
+        return new Set([...requiredOf(base, seen)].filter(name => utility.text === 'Omit' ? !names.has(name) : names.has(name)));
+      }
+    }
     const name = !node.typeArguments && (ts.isTypeReferenceNode(node) ? node.typeName.getText() : ts.isExpressionWithTypeArguments(node) ? node.expression.getText() : undefined);
     const local = declarations.get(name);
     return local && !seen.has(name) ? requiredOf(local, new Set([...seen, name])) : new Set();
   };
   const required = requiredOf(root);
   for (const prop of props.values()) prop.required = required.has(prop.name);
+  for (const prop of props.values()) if (defaults.has(prop.name)) prop.default = defaults.get(prop.name);
   return { props: [...props.values()], extends: [...new Set(inherited)].join(' & ') || null };
 }
 

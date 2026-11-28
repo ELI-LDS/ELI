@@ -1,0 +1,142 @@
+@import '../tokens/index.css';
+
+@layer components {
+:where(.eli-navigation-bar-glass) {
+  position: relative;
+}
+
+.eli-navigation-bar-glass {
+  --eli-navigation-bar-glass-frost: 2.4px;
+  --eli-navigation-bar-glass-depth: 6px;
+  --eli-navigation-bar-glass-light-angle: 145deg;
+  --eli-navigation-bar-glass-light-intensity: 0.8;
+  --eli-navigation-bar-glass-gutter: var(--eli-layout-scale-6, 24px);
+  --eli-navigation-bar-glass-max-width: 480px;
+  --eli-navigation-bar-glass-item-height: var(--eli-layout-scale-12, 48px);
+
+  box-sizing: border-box;
+  display: flex;
+  width: min(
+    calc(
+      100%
+      - var(--eli-navigation-bar-glass-gutter, 24px)
+      - var(--eli-navigation-bar-glass-gutter, 24px)
+    ),
+    var(--eli-navigation-bar-glass-max-width, 480px)
+  );
+  height: 56px;
+  margin-inline: auto;
+  align-items: center;
+  overflow: clip;
+  padding: var(--eli-layout-scale-1, 4px);
+  border-radius: var(--eli-layout-scale-999, 999px);
+  /* 투명한 흰색 위에 배경이 비치도록 그라데이션을 얹어요. */
+  background: linear-gradient(
+    to bottom,
+    rgb(from var(--eli-color-static-white, #fff) r g b / 50%),
+    rgb(from var(--eli-color-static-white, #fff) r g b / 40%)
+  );
+  box-shadow:
+    0 4px 16px var(--eli-effect-shadow, rgba(75, 86, 104, 0.2)),
+    inset 0 0 var(--eli-navigation-bar-glass-depth, 6px) rgb(from var(--eli-color-static-white, #fff) r g b / 60%),
+    inset 0 0 0 1px var(--eli-color-static-white, #fff);
+  -webkit-backdrop-filter: blur(var(--eli-navigation-bar-glass-frost, 2.4px));
+  backdrop-filter: blur(var(--eli-navigation-bar-glass-frost, 2.4px));
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.61, 0.36, 1),
+    box-shadow 0.2s ease;
+  transform-origin: center;
+}
+
+.eli-navigation-bar-glass::before {
+  /* 대각선 양 끝에만 빛이 맺히도록 안쪽을 마스크해요. */
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: linear-gradient(
+    var(--eli-navigation-bar-glass-light-angle, 145deg),
+    rgb(from var(--eli-color-static-white, #fff) r g b / var(--eli-navigation-bar-glass-light-intensity, 0.8)) 0%,
+    transparent 28%,
+    transparent 72%,
+    rgb(from var(--eli-color-static-white, #fff) r g b / var(--eli-navigation-bar-glass-light-intensity, 0.8)) 100%
+  );
+  content: '';
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+.eli-navigation-bar-glass[data-pressed='true'] {
+  /* 포인터를 누르는 동안 외부 그림자만 더 진하게 표현해요. */
+  transform: scale(1.03);
+  box-shadow:
+    0 6px 20px rgb(from var(--eli-color-neutral-700, #4b5668) r g b / 32%),
+    inset 0 0 var(--eli-navigation-bar-glass-depth, 6px) rgb(from var(--eli-color-static-white, #fff) r g b / 60%),
+    inset 0 0 0 1px var(--eli-color-static-white, #fff);
+}
+
+/* 양 끝 항목을 향해 바가 약 4px 늘어나요. */
+.eli-navigation-bar-glass[data-pressed='true'][data-edge='start'] {
+  transform: translateX(-2px) scaleX(1.01) scale(1.03);
+}
+
+.eli-navigation-bar-glass[data-pressed='true'][data-edge='end'] {
+  transform: translateX(2px) scaleX(1.01) scale(1.03);
+}
+
+.eli-navigation-bar-glass__track {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: var(--eli-navigation-bar-glass-item-height, var(--eli-layout-scale-12, 48px));
+  align-items: stretch;
+  touch-action: none;
+}
+
+.eli-navigation-bar-glass__indicator {
+  position: absolute;
+  z-index: 0;
+  inset-block: 0;
+  left: 0;
+  height: var(--eli-navigation-bar-glass-item-height, var(--eli-layout-scale-12, 48px));
+  margin-block: auto;
+  width: var(--eli-navigation-bar-glass-indicator-width, 0px);
+  border-radius: var(--eli-layout-scale-999, 999px);
+  background: rgb(from var(--eli-foreground-strong, #020812) r g b / 10%);
+  pointer-events: none;
+  transform: translateX(var(--eli-navigation-bar-glass-indicator-x, 0px));
+  transition:
+    transform 0.32s cubic-bezier(0.25, 1.1, 0.4, 1),
+    background-color 0.18s ease;
+}
+
+.eli-navigation-bar-glass[data-pressed='true'] .eli-navigation-bar-glass__indicator {
+  background: rgb(from var(--eli-foreground-strong, #020812) r g b / 16%);
+  transform:
+    translateX(var(--eli-navigation-bar-glass-indicator-x, 0px))
+    scale(1.1);
+}
+
+.eli-navigation-bar-glass[data-dragging='true'] .eli-navigation-bar-glass__indicator {
+  transition: 0s;
+}
+
+.eli-navigation-bar-glass__track[data-instant='true'] .eli-navigation-bar-glass__indicator {
+  transition: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eli-navigation-bar-glass,
+  .eli-navigation-bar-glass__indicator {
+    transition: none;
+  }
+}
+}

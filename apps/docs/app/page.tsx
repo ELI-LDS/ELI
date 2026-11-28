@@ -1,7 +1,3 @@
-export default function Home() {
-  return (
-    <main>
-      <h1>ELI</h1>
-    </main>
-  );
-}
+import { HomePage } from '../frontend/pages/home/HomePage';
+
+export default function Home() { return <HomePage />; }

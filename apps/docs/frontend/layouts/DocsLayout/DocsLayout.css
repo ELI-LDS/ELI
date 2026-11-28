@@ -1,0 +1,55 @@
+.docs-shell {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 1024px;
+  min-height: 100svh;
+  margin-inline: auto;
+  padding-top: var(--eli-layout-scale-16);
+  background: var(--eli-background-default);
+  color: var(--eli-foreground-default);
+  font-family: var(--eli-font-family-sans);
+}
+/* 헤더를 스크롤 흐름에서 분리하고 같은 높이를 본문 앞에 확보해 상단에서도 위치를 유지해요. */
+.docs-shell__header { position: fixed; top: 0; inset-inline: 0; width: 100%; max-width: inherit; margin-inline: auto; z-index: 10; }
+.docs-shell__body {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  align-items: start;
+  gap: var(--eli-layout-scale-12);
+  padding: var(--eli-layout-scale-8) var(--eli-layout-scale-4);
+}
+.docs-shell__sidebar { min-width: 0; }
+.docs-shell main { min-width: 0; }
+.docs-shell__skip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  padding: var(--eli-layout-scale-3);
+  transform: translateY(-100%);
+  background: var(--eli-background-default);
+  color: var(--eli-foreground-strong);
+}
+.docs-shell__skip:focus { transform: none; }
+.docs-shell > .docs-footer { margin-top: 0; }
+@media (max-width: 1023px) {
+  .docs-shell__body { grid-template-columns: minmax(0, 1fr); }
+  .docs-shell__sidebar { display: none; }
+  /* Sidebar가 없는 태블릿 너비에서도 모든 문서에 접근할 메뉴를 남겨요. */
+  .docs-shell .docs-header__mobile-menu { display: inline-flex; }
+}
+
+/* 독스 본문·목차를 위한 배치이며 설치한 UI 컴포넌트의 너비는 변경하지 않아요. */
+.docs-shell__toc { display: none; }
+.docs-shell--guide .docs-shell__body { gap: var(--eli-layout-scale-8); }
+.docs-shell--guide main { width: 100%; max-width: 720px; justify-self: center; }
+@media (min-width: 1024px) {
+  /* 본문과 독립된 viewport 높이를 사용하고 휠·키보드 스크롤은 유지해요. */
+  .docs-shell__sidebar-scroll { position: fixed; top: 96px; width: 240px; height: calc(100vh - 128px); height: calc(100dvh - 128px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+  .docs-shell__sidebar-scroll::-webkit-scrollbar { display: none; }
+}
+@media (min-width: 1280px) {
+  .docs-shell--guide { max-width: 1280px; }
+  .docs-shell--guide .docs-shell__body { grid-template-columns: 240px minmax(0, 1fr) max-content; }
+  .docs-shell--guide .docs-shell__toc { display: block; min-width: 176px; position: sticky; top: 96px; max-height: calc(100vh - 128px); overflow-y: auto; }
+}

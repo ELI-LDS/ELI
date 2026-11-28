@@ -1,0 +1,23 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* 여러 메뉴 묶음을 구분하는 비상호작용 카테고리 행 */
+.eli-navigation-drawer-category {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: 56px;
+  align-items: center;
+  color: var(--eli-foreground-subtle, #8b98aa);
+}
+
+/* 카테고리 이름은 한 줄로 표시해요. */
+.eli-navigation-drawer-category__label {
+  min-width: 0;
+  overflow: hidden;
+  color: inherit;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+}

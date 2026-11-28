@@ -1,0 +1,58 @@
+.docs-code-block {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--eli-layout-scale-4);
+  padding-bottom: var(--eli-layout-scale-6);
+  border: 1px solid var(--eli-border-subtle);
+  border-radius: var(--eli-layout-scale-4);
+  background: var(--eli-background-default);
+  color: var(--eli-foreground-default);
+  font-family: 'Geist Mono', var(--eli-font-family-sans), monospace;
+  font-size: var(--eli-font-size-body-02);
+  font-weight: var(--eli-font-weight-regular);
+  line-height: 1.6;
+}
+
+.docs-code-block__scroll {
+  margin: 0;
+  max-height: calc(6 * 1.6 * var(--eli-font-size-body-02));
+  overflow: hidden;
+  /* 스크롤바가 마지막 코드 줄의 표시 공간을 차지하지 않게 해요. */
+  scrollbar-width: none;
+  font: inherit;
+  white-space: pre;
+}
+
+.docs-code-block__scroll::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+/* 줄 수를 기준으로 계산해 폰트 확대 후에도 10줄이 유지되도록 해요. */
+.docs-code-block[data-expanded='true'] .docs-code-block__scroll {
+  max-height: calc(10 * 1.6 * var(--eli-font-size-body-02));
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.docs-code-block code { display: block; min-width: max-content; font: inherit; }
+.docs-code-block__line {
+  display: grid;
+  min-height: 1lh;
+  grid-template-columns: 26px minmax(0, 1fr);
+  column-gap: var(--eli-layout-scale-4);
+}
+.docs-code-block__number { color: var(--eli-foreground-subtle); text-align: right; user-select: none; }
+.docs-code-block__fade { position: absolute; right: 0; bottom: 0; left: 0; width: 100%; height: 55px; pointer-events: none; }
+.docs-code-block__expand { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+.docs-code-block__scroll:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: -2px; }
+
+.docs-code-block__toolbar { display: flex; min-height: 24px; margin-bottom: var(--eli-layout-scale-3); align-items: center; justify-content: space-between; gap: var(--eli-layout-scale-3); color: var(--eli-foreground-default); font-family: var(--eli-font-family-sans); font-size: var(--eli-font-size-label-03); }
+.docs-code-block__copy { padding: var(--eli-layout-scale-1) var(--eli-layout-scale-2); border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-1); background: var(--eli-background-default); color: var(--eli-foreground-default); font: inherit; cursor: pointer; }
+.docs-code-block__copy:hover { background: var(--eli-background-subtle); }
+.docs-code-block__copy:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 2px; }
+.docs-code-block__copy-error { flex: 1; }

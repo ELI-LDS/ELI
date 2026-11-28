@@ -1,0 +1,88 @@
+@import "../tokens/index.css";
+
+@layer components {
+/* 전체 영역 */
+.eli-text-area {
+  box-sizing: border-box;
+  display: flex;
+  width: 323px;
+  max-width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--eli-layout-scale-2, 8px);
+}
+
+/* 라벨 */
+.eli-text-area__label {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  color: var(--eli-foreground-strong, #020812);
+}
+
+/* 입력 영역 */
+.eli-text-area__input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 129px;
+  padding: var(--eli-layout-scale-4, 16px) var(--eli-layout-scale-5, 20px);
+  border: 1px solid var(--eli-border-interaction-default, #a9b5c5);
+  border-radius: var(--eli-layout-scale-2, 8px);
+  outline: 0;
+  background: var(--eli-background-default, #fff);
+  color: var(--eli-foreground-default, #4b5668);
+  resize: none;
+  transition:
+    color 150ms ease-in,
+    border-color 150ms ease-in,
+    background-color 150ms ease-in;
+}
+
+/* Placeholder */
+.eli-text-area__input::placeholder {
+  color: var(--eli-foreground-disabled, rgba(75, 86, 104, 0.3));
+  opacity: 1;
+  transition: color 150ms ease-in;
+}
+
+/* Hover */
+.eli-text-area__input:hover:not(:disabled) {
+  border-color: var(--eli-border-interaction-focused, #4b5668);
+}
+
+/* Focus */
+.eli-text-area__input:focus {
+  border-color: var(--eli-border-interaction-focused, #4b5668);
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+.eli-text-area__input:focus::placeholder {
+  color: var(--eli-foreground-strong, #020812);
+  transition-duration: 100ms;
+  transition-timing-function: ease-out;
+}
+
+/* Disabled */
+.eli-text-area__input:disabled {
+  border-color: var(--eli-border-interaction-disabled, #c4cedc);
+  background: var(--eli-background-interaction-neutral-disabled, rgba(234, 240, 249, 0.7));
+  color: var(--eli-foreground-subtle, #8b98aa);
+  opacity: 1;
+}
+
+.eli-text-area__input:disabled::placeholder {
+  color: var(--eli-foreground-subtle, #8b98aa);
+  opacity: 1;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @layer components {
+    .eli-text-area__input,
+    .eli-text-area__input::placeholder {
+      transition-duration: 0.01ms;
+    }
+  }
+}

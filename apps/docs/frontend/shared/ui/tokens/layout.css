@@ -1,0 +1,20 @@
+/* Layout */
+
+:root {
+  /* Scale */
+  --eli-layout-scale-1: 4px;
+  --eli-layout-scale-2: 8px;
+  --eli-layout-scale-3: 12px;
+  --eli-layout-scale-4: 16px;
+  --eli-layout-scale-5: 20px;
+  --eli-layout-scale-6: 24px;
+  --eli-layout-scale-8: 32px;
+  --eli-layout-scale-12: 48px;
+  --eli-layout-scale-16: 64px;
+  --eli-layout-scale-999: 999px;
+
+  /* Responsive */
+  --eli-layout-viewport-mobile: 375px;
+  --eli-layout-breakpoint-tablet: 768px;
+  --eli-layout-breakpoint-desktop: 1024px;
+}

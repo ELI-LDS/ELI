@@ -1,0 +1,15 @@
+.docs-interaction-story {
+  position: relative; box-sizing: border-box; max-width: 100%; height: 640px; overflow: hidden;
+  border: 1px solid var(--eli-border-subtle); border-radius: 28px; background: var(--eli-background-default);
+  transform: translateZ(0); container: docs-preview / inline-size;
+}
+.docs-interaction-story__filter { display: flex; height: 100%; align-items: center; justify-content: center; }
+/* Canvas 자체는 PC 크기여도 선택한 가상 화면의 너비로 바텀시트를 검수해요. */
+@container docs-preview (max-width: 767px) {
+  .docs-filter-overlay .docs-overlay__panel {
+    inset: auto 0 0; width: 100%; min-height: 360px; border-radius: var(--eli-layout-scale-4) var(--eli-layout-scale-4) 0 0;
+    translate: none; animation: docs-sheet-in 200ms ease-out both;
+  }
+  .docs-filter-overlay .docs-overlay__panel[data-closing='true'] { animation-name: docs-sheet-out; }
+}
+@media (prefers-reduced-motion: reduce) { .docs-interaction-story .docs-overlay .docs-overlay__panel { animation-duration: 0.01ms; } }

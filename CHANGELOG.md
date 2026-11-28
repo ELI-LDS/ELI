@@ -10,12 +10,35 @@
 - 비동기 작업 완료 후 닫으려면 await 전에 기본 닫힘을 취소하고 성공 시 open을 갱신해요. 이전 기본 동작과 달라지는 다음 UI 콘텐츠 MINOR 대상이며 실제 버전 증가·배포는 별도예요.
 
 
+### 독스 표시 보완
+
+- SegmentControl의 메뉴·검색 결과·페이지 제목을 같은 이름으로 표시해요.
+- Drawer·FAB 속성 구역의 자식 블록에 key를 추가해 개발 화면의 목록 경고를 해결해요.
+
+
 ### UI 콘텐츠 · 설치 이름과 Chip API 정리
 
 - `Chip` 하나에서 `variant="selectable" | "filter" | "removable"`로 역할을 선택해요. 기본은 selectable이며 기존 스타일·동작을 유지해요. 별도 FilterChip·RemovableChip export와 설치 항목을 제거하고 옵션 타입은 ChipOption으로 제공해요.
 - 설치 ID를 `text-area` → `textarea`, `snack-bar` → `snackbar`, `progress-indicator` → `indicator`, `loading-indicator` → `spinner`, `navigation-drawer` → `drawer`로 줄여요. 이 다섯 컴포넌트의 React 심벌과 내부 CSS 이름은 유지해요.
+- 독스의 메뉴·검색·설치/복사·Properties·실제 예시를 새 이름과 Chip variant로 맞추고, 이전 다섯 문서 URL은 새 주소로 서버 리다이렉트해요. 문서 앱은 미배포 로컬 레지스트리로 실제 설치한 소스·해시 기록을 함께 관리해요.
 - 기존 설치 경로·공개 Chip API가 바뀌는 다음 UI 콘텐츠 MINOR 대상이에요. npm CLI·콘텐츠 버전은 이번에 올리거나 게시하지 않아요. 이미 설치한 파일·기록을 자동으로 이동하지 않아요. 이전 방법은 packages/ui/README.md를 참고해요.
 
+
+### UI 콘텐츠 — 다음 MINOR 대상
+
+- Figma 기준으로 Neutral 50을 `#F4F8FE`로 바로잡고 Neutral 75(`#EFF4FB`)와 `Background/DefaultAlpha`(흰색 90%)를 추가했어요. Neutral Hover는 75를 참조해 기존 표시색을 유지해요. 원시 Neutral 50을 직접 사용한 소비 소스의 색상은 달라지므로 다음 `0.x` MINOR 릴리스에 포함해요. 기존 배포 파일·태그·버전은 변경하지 않았어요.
+
+### 문서 웹사이트
+
+- Foundation의 Color·Typography·Layout과 컴포넌트 25개 상세 문서를 구현했어요. Navigation Bar와 Glass는 별도 문서로 제공하며 모바일 전용 UI에만 `Mobile`을 표시해요. 홈은 Foundation 확인 버튼만 제공하고 검색·메뉴는 전달된 모바일 디자인 범위에서 동작해요.
+- 게시된 `eli-design@0.6.0`으로 UI 콘텐츠 `0.3.0`의 소스를 설치하고 토큰·아이콘·설치 기록을 재사용해요. 앱에서 Pretendard Variable을 한 번 로딩하고 코드용 Geist Mono를 연결해요. Header·Footer·CodeBlock·Table은 웹사이트 내부용으로 유지해요.
+- 공통 문서 블록으로 기본 예시·설치·Properties·상태와 이벤트·선택 기준·전체 속성을 통일했어요. 목적별 예시는 필요한 상태만 소유하고 승인된 가이드 JSON·MCP 도구 계약은 유지해요. 조립형 UI는 구성도와 하위 컴포넌트의 역할·속성을 함께 보여줘요.
+- 속성별 실제 타입·기본값·필수 여부를 표시하고 `className`을 마지막에 배치해요. 문자열 허용 값은 배경 없는 코드로, 필수·선택은 pill로 구분해요. Props 추출은 함수의 실제 기본값과 로컬 `Omit`·`Pick` 상속을 반영하고 기존 MCP 응답 필드는 유지해요.
+- 코드 블록에 문법별 색상·원문 복사·6줄 미리보기를 제공하고 펼치면 최대 10줄 이후 내용을 내부에서 스크롤해요. 스크롤바와 불필요한 Fragment를 제거하고 줄 번호·포커스 때문에 코드가 흔들리거나 마지막 줄이 가려지는 문제를 수정했어요. 설치는 npm·pnpm·yarn·Bun 탭과 밝은 터미널의 `add` 명령만 표시해요.
+- 데스크톱 목차는 Primary 글자색과 왼쪽 표시선으로 현재 구역을 안내하고 모바일에서는 생략해요. 본문과 독립된 좌측 탐색은 스크롤바를 숨기고 헤더는 고정해요. 문서 전환은 즉시 맨 위에서 시작하며 선택 기준 제목 위의 선만 제거하고 아래 구분선은 유지해요.
+- 모바일 메뉴·검색과 Chip 필터의 PC 모달·모바일 바텀시트에 Dim·전환·포커스 복귀를 연결했어요. 소재 여섯 항목을 복수 선택할 수 있고 Slider 예시의 값 표시와 양 끝 핸들이 미리보기 안에 보이도록 여백을 확보해요.
+- FAB·Drawer 설치 명령은 사용자 요청에 따라 후속 목표인 `add fab`·`add drawer`로 선반영했어요. 실제 설치 구조는 아직 바꾸지 않았고 예정 상태·알려진 누락·소비 검사 TODO를 유지해요. CLI 자동 초기화·폰트 포함·복사 아이콘 전환도 후속 작업으로 남겨요.
+- 독스 페이지 작성·폴더 책임·검증 지침을 동기화하고 기존 npm `@eli-design/ui`의 삭제 상태를 반영했어요. 내부 workspace·UI 원본·검사와 과거 릴리스 기록은 유지하며 npm 게시·버전 증가·웹사이트 배포는 진행하지 않았어요.
 
 ### 컴포넌트 사용 가이드
 

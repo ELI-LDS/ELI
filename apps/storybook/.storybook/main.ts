@@ -7,6 +7,7 @@ const repositoryRoot = fileURLToPath(new URL('../../../', import.meta.url));
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   stories: ['../stories/**/*.stories.tsx'],
+  staticDirs: ['../../docs/public'],
   addons: [],
   core: { disableTelemetry: true },
   viteFinal: async config => mergeConfig(config, {

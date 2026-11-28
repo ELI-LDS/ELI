@@ -20,7 +20,7 @@
 
 ### 소스 설치를 기준으로 답해요
 
-- 응답은 종료 예정인 `@eli-design/ui`의 그룹 import 경로를 주지 않아요. 레지스트리 항목 `id`와 `entry`(설치 위치 기준 진입 파일·export 이름)를 줘요.
+- 응답은 npm에서 삭제된 `@eli-design/ui`의 그룹 import 경로를 주지 않아요. 레지스트리 항목 `id`와 `entry`(설치 위치 기준 진입 파일·export 이름)를 줘요.
 - 서버는 소비 프로젝트의 파일 위치를 몰라요. 실제 import 경로는 하네스가 소비 프로젝트의 설치 기록에 `entry.path`를 연결해 만들어요.
 - 사용 목적·선택 기준은 컴포넌트 가이드 JSON이 원본이에요. 레지스트리에 수동으로 복제하지 않아요.
 - 서버 버전·`ui.latest`·`ui.docs`·`harness.minimum`의 역할은 [버전 기준](versioning.md#설치-도구와-콘텐츠-버전을-구분해요)에 맞춰 구분해요. 설치 도구의 npm `latest`를 UI 콘텐츠나 하네스 버전으로 대신하지 않아요.
@@ -147,7 +147,7 @@
 {
   "name": "Button",
   "props": [
-    { "name": "variant", "type": "'solid' | 'outline' | 'ghost'", "required": false, "default": null, "description": "버튼 형태예요. 기본값은 `solid`예요." }
+    { "name": "variant", "type": "'solid' | 'outline' | 'ghost'", "required": false, "default": "'solid'", "description": "버튼 형태예요. 기본값은 `solid`예요." }
   ],
   "extends": "Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'dangerouslySetInnerHTML' | 'children' | 'color'>"
 }
@@ -155,7 +155,7 @@
 
 - props는 레지스트리 항목에 담긴 `{이름}Props` 타입 선언에서 추출해요. 직접 쓰지 않아요.
 - `type`은 타입을 풀어 쓴 문자열이에요. 같은 항목과 의존 항목에 선언된 유니언 별칭과 작은 객체 타입은 풀어서 보여줘요. 다른 컴포넌트의 `…Props`와 React 타입은 이름 그대로 둬요.
-- `description`은 prop의 JSDoc에서, `default`는 JSDoc의 `@default`에서 가져와요. 없으면 `null`이에요. 현재 소스는 기본값을 설명 문장에 적으므로 `default`는 대부분 `null`이에요. 문장에서 기본값을 추측해 채우지 않아요.
+- `description`은 prop의 JSDoc에서 가져와요. `default`는 해당 공개 함수의 Props 매개변수 또는 Props 변수 분할 대입에 선언된 초깃값을 우선하고 없으면 JSDoc의 `@default`를 사용해요. 두 곳 모두 없으면 `null`이에요. Hook·다른 컴포넌트의 초깃값이나 설명 문장에서 추측해 채우지 않아요. 동적으로 계산하는 식은 평가하지 않고 코드 표현을 그대로 알려줘요.
 - 유니언으로 나뉜 props 타입(예: Slider)은 한 목록으로 합쳐요. 같은 이름의 타입이 다르면 `|`로 잇고, 한쪽에서만 필수면 선택으로 표시해요.
 - 컴포넌트가 직접 정의한 props만 담아요. 물려받는 타입은 `extends`에 선언 그대로 알려줘요. 무엇이 제외됐는지(`Omit`)도 함께 보여요. 물려받지 않으면 `null`이에요.
 - `names`에 없는 prop 이름이 있으면 `invalid_argument`이고, `allowed`에 그 컴포넌트의 prop 이름을 줘요.
@@ -269,7 +269,7 @@
 | `ui.docs` | 이 서버의 문서가 설명하는 UI 콘텐츠 버전 | 같은 값이에요. 버전별 문서를 제공하기 전까지 둘은 같아요 |
 | `harness.minimum` | 이 서버와 함께 쓸 수 있는 가장 낮은 하네스 버전 | `content/source/versions.json`에 직접 적어요 |
 
-- 두 `ui` 필드는 소스 설치의 UI 콘텐츠 버전이에요. 종료 예정인 `@eli-design/ui`의 npm 버전이나 설치 도구(`eli-design`)의 버전이 아니에요.
+- 두 `ui` 필드는 소스 설치의 UI 콘텐츠 버전이에요. npm에서 삭제된 `@eli-design/ui`의 npm 버전이나 설치 도구(`eli-design`)의 버전이 아니에요.
 - 서버는 버전만 알려줘요. 내려받을 주소나 설치 명령을 응답에 담지 않아요. 하네스 설치는 사전에 신뢰한 CLI와 공식 배포 원본·고정 버전을 사용해요. MCP가 알려준 임의 주소나 스크립트를 실행하지 않아요. 기존 npm 방식은 설치된 패키지 안의 파일을 복사해요.
 - 도구 이름, 입력, 응답 형식, 섹션 키, 가이드 주제를 호환되지 않게 바꾸면 `harness.minimum`을 그 변경을 지원하는 독립 하네스 버전으로 올려요. UI 패키지나 CLI 버전으로 대신하지 않아요.
 - 아직 공개하지 않은 UI 콘텐츠 버전을 `ui.latest`로 내보내지 않아요. 콘텐츠를 릴리스한 뒤에 그 커밋으로 문서 앱을 배포해요.

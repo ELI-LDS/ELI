@@ -1,0 +1,3 @@
+.docs-demo__tooltip { position: relative; }
+.docs-demo__tooltip > button { border: 0; border-radius: var(--eli-layout-scale-2); padding: var(--eli-layout-scale-3) var(--eli-layout-scale-4); color: var(--eli-foreground-default); background: var(--eli-background-subtle); }
+.docs-demo__tooltip .eli-tooltip { position: absolute; top: calc(100% + 8px); left: 0; }

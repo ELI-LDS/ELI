@@ -1,10 +1,10 @@
 # 버전 규칙
 
-UI 콘텐츠·토큰은 `packages/ui/package.json`, 설치 도구는 `packages/cli/package.json`, 하네스는 비공개 workspace인 `packages/harness/package.json`에서 버전을 관리해요. 기존 전체 UI 패키지에도 하네스를 남기지만 버전을 기계적으로 맞추지 않아요. [SemVer](https://semver.org/lang/ko/)의 `MAJOR.MINOR.PATCH` 형식을 따라요. 이 문서는 정책, [릴리스 절차](../handbook/releasing.md)는 실행 순서와 결과 기록을 관리해요.
+UI 콘텐츠·토큰은 `packages/ui/package.json`, 설치 도구는 `packages/cli/package.json`, 하네스는 비공개 workspace인 `packages/harness/package.json`에서 버전을 관리해요. 내부 UI workspace의 기존 하네스 연결과 별개로 각 배포 버전을 기계적으로 맞추지 않아요. [SemVer](https://semver.org/lang/ko/)의 `MAJOR.MINOR.PATCH` 형식을 따라요. 이 문서는 정책, [릴리스 절차](../handbook/releasing.md)는 실행 순서와 결과 기록을 관리해요.
 
 ## npm 배포와 공식 홍보를 구분해요
 
-기본 설치 도구 `eli-design`은 npm에 게시되어 있어요. 기존 전체 패키지 `@eli-design/ui`는 종료 예정이며 새로운 UI npm 릴리스를 기본 경로로 삼지 않아요. 실제 버전·태그·게시 시각은 [릴리스 기록](../handbook/releases/0.2.0.md)에서 확인해요. 공식 홍보 전에는 `0.x.y`를 사용하고, 팀이 공식 홍보를 시작하기로 결정한 릴리스를 `1.0.0`으로 정해요. npm 게시나 PR 병합만으로 홍보 시작을 판단하지 않아요.
+기본 설치 도구 `eli-design`은 npm에 게시되어 있어요. 기존 전체 패키지 `@eli-design/ui`는 npm에서 삭제됐으며 새로운 UI npm 릴리스를 기본 경로로 삼지 않아요. 실제 버전·태그·게시 시각은 [릴리스 기록](../handbook/releases/0.2.0.md)에서 확인해요. 공식 홍보 전에는 `0.x.y`를 사용하고, 팀이 공식 홍보를 시작하기로 결정한 릴리스를 `1.0.0`으로 정해요. npm 게시나 PR 병합만으로 홍보 시작을 판단하지 않아요.
 
 현재는 외부 사용자가 없는 실험 단계예요. npm 게시 사실만으로 기존 패키지명·API·배포 방식을 계속 지원해야 한다고 판단하지 않아요. 사용성을 위한 구조 변경을 허용하고, 패키지 역할과 이름도 다시 정할 수 있어요. 바뀐 계약과 공개 범위는 아래 변경 유형과 기록 규칙에 따라 남겨요. 이미 게시한 버전의 재사용 제한은 실험 단계에도 적용해요.
 
@@ -73,7 +73,7 @@ npm 게시 완료 후 명시적 버전의 격리 설치와 integrity를 확인�
 | --- | --- | --- |
 | 설치 도구 버전 | `eli-design` 실행 파일의 버전. `@latest`는 이 도구를 선택해요 | `cli-v{도구 버전}` |
 | UI 콘텐츠 버전 | 레지스트리가 제공하는 컴포넌트·토큰·공유 파일의 릴리스 버전 | `v{콘텐츠 버전}` |
-| 종료 예정인 전체 UI 패키지 | 기존 `@eli-design/ui` 게시 이력을 식별하며 새 배포 대상에는 포함하지 않아요 | 과거 `ui-v{패키지 버전}` 규약 |
+| npm에서 삭제된 전체 UI 패키지 | 기존 `@eli-design/ui` 게시 이력을 식별하며 새 배포 대상에는 포함하지 않아요 | 과거 `ui-v{패키지 버전}` 규약 |
 | 규격 버전 | 목록·항목 JSON을 해석하는 `schemaVersion` | 별도 태그를 만들지 않아요 |
 | 하네스 콘텐츠 버전 | 별도로 선택 설치하는 전체 스킬·훅·설치 안내의 버전 | `harness-v{하네스 버전}` |
 | MCP 호환 범위 | 담당자가 합의한 설치 기록·사용 가이드·응답 계약의 지원 범위 | 담당자와 정해요 |

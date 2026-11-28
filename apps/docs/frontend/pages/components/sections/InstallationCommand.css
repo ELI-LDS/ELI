@@ -1,0 +1,8 @@
+.doc-terminal { min-width: 0; padding: var(--eli-layout-scale-4); border-radius: var(--eli-layout-scale-4); background: var(--eli-background-subtle); color: var(--eli-foreground-strong); }
+.doc-terminal__row { display: flex; min-width: 0; align-items: center; gap: var(--eli-layout-scale-3); }
+.doc-terminal pre { flex: 1; min-width: 0; margin: 0; padding-block: var(--eli-layout-scale-1); overflow-x: auto; overscroll-behavior-x: contain; font-family: 'Geist Mono', monospace; font-size: var(--eli-font-size-body-02); line-height: 1.6; white-space: pre; }
+.doc-terminal code { font: inherit; }
+.doc-terminal__copy { flex-shrink: 0; padding: var(--eli-layout-scale-1) var(--eli-layout-scale-2); border: 0; border-radius: var(--eli-layout-scale-1); background: transparent; color: inherit; font-family: var(--eli-font-family-sans); font-size: var(--eli-font-size-label-03); cursor: pointer; }
+.doc-terminal__copy:hover { text-decoration: underline; text-underline-offset: 4px; }
+.doc-terminal :is(pre, button):focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 3px; }
+.doc-terminal__error { display: block; margin-top: var(--eli-layout-scale-3); font-size: var(--eli-font-size-body-02); }

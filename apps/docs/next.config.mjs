@@ -1,5 +1,15 @@
+import { componentRouteAliases } from './frontend/features/docs-catalog/catalog.ts';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // 문서의 이전 주소는 렌더링 전에 처리해 중복 Location 응답과 화면 전환을 피하도록 해요.
+  async redirects() {
+    return Object.entries(componentRouteAliases).map(([previous, current]) => ({
+      source: `/components/${previous}`,
+      destination: `/components/${current}`,
+      permanent: true,
+    }));
+  },
   experimental: {
     agentUpgrade: 'security',
   },

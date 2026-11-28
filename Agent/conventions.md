@@ -17,7 +17,7 @@
 
 ## 공개 경로를 관리해요
 
-패키지 방식에서는 `@eli-design/ui/button` 같은 그룹 경로에서 named import해요. 패키지 내부 파일 경로를 공개하지 않고, 공개 entry는 `package.json`의 `exports`에 JS와 타입을 함께 등록해요. 실제 구현이 없는 컴포넌트를 임시로 export하지 않아요.
+UI 원본의 내부 workspace 검사에서는 `@eli-design/ui/button` 같은 그룹 경로에서 named import해요. npm의 해당 패키지는 삭제됐으므로 사용자나 문서 웹사이트의 설치 경로로 안내하지 않아요. 내부 entry는 `package.json`의 `exports`에 JS와 타입을 함께 등록하고 실제 구현이 없는 컴포넌트를 임시로 export하지 않아요.
 
 소스 방식에서는 레지스트리의 `entry.path`와 `entry.export`를 실제 설치 위치에 연결해 로컬 모듈에서 가져와요. 소비 프로젝트의 경로 별칭을 임의로 가정하거나 npm 그룹 경로를 그대로 안내하지 않아요. 설치가 확인되기 전에는 로컬 경로가 존재한다고 설명하지 않아요. 두 방식은 [프로젝트 구조](architecture.md#소스-설치를-기본으로-사용해요)를 기준으로 구분해요.
 

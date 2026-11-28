@@ -1,0 +1,7 @@
+/* 헤더와 본문을 같은 스크롤 컨테이너에 두어 열의 정렬을 유지해요. */
+.docs-table-scroll { width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; }
+.docs-table-scroll:focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 2px; }
+.docs-table { width: 100%; min-width: 672px; border-collapse: collapse; table-layout: fixed; border: 1px solid var(--eli-border-subtle); color: var(--eli-foreground-default); }
+.docs-table :is(th, td) { padding: var(--eli-layout-scale-2) var(--eli-layout-scale-3); border-bottom: 1px solid var(--eli-border-subtle); text-align: left; vertical-align: top; font-weight: var(--eli-font-weight-regular); overflow-wrap: anywhere; }
+.docs-table th { background: var(--eli-background-subtle); }
+.docs-table td { background: var(--eli-background-default); }

@@ -1,6 +1,6 @@
 # ELI 컴포넌트 사용 예시
 
-`@eli-design/ui` 전체 npm 패키지는 종료 예정이에요. 새 프로젝트는 [`eli-design`](https://www.npmjs.com/package/eli-design)으로 필요한 컴포넌트 소스만 추가해요. 이 폴더는 선택 설치 콘텐츠를 생성하는 UI 원본이며, 원본 폴더를 없앤다는 뜻은 아니에요.
+`@eli-design/ui` 전체 npm 패키지는 삭제됐어요. 새 프로젝트는 [`eli-design`](https://www.npmjs.com/package/eli-design)으로 필요한 컴포넌트 소스만 추가해요. 이 폴더는 선택 설치 콘텐츠를 생성하는 UI 원본이며, 원본 폴더를 없앤다는 뜻은 아니에요.
 
 ## 필요한 소스 추가하기
 

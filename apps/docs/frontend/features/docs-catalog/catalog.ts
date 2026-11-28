@@ -1,0 +1,38 @@
+export const componentPages = [
+  { id: 'alert', label: 'Alert', korean: '알러트' },
+  { id: 'badge', label: 'Badge', korean: '뱃지' },
+  { id: 'button', label: 'Button', korean: '버튼' },
+  { id: 'checkbox', label: 'Checkbox', korean: '체크박스' },
+  { id: 'chip', label: 'Chip', korean: '칩' },
+  { id: 'divider', label: 'Divider', korean: '디바이더' },
+  { id: 'fab', label: 'FAB', korean: '플로팅 액션 버튼' },
+  { id: 'icon-button', label: 'Icon Button', korean: '아이콘 버튼' },
+  { id: 'spinner', label: 'Loading Indicator', korean: '로딩 인디케이터' },
+  { id: 'menu-item', label: 'Menu Item', korean: '메뉴 아이템' },
+  { id: 'modal', label: 'Modal', korean: '모달' },
+  { id: 'navigation-bar', label: 'Navigation Bar', korean: '내비게이션 바', mobileOnly: true },
+  { id: 'navigation-bar-glass', label: 'Navigation Bar Glass', korean: '글래스 내비게이션 바', mobileOnly: true },
+  { id: 'drawer', label: 'Navigation Drawer', korean: '내비게이션 드로어' },
+  { id: 'indicator', label: 'Progress Indicator', korean: '프로그레스 인디케이터' },
+  { id: 'radio', label: 'Radio', korean: '라디오' },
+  { id: 'segment-control', label: 'SegmentControl', korean: '세그먼트 컨트롤' },
+  { id: 'select', label: 'Select', korean: '셀렉트' },
+  { id: 'slider', label: 'Slider', korean: '슬라이더' },
+  { id: 'snackbar', label: 'Snackbar', korean: '스낵바' },
+  { id: 'tab', label: 'Tab', korean: '탭' },
+  { id: 'textarea', label: 'Text Area', korean: '텍스트 에리어' },
+  { id: 'text-field', label: 'Text Field', korean: '텍스트 필드' },
+  { id: 'toggle', label: 'Toggle', korean: '토글' },
+  { id: 'tooltip', label: 'Tooltip', korean: '툴팁' },
+] as const;
+
+export type ComponentId = typeof componentPages[number]['id'];
+
+/** 이전 문서 URL만 새 주소로 연결해요. 설치기의 별칭이나 React 이름 변경이 아니에요. */
+export const componentRouteAliases: Readonly<Record<string, ComponentId>> = {
+  'loading-indicator': 'spinner',
+  'progress-indicator': 'indicator',
+  'navigation-drawer': 'drawer',
+  'snack-bar': 'snackbar',
+  'text-area': 'textarea',
+};

@@ -1,0 +1,27 @@
+.foundation-page--color { gap: var(--eli-layout-scale-12); }
+.foundation-color-sections { display: grid; gap: var(--eli-layout-scale-12); }
+.foundation-color-tabs { display: flex; min-width: 0; }
+.foundation-color-tabs__line { flex: 1; border-bottom: 1px solid var(--eli-border-subtle); }
+.foundation-palette { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); column-gap: 2px; row-gap: var(--eli-layout-scale-6); }
+.foundation-palette__chip { display: grid; gap: var(--eli-layout-scale-2); min-width: 0; }
+.foundation-palette__color { box-sizing: border-box; height: 72px; }
+.foundation-palette__color[data-white='true'] { border: 1px solid var(--eli-border-subtle); }
+.foundation-palette__details { display: grid; gap: var(--eli-layout-scale-1); }
+.foundation-semantic { --docs-semantic-token-width: 200px; }
+.foundation-semantic .docs-table { min-width: 606px; }
+.foundation-semantic .docs-table th { height: 48px; padding: 0 var(--eli-layout-scale-5); vertical-align: middle; color: var(--eli-foreground-default); }
+.foundation-semantic .docs-table td { height: 72px; padding: var(--eli-layout-scale-4) var(--eli-layout-scale-5); vertical-align: middle; }
+.foundation-semantic .docs-table td:first-child { font-weight: var(--eli-font-weight-semibold); line-height: 1.2; }
+.foundation-semantic .docs-table td:last-child { padding: var(--eli-layout-scale-2); }
+.foundation-semantic__value { display: flex; align-items: center; gap: var(--eli-layout-scale-2); padding: var(--eli-layout-scale-2); color: var(--eli-foreground-default); }
+.foundation-semantic__value > div { min-width: 0; }
+.foundation-semantic__swatch { box-sizing: border-box; width: 28px; height: 28px; flex-shrink: 0; border: 1px solid var(--eli-border-subtle); border-radius: var(--eli-layout-scale-1); }
+@media (max-width: 1023px) {
+  .foundation-semantic { --docs-semantic-token-width: 148px; }
+}
+@media (max-width: 767px) {
+  .foundation-page--color { gap: var(--eli-layout-scale-8); }
+  .foundation-color-sections { gap: var(--eli-layout-scale-8); }
+  .foundation-palette { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 0; }
+  .foundation-palette__color { height: 42px; }
+}

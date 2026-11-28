@@ -19,7 +19,7 @@ flowchart LR
   Query --> Mcp["원격 MCP /mcp"]
 ```
 
-JSON은 검토하며 Git으로 관리하는 자료예요. 자동 Markdown 변환기로 매번 덮어쓰는 생성물이 아니에요. JSON Schema·빈 템플릿과 검토 상태를 가진 컴포넌트별 가이드를 준비했고, 생성 데이터·조회 계층·MCP 도구가 이를 읽어요. 실제 사용자용 페이지와 GET API 구현은 별도 작업이에요.
+JSON은 검토하며 Git으로 관리하는 자료예요. 자동 Markdown 변환기로 매번 덮어쓰는 생성물이 아니에요. JSON Schema·빈 템플릿과 검토 상태를 가진 컴포넌트별 가이드를 준비했고, 생성 데이터·조회 계층·MCP 도구가 이를 읽어요. Foundation·컴포넌트 가이드 페이지는 구현했고 GET API는 별도 작업이에요.
 
 ## 폴더 구조
 
@@ -54,12 +54,13 @@ apps/docs/
 - `frontend/`와 `backend/`는 `content/`에만 의존해요. 두 영역은 서로 import하지 않아요.
 - `content/`는 `frontend/`와 `backend/`를 import하지 않아요.
 - `frontend/`는 `pages`, `features`, `layouts`, `shared`로 역할을 나눠요. 페이지 조립, 코드 배치와 Server·Client Component 기준은 [문서 프론트엔드 지침](docs-frontend.md)에서 관리해요.
+- 독스 본문의 구성·공통 UI·설치·예시·API·목차 작성은 [독스 페이지 지침](docs-pages.md)을 따라요.
 
 ## 원본은 가이드 JSON과 레지스트리 JSON이에요
 
 - 컴포넌트의 사용 기준은 검토한 가이드 JSON(`content/components/`)이 원본이에요. 디자이너가 작성한 Markdown을 그대로 받아 `content/source/components/`에 보존하고, AI가 실제 코드와 대조해 JSON 초안을 쓰고 사용자가 검토해요. 미정·구현 차이를 숨기거나 임의 명세를 추가하지 않아요.
 - JSON은 검토하며 Git으로 관리하는 자료예요. 자동 변환기로 매번 덮어쓰는 생성물이 아니에요. 스키마·템플릿·변환 절차·검토 상태는 [JSON 변환 안내](../handbook/component-guide-json.md)를 따라요. 원문이 바뀌면 JSON과 출처 해시를 함께 검토해요.
-- props는 직접 쓰지 않아요. 레지스트리 JSON의 TypeScript 타입 선언에서 추출해요. 직접 쓴 props는 구현과 쉽게 어긋나고, 틀린 props는 에이전트가 잘못된 코드를 쓰게 만들어요. 가이드 JSON에도 전체 Props·기본값·토큰 표를 복제하지 않아요.
+- props는 직접 쓰지 않아요. 로컬 Props의 `Omit`·`Pick` 상속은 실제 선언에서 선택·제외한 속성만 읽고, React 기본 속성을 임의로 만들어 채우지 않아요. 레지스트리 JSON의 TypeScript 타입 선언에서 추출해요. 직접 쓴 props는 구현과 쉽게 어긋나고, 틀린 props는 에이전트가 잘못된 코드를 쓰게 만들어요. 가이드 JSON에도 전체 Props·기본값·토큰 표를 복제하지 않아요.
 - 토큰도 직접 쓰지 않아요. 레지스트리 `tokens` 항목의 CSS 파일에서 추출해요.
 - 생성 스크립트는 두 원본을 합쳐 `schema.ts` 타입을 만족하는 TS 데이터를 만들어요. `pnpm dev:docs`·`pnpm build:docs`가 먼저 실행해요. 가이드의 `id`·원문 해시·참조가 맞지 않으면 생성을 실패시켜요.
 - 공통 가이드는 `content/source/guides/`에 마크다운으로 써요.
@@ -69,7 +70,7 @@ JSON의 필드·자료형은 `content/component-guide.schema.json`, MCP 섹션�
 
 ## 조회 계층을 하나로 둬요
 
-구현된 MCP와 후속 페이지·GET API는 `content/query.ts`의 같은 조회 함수를 사용해요. 일반 조회는 `stable` 가이드의 내용만 제공해요. `draft`는 상태·설치 정보와 코드에서 추출한 props만 제공하고 사용 기준·예시는 노출하지 않아요. 검토용 초안 본문 조회는 아직 없어요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
+구현된 MCP·Foundation·컴포넌트 페이지와 후속 GET API는 `content/query.ts`의 같은 조회 함수를 사용해요. 일반 조회는 `stable` 가이드의 내용만 제공해요. `draft`는 상태·설치 정보와 코드에서 추출한 props만 제공하고 사용 기준·예시는 노출하지 않아요. 검토용 초안 본문 조회는 아직 없어요. MCP는 같은 앱에 있으므로 자기 GET API를 HTTP로 다시 호출하지 않아요. 필터 규칙은 이 계층 한 곳에서 관리해요.
 
 ## API와 MCP 도구를 작게 나눠요
 
@@ -100,6 +101,6 @@ claude mcp add --transport http eli-docs http://localhost:3000/mcp
 - **압축 응답 형식:** TOON 같은 압축 형식은 실제 응답으로 토큰 수를 측정해 효과가 확인되면 추가해요.
 - **문서 버전:** npm 배포는 시작했지만 버전별 문서 조회는 아직 구현하지 않았어요. 문서 앱을 공개할 때 설명 대상인 게시 버전을 명시하고, 설치 버전과 다르면 차이를 안내해요. `0.x`·정식 릴리스의 운영 기준은 [버전 규칙](versioning.md)을 따라요.
 
-조회 계층과 MCP 도구는 구현되어 있어요. 사람용 문서 페이지·GET API·공통 가이드 원본은 아직 없어요. 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
+조회 계층·MCP 도구·Foundation·컴포넌트 상세 페이지는 구현되어 있어요. 웹 문서는 `frontend/pages/components/data/getDocPage.ts`에서 같은 조회 결과를 조합하며 GET API·공통 가이드 원본은 아직 없어요. 화면 전용 가공과 공용 조회의 책임은 [프론트엔드 기준](docs-frontend.md#api와-hook도-기능-가까이에-둬요)을 따라요. 현재 상태는 [원격 MCP 규격](mcp-spec.md#구현-상태)에서 관리해요.
 
 현재 가이드의 검토 상태와 담당자 인계 범위는 [검토 기록](../handbook/component-guide-review.md), [연동 인계](../handbook/component-guide-handoff.md)에서 확인해요. 도구 계약은 원격 MCP 규격에만 정의해요.

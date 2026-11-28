@@ -1,0 +1,12 @@
+.docs-navigation { width: 240px; }
+.docs-navigation__pending {
+  box-sizing: border-box;
+  display: flex;
+  min-height: 56px;
+  padding-inline: var(--eli-layout-scale-4);
+  align-items: center;
+  color: var(--eli-foreground-subtle);
+  font-size: var(--eli-font-size-label-01);
+  font-weight: var(--eli-font-weight-semibold);
+  line-height: 1.2;
+}

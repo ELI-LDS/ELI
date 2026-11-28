@@ -1,0 +1,21 @@
+@import '../tokens/index.css';
+
+@layer components {
+/* Navigation Bar */
+.eli-navigation-bar {
+  box-sizing: border-box;
+  display: flex;
+  width: 335px;
+  max-width: 100%;
+  align-items: center;
+  border-top: 1px solid var(--eli-border-divider, #eaf0f9);
+  background: var(--eli-background-default, #fff);
+}
+
+/* 항목 수와 관계없이 같은 너비로 배치해요. */
+.eli-navigation-bar > .eli-navigation-bar-item {
+  width: auto;
+  min-width: 0;
+  flex: 1 0 0;
+}
+}

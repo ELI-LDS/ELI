@@ -1,0 +1,52 @@
+.docs-header {
+  box-sizing: border-box;
+  container-type: inline-size;
+  width: 100%;
+  height: var(--eli-layout-scale-16);
+  padding-inline: var(--eli-layout-scale-4);
+  background: var(--eli-background-default-alpha);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.docs-header__content,
+.docs-header__tools,
+.docs-header__navigation {
+  display: flex;
+  align-items: center;
+}
+
+.docs-header__content { height: 100%; justify-content: space-between; }
+.docs-header__tools { gap: var(--eli-layout-scale-6); }
+.docs-header__navigation { gap: var(--eli-layout-scale-5); }
+.docs-header a { color: var(--eli-foreground-default); text-decoration: none; }
+.docs-header__home { display: flex; flex-shrink: 0; }
+.docs-header__wordmark { display: block; }
+.docs-header__symbol,
+.docs-header__mobile-menu { display: none; }
+
+.docs-header__github { position: relative; display: block; width: 32px; height: 32px; }
+.docs-header__github img { position: absolute; top: 3px; left: 3px; }
+
+.docs-header__action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.docs-header__action img { display: block; }
+.docs-header :is(a, button):focus-visible { outline: 2px solid var(--eli-border-brand); outline-offset: 4px; }
+
+/* 배치된 영역의 너비로 전환해 좁은 문서 영역과 Storybook에서도 같은 구성을 보여줘요. */
+@container (max-width: 767px) {
+  .docs-header__wordmark,
+  .docs-header__navigation,
+  .docs-header__github { display: none; }
+  .docs-header__symbol,
+  .docs-header__mobile-menu { display: block; }
+  .docs-header__tools { gap: var(--eli-layout-scale-4); }
+}

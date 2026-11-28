@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { getComponent, getGuide, getProps, getTokens, getVersions, listComponents, search } from '../../apps/docs/content/query.ts';
+import { getDocPage } from '../../apps/docs/frontend/pages/components/data/getDocPage.ts';
 import { approvedGuide, loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
 
 test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
@@ -36,6 +37,37 @@ test('컴포넌트는 요청한 섹션만 줘요', () => {
 
 });
 
+test('웹 문서는 같은 승인본과 실제 API를 읽고 묶음의 하위 Props도 포함해요', () => {
+  const button = getDocPage('button');
+  assert.equal(button.api.props.find(prop => prop.name === 'variant').default, "'solid'");
+  assert.ok(button.guidance.includes('선택 기준'));
+  const chip = getDocPage('chip');
+  assert.deepEqual(chip.related, []);
+  assert.ok(chip.api.props.some(prop => prop.name === 'selectedValues'));
+  assert.ok(chip.api.props.find(prop => prop.name === 'variant').type.includes('removable'));
+  assert.match(getDocPage('modal').details, /Dim 클릭·Secondary·Positive 버튼·Escape로 닫혀요/);
+  assert.equal(getDocPage('not-a-component'), null);
+});
+
+test('로컬 Props의 Omit·Pick 상속을 읽되 React 타입이나 제외한 속성을 만들지 않아요', () => {
+  const content = `interface BaseProps {
+  /** 공통 클래스예요. */
+  className?: string;
+  hidden?: boolean;
+  value: string;
+}
+interface AProps extends Omit<BaseProps, 'hidden' | 'value'> { label: string }
+type BProps = Pick<BaseProps, 'className'>;
+interface CProps extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> { value?: string }`;
+  const files = [{ path: 'props.ts', content }];
+  const omitted = parseProps('A', files);
+  assert.deepEqual(omitted.props.map(prop => prop.name), ['label', 'className']);
+  assert.equal(omitted.props.find(prop => prop.name === 'className').description, '공통 클래스예요.');
+  assert.equal(omitted.extends, "Omit<BaseProps, 'hidden' | 'value'>");
+  assert.deepEqual(parseProps('B', files).props.map(prop => prop.name), ['className']);
+  assert.deepEqual(parseProps('C', files).props.map(prop => prop.name), ['value']);
+});
+
 test('없는 이름과 허용하지 않는 값은 allowed와 함께 알려요', () => {
   assert.deepEqual(getComponent({ name: 'Buton' }).error, { code: 'not_found', message: "컴포넌트 'Buton'을(를) 찾을 수 없어요.", allowed: ['Button'] });
   assert.equal(getComponent({ name: 'Button', sections: ['usage'] }).error.code, 'invalid_argument');
@@ -50,7 +82,7 @@ test('없는 이름과 허용하지 않는 값은 allowed와 함께 알려요', 
 test('props는 이름과 필드로 좁혀요', () => {
   const all = getProps({ name: 'Button' });
   assert.match(all.extends, /ButtonHTMLAttributes/);
-  assert.deepEqual(all.props.find(prop => prop.name === 'variant'), { name: 'variant', type: "'solid' | 'outline' | 'ghost'", required: false, default: null, description: '버튼 형태예요. 기본값은 `solid`예요.' });
+  assert.deepEqual(all.props.find(prop => prop.name === 'variant'), { name: 'variant', type: "'solid' | 'outline' | 'ghost'", required: false, default: "'solid'", description: '버튼 형태예요. 기본값은 `solid`예요.' });
   assert.deepEqual(getProps({ name: 'Button', names: ['size'], fields: ['type'] }).props, [{ name: 'size', type: "'large' | 'medium'" }]);
 });
 
@@ -130,6 +162,12 @@ test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대
     { group: 'Scale', tokens: { '--a': '4px', '--b': 'var(--a)' } },
     { group: 'Mobile', tokens: { '--a': '2px' } },
   ]);
+
+  const implementation = "export function A(props: AProps) { const { size = 'b', options = [] } = props; return null; } export function Other({ size = 'wrong' }) { return null; }";
+  const extracted = parseProps('A', [{ path: 'a.types.ts', content: types }, { path: 'a.tsx', content: implementation }]);
+  assert.equal(extracted.props.find(prop => prop.name === 'size').default, "'b'");
+  assert.equal(extracted.props.find(prop => prop.name === 'options').default, '[]');
+  assert.equal(extracted.props.find(prop => prop.name === 'mode').default, null);
 
   assert.deepEqual(parseGuide('install.md', '---\ntitle: 설치\ndescription: 설치 방법\n---\n\n본문'), { topic: 'install', title: '설치', description: '설치 방법', body: '본문' });
   assert.throws(() => parseGuide('random.md', '---\ntitle: a\ndescription: b\n---\n'), /허용하지 않는 가이드 주제/);
