@@ -95,3 +95,7 @@ JSON의 사용 기준·예시·검토 내용은 바꾸지 않았고 기존 사�
 
 
 2026-11-28 사용자 요청으로 Chip 역할을 variant로 합쳤어요. 위 표의 FilterChip·RemovableChip은 당시 승인 기록이며 현재 Chip 가이드를 가리켜요. 별도 원문은 보존하고 [API 대응표](../apps/docs/content/source/components/chip-variants.md)를 추가했어요. 설치 이름 변경도 현재 JSON 링크에 반영했으며 과거 승인 날짜는 유지해요.
+
+2026-11-28 사용자 요청으로 Modal의 Positive도 콜백 실행 후 기본으로 닫도록 변경했어요. [확정 사항](../apps/docs/content/source/components/modal-positive-close.md)을 별도로 보존하고 JSON의 동작·접근성·예시를 갱신했어요. 두 액션 모두 preventDefault로 닫힘을 취소하며 비동기 성공 후 닫는 시점은 소비 앱이 제어해요. 기존 원문·디자인·최대 너비는 유지해요.
+
+이 변경은 pnpm check(타입·린트·Storybook·실제 tarball 브라우저·Next.js·용량), 선택 설치 레지스트리 8개 검사·34개 공개 소스 타입/Vite·Next.js SSR/hydration, 문서 조회 8개 검사를 통과했어요. Positive 콜백 후 닫기·취소·비제어 닫기·포커스 복귀를 같은 소비 시나리오에서 확인했어요. 내부 UI tarball은 압축 142,873 B·압축 해제 534,277 B·327개 파일이며 전체 소스 설치 다운로드량이 아니에요. 원격 게시·실기기·실제 릴리스 버전 증가는 진행하지 않았어요.

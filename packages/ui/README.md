@@ -348,7 +348,7 @@ export function SideMenu() {
 
 직접 선택값을 제어하려면 `value`와 `onValueChange`를 함께 사용해요. 특별한 조립이 필요할 때만 저수준 행 컴포넌트인 `NavigationDrawerItem`을 사용해요.
 
-Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요. Dim·Secondary·Esc로 닫고 Positive는 연결한 동작만 실행해요. 열리면 Secondary로 포커스를 이동하고 닫으면 이전 요소로 돌아가요. 중첩 Modal은 지원하지 않아요.
+Modal은 제목과 최대 두 개의 본문 문장을 각각 전달해요. Dim·Secondary·Positive·Esc로 닫아요. 두 액션은 연결한 콜백을 먼저 실행해요. 열리면 Secondary로 포커스를 이동하고 닫으면 이전 요소로 돌아가요. 중첩 Modal은 지원하지 않아요.
 
 ```tsx
 import { useState } from 'react';
@@ -362,7 +362,6 @@ export function ConfirmModal() {
     <Modal
       open={open}
       onOpenChange={setOpen}
-      onPositiveAction={() => { console.log('확인 동작'); setOpen(false); }}
       title="제목"
       message="첫 번째 내용을 작성합니다"
       subMessage="두 번째 내용을 작성합니다"
@@ -374,7 +373,7 @@ export function ConfirmModal() {
 }
 ```
 
-`open`을 생략하면 내부 상태로 열고 닫으며 `defaultOpen`은 `true`예요. Secondary 콜백에서 `event.preventDefault()`를 호출하면 자동 닫기를 취소할 수 있어요. 외부 제어에서는 `onOpenChange`에서 `open` 값을 갱신해요. `aria-label`·`aria-labelledby`·`aria-describedby`는 dialog 콘텐츠에 연결되고, `className`·`style`은 기존처럼 바깥 루트에 적용돼요.
+`open`을 생략하면 내부 상태로 열고 닫으며 `defaultOpen`은 `true`예요. Secondary·Positive 콜백에서 `event.preventDefault()`를 호출하면 자동 닫기를 취소할 수 있어요. 비동기 작업의 성공 후 닫으려면 await 전에 preventDefault()를 호출하고 성공 시 open을 갱신해요. 외부 제어에서는 `onOpenChange`에서 `open` 값을 갱신해요. `aria-label`·`aria-labelledby`·`aria-describedby`는 dialog 콘텐츠에 연결되고, `className`·`style`은 기존처럼 바깥 루트에 적용돼요.
 
 Select는 라벨, Placeholder 문구와 고유한 value를 가진 옵션 목록을 전달해요. 옵션 행은
 MenuItem을 사용하지만 좌우 아이콘과 단축키 안내는 표시하지 않아요. 전체를 막으려면 `disabled`, 특정 옵션만 막으려면 옵션의 `disabled: true`를 사용해요. 방향키는 비활성 옵션을 건너뛰어요.
