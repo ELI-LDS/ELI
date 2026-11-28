@@ -34,7 +34,7 @@ async function materialize(source, destination, requested) {
     ['add', ...requested],
   ]) execFileSync(process.execPath, [cli, ...args, '--cwd', project, '--json'], { stdio: 'pipe' });
   const selected = await selectFiles(source, requested);
-  for (const [path, content] of selected.files) assert.equal(await readFile(join(destination, path), 'utf8'), content);
+  for (const [path, content] of selected.files) assert.deepEqual(await readFile(join(destination, path)), Buffer.from(content));
   return selected;
 }
 
@@ -58,7 +58,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
+await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab', 'navigation-drawer', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -73,6 +73,9 @@ import { TextField } from '../ui/text-field';
 import { Button } from '../ui/button';
 import { Select } from '../ui/select';
 import { FabMenu } from '../ui/fab-menu';
+import { NavigationDrawer } from '../ui/navigation-drawer';
+import { NavigationDrawerCategory } from '../ui/navigation-drawer-category';
+import { NavigationDrawerMenu } from '../ui/navigation-drawer-menu';
 import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import { Radio } from '../ui/radio';
@@ -97,7 +100,7 @@ export function Client() {
   if (apiTest) return <ApiContractsFixture />;
   if (modalTest) return <ModalFixture />;
   if (textTest) return <TextFieldFixture />;
-  return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><FabMenu items={[{ id: 'first', label: '소스 액션' }]} /></>;
+  return <><Button onClick={() => setCount(count + 1)}>소스 버튼 {count}</Button><Select label="소스 선택" options={[{ label: '소스 옵션', value: 'first' }]} /><NavigationDrawer aria-label="소스 Drawer"><NavigationDrawerCategory label="문서" /><NavigationDrawerMenu label="소스 메뉴" value="main" subItems={[{ label: "소스 하위", value: "sub" }]} /></NavigationDrawer><FabMenu label="소스 추가" items={[{ id: 'first', label: '소스 액션' }]} /></>;
 }`);
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
 import { Badge } from '../ui/badge';
@@ -109,6 +112,14 @@ import { Slider } from '../ui/slider';
 import { Radio } from '../ui/radio';
 export default function Page() { return <main><h1>ELI 소스 설치 검증</h1><Badge>서버 배지</Badge><Modal open={false} title="소스 모달" style={{ display: 'none' }} /><LoadingIndicator aria-label="소스 진행" /><TextField /><TextArea /><Slider aria-label="소스 값" /><Radio aria-label="소스 라디오" value="first" /><Client /></main>; }`);
 const nextBin = join(root, 'node_modules/next/dist/bin/next');
+await mkdir(join(next, 'app/existing-font'), { recursive: true });
+await writeFile(join(next, 'app/existing-font/layout.tsx'), `import localFont from 'next/font/local';
+import './font.css';
+const font = localFont({ src: '../../ui/font/PretendardVariable.woff2', variable: '--app-pretendard' });
+export default function Layout({ children }: { children: React.ReactNode }) { return <section className={font.variable} data-existing-font>{children}</section>; }`);
+await writeFile(join(next, 'app/existing-font/font.css'), '[data-existing-font] { --eli-font-family-sans: var(--app-pretendard); }');
+await writeFile(join(next, 'app/existing-font/page.tsx'), `import { Button } from '../../ui/button';
+export default function Page() { return <Button icon={null}>기존 Next 폰트</Button>; }`);
 const env = { ...process.env, NEXT_TELEMETRY_DISABLED: '1' };
 execFileSync(process.execPath, [nextBin, 'build'], { cwd: next, env, stdio: 'inherit' });
 async function collectCss(directory) {
@@ -156,11 +167,29 @@ try {
   await page.getByRole('button', { name: /소스 선택/ }).click();
   await page.getByRole('option', { name: '소스 옵션' }).click();
   await page.getByRole('button', { name: /소스 선택 소스 옵션/ }).waitFor();
+  await page.getByRole('button', { name: '소스 메뉴', exact: true }).click();
+  await page.getByRole('button', { name: '소스 하위', exact: true }).click();
+  assert.equal(await page.getByRole('button', { name: '소스 하위', exact: true }).getAttribute('aria-current'), 'page');
+  await page.getByRole('button', { name: '소스 추가', exact: true }).click();
+  await page.getByRole('button', { name: '소스 액션', exact: true }).click();
   await checkModal(page, url);
   await checkTextField(page, url);
   await checkApiContracts(page, url);
+  // Next/font의 별칭은 추측하지 않고 앱이 연결한 CSS 변수를 그대로 사용해요.
+  const existing = await browser.newContext();
+  try {
+    const fontPage = await existing.newPage();
+    const requests = [];
+    fontPage.on('request', request => { if (request.url().includes('.woff2')) requests.push(request.url()); });
+    await fontPage.goto(`${url}/existing-font`);
+    await fontPage.getByRole('button', { name: '기존 Next 폰트' }).waitFor();
+    await fontPage.evaluate(() => document.fonts.ready);
+    const family = await fontPage.getByText('기존 Next 폰트', { exact: true }).evaluate(element => getComputedStyle(element).fontFamily);
+    assert.ok(family.length > 0 && !family.includes('_eli-pretendard-variable'));
+    assert.equal(requests.length, 1, '기존 Next 폰트만 로딩하고 ELI 대체 파일은 추가 요청하지 않아요.');
+  } finally { await existing.close(); }
   assert.deepEqual(errors, []);
-  console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select 상호작용·CSS 연결을 검증했어요.');
+  console.log('선택 설치 JSON만으로 Next.js 빌드·SSR·hydration·Button/Select/FAB/Drawer 상호작용·CSS 연결을 검증했어요.');
 } finally {
   await browser?.close();
   server.kill('SIGTERM');

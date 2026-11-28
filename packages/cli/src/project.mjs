@@ -2,7 +2,7 @@ import { constants, existsSync, fchmodSync, lstatSync, mkdirSync, openSync, clos
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import semver from 'semver';
+import * as semver from './versions.mjs';
 import { ensure, CliError } from './errors.mjs';
 import { hash, json, parseJson, safePath } from './registry.mjs';
 
@@ -109,6 +109,25 @@ export function checkPeers(project, peers) {
   return { manager, requirements };
 }
 
+/** 원본이 그대로인 설치 파일로 큰 asset 항목만 복원해 반복 다운로드를 줄여요. */
+export function restoreAssetItem(project, config, previous, id, expectedHash) {
+  const cached = Array.isArray(previous.record?.assetItems) && previous.record.assetItems.find(item => item?.id === id);
+  if (!cached || !Array.isArray(cached.files) || !cached.files.length) return null;
+  const files = [];
+  for (const file of cached.files) {
+    if (!file || typeof file.path !== 'string') return null;
+    // 캐시가 가리키는 임의 경로를 읽지 않고 이미 검증한 설치 기록 안에서만 복원해요.
+    const stored = previous.record.files.find(stored => stored.owner === id && stored.path === `${config.directory}/${file.path}` && stored.sha256 === file.sha256);
+    if (!stored) return null;
+    const bytes = bytesAt(project.root, stored.path);
+    if (bytes === null || hash(bytes) !== file.sha256) return null;
+    files.push({ path: file.path, ...(file.encoding ? { encoding: file.encoding } : {}), content: file.encoding === 'base64' ? bytes.toString('base64') : bytes.toString('utf8'), sha256: file.sha256 });
+  }
+  const bytes = Buffer.from(json({ ...cached, files }));
+  // 로컬 기록 자체를 신뢰하지 않아요. 원격 목록에 고정된 전체 항목 해시까지 같아야 재사용해요.
+  return hash(bytes) === expectedHash ? bytes : null;
+}
+
 export function createPlan(project, config, registry, selection, requested, previous) {
   const files = [];
   const recorded = new Map(previous.record?.files.map(file => [file.path, file]) ?? []);
@@ -135,6 +154,12 @@ export function createPlan(project, config, registry, selection, requested, prev
   for (const { path, sha256, owner } of files) newFiles.set(path, { path, sha256, owner });
   const allEntries = new Map(previous.record?.entries.map(entry => [entry.id, entry]) ?? []);
   for (const entry of entries) allEntries.set(entry.id, entry);
+  const assetItems = new Map((Array.isArray(previous.record?.assetItems) ? previous.record.assetItems : []).filter(item => typeof item?.id === 'string' && Array.isArray(item.files)).map(item => [item.id, item]));
+  for (const item of selection.selected.values()) {
+    if (!item.files.some(file => file.encoding === 'base64')) continue;
+    // 폰트 본문을 기록에 중복 저장하지 않고 원래 JSON을 복원할 최소 메타데이터만 남겨요.
+    assetItems.set(item.id, { ...item, files: item.files.map(({ path, encoding, sha256 }) => ({ path, ...(encoding ? { encoding } : {}), sha256 })) });
+  }
   const record = {
     schemaVersion: 1, mode: 'source', registry: config.registry, registrySha256: config.registrySha256,
     version: registry.index.version, directory: config.directory,
@@ -142,6 +167,7 @@ export function createPlan(project, config, registry, selection, requested, prev
     resolved: [...new Set([...(previous.record?.resolved ?? []), ...selection.selected.keys()])].sort(),
     entries: [...allEntries.values()].sort((a, b) => a.id.localeCompare(b.id)),
     files: [...newFiles.values()].sort((a, b) => a.path.localeCompare(b.path)),
+    ...(assetItems.size ? { assetItems: [...assetItems.values()].sort((a, b) => a.id.localeCompare(b.id)) } : {}),
   };
   return { files, entries, record };
 }

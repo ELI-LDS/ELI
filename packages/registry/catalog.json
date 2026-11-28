@@ -1,5 +1,29 @@
 {
-  "schemaVersion": 1,
-  "reservedKinds": ["harness"],
-  "shared": [{ "id": "tokens", "directory": "tokens" }]
+  "schemaVersion": 2,
+  "reservedKinds": [
+    "harness"
+  ],
+  "shared": [
+    {
+      "id": "tokens",
+      "directory": "tokens"
+    },
+    {
+      "id": "_font-pretendard",
+      "directory": "font",
+      "description": "Pretendard Variable 1.3.9 원본과 OFL-1.1 라이선스예요.",
+      "license": "font/OFL.txt"
+    }
+  ],
+  "compositions": {
+    "fab": [
+      "fab-menu",
+      "fab-menu-segment"
+    ],
+    "navigation-drawer": [
+      "navigation-drawer-category",
+      "navigation-drawer-menu",
+      "navigation-drawer-item"
+    ]
+  }
 }

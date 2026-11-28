@@ -19,7 +19,7 @@ export function assertSourcePath(path) {
   assert.ok(path && !path.startsWith('/') && !path.includes('\\') && !path.includes(':'), `잘못된 상대 경로: ${path}`);
   assert.ok(!path.split('/').some(part => !part || part === '.' || part === '..' || part === 'node_modules'), `잘못된 상대 경로: ${path}`);
   assert.doesNotMatch(path, /(?:^|\/)(?:__tests__|harness)(?:\/|$)|\.(?:stories|test|spec)\./, `개발 파일은 제공하지 않아요: ${path}`);
-  assert.ok(/\.(?:ts|tsx|css|svg)$/.test(path) || path === 'LICENSE', `지원하지 않는 파일: ${path}`);
+  assert.ok(/\.(?:ts|tsx|css|svg|woff2)$/.test(path) || path === 'LICENSE' || path.endsWith('/OFL.txt'), `지원하지 않는 파일: ${path}`);
 }
 
 /** JS 출력 경로를 가리키는 import도 원본 TS 파일로 찾아요. 소스 내용은 바꾸지 않아요. */
@@ -81,7 +81,7 @@ function readReferences(path, content, rewrite) {
 
 /** 공개 진입점에서 선택 항목을 찾고, 실제 참조 파일만 항목별로 소유하게 해요. */
 export function generateRegistry({ sourceRoot = defaultSource, manifest = defaultManifest, catalog = defaultCatalog } = {}) {
-  assert.equal(catalog.schemaVersion, 1);
+  assert.equal(catalog.schemaVersion, 2);
   assert.deepEqual(catalog.reservedKinds, ['harness']);
   assert.match(manifest.version, /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/);
   const items = new Map();
@@ -92,7 +92,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
   const makeItem = (id, kind, name, description, entry = null) => {
     assert.match(id, /^(?:_[a-z0-9-]+|[a-z][a-z0-9-]*)$/);
     assert.ok(!items.has(id), `중복 항목: ${id}`);
-    const item = { schemaVersion: 1, version: manifest.version, id, kind, name, description, entry, dependencies: new Set(), peerDependencies: {}, files: new Map() };
+    const item = { schemaVersion: catalog.schemaVersion, version: manifest.version, id, kind, name, description, entry, dependencies: new Set(), peerDependencies: {}, files: new Map() };
     items.set(id, item);
     return item;
   };
@@ -125,7 +125,12 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
   assert.ok(items.size > 0, '공개 컴포넌트가 없어요.');
   for (const shared of catalog.shared) {
     assertSourcePath(`${shared.directory}/index.css`);
-    makeItem(shared.id, 'shared', shared.id, '여러 컴포넌트가 함께 사용하는 디자인 토큰이에요.');
+    makeItem(shared.id, 'shared', shared.id, shared.description ?? '여러 컴포넌트가 함께 사용하는 디자인 토큰이에요.');
+    if (shared.license) {
+      assertSourcePath(shared.license);
+      assert.ok(shared.license.startsWith(`${shared.directory}/`) && shared.license.endsWith('/OFL.txt'), '폰트 라이선스는 같은 공유 폴더에 제공해요.');
+      queue.push(shared.license);
+    }
   }
 
   // 공개 구현은 button.tsx처럼 설치 루트에 두고 스타일·타입·Hook은 button/에 모아요.
@@ -159,13 +164,14 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     seen.add(path);
     assertSourcePath(path);
     const item = items.get(ownerOf(path));
-    const content = readFileSync(join(sourceRoot, path), 'utf8');
+    const binary = path.endsWith('.woff2');
+    const content = readFileSync(join(sourceRoot, path), binary ? undefined : 'utf8');
     const target = installPath(path);
     assertSourcePath(target);
     assert.ok(!portablePaths.has(target.toLowerCase()), `설치 파일 경로가 충돌해요: ${target}`);
     portablePaths.add(target.toLowerCase());
     sources.set(target, path);
-    const prepared = readReferences(path, content, (specifier, kind) => {
+    const prepared = binary ? { content, references: [] } : readReferences(path, content, (specifier, kind) => {
       if (!specifier.startsWith('.')) return specifier;
       const clean = specifier.split(/[?#]/)[0];
       const dependency = installPath(resolveLocal(sourceRoot, path, specifier));
@@ -175,7 +181,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
       if (!rewritten.startsWith('.')) rewritten = `./${rewritten}`;
       return rewritten + specifier.slice(clean.length);
     });
-    item.files.set(path, { path: target, content: prepared.content, sha256: sha256(prepared.content) });
+    item.files.set(path, { path: target, ...(binary ? { encoding: 'base64' } : {}), content: binary ? content.toString('base64') : prepared.content, sha256: sha256(prepared.content) });
     for (const specifier of prepared.references) {
       if (!specifier.startsWith('.')) {
         const packageName = specifier.startsWith('@') ? specifier.split('/').slice(0, 2).join('/') : specifier.split('/')[0];
@@ -190,6 +196,20 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
     }
   }
 
+  // 직접 import하지 않는 조립 부품도 기본 설치만으로 사용할 수 있게 해요.
+  // 파일 소유권과 실제 소스 참조는 유지하고, 설치 관계만 같은 의존성 계약에 합쳐요.
+  const compositions = catalog.compositions === undefined ? {} : catalog.compositions;
+  assert.ok(compositions && typeof compositions === 'object' && !Array.isArray(compositions), '조립 관계는 항목별 객체여야 해요.');
+  for (const [id, dependencies] of Object.entries(compositions)) {
+    const item = items.get(id);
+    assert.equal(item?.kind, 'component', `조립 기준이 공개 컴포넌트가 아니에요: ${id}`);
+    assert.ok(Array.isArray(dependencies) && dependencies.length > 0 && new Set(dependencies).size === dependencies.length, `조립 항목이 비었거나 중복돼요: ${id}`);
+    for (const dependency of dependencies) {
+      assert.ok(dependency !== id && items.get(dependency)?.kind === 'component', `잘못된 조립 부품: ${id} → ${dependency}`);
+      item.dependencies.add(dependency);
+    }
+  }
+
   // 선택 설치한 소스에도 원래 라이선스를 함께 전달해요.
   const tokens = items.get('tokens');
   assert.ok(tokens?.files.size, '공통 토큰이 참조되지 않았어요.');
@@ -197,7 +217,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
   tokens.files.set('LICENSE', { path: 'LICENSE', content: license, sha256: sha256(license) });
 
   const artifacts = new Map();
-  const index = { schemaVersion: 1, version: manifest.version, license: manifest.license, reservedKinds: catalog.reservedKinds, items: [] };
+  const index = { schemaVersion: catalog.schemaVersion, version: manifest.version, license: manifest.license, reservedKinds: catalog.reservedKinds, items: [] };
   for (const item of [...items.values()].sort((a, b) => a.id.localeCompare(b.id, 'en'))) {
     assert.ok(item.files.size, `파일이 없는 항목: ${item.id}`);
     const data = { ...item, entry: item.entry ? { ...item.entry, path: installPath(item.entry.path) } : null, dependencies: [...item.dependencies].sort(), files: [...item.files.values()].sort((a, b) => a.path.localeCompare(b.path, 'en')) };

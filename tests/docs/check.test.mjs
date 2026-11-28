@@ -1,11 +1,11 @@
 // 원격 MCP의 조회 계층을 실제 생성 데이터로 확인해요. `pnpm test:docs`가 먼저 데이터를 만들어요.
 import assert from 'node:assert/strict';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { test } from 'node:test';
 import { getComponent, getGuide, getProps, getTokens, getVersions, listComponents, search } from '../../apps/docs/content/query.ts';
-import { approvedGuide, loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
+import { approvedGuide, generateContent, loadGuides, parseGuide, parseProps, parseTokens, renderSections } from '../../apps/docs/scripts/build-content.mjs';
 
 test('목록은 이름·ID·상태·설명만 이름순으로 줘요', () => {
   const { components } = listComponents();
@@ -133,4 +133,12 @@ test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대
 
   assert.deepEqual(parseGuide('install.md', '---\ntitle: 설치\ndescription: 설치 방법\n---\n\n본문'), { topic: 'install', title: '설치', description: '설치 방법', body: '본문' });
   assert.throws(() => parseGuide('random.md', '---\ntitle: a\ndescription: b\n---\n'), /허용하지 않는 가이드 주제/);
+});
+
+
+test('문서·MCP 생성 데이터에는 폰트 바이너리 본문을 노출하지 않아요', () => {
+  const text = JSON.stringify(generateContent());
+  const sample = readFileSync(new URL('../../packages/ui/src/font/PretendardVariable.woff2', import.meta.url)).toString('base64').slice(0, 128);
+  assert.ok(!text.includes(sample));
+  assert.doesNotMatch(text, /"encoding":"base64"/);
 });

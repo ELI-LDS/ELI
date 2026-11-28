@@ -3,8 +3,9 @@ import { execFile as execFileCallback, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, rm, symlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { after, before, test } from 'node:test';
 import { selectFiles } from '../registry/fixtures.mjs';
@@ -31,7 +32,9 @@ before(async () => {
   execFileSync('npm', ['install', '--prefix', installed, '--ignore-scripts', '--no-audit', '--no-fund', '--no-package-lock', join(artifacts, packed.filename)], { stdio: 'pipe' });
   cli = join(installed, 'node_modules/eli-design/dist/cli.mjs');
   const packagedManifest = JSON.parse(await readFile(join(installed, 'node_modules/eli-design/package.json'), 'utf8'));
-  assert.deepEqual(Object.keys(packagedManifest.dependencies), ['semver']);
+  assert.deepEqual(Object.keys(packagedManifest.dependencies ?? {}), []);
+  assert.ok(!(await readdir(join(installed, 'node_modules'))).includes('semver'));
+  assert.match(await readFile(join(installed, 'node_modules/eli-design/dist/THIRD_PARTY_LICENSES.txt'), 'utf8'), /semver 7\.8\.6[\s\S]*Isaac Z\. Schlueter/);
   await writeFile(join(artifacts, 'package-size.json'), JSON.stringify({ size: packed.size, unpackedSize: packed.unpackedSize, files: packed.files.length }, null, 2));
   server = createServer(async (request, response) => {
     requests.push(request.url);
@@ -73,6 +76,24 @@ test('tarball의 실행 파일이 도움말·버전을 제공하고 잘못된 �
   assert.match((await run(path, ['--help'])).message, /add --all/);
   assert.equal((await run(path, ['--version'])).version, JSON.parse(await readFile(join(root, 'packages/cli/package.json'), 'utf8')).version);
   assert.equal((await run(path, ['add', '--unknown'], 1)).error.code, 'INVALID_ARGUMENT');
+});
+
+test('독립 폴더에서도 별도 의존성 없이 실행되고 원본 버전 검사 결과를 유지해요', async () => {
+  const isolated = await mkdtemp(join(tmpdir(), 'eli-cli-standalone-'));
+  try {
+    await cp(join(dirname(cli), '..'), isolated, { recursive: true });
+    const result = await execFile(process.execPath, [join(isolated, 'dist/cli.mjs'), '--version', '--json']);
+    assert.equal(JSON.parse(result.stdout).ok, true);
+    const bundled = await import(pathToFileURL(join(isolated, 'dist/versions.mjs')));
+    const upstream = await import('../../packages/cli/src/versions.mjs');
+    for (const version of [undefined, '', '1.2.3', 'v1.2.3', '01.2.3', '0.2.3', '19.3.0', '19.4.0', '20.0.0', '19.3.1-beta.1', '1.2.3+build.4']) {
+      assert.equal(bundled.valid(version), upstream.valid(version));
+      for (const range of ['^19.3.0', '^0.2.3', '~1.2.0', '>=1.2.3 <2', '19.x || >=20', '>=19.3.1-beta.0 <20', '*', '', 'invalid']) {
+        assert.equal(bundled.validRange(range), upstream.validRange(range));
+        assert.equal(bundled.satisfies(version, range), upstream.satisfies(version, range));
+      }
+    }
+  } finally { await rm(isolated, { recursive: true, force: true }); }
 });
 
 test('init 미리보기는 파일을 쓰지 않고 목록은 공개 컴포넌트만 보여줘요', async () => {
@@ -161,7 +182,7 @@ test('사용자 지정 경로와 기존 별칭으로 설치 소스를 빌드하�
     ['src/shared/ui/local.ts', 'export const local = "기존 UI";\n'],
     ['src/existing/message.ts', 'export const message = "기존 별칭";\n'],
     ['tsconfig.json', `// 기존 주석과 경로 별칭을 보존해요.\n${JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true, paths: { '@/*': ['./src/*'], '@existing/*': ['./src/existing/*'] } }, include: ['src'] }, null, 2)}\n`],
-    ['vite.config.mjs', "import { fileURLToPath } from 'node:url';\nexport default { resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), '@existing': fileURLToPath(new URL('./src/existing', import.meta.url)) } } };\n"],
+    ['vite.config.mjs', "import { fileURLToPath, pathToFileURL } from 'node:url';\nexport default { resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), '@existing': fileURLToPath(new URL('./src/existing', import.meta.url)) } } };\n"],
   ]);
   for (const [file, content] of originalFiles) await writeFile(join(path, file), content);
   const initialized = await run(path, ['init', '--registry', base, '--dir', 'src/shared/ui']);
@@ -250,16 +271,16 @@ test('모든 공개 컴포넌트를 각각 새 프로젝트에 단독 선택해 
     assert.deepEqual(added.files.map(file => file.path).sort(), [...expected.files.keys()].map(file => `src/components/ui/${file}`).sort());
     const entry = added.entries.find(item => item.id === component.id);
     assert.ok(entry, component.id);
-    for (const [file, content] of expected.files) assert.equal(await readFile(join(path, 'src/components/ui', file), 'utf8'), content, `${component.id}: ${file}`);
+    for (const [file, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', file)), Buffer.from(content), `${component.id}: ${file}`);
   }
 });
 
-async function changedRegistry(change) {
+async function changedRegistry(change, id = 'button') {
   const path = await mkdtemp(join(artifacts, 'registry-'));
   await cp(registry, path, { recursive: true });
   const indexPath = join(path, 'registry.json');
   const index = JSON.parse(await readFile(indexPath, 'utf8'));
-  const descriptor = index.items.find(item => item.id === 'button');
+  const descriptor = index.items.find(item => item.id === id);
   const itemPath = join(path, descriptor.filename);
   const item = JSON.parse(await readFile(itemPath, 'utf8'));
   change(index, item);
@@ -272,7 +293,9 @@ async function changedRegistry(change) {
 
 test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 변경하지 않아요', async () => {
   const content = 'export function Button() { return null; }\n';
-  const source = await changedRegistry((_, item) => {
+  const source = await changedRegistry((index, item) => {
+    index.schemaVersion = 1;
+    item.schemaVersion = 1;
     item.entry.path = 'button/Button/Button.tsx';
     item.dependencies = [];
     item.files = [{ path: item.entry.path, content, sha256: digest(content) }];
@@ -292,7 +315,96 @@ test('이전 콘텐츠와 기존 설치 경로·기록은 새 배치로 자동 �
   assert.equal(await readFile(join(path, status.entries[0].path), 'utf8'), content);
 });
 
-test('경로 탈출·개발 파일·버전 혼합·순환 의존·내용 변조를 쓰기 전에 거부해요', async () => {
+test('기본 조립 항목만 요청해도 부품을 모두 설치하고 재요청은 파일을 바꾸지 않아요', async () => {
+  for (const [id, parts] of [
+    ['fab', ['fab', 'fab-menu', 'fab-menu-segment']],
+    ['navigation-drawer', ['navigation-drawer', 'navigation-drawer-category', 'navigation-drawer-menu', 'navigation-drawer-item']],
+  ]) {
+    const path = await fixture();
+    await init(path);
+    requests.length = 0;
+    const added = await run(path, ['add', id]);
+    assert.deepEqual(added.requested, [id]);
+    assert.deepEqual(added.entries.map(item => item.id).sort(), [...parts].sort());
+    const expected = await selectFiles(registry, [id]);
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', name)), Buffer.from(content));
+    assert.equal(new Set(requests).size, requests.length, '공유 항목은 한 번만 다운로드해요.');
+    assert.ok(!requests.some(url => /button|modal|harness/.test(url)));
+    const repeated = await run(path, ['add', ...parts]);
+    assert.ok(repeated.files.every(file => file.action === 'reuse'));
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(path, 'src/components/ui', name)), Buffer.from(content));
+    const partFirst = await fixture();
+    await init(partFirst);
+    await run(partFirst, ['add', parts[1]]);
+    await run(partFirst, ['add', id]);
+    for (const [name, content] of expected.files) assert.deepEqual(await readFile(join(partFirst, 'src/components/ui', name)), Buffer.from(content));
+  }
+});
+
+test('조립 부품의 소스가 변조되면 기준 항목도 파일에 쓰지 않아요', async () => {
+  const source = await changedRegistry((_, item) => { item.files[0].content += 'tampered'; }, 'fab-menu-segment');
+  const path = await fixture();
+  await init(path, source);
+  assert.equal((await run(path, ['add', 'fab'], 1)).error.code, 'INTEGRITY_MISMATCH');
+  assert.deepEqual(await readdir(join(path, 'src')), []);
+  assert.deepEqual(await readdir(join(path, '.eli')), ['config.json']);
+});
+
+test('기존 폰트 설정을 보존하고 공통 폰트는 원본 바이트로 한 번만 설치해요', async () => {
+  const path = await fixture();
+  const original = '@font-face { font-family: "Pretendard Variable"; src: url("./existing.woff2"); }';
+  await writeFile(join(path, 'src/existing-font.css'), original);
+  const before = await readFile(join(path, 'package.json'), 'utf8');
+  await init(path);
+  await run(path, ['add', 'button']);
+  const next = await run(path, ['add', 'modal']);
+  assert.ok(!next.downloads.some(item => item.url.endsWith('/_font-pretendard.json')), '설치된 공통 폰트는 다시 다운로드하지 않아요.');
+  const record = JSON.parse(await readFile(join(path, '.eli/lock.json'), 'utf8'));
+  assert.ok(JSON.stringify(record.assetItems).length < 10_000);
+  assert.ok(record.assetItems.every(item => item.files.every(file => !('content' in file))));
+  const fonts = record.files.filter(file => file.path.endsWith('.woff2'));
+  assert.equal(fonts.length, 1);
+  assert.equal(digest(await readFile(join(path, fonts[0].path))), '9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4');
+  assert.equal(await readFile(join(path, 'src/existing-font.css'), 'utf8'), original);
+  assert.equal(await readFile(join(path, 'package.json'), 'utf8'), before);
+  assert.ok((await run(path, ['status'])).files.every(file => file.state === 'unchanged'));
+});
+
+test('폰트 메타데이터가 달라지면 원격 해시로 재검증하고 수정한 폰트는 보존해요', async () => {
+  const path = await fixture();
+  await init(path);
+  await run(path, ['add', 'button']);
+  const file = join(path, '.eli/lock.json');
+  const record = JSON.parse(await readFile(file, 'utf8'));
+  record.assetItems[0].description = '변경한 캐시';
+  await writeFile(file, JSON.stringify(record));
+  const repaired = await run(path, ['add', 'modal']);
+  assert.ok(repaired.downloads.some(item => item.url.endsWith('/_font-pretendard.json')));
+  const healthy = JSON.parse(await readFile(file, 'utf8'));
+  const font = healthy.files.find(file => file.path.endsWith('.woff2')).path;
+  await writeFile(join(path, font), '사용자가 변경한 폰트');
+  const before = await readFile(file, 'utf8');
+  assert.equal((await run(path, ['add', 'select'], 1)).error.code, 'FILE_CONFLICT');
+  assert.equal(await readFile(join(path, font), 'utf8'), '사용자가 변경한 폰트');
+  assert.equal(await readFile(file, 'utf8'), before);
+});
+
+test('바이너리의 잘못된 인코딩·해시·버전·경로는 파일 쓰기 전에 거부해요', async () => {
+  for (const [change, expected] of [
+    [item => { item.files.find(file => file.encoding).content += 'x'; }, 'INVALID_DATA'],
+    [item => { item.files.find(file => file.encoding).sha256 = '0'.repeat(64); }, 'INTEGRITY_MISMATCH'],
+    [item => { item.schemaVersion = 1; }, 'INVALID_DATA'],
+    [item => { item.files.find(file => file.encoding).path = '../outside.woff2'; }, 'UNSAFE_PATH'],
+  ]) {
+    const source = await changedRegistry((_, item) => change(item), '_font-pretendard');
+    const path = await fixture();
+    await init(path, source);
+    assert.equal((await run(path, ['add', 'button'], 1)).error.code, expected);
+    assert.deepEqual(await readdir(join(path, 'src')), []);
+  }
+});
+
+test('경로 탈출·개발 파일·버전 혼합·자기 참조·내용 변조를 쓰기 전에 거부해요', async () => {
   for (const [mutate, expected] of [
     [(_, item) => { item.files[0].path = '../outside.ts'; }, 'UNSAFE_PATH'],
     [(_, item) => { item.files[0].path = 'button/Button.test.tsx'; }, 'UNSAFE_PATH'],

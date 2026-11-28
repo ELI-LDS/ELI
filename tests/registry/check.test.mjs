@@ -52,6 +52,10 @@ test('공개 항목과 공유 파일 전체가 규격·버전·해시를 지켜�
       assert.ok(!owned.has(file.path), `파일 소유자가 둘이에요: ${file.path}`);
       owned.add(file.path);
       if (file.path !== 'LICENSE') {
+        if (file.encoding === 'base64') {
+          assert.deepEqual(Buffer.from(file.content, 'base64'), await readFile(join(root, 'packages/ui/src', sources.get(file.path))));
+          continue;
+        }
         const original = await readFile(join(root, 'packages/ui/src', sources.get(file.path)), 'utf8');
         if (file.path.endsWith('.svg')) assert.equal(file.content, original);
         // 경로 보정이 주석과 클라이언트 경계를 훼손하면 안 돼요.
@@ -80,6 +84,22 @@ test('Button만 선택하면 형제 컴포넌트와 하네스가 없어요', asy
   assert.ok(![...files.keys()].some(path => /IconButton|modal\/|harness|stories|node_modules/.test(path)));
 });
 
+test('폰트 원본·라이선스는 한 번만 제공하고 기존 Pretendard를 우선해요', async () => {
+  const { selected, files } = await selectFiles(directory, ['button', 'modal', 'select']);
+  assert.equal([...selected.keys()].filter(id => id === '_font-pretendard').length, 1);
+  assert.ok(files.has('font/OFL.txt'));
+  const bytes = files.get('font/PretendardVariable.woff2');
+  assert.ok(Buffer.isBuffer(bytes));
+  assert.equal(sha256(bytes), '9599f12fd42fc0bce1cd50b47a0c022e108d7aa64dd0d1bb0ed44f3282d900b4');
+  assert.match(files.get('tokens/typography.css'), /"Pretendard Variable", Pretendard, "_eli-pretendard-variable"/);
+  assert.match(files.get('font/index.css'), /font-family: "_eli-pretendard-variable"/);
+  assert.match(files.get('font/OFL.txt'), /SIL OPEN FONT LICENSE/);
+  const font = JSON.parse((await readFile(join(directory, '_font-pretendard.json'), 'utf8')));
+  assert.equal(font.schemaVersion, 2);
+  assert.ok(matches(font, schema));
+  assert.ok(!matches({ ...font, schemaVersion: 1 }, schema), 'v1은 바이너리를 받지 않아요.');
+});
+
 test('조합 컴포넌트와 타입·CSS·SVG 의존 파일을 함께 제공해요', async () => {
   const modal = await selectFiles(directory, ['modal']);
   assert.ok(modal.selected.has('button'));
@@ -97,6 +117,26 @@ test('조합 컴포넌트와 타입·CSS·SVG 의존 파일을 함께 제공해�
 
 test('같은 원본의 생성 결과는 바이트와 해시가 같아요', () => {
   assert.deepEqual(generateRegistry().artifacts, generateRegistry().artifacts);
+});
+
+test('조립 기준 하나로 부품을 모두 받고 관계없는 컴포넌트는 받지 않아요', async () => {
+  for (const [id, parts] of [
+    ['fab', ['fab', 'fab-menu', 'fab-menu-segment']],
+    ['navigation-drawer', ['navigation-drawer', 'navigation-drawer-category', 'navigation-drawer-menu', 'navigation-drawer-item']],
+  ]) {
+    const { selected, files } = await selectFiles(directory, [id]);
+    assert.deepEqual([...selected.values()].filter(item => item.kind === 'component').map(item => item.id).sort(), [...parts].sort());
+    for (const part of parts) assert.ok(files.has(`${part}.tsx`), part);
+    assert.equal([...selected.keys()].filter(id => id === 'tokens').length, 1);
+    assert.ok(![...selected.keys()].some(id => ['button', 'modal', 'harness'].includes(id)));
+  }
+});
+
+test('없는 항목·자기 자신·중복·비공개 부품을 조립 관계로 등록하지 못해요', async () => {
+  const catalog = JSON.parse(await readFile(join(root, 'packages/registry/catalog.json'), 'utf8'));
+  for (const compositions of [
+    { missing: ['fab'] }, { fab: ['fab'] }, { fab: ['fab-menu', 'fab-menu'] }, { fab: ['tokens'] },
+  ]) assert.throws(() => generateRegistry({ catalog: { ...catalog, compositions } }), /조립/);
 });
 
 test('소스 배치를 줄여도 타입 참조·재수출·URL·CSS 연결과 주석을 보존해요', async () => {

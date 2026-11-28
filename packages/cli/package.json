@@ -12,5 +12,5 @@
     "build": "node ../../scripts/build-cli.mjs",
     "prepack": "npm run build"
   },
-  "dependencies": { "semver": "7.8.6" }
+  "devDependencies": { "semver": "7.8.6" }
 }

@@ -15,7 +15,7 @@ npx eli-design@latest add button
 
 아래 API 보완 중 진행률의 일반 숫자·옵션별 비활성화·입력 ref 계약은 다음 UI 콘텐츠 릴리스에 포함할 미배포 변경이에요. 기존 0.2.0 소스가 자동으로 바뀌지는 않아요.
 
-기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. Pretendard 폰트는 소비 앱에서 직접 불러와요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
+기본 CSS·공통 토큰은 컴포넌트와 함께 연결돼요. 현재 공개 UI 콘텐츠 0.3.0은 Pretendard를 직접 연결해요. 다음 v2 콘텐츠 후보는 Pretendard Variable 원본·OFL 라이선스와 CSS 로딩을 기본 제공하며 기존 Pretendard를 우선 사용해요. 이미 설치한 소스는 자동 변경하지 않아요. 이벤트를 연결하는 Next.js 화면에는 Client Component 경계가 필요해요. UI만 추가하면 하네스를 받지 않으며, 하네스는 별도 `harness --agent` 명령으로 선택해요.
 
 ## 컴포넌트 스타일을 바꿔요
 
