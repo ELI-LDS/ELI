@@ -34,7 +34,7 @@ const meta = {
     );
   },
   argTypes: {
-    open: { name: '표시하기', control: 'boolean', description: '열기 버튼으로 표시하고 Dim·모달 닫기·Esc로 닫아요. Controls에도 현재 표시 상태가 반영돼요.' },
+    open: { name: '표시하기', control: 'boolean', description: '열기 버튼으로 표시하고 Dim·Secondary·Positive·Esc로 닫아요. Controls에도 현재 표시 상태가 반영돼요.' },
     defaultOpen: { table: { disable: true } },
     onOpenChange: { table: { disable: true } },
     title: {

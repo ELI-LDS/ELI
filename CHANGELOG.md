@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### Modal Positive 기본 닫힘
+
+- Positive 버튼도 콜백 실행 후 자동으로 닫혀요. Secondary와 같이 event.preventDefault()로 취소할 수 있어요. 제어 상태는 onOpenChange(false)를 부모가 반영해요.
+- 비동기 작업 완료 후 닫으려면 await 전에 기본 닫힘을 취소하고 성공 시 open을 갱신해요. 이전 기본 동작과 달라지는 다음 UI 콘텐츠 MINOR 대상이며 실제 버전 증가·배포는 별도예요.
+
+
 ### 컴포넌트 사용 가이드
 
 - 전달받은 Modal·Divider·Tab Markdown을 보존하고 공개 컴포넌트별 JSON·소스 설치 예시를 추가해요. Tab의 빈 원문은 최신 전달본으로 교체해요. 기존 stable 31개는 유지하고 새 3개는 draft로 검증한 뒤 사용자 승인에 따라 stable로 전환해요. 전체 34개 가이드의 내용과 예시를 조회할 수 있는 데이터로 준비하며, 공개 MCP 반영은 배포 후 확인해요.

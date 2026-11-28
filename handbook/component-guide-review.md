@@ -92,3 +92,8 @@ Button의 Ghost 기본 배경과 Navigation의 disabled 제거·권장 항목 �
 2026-11-24에 button.zip으로 다시 전달받은 Markdown을 원문 그대로 교체하고 Button JSON의 source.sha256을 갱신했어요. 제목 추가, 섹션 번호와 한영 제목 표기만 달라졌으며 본문의 사용 기준·Props·상호작용·조합 설명은 기존 원문과 같아요. 실제 Button 코드와 이전에 보완한 기술 설명도 대조했어요.
 
 JSON의 사용 기준·예시·검토 내용은 바꾸지 않았고 기존 사용자 승인 상태인 stable을 유지해요. UI 구현·디자인·공개 API·버전은 변경하지 않았어요. 기존 원문은 Git 이력에 남아 있어요.
+
+
+2026-11-28 사용자 요청으로 Modal의 Positive도 콜백 실행 후 기본으로 닫도록 변경했어요. [확정 사항](../apps/docs/content/source/components/modal-positive-close.md)을 별도로 보존하고 JSON의 동작·접근성·예시를 갱신했어요. 두 액션 모두 preventDefault로 닫힘을 취소하며 비동기 성공 후 닫는 시점은 소비 앱이 제어해요. 기존 원문·디자인·최대 너비는 유지해요.
+
+이 변경은 pnpm check(타입·린트·Storybook·실제 tarball 브라우저·Next.js·용량), 선택 설치 레지스트리 8개 검사·34개 공개 소스 타입/Vite·Next.js SSR/hydration, 문서 조회 8개 검사를 통과했어요. Positive 콜백 후 닫기·취소·비제어 닫기·포커스 복귀를 같은 소비 시나리오에서 확인했어요. 내부 UI tarball은 압축 142,873 B·압축 해제 534,277 B·327개 파일이며 전체 소스 설치 다운로드량이 아니에요. 원격 게시·실기기·실제 릴리스 버전 증가는 진행하지 않았어요.

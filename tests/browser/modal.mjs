@@ -28,7 +28,10 @@ export async function checkModal(page, url) {
   await expect(cancel).toBeFocused();
   await confirm.click();
   await expect(page.getByTestId('positive-count')).toHaveText('1');
-  await expect(dialog).toBeVisible();
+  await expect(dialog).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  await expect(page.getByTestId('modal-sequence')).toHaveText('positive,close');
+  await opener.press('Enter');
   await dialog.getByText('첫 문장').click();
   await expect(dialog).toBeVisible();
   // 기존 색상은 유지하고 dialog의 의미·키보드 동작을 검증해요.
@@ -55,8 +58,20 @@ export async function checkModal(page, url) {
   await cancel.click();
   await expect(dialog).toBeVisible();
   await page.keyboard.press('Escape');
+  await page.getByRole('checkbox', { name: '확인 유지' }).check();
+  await opener.press('Enter');
+  const beforePositive = await page.getByTestId('modal-sequence').textContent();
+  await confirm.click();
+  await expect(dialog).toBeVisible();
+  await expect(page.getByTestId('positive-count')).toHaveText('2');
+  await expect(page.getByTestId('modal-sequence')).toHaveText(`${beforePositive},positive`);
+  await page.keyboard.press('Escape');
   await page.getByRole('button', { name: '비제어 모달 열기' }).click();
   await expect(page.getByRole('dialog', { name: '비제어 검증' })).toBeVisible();
+  await page.getByRole('dialog', { name: '비제어 검증' }).getByRole('button', { name: '확인' }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: '비제어 모달 열기' })).toBeFocused();
+  await page.getByRole('button', { name: '비제어 모달 열기' }).click();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await page.getByRole('button', { name: '외부값 유지 모달' }).focus();
