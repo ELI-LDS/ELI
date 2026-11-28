@@ -2,7 +2,7 @@ import { constants, existsSync, fchmodSync, lstatSync, mkdirSync, openSync, clos
 import { createRequire } from 'node:module';
 import { join, resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import semver from 'semver';
+import * as semver from './versions.mjs';
 import { ensure, CliError } from './errors.mjs';
 import { hash, json, parseJson, safePath } from './registry.mjs';
 

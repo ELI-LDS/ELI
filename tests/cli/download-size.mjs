@@ -29,7 +29,7 @@ const scenarios = [
 
 const baseEnv = { ...process.env, PATH: [dirname(process.execPath), process.env.PATH].join(delimiter), CI: '1' };
 assert.equal((await execFile(npm, ['--version'], { env: baseEnv })).stdout.trim(), '11.19.0');
-assert.deepEqual(Object.keys(manifest.dependencies), ['semver'], '실행 의존성이 바뀌면 측정 그래프도 함께 갱신해요.');
+assert.deepEqual(Object.keys(manifest.dependencies ?? {}), [], '실행 의존성이 생기면 측정 그래프를 누락 없이 갱신해요.');
 const peer = JSON.parse(await readFile(join(root, 'node_modules/react/package.json'), 'utf8'));
 const registryDirectory = join(root, '.artifacts/registry');
 const index = JSON.parse(await readFile(join(registryDirectory, 'registry.json'), 'utf8'));
@@ -41,30 +41,6 @@ assert.ok(packed.files.every(file => ['package.json', 'README.md', 'LICENSE'].in
 assert.ok(!packed.files.some(file => /^(harness|skills|hooks)\/|\.tsx|tokens\//.test(file.path)));
 const toolTarball = await readFile(join(output, packed.filename));
 const toolHash = digest(toolTarball);
-
-/** 실제 npm 메타데이터를 고정하고 tarball 무결성을 확인한 뒤 측정 서버에 전달해요. */
-async function fetchJson(url, headers = {}) {
-  const response = await fetch(url, { headers, signal: AbortSignal.timeout(30_000) });
-  assert.ok(response.ok, `${url}: ${response.status}`);
-  return response.json();
-}
-const dependencyVersion = manifest.dependencies.semver;
-assert.match(dependencyVersion, /^\d+\.\d+\.\d+$/);
-const dependencyMetadata = await fetchJson('https://registry.npmjs.org/semver', { accept: 'application/vnd.npm.install-v1+json' });
-const dependency = dependencyMetadata.versions[dependencyVersion];
-assert.ok(dependency);
-assert.deepEqual(Object.keys(dependency.dependencies ?? {}), [], '전이 의존성이 생기면 누락 없이 측정해야 해요.');
-assert.deepEqual(Object.keys(dependency.optionalDependencies ?? {}), []);
-const metadataSnapshot = Buffer.from(json(dependencyMetadata));
-await writeFile(join(output, 'semver-metadata.json'), metadataSnapshot);
-const archiveUrl = new URL(dependency.dist.tarball);
-assert.equal(archiveUrl.origin, 'https://registry.npmjs.org');
-assert.equal(archiveUrl.pathname, `/semver/-/semver-${dependencyVersion}.tgz`);
-const archiveResponse = await fetch(archiveUrl, { signal: AbortSignal.timeout(30_000) });
-assert.ok(archiveResponse.ok);
-const dependencyTarball = Buffer.from(await archiveResponse.arrayBuffer());
-assert.equal(`sha512-${digest(dependencyTarball, 'sha512', 'base64')}`, dependency.dist.integrity);
-await writeFile(join(output, `semver-${dependencyVersion}.tgz`), dependencyTarball);
 
 const registryFiles = new Map();
 const harnessBytes = await readFile(join(root, '.artifacts/harness/harness.json'));
@@ -124,17 +100,12 @@ try {
   origin = `http://127.0.0.1:${server.address().port}`;
   for (const profile of ['identity', 'gzip']) {
     const toolUrl = `${origin}/${profile}/npm/eli-design-${toolHash}.tgz`;
-    const dependencyUrl = `${origin}/${profile}/npm/semver-${dependencyVersion}.tgz`;
     addPayload(`/${profile}/npm/eli-design-${toolHash}.tgz`, toolTarball, 'tool', profile);
-    addPayload(`/${profile}/npm/semver-${dependencyVersion}.tgz`, dependencyTarball, 'dependencies', profile);
     const toolMetadata = {
       name: manifest.name, 'dist-tags': { latest: manifest.version },
       versions: { [manifest.version]: { ...manifest, _id: `${manifest.name}@${manifest.version}`, dist: { tarball: toolUrl, integrity: `sha512-${digest(toolTarball, 'sha512', 'base64')}` } } },
     };
-    const proxiedDependency = structuredClone(dependencyMetadata);
-    proxiedDependency.versions[dependencyVersion].dist.tarball = dependencyUrl;
     addPayload(`/${profile}/npm/eli-design`, Buffer.from(json(toolMetadata)), 'metadata', profile, true);
-    addPayload(`/${profile}/npm/semver`, Buffer.from(json(proxiedDependency)), 'metadata', profile, true);
     for (const [filename, bytes] of registryFiles) addPayload(`/${profile}/ui/${filename}`, bytes, 'registry', profile, true);
     addPayload(`/${profile}/harness/harness.json`, harnessBytes, 'harness', profile, true);
 
@@ -181,7 +152,7 @@ try {
       const cold = summarize(coldLog, coldResults);
       const warm = summarize(warmLog, warmResults);
       assert.equal(cold.categories.tool, toolTarball.length, '콜드 실행은 도구 tarball을 한 번 받아야 해요.');
-      assert.equal(cold.categories.dependencies, dependencyTarball.length, '도구의 실제 실행 의존성을 빠짐없이 측정해요.');
+      assert.equal(cold.categories.dependencies, 0, '별도 실행 의존성을 다운로드하지 않아야 해요.');
       assert.equal(warm.categories.tool + warm.categories.dependencies, 0, '재실행은 npm tarball 캐시를 재사용해야 해요.');
       assert.equal(warm.createdFiles, 0);
       assert.ok(warm.categories.registry + warm.categories.harness > 0, '현재 CLI에는 배포 JSON의 영구 HTTP 캐시가 없어요.');
@@ -210,14 +181,13 @@ try {
 const report = {
   measuredAt: new Date().toISOString(), environment: { node: process.versions.node, npm: '11.19.0', platform: process.platform, arch: process.arch },
   tool: { name: manifest.name, version: manifest.version, sha256: toolHash, compressedBytes: toolTarball.length, unpackedBytes: packed.unpackedSize, files: packed.files.length },
-  runtimeDependencies: [{ name: 'semver', version: dependencyVersion, integrity: dependency.dist.integrity, compressedBytes: dependencyTarball.length }],
+  runtimeDependencies: [],
   contentVersion: index.version, registrySha256: digest(registryFiles.get('registry.json')), existingReact: peer.version,
   harness: { version: JSON.parse(harnessBytes).version, sha256: digest(harnessBytes), bytes: harnessBytes.length },
   scope: '미게시 후보를 격리한 로컬 HTTP 레지스트리에서 실제 npm exec로 실행해 측정한 응답 본문 바이트예요. 공개 npm/CDN의 실측값이 아니에요.',
   excluded: ['HTTP 헤더·TLS·TCP 전송량', 'Node.js·npm 도구 설치', '이미 설치된 React', '실제 npm 게시 후 메타데이터와 배포 태그 조회 차이', 'GitHub Release 탐색 API·리디렉션', '다른 패키지 매니저의 캐시 정책', '브라우저 번들 크기'],
   cache: '각 콜드 시나리오는 빈 npm 캐시와 새 앱에서 init 후 추가를 실행해요. 재실행은 같은 캐시·앱에서 추가 명령만 반복해요. npm 메타데이터는 max-age=0·ETag 재검증, tarball과 UI 데이터는 immutable이며 JSON 압축은 identity 또는 gzip level 9예요.',
-  metadata: 'CLI 메타데이터는 로컬 후보용 fixture이고 semver는 npm install-v1 스냅샷에서 대상 tarball URL만 측정 서버로 바꿔요. 준비 중 내려받은 데이터는 실행 전송량에 중복 합산하지 않아요.',
-  dependencyMetadataSha256: digest(metadataSnapshot),
+  metadata: 'CLI 메타데이터는 로컬 후보용 fixture예요. 버전 검사 코드는 도구 tarball에 포함되고 별도 실행 의존성은 없어요.',
   measurements,
 };
 await writeFile(join(output, 'report.json'), json(report));
@@ -234,7 +204,7 @@ const lines = [
   '| 압축 | 시나리오 | 도구 | 실행 의존성 | npm 메타데이터 | UI JSON | 하네스 JSON |',
   '| --- | --- | ---: | ---: | ---: | ---: | ---: |',
   ...measurements.map(item => `| ${item.profile} | ${item.name} | ${['tool', 'dependencies', 'metadata', 'registry', 'harness'].map(category => `${item.cold.categories[category].toLocaleString()} B`).join(' | ')} |`),
-  '', '재실행에는 새 소스 파일이 추가되지 않아요. npm tarball은 캐시를 재사용하지만 현재 CLI는 UI·하네스 JSON을 다시 받아요.',
+  '', '재실행에는 새 소스 파일이 추가되지 않아요. npm tarball은 캐시를 재사용하며 UI·하네스 JSON을 확인해요. 원본과 목록 해시가 같은 바이너리 항목은 재다운로드하지 않아요.',
   '',
 ];
 await writeFile(join(output, 'report.md'), lines.join('\n'));

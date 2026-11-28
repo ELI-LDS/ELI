@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+### CLI 실행 의존성 정리
+
+- React·UI·하네스 버전 검사에 쓰는 semver를 개발 의존성으로 옮기고 필요한 함수만 CLI 빌드에 포함했어요. 고정한 원본 구현과 ISC 고지는 유지하며 사용자 설치 시 별도 semver 패키지·메타데이터를 받지 않아요. 기존 명령·버전 호환성 검사는 유지해요. 독립적으로는 PATCH 성격의 패키징 최적화이며 실제 버전은 함께 배포할 기능 변경 기준으로 정해요. 게시·버전 증가는 별도로 진행해요.
+
 ### Pretendard Variable 기본 제공 — 다음 CLI·UI 콘텐츠 MINOR 대상
 
 - 소스 설치에 Pretendard Variable 1.3.9 원본 WOFF2(2,057,688 B)와 OFL 라이선스를 공통으로 포함해요. 기존 Pretendard Variable·Pretendard를 우선하고 없으면 같은 원본을 로딩해요. 기존 웹폰트 등록·전역 설정·npm 의존성은 변경하지 않으며 여러 UI를 추가해도 한 번만 복사해요.

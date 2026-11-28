@@ -3,8 +3,9 @@ import { execFile as execFileCallback, execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { createServer } from 'node:http';
 import { cp, mkdir, mkdtemp, readFile, readdir, realpath, rm, symlink, writeFile } from 'node:fs/promises';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { tmpdir } from 'node:os';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
 import { after, before, test } from 'node:test';
 import { selectFiles } from '../registry/fixtures.mjs';
@@ -31,7 +32,9 @@ before(async () => {
   execFileSync('npm', ['install', '--prefix', installed, '--ignore-scripts', '--no-audit', '--no-fund', '--no-package-lock', join(artifacts, packed.filename)], { stdio: 'pipe' });
   cli = join(installed, 'node_modules/eli-design/dist/cli.mjs');
   const packagedManifest = JSON.parse(await readFile(join(installed, 'node_modules/eli-design/package.json'), 'utf8'));
-  assert.deepEqual(Object.keys(packagedManifest.dependencies), ['semver']);
+  assert.deepEqual(Object.keys(packagedManifest.dependencies ?? {}), []);
+  assert.ok(!(await readdir(join(installed, 'node_modules'))).includes('semver'));
+  assert.match(await readFile(join(installed, 'node_modules/eli-design/dist/THIRD_PARTY_LICENSES.txt'), 'utf8'), /semver 7\.8\.6[\s\S]*Isaac Z\. Schlueter/);
   await writeFile(join(artifacts, 'package-size.json'), JSON.stringify({ size: packed.size, unpackedSize: packed.unpackedSize, files: packed.files.length }, null, 2));
   server = createServer(async (request, response) => {
     requests.push(request.url);
@@ -73,6 +76,24 @@ test('tarball의 실행 파일이 도움말·버전을 제공하고 잘못된 �
   assert.match((await run(path, ['--help'])).message, /add --all/);
   assert.equal((await run(path, ['--version'])).version, JSON.parse(await readFile(join(root, 'packages/cli/package.json'), 'utf8')).version);
   assert.equal((await run(path, ['add', '--unknown'], 1)).error.code, 'INVALID_ARGUMENT');
+});
+
+test('독립 폴더에서도 별도 의존성 없이 실행되고 원본 버전 검사 결과를 유지해요', async () => {
+  const isolated = await mkdtemp(join(tmpdir(), 'eli-cli-standalone-'));
+  try {
+    await cp(join(dirname(cli), '..'), isolated, { recursive: true });
+    const result = await execFile(process.execPath, [join(isolated, 'dist/cli.mjs'), '--version', '--json']);
+    assert.equal(JSON.parse(result.stdout).ok, true);
+    const bundled = await import(pathToFileURL(join(isolated, 'dist/versions.mjs')));
+    const upstream = await import('../../packages/cli/src/versions.mjs');
+    for (const version of [undefined, '', '1.2.3', 'v1.2.3', '01.2.3', '0.2.3', '19.3.0', '19.4.0', '20.0.0', '19.3.1-beta.1', '1.2.3+build.4']) {
+      assert.equal(bundled.valid(version), upstream.valid(version));
+      for (const range of ['^19.3.0', '^0.2.3', '~1.2.0', '>=1.2.3 <2', '19.x || >=20', '>=19.3.1-beta.0 <20', '*', '', 'invalid']) {
+        assert.equal(bundled.validRange(range), upstream.validRange(range));
+        assert.equal(bundled.satisfies(version, range), upstream.satisfies(version, range));
+      }
+    }
+  } finally { await rm(isolated, { recursive: true, force: true }); }
 });
 
 test('init 미리보기는 파일을 쓰지 않고 목록은 공개 컴포넌트만 보여줘요', async () => {
@@ -161,7 +182,7 @@ test('사용자 지정 경로와 기존 별칭으로 설치 소스를 빌드하�
     ['src/shared/ui/local.ts', 'export const local = "기존 UI";\n'],
     ['src/existing/message.ts', 'export const message = "기존 별칭";\n'],
     ['tsconfig.json', `// 기존 주석과 경로 별칭을 보존해요.\n${JSON.stringify({ extends: join(root, 'tsconfig.base.json'), compilerOptions: { noEmit: true, paths: { '@/*': ['./src/*'], '@existing/*': ['./src/existing/*'] } }, include: ['src'] }, null, 2)}\n`],
-    ['vite.config.mjs', "import { fileURLToPath } from 'node:url';\nexport default { resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), '@existing': fileURLToPath(new URL('./src/existing', import.meta.url)) } } };\n"],
+    ['vite.config.mjs', "import { fileURLToPath, pathToFileURL } from 'node:url';\nexport default { resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)), '@existing': fileURLToPath(new URL('./src/existing', import.meta.url)) } } };\n"],
   ]);
   for (const [file, content] of originalFiles) await writeFile(join(path, file), content);
   const initialized = await run(path, ['init', '--registry', base, '--dir', 'src/shared/ui']);

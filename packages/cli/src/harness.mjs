@@ -1,4 +1,4 @@
-import semver from 'semver';
+import * as semver from './versions.mjs';
 import { readFile } from 'node:fs/promises';
 import { ensure } from './errors.mjs';
 import { hash, json, latestRelease, parseJson, readResource, registryUrl, safePath } from './registry.mjs';

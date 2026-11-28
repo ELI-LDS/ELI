@@ -191,6 +191,8 @@ Cloudflare 대시보드에서 **Workers & Pages → eli-lds-storybook → Settin
 
 설정을 마친 뒤 PR을 `main`에 병합해 Cloudflare **Deployments**에서 빌드 성공과 `https://storybook.eli-design.dev`의 실제 Storybook 화면을 확인해요. 실패한 빌드는 설정을 수정한 후 **Retry**로 다시 실행할 수 있어요. 이 설정은 npm 패키지를 게시하지 않아요.
 
+실행 의존성을 번들에 포함하면 실제 tarball을 저장소 밖의 독립 폴더에서도 실행하고, 외부 패키지 없이 필요한 기능이 동작하는지 확인해요. 버전 검사 결과는 고정된 원본 라이브러리와 비교하고 제3자 라이선스·다운로드 요청도 확인해요. 별도 의존성이 없다는 사실과 번들에 제3자 코드가 없다는 뜻을 구분해요.
+
 ## 폰트 기본 제공을 확인해요
 
 공식 원본의 WOFF2 해시·OFL 동봉·공통 파일 단일 설치와 v1/v2 호환을 확인해요. 잘못된 base64·원본 해시·경로·버전을 쓰기 전에 거부하고, status가 원본 바이트의 사용자 수정을 감지하는지 확인해요. `test:registry`의 폰트 소비 검사는 실제 번들에서 원본 로딩과 기존 Variable/Pretendard 이름 우선·추가 요청 방지를 Chromium·WebKit으로 확인해요. Next.js의 기존 폰트 변수 연결·SSR/hydration도 소비 검사에 포함해요. 폰트가 들어가는 최초 다운로드량은 기존 UI-only 수치와 다시 측정해요.

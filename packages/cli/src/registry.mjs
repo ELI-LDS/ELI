@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import semver from 'semver';
+import * as semver from './versions.mjs';
 import { CliError, ensure } from './errors.mjs';
 import { matches } from './schema.mjs';
 
