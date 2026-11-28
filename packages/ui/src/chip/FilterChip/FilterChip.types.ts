@@ -16,7 +16,7 @@ export interface FilterChipProps
   /** 화면에 정의된 순서대로 전달하는 전체 필터 옵션이에요. */
   options: readonly FilterChipOption[];
 
-  /** 현재 적용한 옵션의 value 목록이에요. 기본값은 빈 배열이에요. */
+  /** 현재 적용한 옵션의 value 목록이에요. 기본값은 빈 배열이에요. @default [] */
   selectedValues?: readonly string[];
 
   /** FilterChip의 루트 `button`에 전달할 클래스 이름이에요. */

@@ -19,9 +19,9 @@
 | [FabMenuSegment](../apps/docs/content/components/fab-menu-segment.json) | 개별 액션의 실행 함수 연결 | 2026-11-24 사용자 승인 |
 | [FabMenu](../apps/docs/content/components/fab-menu.json) | 관련 액션 목록과 실행 함수 연결 | 2026-11-24 사용자 승인 |
 | [Fab](../apps/docs/content/components/fab.json) | 단일 주요 행동 실행 | 2026-11-24 사용자 승인 |
-| [FilterChip](../apps/docs/content/components/filter-chip.json) | 필터 설정과 적용은 소비 앱에서 제공 | 2026-11-24 사용자 승인 |
+| [FilterChip](../apps/docs/content/components/chip.json) | 필터 설정과 적용은 소비 앱에서 제공 | 2026-11-24 사용자 승인 |
 | [IconButton](../apps/docs/content/components/icon-button.json) | 아이콘으로 항목 추가 | 2026-11-24 사용자 승인 |
-| [LoadingIndicator](../apps/docs/content/components/loading-indicator.json) | 진행률을 모르는 작업의 대기 표시 | 2026-11-24 사용자 승인 |
+| [LoadingIndicator](../apps/docs/content/components/spinner.json) | 진행률을 모르는 작업의 대기 표시 | 2026-11-24 사용자 승인 |
 | [MenuItem](../apps/docs/content/components/menu-item.json) | 항목 클릭을 기능에 연결 | 2026-11-24 사용자 승인 |
 | [NavigationBarGlassItem](../apps/docs/content/components/navigation-bar-glass-item.json) | 단독 항목의 활성 상태 연결 | 2026-11-24 사용자 승인 |
 | [NavigationBarGlass](../apps/docs/content/components/navigation-bar-glass.json) | 현재 목적지를 부모 상태에 연결 | 2026-11-24 사용자 승인 |
@@ -30,15 +30,15 @@
 | [NavigationDrawerCategory](../apps/docs/content/components/navigation-drawer-category.json) | 탐색 메뉴 묶음에 이름 제공 | 2026-11-24 사용자 승인 |
 | [NavigationDrawerItem](../apps/docs/content/components/navigation-drawer-item.json) | 직접 조립하는 주·하위 메뉴 | 2026-11-24 사용자 승인 |
 | [NavigationDrawerMenu](../apps/docs/content/components/navigation-drawer-menu.json) | 하위 목록의 펼침과 선택 연결 | 2026-11-24 사용자 승인 |
-| [NavigationDrawer](../apps/docs/content/components/navigation-drawer.json) | 카테고리·주 메뉴·하위 메뉴 조립 | 2026-11-24 사용자 승인 |
-| [ProgressIndicator](../apps/docs/content/components/progress-indicator.json) | 앱에서 받은 실제 진행률 표시 | 2026-11-24 사용자 승인 |
+| [NavigationDrawer](../apps/docs/content/components/drawer.json) | 카테고리·주 메뉴·하위 메뉴 조립 | 2026-11-24 사용자 승인 |
+| [ProgressIndicator](../apps/docs/content/components/indicator.json) | 앱에서 받은 실제 진행률 표시 | 2026-11-24 사용자 승인 |
 | [Radio](../apps/docs/content/components/radio.json) | 같은 묶음에서 하나 선택 | 2026-11-24 사용자 승인 |
-| [RemovableChip](../apps/docs/content/components/removable-chip.json) | 부모 목록에서 항목 제거 | 2026-11-24 사용자 승인 |
+| [RemovableChip](../apps/docs/content/components/chip.json) | 부모 목록에서 항목 제거 | 2026-11-24 사용자 승인 |
 | [SegmentControl](../apps/docs/content/components/segment-control.json) | 보기 방식 선택 | 2026-11-24 사용자 승인 |
 | [Select](../apps/docs/content/components/select.json) | 옵션 목록에서 하나 선택 | 2026-11-24 사용자 승인 |
 | [Slider](../apps/docs/content/components/slider.json) | 단일 수치 조절 | 2026-11-24 사용자 승인 |
-| [SnackBar](../apps/docs/content/components/snack-bar.json) | 표시·자동 닫힘·다시 표시하기 | 2026-11-24 사용자 승인 |
-| [TextArea](../apps/docs/content/components/text-area.json) | 여러 줄의 내용 입력 | 2026-11-24 사용자 승인 |
+| [SnackBar](../apps/docs/content/components/snackbar.json) | 표시·자동 닫힘·다시 표시하기 | 2026-11-24 사용자 승인 |
+| [TextArea](../apps/docs/content/components/textarea.json) | 여러 줄의 내용 입력 | 2026-11-24 사용자 승인 |
 | [TextField](../apps/docs/content/components/text-field.json) | 입력과 지우기를 같은 상태에 연결 | 2026-11-24 사용자 승인 |
 | [Toggle](../apps/docs/content/components/toggle.json) | 즉시 적용하는 설정 전환 | 2026-11-24 사용자 승인 |
 | [Tooltip](../apps/docs/content/components/tooltip.json) | 설명과 대상 연결: 표시 제어는 소비 앱에서 제공 | 2026-11-24 사용자 승인 |
@@ -94,6 +94,10 @@ Button의 Ghost 기본 배경과 Navigation의 disabled 제거·권장 항목 �
 JSON의 사용 기준·예시·검토 내용은 바꾸지 않았고 기존 사용자 승인 상태인 stable을 유지해요. UI 구현·디자인·공개 API·버전은 변경하지 않았어요. 기존 원문은 Git 이력에 남아 있어요.
 
 
+2026-11-28 사용자 요청으로 Chip 역할을 variant로 합쳤어요. 위 표의 FilterChip·RemovableChip은 당시 승인 기록이며 현재 Chip 가이드를 가리켜요. 별도 원문은 보존하고 [API 대응표](../apps/docs/content/source/components/chip-variants.md)를 추가했어요. 설치 이름 변경도 현재 JSON 링크에 반영했으며 과거 승인 날짜는 유지해요.
+
 2026-11-28 사용자 요청으로 Modal의 Positive도 콜백 실행 후 기본으로 닫도록 변경했어요. [확정 사항](../apps/docs/content/source/components/modal-positive-close.md)을 별도로 보존하고 JSON의 동작·접근성·예시를 갱신했어요. 두 액션 모두 preventDefault로 닫힘을 취소하며 비동기 성공 후 닫는 시점은 소비 앱이 제어해요. 기존 원문·디자인·최대 너비는 유지해요.
 
 이 변경은 pnpm check(타입·린트·Storybook·실제 tarball 브라우저·Next.js·용량), 선택 설치 레지스트리 8개 검사·34개 공개 소스 타입/Vite·Next.js SSR/hydration, 문서 조회 8개 검사를 통과했어요. Positive 콜백 후 닫기·취소·비제어 닫기·포커스 복귀를 같은 소비 시나리오에서 확인했어요. 내부 UI tarball은 압축 142,873 B·압축 해제 534,277 B·327개 파일이며 전체 소스 설치 다운로드량이 아니에요. 원격 게시·실기기·실제 릴리스 버전 증가는 진행하지 않았어요.
+
+위 34개 공개 소스 검증은 Chip 통합 전 독립 Modal 후보의 기록이에요. 이후 main에 병합된 Chip·설치 이름 변경과 합친 결과는 현재 레지스트리 항목 기준으로 CI에서 다시 확인해요.

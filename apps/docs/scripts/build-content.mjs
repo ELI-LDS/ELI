@@ -128,6 +128,29 @@ export function parseProps(name, files) {
     for (const clause of node.heritageClauses ?? []) clause.types.forEach(visit);
   };
   visitDeclaration(root);
+  // variant별 유니언의 한쪽에만 필요한 속성을 모든 사용법의 필수값으로 안내하지 않아요.
+  const requiredOf = (node, seen = new Set()) => {
+    if (ts.isUnionTypeNode(node) || ts.isIntersectionTypeNode(node)) {
+      const groups = node.types.map(type => requiredOf(type, seen));
+      return ts.isUnionTypeNode(node)
+        ? new Set([...groups[0]].filter(name => groups.every(group => group.has(name))))
+        : new Set(groups.flatMap(group => [...group]));
+    }
+    if (ts.isParenthesizedTypeNode(node)) return requiredOf(node.type, seen);
+    if (ts.isTypeAliasDeclaration(node)) return requiredOf(node.type, seen);
+    if (ts.isInterfaceDeclaration(node) || ts.isTypeLiteralNode(node)) {
+      const names = new Set(node.members.filter(member => ts.isPropertySignature(member) && !member.questionToken).map(member => member.name.getText()));
+      for (const clause of node.heritageClauses ?? []) for (const type of clause.types) {
+        for (const name of requiredOf(type, seen)) names.add(name);
+      }
+      return names;
+    }
+    const name = !node.typeArguments && (ts.isTypeReferenceNode(node) ? node.typeName.getText() : ts.isExpressionWithTypeArguments(node) ? node.expression.getText() : undefined);
+    const local = declarations.get(name);
+    return local && !seen.has(name) ? requiredOf(local, new Set([...seen, name])) : new Set();
+  };
+  const required = requiredOf(root);
+  for (const prop of props.values()) prop.required = required.has(prop.name);
   return { props: [...props.values()], extends: [...new Set(inherited)].join(' & ') || null };
 }
 
