@@ -4,6 +4,13 @@
 
 ## Unreleased
 
+### UI 콘텐츠 · 설치 이름과 Chip API 정리
+
+- `Chip` 하나에서 `variant="selectable" | "filter" | "removable"`로 역할을 선택해요. 기본은 selectable이며 기존 스타일·동작을 유지해요. 별도 FilterChip·RemovableChip export와 설치 항목을 제거하고 옵션 타입은 ChipOption으로 제공해요.
+- 설치 ID를 `text-area` → `textarea`, `snack-bar` → `snackbar`, `progress-indicator` → `indicator`, `loading-indicator` → `spinner`, `navigation-drawer` → `drawer`로 줄여요. 이 다섯 컴포넌트의 React 심벌과 내부 CSS 이름은 유지해요.
+- 기존 설치 경로·공개 Chip API가 바뀌는 다음 UI 콘텐츠 MINOR 대상이에요. npm CLI·콘텐츠 버전은 이번에 올리거나 게시하지 않아요. 이미 설치한 파일·기록을 자동으로 이동하지 않아요. 이전 방법은 packages/ui/README.md를 참고해요.
+
+
 ### UI 콘텐츠 — 다음 MINOR 대상
 
 - Figma 기준으로 Neutral 50을 `#F4F8FE`로 바로잡고 Neutral 75(`#EFF4FB`)와 `Background/DefaultAlpha`(흰색 90%)를 추가했어요. Neutral Hover는 75를 참조해 기존 표시색을 유지해요. 원시 Neutral 50을 직접 사용한 소비 소스의 색상은 달라지므로 다음 `0.x` MINOR 릴리스에 포함해요. 기존 배포 파일·태그·버전은 변경하지 않았어요.

@@ -1,5 +1,19 @@
 {
   "schemaVersion": 1,
-  "reservedKinds": ["harness"],
-  "shared": [{ "id": "tokens", "directory": "tokens" }]
+  "reservedKinds": [
+    "harness"
+  ],
+  "shared": [
+    {
+      "id": "tokens",
+      "directory": "tokens"
+    }
+  ],
+  "componentIds": {
+    "TextArea": "textarea",
+    "SnackBar": "snackbar",
+    "ProgressIndicator": "indicator",
+    "LoadingIndicator": "spinner",
+    "NavigationDrawer": "drawer"
+  }
 }

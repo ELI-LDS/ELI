@@ -14,14 +14,14 @@
 ## 원본과 생성물을 구분해요
 
 - 컴포넌트 원본은 `packages/ui/src`, 공개 컴포넌트의 기준은 `packages/ui/package.json`의 `exports`예요.
-- `packages/registry/catalog.json`은 규격 버전·공유 토큰 경로·예약된 항목 종류만 관리해요. 컴포넌트 명단과 의존 파일 목록을 수동 복제하지 않아요.
+- `packages/registry/catalog.json`은 규격 버전·공유 토큰 경로·예약된 항목 종류와 예외적인 설치 이름(`componentIds`)을 관리해요. 컴포넌트 명단과 의존 파일 목록을 수동 복제하지 않아요.
 - `pnpm build:registry`가 `.artifacts/registry/registry.json`과 항목별 JSON을 생성해요. 생성물은 직접 고치거나 Git에 올리지 않아요.
 - `packages/registry/schema.json`은 목록과 상세 JSON의 공개 JSON Schema예요. 규격을 호환되지 않게 바꾸면 `schemaVersion`을 올리고 CLI 담당자와 먼저 맞춰요.
 - UI 원본과 개발 도구의 실행 의존성은 추가하지 않아요. 레지스트리 생성기는 기존 TypeScript 개발 의존성과 Node.js 기본 API를 사용해요.
 
 ## 항목을 작게 제공해요
 
-공개 named export 하나를 하나의 `component` 항목으로 제공해요. ID는 공개 심벌의 PascalCase를 kebab-case로 바꿔요. 예를 들어 `TextField`는 `text-field`, `SnackBar`는 `snack-bar`예요. Button을 받았다고 같은 그룹의 IconButton을 받지 않아요.
+공개 named export 하나를 하나의 `component` 항목으로 제공해요. ID는 기본적으로 공개 심벌의 PascalCase를 kebab-case로 바꾸고, 더 짧거나 관용적인 설치 이름이 필요하면 catalog의 `componentIds`에서 심벌별로 지정해요. React 심벌·내부 폴더 이름과 설치 ID는 구분해요. 없는 심벌을 지정하거나 ID·설치 경로가 충돌하면 생성을 중단해요. 예외 이름은 이 지침에 중복 나열하지 않아요. Button을 받았다고 같은 그룹의 IconButton을 받지 않아요.
 
 토큰과 내부 파일은 `shared` 항목으로 제공해요. 내부 파일 ID는 `_file-` 접두사를 사용하고 CLI 선택 목록에는 `component`만 표시해요. 내부 항목 ID와 파일 경로를 직접 사용할 공개 API로 안내하지 않아요. 경로 변경도 설치 파일에 영향을 주므로 같은 릴리스의 데이터끼리 사용해야 해요.
 

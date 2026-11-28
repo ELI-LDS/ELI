@@ -73,7 +73,7 @@
   "examples": [
     {
       "title": "하위 목록의 펼침과 선택 연결",
-      "code": "'use client';\n\nimport { NavigationDrawer } from './components/ui/navigation-drawer';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nimport { useState } from 'react';\nexport default function Example() {\n  const [page, setPage] = useState('');\n  return <NavigationDrawer aria-label=\"학습 메뉴\" value={page} onValueChange={setPage}><NavigationDrawerMenu label=\"학습\" value=\"learning\" subItems={[{ value: 'courses', label: '내 강의' }, { value: 'saved', label: '저장한 강의' }]} /></NavigationDrawer>;\n}"
+      "code": "'use client';\n\nimport { NavigationDrawer } from './components/ui/drawer';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nimport { useState } from 'react';\nexport default function Example() {\n  const [page, setPage] = useState('');\n  return <NavigationDrawer aria-label=\"학습 메뉴\" value={page} onValueChange={setPage}><NavigationDrawerMenu label=\"학습\" value=\"learning\" subItems={[{ value: 'courses', label: '내 강의' }, { value: 'saved', label: '저장한 강의' }]} /></NavigationDrawer>;\n}"
     }
   ],
   "related": [

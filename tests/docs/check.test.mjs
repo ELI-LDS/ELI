@@ -152,7 +152,7 @@ test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대
       { name: 'size', type: "'a' | 'b'", required: false, default: "'a'", description: '크기예요.' },
       { name: 'mode', type: "'one' | 'two'", required: false, default: null, description: null },
       { name: 'onPick', type: '((v: number) => void) | ((v: string) => void)', required: true, default: null, description: null },
-      { name: 'options', type: 'readonly { value: string }[]', required: true, default: null, description: null },
+      { name: 'options', type: 'readonly { value: string }[]', required: false, default: null, description: null },
     ],
     extends: 'HTMLAttributes<HTMLDivElement>',
   });
@@ -170,4 +170,19 @@ test('생성 스크립트는 가이드 JSON·타입·CSS·가이드를 규격대
 
   assert.deepEqual(parseGuide('install.md', '---\ntitle: 설치\ndescription: 설치 방법\n---\n\n본문'), { topic: 'install', title: '설치', description: '설치 방법', body: '본문' });
   assert.throws(() => parseGuide('random.md', '---\ntitle: a\ndescription: b\n---\n'), /허용하지 않는 가이드 주제/);
+});
+
+
+test('설치 ID 조회와 Chip 통합 가이드가 실제 API와 일치해요', () => {
+  for (const [name, id] of [['TextArea', 'textarea'], ['SnackBar', 'snackbar'], ['ProgressIndicator', 'indicator'], ['LoadingIndicator', 'spinner'], ['NavigationDrawer', 'drawer']]) {
+    assert.equal(getComponent({ name: id }).name, name);
+    assert.equal(getComponent({ name }).entry.path, `${id}.tsx`);
+  }
+  const chip = getComponent({ name: 'Chip', sections: ['variants', 'examples'] });
+  for (const variant of ['selectable', 'filter', 'removable']) assert.ok(chip.sections.variants.includes(variant));
+  assert.ok(!listComponents().components.some(item => ['FilterChip', 'RemovableChip'].includes(item.name)));
+  const props = getProps({ name: 'Chip' }).props;
+  assert.equal(props.find(prop => prop.name === 'options').required, false);
+  assert.equal(props.find(prop => prop.name === 'onRemove').required, false);
+  for (const variant of ['selectable', 'filter', 'removable']) assert.ok(props.find(prop => prop.name === 'variant').type.includes(variant));
 });

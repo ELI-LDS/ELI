@@ -16,6 +16,19 @@ function SnackBarFixture() {
     <output data-testid="snackbar-actions">{count}</output>
   </section>;
 }
+function ChipFixture() {
+  const [selected, setSelected] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [action, setAction] = useState('없음');
+  return <section aria-label="Chip 역할 검증">
+    <Chip selected={selected} onSelectedChange={setSelected} disabled={disabled}>역할 선택</Chip>
+    <Chip onClick={event => event.preventDefault()} onSelectedChange={() => setAction('선택 취소 실패')}>선택 취소</Chip>
+    <Chip variant="filter" label="분야" options={[{ label: '디자인', value: 'design' }, { label: '개발', value: 'dev' }]} selectedValues={['dev', 'design']} disabled={disabled} onClick={() => setAction('필터 열기')} />
+    <Chip variant="removable" disabled={disabled} removeLabel="역할 삭제" onClick={() => setAction('라벨 클릭')} onRemove={() => setAction('삭제')}>태그 라벨</Chip>
+    <button onClick={() => setDisabled(value => !value)}>칩 비활성화</button>
+    <output data-testid="chip-action">{action}</output>
+  </section>;
+}
 function ApiContractsFixture() {
   const [options, setOptions] = useState(['a', 'b', 'c']);
   const [disabled, setDisabled] = useState(false);
@@ -42,6 +55,7 @@ function ApiContractsFixture() {
   const withDisabled = ['a', 'b', 'c'].map(value => ({ value, label: value, disabled: value === 'b', outlinedIcon: <span aria-hidden="true">○</span>, filledIcon: <span aria-hidden="true">●</span> }));
   return <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%', minWidth: 0, overflowWrap: 'anywhere' }}>
     <SnackBarFixture />
+    <ChipFixture />
     <section aria-label="간격 검증">
       <Slider aria-label="간격 값" min={0} max={10} step={3} defaultValue={5} onValueChange={value => setChanges(String(value))} />
       <Slider aria-label="제어 간격" min={0} max={10} step={3} value={sliderValue} onValueChange={setSliderValue} />
@@ -89,6 +103,17 @@ function ApiContractsFixture() {
 /** 실제 소비 앱의 TypeScript가 허용·거부해야 하는 사용법을 함께 검사해요. */
 export const apiContractsTypes = `
 function checkPublicInputTypes() {
+  <Chip>선택</Chip>;
+  <Chip variant="filter" label="분야" options={[]} />;
+  <Chip variant="removable" onRemove={event => event.currentTarget.focus()}>태그</Chip>;
+  // @ts-expect-error 삭제형은 삭제 동작이 필수예요.
+  <Chip variant="removable">태그</Chip>;
+  // @ts-expect-error 필터형은 전체 옵션이 필요해요.
+  <Chip variant="filter" label="분야" />;
+  // @ts-expect-error 선택형에 삭제 동작을 섞지 않아요.
+  <Chip variant="selectable" onRemove={() => undefined}>선택</Chip>;
+  // @ts-expect-error 필터형은 selected 대신 selectedValues를 받아요.
+  <Chip variant="filter" label="분야" options={[]} selected />;
   const ref = { current: null as HTMLInputElement | null };
   <TextField ref={ref} onChange={event => event.currentTarget.value} />;
   <Checkbox ref={ref} onChange={event => event.currentTarget.checked} />;

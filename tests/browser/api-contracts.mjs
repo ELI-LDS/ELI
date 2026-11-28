@@ -5,6 +5,29 @@ import { checkSnackBar } from './snackbar.mjs';
 /** 감사에서 재현한 실제 입력·표시·선택·참조의 불일치가 다시 생기지 않는지 확인해요. */
 export async function checkApiContracts(page, url) {
   await page.goto(`${url}?api-contracts`);
+  const chip = page.getByRole('region', { name: 'Chip 역할 검증' });
+  const selectable = chip.getByRole('button', { name: '역할 선택', exact: true });
+  await selectable.focus();
+  await page.keyboard.press('Space');
+  await expect(selectable).toHaveAttribute('aria-pressed', 'true');
+  await page.keyboard.press('Enter');
+  await expect(selectable).toHaveAttribute('aria-pressed', 'false');
+  await chip.getByRole('button', { name: '선택 취소', exact: true }).click();
+  await expect(chip.getByTestId('chip-action')).toHaveText('없음');
+  await chip.getByRole('button', { name: /디자인.*외 1/ }).click();
+  await expect(chip.getByTestId('chip-action')).toHaveText('필터 열기');
+  await chip.getByRole('button', { name: '태그 라벨', exact: true }).click();
+  await expect(chip.getByTestId('chip-action')).toHaveText('라벨 클릭');
+  await chip.getByRole('button', { name: '역할 삭제', exact: true }).click();
+  await expect(chip.getByTestId('chip-action')).toHaveText('삭제');
+  await chip.getByRole('button', { name: '칩 비활성화', exact: true }).click();
+  for (const name of ['역할 선택', '태그 라벨', '역할 삭제']) await expect(chip.getByRole('button', { name, exact: true })).toBeDisabled();
+  await expect(chip.getByRole('button', { name: /디자인.*외 1/ })).toBeDisabled();
+  // DOM에 전달한 className·이벤트 대상·역할별 최대 너비도 기존 계약을 유지해요.
+  await expect(selectable).not.toHaveAttribute('variant');
+  assert.equal(await selectable.evaluate(node => getComputedStyle(node).maxWidth), '160px');
+  assert.equal(await chip.locator('.eli-chip--filter').evaluate(node => getComputedStyle(node).maxWidth), '180px');
+  assert.equal(await chip.locator('.eli-chip--removable').evaluate(node => getComputedStyle(node).maxWidth), '180px');
   const slider = name => page.getByRole('slider', { name, exact: true });
   const expectSlider = async (name, value) => {
     const input = slider(name);

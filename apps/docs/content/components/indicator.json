@@ -1,7 +1,7 @@
 {
   "$schema": "../component-guide.schema.json",
   "schemaVersion": 1,
-  "id": "progress-indicator",
+  "id": "indicator",
   "name": "ProgressIndicator",
   "group": "loading",
   "status": "stable",
@@ -80,7 +80,7 @@
   "examples": [
     {
       "title": "앱에서 받은 실제 진행률 표시",
-      "code": "import { ProgressIndicator } from './components/ui/progress-indicator';\nexport default function Example({ progress }: { progress: number }) {\n  return <ProgressIndicator aria-label=\"파일 업로드\" progress={progress} />;\n}"
+      "code": "import { ProgressIndicator } from './components/ui/indicator';\nexport default function Example({ progress }: { progress: number }) {\n  return <ProgressIndicator aria-label=\"파일 업로드\" progress={progress} />;\n}"
     }
   ],
   "related": [
