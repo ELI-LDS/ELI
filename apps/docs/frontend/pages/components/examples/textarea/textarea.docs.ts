@@ -13,7 +13,7 @@ export const textAreaDocExamples = [
     description: "`onChange`에서 `event.currentTarget.value`를 읽어요.",
     code: `<TextArea label="소개" placeholder="소개를 입력하세요" value={message} onChange={event => setMessage(event.currentTarget.value)} />`,
     fullCode: `import { useState } from 'react';
-import { TextArea } from './components/ui/text-area';
+import { TextArea } from './components/ui/textarea';
 
 export default function Example() {
   const [message, setMessage] = useState("");

@@ -7,7 +7,7 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'danger
   /** 외부 제어를 하지 않을 때 처음 표시할지 정해요. 기본값은 true예요. */
   defaultOpen?: boolean;
 
-  /** Dim·Secondary·Esc로 닫기를 요청하면 false를 받아요. Positive는 자동으로 닫지 않아요. */
+  /** Dim·Secondary·Positive·Esc로 닫기를 요청하면 false를 받아요. 외부 제어에서는 새 open 값을 반영해요. */
   onOpenChange?: (open: boolean) => void;
 
   /** Modal의 제목이에요. 생략하면 `제목`을 표시해요. */
@@ -31,7 +31,7 @@ export interface ModalProps extends Omit<HTMLAttributes<HTMLDivElement>, 'danger
   /** 왼쪽 Secondary 버튼에 표시할 내용이에요. 생략하면 `버튼`을 표시해요. */
   secondaryAction?: ReactNode;
 
-  /** Positive 버튼을 선택했을 때 실행할 함수예요. */
+  /** Positive 버튼을 누르면 실행한 뒤 닫아요. event.preventDefault()로 자동 닫기를 취소해요. 비동기 작업의 성공 후 닫으려면 await 전에 취소하고 성공 시 open을 갱신해요. */
   onPositiveAction?: MouseEventHandler<HTMLButtonElement>;
 
   /** Secondary 버튼을 누르면 실행한 뒤 닫아요. event.preventDefault()로 자동 닫기를 취소해요. */

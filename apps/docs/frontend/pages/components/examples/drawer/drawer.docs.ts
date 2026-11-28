@@ -13,7 +13,7 @@ export const navigationDrawerDocExamples = [
     { value: 'saved', label: '저장한 강의' },
   ]} />
 </NavigationDrawer>`,
-    install: ["navigation-drawer"],
+    install: ["drawer"],
     installStatus: 'planned',
     imports: ["import { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';", "import { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';"],
   },
@@ -30,7 +30,7 @@ export const navigationDrawerDocExamples = [
   ]} />
 </NavigationDrawer>`,
     fullCode: `import { useState } from 'react';
-import { NavigationDrawer } from './components/ui/navigation-drawer';
+import { NavigationDrawer } from './components/ui/drawer';
 import { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';
 import { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';
 

@@ -1,7 +1,7 @@
 'use client';
 
-import './text-area/TextArea.css';
-import type { TextAreaProps } from './text-area/TextArea.types';
+import './textarea/TextArea.css';
+import type { TextAreaProps } from './textarea/TextArea.types';
 
 /**
  * 여러 줄의 내용을 입력해요.

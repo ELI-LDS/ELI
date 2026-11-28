@@ -1,6 +1,6 @@
 'use client';
 
-import { FilterChip } from '../../../../../shared/ui/filter-chip';
+import { Chip } from '../../../../../shared/ui/chip';
 import { Radio } from '../../../../../shared/ui/radio';
 import { Checkbox } from '../../../../../shared/ui/checkbox';
 import { Tab } from '../../../../../shared/ui/tab';
@@ -17,7 +17,7 @@ export function FilterExample() {
     <div className="docs-filter-example">
       {filterGroups.map((item, index) => {
         const selected = values[item.id];
-        return <FilterChip aria-controls={`${id}-dialog`} aria-expanded={open && tab === index} key={item.id} label={item.label} onClick={event => { event.currentTarget.focus({ preventScroll: true }); show(index); }} options={item.options} selectedValues={selected.filter(value => value !== 'all')} />;
+        return <Chip variant="filter" aria-controls={`${id}-dialog`} aria-expanded={open && tab === index} key={item.id} label={item.label} onClick={event => { event.currentTarget.focus({ preventScroll: true }); show(index); }} options={item.options} selectedValues={selected.filter(value => value !== 'all')} />;
       })}
     </div>
     <Overlay id={`${id}-dialog`} label="필터" onClose={() => setOpen(false)} open={open} className="docs-filter-overlay">

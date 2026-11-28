@@ -42,6 +42,8 @@ Vite 검증용 소비 앱은 저장소의 개발용 React·React DOM·Vite를 �
 
 `pnpm test:browser`는 `test:packaging`이 만든 실제 tarball 소비 앱을 Chromium에서 열어요. Checkbox·Toggle·Select·SegmentControl·TextField·TextArea·Tab의 클릭·입력·선택·키보드·포커스, 브라우저 콘솔 오류, axe의 자동 접근성 위반을 확인해요. Modal의 닫기·재열기·포커스 순환과 복귀·배경 잠금과 복원도 검사해요. 외부 Button 클래스의 Default·Hover·Pressed·Disabled 계산 스타일도 읽어 ELI 기본 스타일보다 우선하는지 검증해요. Tooltip 트리거처럼 명세가 확정되지 않은 동작, VoiceOver 수동 검토와 모든 컴포넌트의 전체 키보드 조합을 대신하지 않아요.
 
+컴포넌트 설치 이름이나 variant API를 바꾸면 문서 목록·새 경로·이전 경로의 서버 리다이렉트·검색 결과·설치 명령·복사·실제 예시를 함께 확인해요. 미배포 후보를 설치한 문서 앱은 레지스트리 해시·설치 기록·디스크의 모든 소유 파일이 일치하는지 대조해요. 공개 게시 완료나 다른 브랜치의 예정 기능 검증으로 대신하지 않아요.
+
 ## 선택 설치 데이터를 확인해요
 
 UI 소스·공개 exports·레지스트리 규격·생성기를 바꾸면 `pnpm test:registry`를 실행해요. 일반 `pnpm check`의 tarball 검사와 대상이 다르며 관련 PR의 별도 레지스트리 CI에서도 확인해요. 전체 npm 설치 검사는 그대로 유지해요.

@@ -23,7 +23,7 @@ import type { ModalProps } from './modal/Modal.types';
  * - `width`, `height`: 콘텐츠 영역의 크기
  *
  * ### 내용과 동작
- * - Dim·Secondary·Esc로 닫아요. Positive는 자동으로 닫지 않아요.
+ * - Dim·Secondary·Positive·Esc로 닫아요. 두 액션의 콜백에서 preventDefault()로 자동 닫기를 취소할 수 있어요.
  * - 키보드 포커스는 내부에서 순환하고 닫으면 이전 요소로 돌아가요. 중첩 Modal은 지원하지 않아요.
  * - `positiveAction`, `secondaryAction`: 버튼 내용, 기본값은 각각 `버튼`
  * - `onPositiveAction`, `onSecondaryAction`: 각 버튼을 눌렀을 때 실행할 함수
@@ -57,7 +57,7 @@ export function Modal(props: ModalProps) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const descriptionId = useId();
-  const { close, handleSecondaryAction, isOpen } = useModal({ open, defaultOpen, onOpenChange, onSecondaryAction });
+  const { close, handlePositiveAction, handleSecondaryAction, isOpen } = useModal({ open, defaultOpen, onOpenChange, onSecondaryAction, onPositiveAction });
   useModalFocus(isOpen, rootRef, dialogRef, close);
   const modalClassName = ['eli-modal', className].filter(Boolean).join(' ');
 
@@ -101,7 +101,7 @@ export function Modal(props: ModalProps) {
           <Button
             color="brand"
             icon={null}
-            onClick={onPositiveAction}
+            onClick={handlePositiveAction}
             variant="solid"
             width="100%"
           >

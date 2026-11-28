@@ -10,6 +10,6 @@ export function ModalOpenExample({ content }: { content: Pick<ModalProps, 'title
   const [open, setOpen] = useState(false);
   return <>
     <Button icon={null} onClick={event => { event.currentTarget.focus({ preventScroll: true }); setOpen(true); }}>모달 열기</Button>
-    <Modal {...content} onOpenChange={setOpen} onPositiveAction={() => setOpen(false)} open={open} />
+    <Modal {...content} onOpenChange={setOpen} open={open} />
   </>;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { NavigationDrawer } from '../../../../shared/ui/navigation-drawer';
+import { NavigationDrawer } from '../../../../shared/ui/drawer';
 import { NavigationDrawerCategory } from '../../../../shared/ui/navigation-drawer-category';
 import { NavigationDrawerMenu } from '../../../../shared/ui/navigation-drawer-menu';
 

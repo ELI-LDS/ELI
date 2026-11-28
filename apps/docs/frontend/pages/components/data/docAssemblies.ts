@@ -20,8 +20,8 @@ type Assembly = {
 
 /** 화면 조립 관계를 설명해요. 설치 의존성이나 DOM 트리를 대신하지 않아요. */
 const assemblies: Partial<Record<ComponentId, Assembly>> = {
-  'navigation-drawer': {
-    root: 'navigation-drawer', mode: 'manual',
+  'drawer': {
+    root: 'drawer', mode: 'manual',
     parts: [
       { id: 'navigation-drawer-category', role: '메뉴 묶음의 이름', visual: 'category', optional: true },
       { id: 'navigation-drawer-menu', role: '주 메뉴와 하위 메뉴', visual: 'menu', quantity: '반복 가능', source: 'subItems', internal: 'navigation-drawer-item' },

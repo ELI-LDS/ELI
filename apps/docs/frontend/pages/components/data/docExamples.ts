@@ -9,19 +9,19 @@ import { chipDocExamples } from '../examples/chip/chip.docs.ts';
 import { dividerDocExamples } from '../examples/divider/divider.docs.ts';
 import { fabDocExamples } from '../examples/fab/fab.docs.ts';
 import { iconButtonDocExamples } from '../examples/icon-button/icon-button.docs.ts';
-import { loadingIndicatorDocExamples } from '../examples/loading-indicator/loading-indicator.docs.ts';
+import { loadingIndicatorDocExamples } from '../examples/spinner/spinner.docs.ts';
 import { menuItemDocExamples } from '../examples/menu-item/menu-item.docs.ts';
 import { navigationBarGlassDocExamples } from '../examples/navigation-bar-glass/navigation-bar-glass.docs.ts';
 import { navigationBarDocExamples } from '../examples/navigation-bar/navigation-bar.docs.ts';
-import { navigationDrawerDocExamples } from '../examples/navigation-drawer/navigation-drawer.docs.ts';
-import { progressIndicatorDocExamples } from '../examples/progress-indicator/progress-indicator.docs.ts';
+import { navigationDrawerDocExamples } from '../examples/drawer/drawer.docs.ts';
+import { progressIndicatorDocExamples } from '../examples/indicator/indicator.docs.ts';
 import { radioDocExamples } from '../examples/radio/radio.docs.ts';
 import { segmentControlDocExamples } from '../examples/segment-control/segment-control.docs.ts';
 import { selectDocExamples } from '../examples/select/select.docs.ts';
 import { sliderDocExamples } from '../examples/slider/slider.docs.ts';
-import { snackBarDocExamples } from '../examples/snack-bar/snack-bar.docs.ts';
+import { snackBarDocExamples } from '../examples/snackbar/snackbar.docs.ts';
 import { tabDocExamples } from '../examples/tab/tab.docs.ts';
-import { textAreaDocExamples } from '../examples/text-area/text-area.docs.ts';
+import { textAreaDocExamples } from '../examples/textarea/textarea.docs.ts';
 import { textFieldDocExamples } from '../examples/text-field/text-field.docs.ts';
 import { toggleDocExamples } from '../examples/toggle/toggle.docs.ts';
 import { tooltipDocExamples } from '../examples/tooltip/tooltip.docs.ts';
@@ -38,19 +38,19 @@ export const docExamples = {
   'divider': dividerDocExamples,
   'fab': fabDocExamples,
   'icon-button': iconButtonDocExamples,
-  'loading-indicator': loadingIndicatorDocExamples,
+  'spinner': loadingIndicatorDocExamples,
   'menu-item': menuItemDocExamples,
   'navigation-bar': navigationBarDocExamples,
   'navigation-bar-glass': navigationBarGlassDocExamples,
-  'navigation-drawer': navigationDrawerDocExamples,
-  'progress-indicator': progressIndicatorDocExamples,
+  'drawer': navigationDrawerDocExamples,
+  'indicator': progressIndicatorDocExamples,
   'radio': radioDocExamples,
   'segment-control': segmentControlDocExamples,
   'select': selectDocExamples,
   'slider': sliderDocExamples,
-  'snack-bar': snackBarDocExamples,
+  'snackbar': snackBarDocExamples,
   'tab': tabDocExamples,
-  'text-area': textAreaDocExamples,
+  'textarea': textAreaDocExamples,
   'text-field': textFieldDocExamples,
   'toggle': toggleDocExamples,
   'tooltip': tooltipDocExamples,

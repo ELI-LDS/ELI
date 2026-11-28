@@ -1,5 +1,5 @@
 import { DocPreviewCase } from '../../sections/DocPreviewCase';
-import { ProgressIndicator } from '../../../../shared/ui/progress-indicator';
+import { ProgressIndicator } from '../../../../shared/ui/indicator';
 
 export function ProgressIndicatorBasicPreview() {
   return (

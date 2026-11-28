@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import { chromium, webkit, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { componentPages } from '../../apps/docs/frontend/features/docs-catalog/catalog.ts';
+import { componentPages, componentRouteAliases } from '../../apps/docs/frontend/features/docs-catalog/catalog.ts';
 import { getDocPage } from '../../apps/docs/frontend/pages/components/data/getDocPage.ts';
 
 const root = resolve('.');
@@ -29,19 +29,24 @@ async function checkExamples(page, id) {
     chip: async () => {
       const chip = page.locator('section[aria-labelledby="usage"]').getByRole('button', { name: '디자인', exact: true });
       await chip.click(); await expect(chip).toHaveAttribute('aria-pressed', 'true');
+      const variants = example('variants');
+      await expect(variants.locator('.doc-preview-case')).toHaveCount(3);
+      await expect(variants.locator('.doc-preview-case > code')).toHaveText(['selectable', 'filter', 'removable']);
+      await expect(variants.getByRole('button', { name: '분야', exact: true })).toBeVisible();
+      await expect(page.locator('[data-prop="variant"]').first().locator('.doc-api__default')).toHaveText("'selectable'");
       await example('remove').getByRole('button', { name: '디자인 삭제', exact: true }).click();
       await expect(example('remove').getByRole('button', { name: '다시 표시', exact: true })).toBeVisible();
     },
     fab: async () => { const menu = example('menu'); await menu.getByRole('button', { name: '추가', exact: true }).click(); await menu.getByRole('button', { name: '사진 추가', exact: true }).click(); await expect(menu.getByRole('button', { name: '추가', exact: true })).toHaveAttribute('aria-expanded', 'false'); },
     'navigation-bar': async () => { const item = controlled().getByRole('button', { name: '검색', exact: true }); await item.click(); await expect(item).toHaveAttribute('aria-current', 'page'); },
-    'navigation-drawer': async () => { const drawer = page.locator('section[aria-labelledby="usage"]'); const main = drawer.getByRole('button', { name: '학습', exact: true }); await main.click(); await expect(main).toHaveAttribute('aria-expanded', 'true'); const sub = drawer.getByRole('button', { name: '내 강의', exact: true }); await sub.click(); await expect(sub).toHaveAttribute('aria-current', 'page'); },
+    'drawer': async () => { const drawer = page.locator('section[aria-labelledby="usage"]'); const main = drawer.getByRole('button', { name: '학습', exact: true }); await main.click(); await expect(main).toHaveAttribute('aria-expanded', 'true'); const sub = drawer.getByRole('button', { name: '내 강의', exact: true }); await sub.click(); await expect(sub).toHaveAttribute('aria-current', 'page'); },
     radio: async () => { const input = controlled().getByRole('radio', { name: '개발', exact: true }); await input.check(); await expect(input).toBeChecked(); },
     'segment-control': async () => { const option = controlled().getByRole('radio', { name: '격자', exact: true }); await option.click(); await expect(option).toBeChecked(); },
     select: async () => { const root = controlled(); await root.getByRole('button').first().click(); await root.getByRole('option', { name: '디자인', exact: true }).click(); await expect(root.getByRole('button').first()).toContainText('디자인'); },
     slider: async () => { const input = controlled().getByRole('slider'); await input.focus(); await input.press('ArrowRight'); await expect(input).toHaveValue('55'); },
-    'snack-bar': async () => { const root = example('open'); await root.getByRole('button', { name: '스낵바 띄우기', exact: true }).click(); await expect(root.locator('.eli-snackbar')).toBeVisible(); await root.getByRole('button', { name: '닫기', exact: true }).click(); await expect(root.locator('.eli-snackbar')).toHaveCount(0); },
+    'snackbar': async () => { const root = example('open'); await root.getByRole('button', { name: '스낵바 띄우기', exact: true }).click(); await expect(root.locator('.eli-snackbar')).toBeVisible(); await root.getByRole('button', { name: '닫기', exact: true }).click(); await expect(root.locator('.eli-snackbar')).toHaveCount(0); },
     tab: async () => { const root = example('panels'); await root.getByRole('tab', { name: '2번 탭', exact: true }).click(); await expect(root.getByRole('tabpanel')).toContainText('2번 탭을 누르면'); },
-    'text-area': async () => { const input = controlled().getByRole('textbox'); await input.fill('소개를 작성해요.'); await expect(input).toHaveValue('소개를 작성해요.'); },
+    'textarea': async () => { const input = controlled().getByRole('textbox'); await input.fill('소개를 작성해요.'); await expect(input).toHaveValue('소개를 작성해요.'); },
     'text-field': async () => { const root = controlled(); await root.getByRole('textbox').fill('hello@example.com'); await root.getByRole('button', { name: '입력 내용 지우기' }).click(); await expect(root.getByRole('textbox')).toHaveValue(''); },
     toggle: async () => { const input = controlled().getByRole('switch'); await input.click(); await expect(input).toBeChecked(); },
     tooltip: async () => { const root = example('trigger'); const trigger = root.getByRole('button', { name: '마우스를 올려보세요' }); await trigger.focus(); await expect(root.getByRole('tooltip')).toBeVisible(); await trigger.press('Escape'); await expect(root.getByRole('tooltip')).toHaveCount(0); },
@@ -53,6 +58,13 @@ try {
     try { if ((await fetch(`${url}/components/button`)).ok) break; } catch { /* 서버 준비를 기다려요. */ }
     await new Promise(done => setTimeout(done, 100));
   }
+  // 이전 링크는 클라이언트 스크립트 실행 없이 서버에서 새 주소로 연결돼요.
+  for (const [old, id] of Object.entries(componentRouteAliases)) {
+    const response = await fetch(`${url}/components/${old}`, { redirect: 'manual' });
+    assert.equal(response.status, 308, old);
+    assert.equal(response.headers.get('location'), `/components/${id}`);
+  }
+  assert.equal((await fetch(`${url}/components/constructor`)).status, 404);
   for (const target of targets) {
     const browser = await (target === 'webkit' ? webkit : chromium).launch(target === 'chrome' ? { channel: 'chrome' } : {});
     try {
@@ -160,6 +172,9 @@ try {
           await expect(page.locator('body')).toHaveCSS('overflow', 'hidden');
           assert.ok(await page.locator('.eli-modal').evaluate(element => Number(getComputedStyle(element).zIndex)) > 10);
           await page.keyboard.press('Escape');
+          await expect(dialog).toBeHidden();await expect(opener).toBeFocused();
+          await opener.click();
+          await dialog.getByRole('button', { name: '확인', exact: true }).click();
           await expect(dialog).toBeHidden();await expect(opener).toBeFocused();
           await opener.click();
           await dialog.getByText('제목', { exact: true }).click();

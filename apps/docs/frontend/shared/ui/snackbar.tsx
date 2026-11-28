@@ -1,9 +1,9 @@
 'use client';
 
-import './snack-bar/SnackBar.css';
-import type { SnackBarProps } from './snack-bar/SnackBar.types';
-import { useSnackBar } from './snack-bar/useSnackBar';
-import { useSnackBarTimer } from './snack-bar/useSnackBarTimer';
+import './snackbar/SnackBar.css';
+import type { SnackBarProps } from './snackbar/SnackBar.types';
+import { useSnackBar } from './snackbar/useSnackBar';
+import { useSnackBarTimer } from './snackbar/useSnackBarTimer';
 
 /**
  * 짧은 메시지와 선택 동작을 한 줄 또는 두 줄로 안내해요.

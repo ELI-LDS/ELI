@@ -1,10 +1,12 @@
 import ts from 'typescript';
-import { mkdir, writeFile, symlink, rm } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import { mkdir, writeFile, symlink, rm, readFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { componentPages } from '../../apps/docs/frontend/features/docs-catalog/catalog.ts';
+import { componentPages, componentRouteAliases } from '../../apps/docs/frontend/features/docs-catalog/catalog.ts';
 import { getDocPage } from '../../apps/docs/frontend/pages/components/data/getDocPage.ts';
+import { searchDocuments } from '../../apps/docs/frontend/features/docs-catalog/searchDocuments.ts';
 import { parseGuidance } from '../../apps/docs/frontend/pages/components/data/parseGuidance.ts';
 import { getProps, listComponents } from '../../apps/docs/content/query.ts';
 import { installationCommand } from '../../apps/docs/frontend/pages/components/data/installation.ts';
@@ -68,17 +70,18 @@ test('예시는 프레임워크 선언 없이 제공하고 필요한 별도 소�
     assert.doesNotMatch(example.fullCode ?? example.code, /^['"]use client['"]/);
     for (const item of example.install ?? []) assert.ok(known.has(item), `실제 설치할 수 없는 항목: ${item}`);
   }
-  assert.deepEqual(getDocPage('chip').examples.find(item => item.id === 'filter').install, ['filter-chip']);
+  assert.equal(getDocPage('chip').examples.find(item => item.id === 'filter').install, undefined);
+  assert.deepEqual(getDocPage('chip').related, []);
   assert.deepEqual(getDocPage('fab').installationIds, ['fab']);
   assert.equal(getDocPage('fab').examples.find(item => item.id === 'menu').install, undefined);
-  assert.deepEqual(getDocPage('navigation-drawer').installationIds, ['navigation-drawer']);
-  for (const id of ['fab', 'navigation-drawer']) assert.equal(getDocPage(id).installationStatus, 'planned');
+  assert.deepEqual(getDocPage('drawer').installationIds, ['drawer']);
+  for (const id of ['fab', 'drawer']) assert.equal(getDocPage(id).installationStatus, 'planned');
 });
 
 test('현재 설치로 해결되는 import와 명시적으로 선반영한 설치의 미완료 범위를 구분해요', () => {
   const plannedGaps = {
     fab: { menu: ['fab-menu.tsx'] },
-    'navigation-drawer': { basic: ['navigation-drawer-category.tsx', 'navigation-drawer-menu.tsx'], controlled: ['navigation-drawer-category.tsx', 'navigation-drawer-menu.tsx'] },
+    'drawer': { basic: ['navigation-drawer-category.tsx', 'navigation-drawer-menu.tsx'], controlled: ['navigation-drawer-category.tsx', 'navigation-drawer-menu.tsx'] },
   };
   const { artifacts } = generateRegistry();
   const collect = (ids, seen = new Set()) => {
@@ -112,7 +115,7 @@ test('현재 설치로 해결되는 import와 명시적으로 선반영한 설�
 });
 
 test.todo('add fab 하나로 FabMenu·FabMenuSegment까지 설치되는지 실제 소비 검사로 확인해요');
-test.todo('add navigation-drawer 하나로 Category·Menu·Item까지 설치되는지 실제 소비 검사로 확인해요');
+test.todo('add drawer 하나로 Category·Menu·Item까지 설치되는지 실제 소비 검사로 확인해요');
 
 test('선택 기준은 승인된 사용 상황과 속성 조합을 누락 없이 구분해요', () => {
   for (const [id, count] of [['button', 8], ['badge', 4], ['modal', 0]]) {
@@ -155,8 +158,8 @@ test('구성 요소의 API는 같은 페이지에 두고 독립적인 선택 기
   assert.deepEqual(glass.installationIds, ['navigation-bar-glass']);
   assert.deepEqual(glass.guidanceItems.map(part => part.id), ['navigation-bar-glass']);
   for (const id of ['navigation-bar-item', 'navigation-bar-glass-item']) assert.equal(getDocPage(id), null);
-  const drawer = getDocPage('navigation-drawer');
-  assert.deepEqual(drawer.guidanceItems.map(part => part.id), ['navigation-drawer']);
+  const drawer = getDocPage('drawer');
+  assert.deepEqual(drawer.guidanceItems.map(part => part.id), ['drawer']);
   for (const part of drawer.related) {
     assert.ok(part.isPart && part.summary && part.composition);
     assert.doesNotMatch(part.composition, /이럴 때 써요|이럴 때는 쓰지 않아요/);
@@ -206,7 +209,7 @@ test('구성도는 실제 부품과 직접 조립·자동 구성의 차이를 �
       for (const part of assembly.parts) if (part.id) assert.ok(dependencies.has(part.id), `${assembly.name}에서 ${part.name} 참조 누락`);
     }
   }
-  const drawer = getDocPage('navigation-drawer').assembly;
+  const drawer = getDocPage('drawer').assembly;
   assert.equal(drawer.mode, 'manual');
   assert.equal(drawer.parts[0].optional, true);
   assert.equal(drawer.parts[1].internal, 'NavigationDrawerItem');
@@ -252,4 +255,50 @@ test('모든 문서는 예시를 중복하지 않고 실제 속성·소유 컴�
   assert.deepEqual(getDocPage('divider').exampleGroups, []);
   assert.deepEqual(getDocPage('tooltip').exampleGroups.map(group => group.id), ['examples']);
   assert.equal(getDocPage('modal').exampleGroups[0].examples[0].title, 'title · message · subMessage');
+});
+
+
+test('설치 이름·문서 경로·검색·Chip variant가 같은 계약을 사용해요', () => {
+  for (const [old, id] of Object.entries(componentRouteAliases)) {
+    const page = getDocPage(id);
+    assert.ok(page);
+    assert.equal(getDocPage(old), null);
+    assert.ok(page.importCode.includes(`/ui/${id}'`));
+    assert.ok(searchDocuments(id).some(result => result.href === `/components/${id}`));
+    assert.ok(searchDocuments(old).some(result => result.href === `/components/${id}`));
+  }
+  assert.equal(Object.hasOwn(componentRouteAliases, 'constructor'), false);
+  const chip = getDocPage('chip');
+  assert.deepEqual(chip.installationIds, ['chip']);
+  assert.deepEqual(chip.related, []);
+  const variant = chip.api.props.find(prop => prop.name === 'variant');
+  assert.equal(variant.default, "'selectable'");
+  for (const value of ['selectable', 'filter', 'removable']) assert.ok(variant.type.includes(value));
+  assert.ok(chip.exampleGroups.find(group => group.id === 'properties').examples.some(example => example.property === 'variant'));
+  for (const example of chip.examples) {
+    assert.doesNotMatch(example.fullCode ?? example.code, /FilterChip|RemovableChip|ui\/(?:filter-chip|removable-chip)/);
+    assert.ok(!example.install?.length);
+  }
+  assert.equal(getProps({ name: 'NavigationDrawerMenu' }).props.find(prop => prop.name === 'label').required, true);
+});
+
+
+test('문서 앱의 실제 설치 파일과 소유권·진입점·기록 해시가 일치해요', async () => {
+  const app = resolve('apps/docs');
+  const config = JSON.parse(await readFile(join(app, '.eli/config.json'), 'utf8'));
+  const record = JSON.parse(await readFile(join(app, '.eli/lock.json'), 'utf8'));
+  for (const name of ['registry', 'registrySha256', 'directory', 'version']) assert.equal(config[name], record[name]);
+  assert.equal(config.registry, '../../.artifacts/registry/registry.json');
+  const paths = new Set();
+  for (const file of record.files) {
+    assert.ok(file.path.startsWith(`${config.directory}/`) && !file.path.includes('..'));
+    assert.ok(!paths.has(file.path)); paths.add(file.path);
+    assert.ok(record.resolved.includes(file.owner));
+    assert.equal(createHash('sha256').update(await readFile(join(app, file.path))).digest('hex'), file.sha256, file.path);
+  }
+  for (const entry of record.entries) assert.ok(paths.has(entry.path) && record.resolved.includes(entry.id));
+  for (const id of ['chip', 'textarea', 'snackbar', 'indicator', 'spinner', 'drawer']) {
+    assert.ok(record.entries.some(entry => entry.id === id && entry.path === `${config.directory}/${id}.tsx`));
+  }
+  for (const id of ['filter-chip', 'removable-chip', ...Object.keys(componentRouteAliases)]) assert.ok(!record.requested.includes(id));
 });

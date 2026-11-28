@@ -1,6 +1,6 @@
-import './progress-indicator/ProgressIndicator.css';
+import './indicator/ProgressIndicator.css';
 import { normalizeProgress } from './loading/normalizeProgress';
-import type { ProgressIndicatorProps } from './progress-indicator/ProgressIndicator.types';
+import type { ProgressIndicatorProps } from './indicator/ProgressIndicator.types';
 
 /**
  * 화면 전체나 영역의 처리 상태를 가로 막대로 표시해요.

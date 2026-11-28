@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { SnackBar } from '../../../../shared/ui/snack-bar';
+import { SnackBar } from '../../../../shared/ui/snackbar';
 import { Button } from '../../../../shared/ui/button';
 
 export function SnackBarBasicPreview() {

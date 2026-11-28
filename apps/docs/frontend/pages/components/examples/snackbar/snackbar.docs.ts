@@ -15,7 +15,7 @@ export const snackBarDocExamples = [
     code: `<Button icon={null} onClick={() => setOpen(true)}>스낵바 띄우기</Button><SnackBar open={open} onOpenChange={setOpen} duration={5000} action="닫기" onAction={() => setOpen(false)}>저장했어요.</SnackBar>`,
     fullCode: `import { useState } from 'react';
 import { Button } from './components/ui/button';
-import { SnackBar } from './components/ui/snack-bar';
+import { SnackBar } from './components/ui/snackbar';
 
 export default function Example() {
   const [open, setOpen] = useState(false);

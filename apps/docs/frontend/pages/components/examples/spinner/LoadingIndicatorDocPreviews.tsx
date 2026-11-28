@@ -1,5 +1,5 @@
 import { DocPreviewCase } from '../../sections/DocPreviewCase';
-import { LoadingIndicator } from '../../../../shared/ui/loading-indicator';
+import { LoadingIndicator } from '../../../../shared/ui/spinner';
 
 export function LoadingIndicatorBasicPreview() {
   return (

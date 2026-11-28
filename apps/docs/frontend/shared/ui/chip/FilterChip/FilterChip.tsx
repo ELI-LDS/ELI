@@ -1,8 +1,8 @@
 'use client';
 
-import './chip/Chip.css';
-import { ExpandMoreIcon } from './icon/ExpandMoreIcon';
-import type { FilterChipProps } from './filter-chip/FilterChip.types';
+import '../Chip.css';
+import { ExpandMoreIcon } from '../../icon/ExpandMoreIcon';
+import type { FilterChipProps } from './FilterChip.types';
 
 /**
  * 필터를 설정하는 바텀시트나 모달을 여는 진입점이에요.

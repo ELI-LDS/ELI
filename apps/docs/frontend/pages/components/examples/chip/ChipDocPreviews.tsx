@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Chip } from '../../../../shared/ui/chip';
-import { RemovableChip } from '../../../../shared/ui/removable-chip';
+import { DocPreviewCase } from '../../sections/DocPreviewCase';
 import { FilterExample } from './filter/FilterExample';
 
 export function ChipBasicPreview() {
@@ -28,7 +28,16 @@ export function ChipFilterPreview() {
 export function ChipRemovePreview() {
   const [visible, setVisible] = useState(true);
   return (
-    <div className="docs-demo__row">{visible ? <RemovableChip removeLabel="디자인 삭제" onRemove={() => setVisible(false)}>디자인</RemovableChip> : <button type="button" onClick={() => setVisible(true)}>다시 표시</button>}</div>
+    <div className="docs-demo__row">{visible ? <Chip variant="removable" removeLabel="디자인 삭제" onRemove={() => setVisible(false)}>디자인</Chip> : <button type="button" onClick={() => setVisible(true)}>다시 표시</button>}</div>
   );
 }
 
+
+export function ChipVariantsPreview() {
+  const [selected, setSelected] = useState(false);
+  return <>
+    <DocPreviewCase value="selectable"><Chip variant="selectable" selected={selected} onSelectedChange={setSelected}>디자인</Chip></DocPreviewCase>
+    <DocPreviewCase value="filter"><Chip variant="filter" label="분야" options={[]} /></DocPreviewCase>
+    <DocPreviewCase value="removable"><Chip variant="removable" onRemove={() => undefined}>디자인</Chip></DocPreviewCase>
+  </>;
+}

@@ -42,9 +42,10 @@ test('웹 문서는 같은 승인본과 실제 API를 읽고 묶음의 하위 Pr
   assert.equal(button.api.props.find(prop => prop.name === 'variant').default, "'solid'");
   assert.ok(button.guidance.includes('선택 기준'));
   const chip = getDocPage('chip');
-  assert.deepEqual(chip.related.map(part => part.name), ['FilterChip', 'RemovableChip']);
-  assert.ok(chip.related[0].api.props.some(prop => prop.name === 'selectedValues'));
-  assert.match(getDocPage('modal').details, /Dim 클릭·Secondary 버튼·Escape로 닫혀요/);
+  assert.deepEqual(chip.related, []);
+  assert.ok(chip.api.props.some(prop => prop.name === 'selectedValues'));
+  assert.ok(chip.api.props.find(prop => prop.name === 'variant').type.includes('removable'));
+  assert.match(getDocPage('modal').details, /Dim 클릭·Secondary·Positive 버튼·Escape로 닫혀요/);
   assert.equal(getDocPage('not-a-component'), null);
 });
 

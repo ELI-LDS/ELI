@@ -1,8 +1,8 @@
 'use client';
 
-import './chip/Chip.css';
-import { CloseIcon } from './icon/CloseIcon';
-import type { RemovableChipProps } from './removable-chip/RemovableChip.types';
+import '../Chip.css';
+import { CloseIcon } from '../../icon/CloseIcon';
+import type { RemovableChipProps } from './RemovableChip.types';
 
 /**
  * 추가된 태그나 검색 조건을 표시하고 개별 항목을 제거해요.

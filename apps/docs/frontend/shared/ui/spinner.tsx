@@ -1,6 +1,6 @@
-import './loading-indicator/LoadingIndicator.css';
+import './spinner/LoadingIndicator.css';
 import { normalizeProgress } from './loading/normalizeProgress';
-import type { LoadingIndicatorProps } from './loading-indicator/LoadingIndicator.types';
+import type { LoadingIndicatorProps } from './spinner/LoadingIndicator.types';
 
 /**
  * 화면 전체나 영역이 처리 중임을 원형으로 표시해요.

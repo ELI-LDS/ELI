@@ -36,18 +36,21 @@ frontend/
 
 ## 설치한 ELI 소스를 사용해요
 
-게시된 CLI `eli-design@0.6.0`으로 초기화하고 UI 콘텐츠 `0.3.0`의 Button을 설치했어요. 기록은 [`../.eli/config.json`](../.eli/config.json)과 [`../.eli/lock.json`](../.eli/lock.json), 설치 위치는 `shared/ui`예요. 아래는 이번에 실행한 명령이며 기존 초기화를 다시 실행하지 않아요.
+현재 문서 앱은 설치 이름·Chip variant를 반영한 **미배포 로컬 UI 후보**를 소비해요. manifest의 `0.3.0`은 개발 버전이며 공개된 `v0.3.0`과 같은 파일이라고 안내하지 않아요. 초기 제작은 게시된 CLI `eli-design@0.6.0`·UI `0.3.0`으로 시작했고, 아래의 로컬 후보 이전을 별도로 진행했어요.
+
+설치 위치는 `frontend/shared/ui`, 기록은 [`../.eli/config.json`](../.eli/config.json)과 [`../.eli/lock.json`](../.eli/lock.json)이에요. 원본에서 생성한 레지스트리를 임시 소비 프로젝트에 실제 CLI로 설치하고, 기존 소유 파일의 해시와 수정 내용을 대조한 뒤 앱에 이전했어요. 색상 토큰 두 개의 기존 수정은 새 후보와 바이트가 같음을 확인했으며, 직접 만든 Overlay·Table 등 비소유 파일은 보존했어요. 설치 파일 145개의 실제 바이트·소유 항목·SHA-256을 기록과 함께 관리해요.
+
+로컬 레지스트리 주소 `../../.artifacts/registry/registry.json`은 `apps/docs` 기준의 저장소 상대 경로예요. 개발 검증 전 루트에서 다음을 실행해요. 이미 있는 앱 설정을 다시 초기화하지 않아요.
 
 ```bash
-npm exec --yes --package=eli-design@0.6.0 -- eli-design init --dir frontend/shared/ui --cwd apps/docs
-npm exec --yes --package=eli-design@0.6.0 -- eli-design add button --cwd apps/docs
+pnpm build:registry
+pnpm build:cli
+node packages/cli/dist/cli.mjs status --cwd apps/docs --json
 ```
 
-다음 컴포넌트도 같은 문서 앱에서 `add <항목>`으로 추가해요. 공통 파일은 같은 콘텐츠 버전에서 재사용하고, 실제 import 경로는 CLI 출력으로 확인해요. `npm install @eli-design/ui`나 UI 원본의 직접 import는 사용하지 않아요. 기존 설치 소스를 갱신하는 기능과 새 컴포넌트 추가는 구분해요.
+원본이 바뀌면 고정한 레지스트리 해시와 달라져 추가 설치가 중단될 수 있어요. 기록의 해시만 덮어쓰지 말고 같은 CLI 후보로 실제 파일·의존성·소비 예시를 재검증한 뒤 소스와 기록을 함께 이전해요. 정식 콘텐츠 릴리스 후 공개 URL·버전·해시로 전환하는 것은 별도 작업이에요. 로컬 이전을 npm 게시나 공개 설치 검증 완료로 표시하지 않아요.
 
-Foundation에 이어 컴포넌트 문서의 실제 예시를 위해 같은 콘텐츠 버전의 공개 컴포넌트를 CLI로 추가했어요. Button은 개별 설치로 시작했고 전체 문서 예시를 제작하는 이번 단계에서 명시적으로 `eli-design add --all`을 실행했어요. 하네스는 설치하지 않았어요. 이후 디자이너가 확정한 Neutral 50·75와 `Background/DefaultAlpha`를 미배포 UI 원본에 반영하고 이 소비 앱의 `colors.css`, `semantic-colors.css`에도 의도적으로 적용했어요. 이 두 파일은 게시된 `0.3.0`과 다르며 `.eli` 기록을 수정해 숨기지 않아요. CLI `status`에서는 수정 파일로 표시되고, 새 컴포넌트 추가 시 공유 토큰 충돌로 중단될 수 있어요. 다음 공식 UI 콘텐츠 릴리스 후 별도 소스 이전으로 맞춰야 하며 자동 업데이트가 완료됐다고 안내하지 않아요.
-
-공통 스타일 진입점 `shared/styles/site.ts`는 설치된 Button CSS의 토큰 연결을 재사용해요. Button 자체와 같은 CSS 모듈을 참조하므로 토큰을 별도로 선언하거나 다시 import하지 않아요. Pretendard Variable `1.3.9`와 Geist Mono `5.3.0`은 해당 진입점에서 로드해요. 실제 폰트 파일은 npm 의존성에서 로컬 번들되며 CDN에 요청하지 않아요. Figma 에셋은 `../public/assets`에 원본 그대로 저장해요.
+소스와 공통 토큰은 설치한 파일에서 사용하고 UI 원본을 직접 import하거나 삭제된 npm `@eli-design/ui`를 설치하지 않아요. Storybook의 웹사이트 예제도 같은 설치 소스를 사용해요. 폰트는 기존 앱 설정인 Pretendard Variable `1.3.9`와 Geist Mono `5.3.0`을 `shared/styles/site.ts`에서 한 번 로드해요. 기본 폰트 제공 후보 PR의 설치 작업은 이번 문서 동기화에 포함하지 않아요.
 
 ## 준비한 요소를 조립해요
 
@@ -83,9 +86,9 @@ Foundation은 웹사이트 화면이므로 공개 UI 레지스트리에 추가�
 
 모든 컴포넌트 상세 문서는 `data/getDocPage.ts`가 같은 승인본·API를 읽고 `ComponentPage`가 공통 블록을 조립해요. 예시의 설명·코드는 `examples/{컴포넌트}/*.docs.ts`, 상태·렌더링은 해당 폴더의 미리보기에서 관리해요. `data/docExamples.ts`와 `examples/docPreviews.ts`는 등록만 담당하며, Client Component는 개별 export로 서버에 연결해요.
 
-기본 UI·핵심 코드·밝은 설치 터미널·목적별 예시·선택 기준·API·접근성과 데스크톱 목차를 제공해요. Divider처럼 추가 예시가 없는 페이지에는 빈 구역을 만들지 않아요. Chip·FAB·Navigation은 조립 부품의 API·가이드를 함께 읽고 별도 소스가 필요한 예시에는 해당 설치 명령만 추가해요. 기본 설치에 관계없는 부품을 묶지 않아요. NavigationDrawer의 기본 조립 예시는 직접 import하는 세 소스를 명시해요.
+기본 UI·핵심 코드·밝은 설치 터미널·목적별 예시·선택 기준·API·접근성과 데스크톱 목차를 제공해요. Divider처럼 추가 예시가 없는 페이지에는 빈 구역을 만들지 않아요. Chip은 통합한 variant API를, FAB·Navigation은 조립 부품의 API·가이드를 함께 읽고 별도 소스가 필요한 예시에는 해당 설치 명령만 추가해요. 기본 설치에 관계없는 부품을 묶지 않아요. NavigationDrawer는 `drawer` 경로를 사용하고 Category·Menu 등 조립 부품의 import는 그대로 명시해요.
 
-기존 일곱 구역 Markdown 렌더러는 제거했어요. MCP 응답·승인된 JSON·설치한 UI와 `.eli` 기록은 변경하지 않아요. 표시 이름은 영문이며 검색용 한글 별칭은 유지해요.
+기존 일곱 구역 Markdown 렌더러는 제거했어요. 공통 조회 결과를 사용하며 변경된 API와 설치 이름은 가이드·설치 소스·`.eli` 기록에도 함께 반영해요. 표시 이름은 영문이며 검색용 한글 별칭은 유지해요.
 
 - 모바일 메뉴는 오른쪽에서 들어와요. 최신 프로토타입의 400ms·`cubic-bezier(0.6694915294647217, 0.10169491171836853, 0.44915252923965454, 1)`을 사용해요. 앞서 임시 합의했던 200ms보다 이후 전달된 프로토타입을 우선했어요.
 - 모바일 검색은 250ms·`cubic-bezier(0.08474576473236084, 0.26271185278892517, 0.5169491767883301, 0.8898305296897888)`로 Dim과 화면이 함께 나타나요. 실제 문서 목록의 영문·한글 이름을 검색하고 결과·빈 결과를 표시해요. 키보드는 실제 입력창을 통해 OS가 제공해요. 데스크톱 검색은 시안 대기 상태로 비활성화해요.
@@ -152,7 +155,7 @@ API 순서·pill 변경 후 문서 검사 21개와 문서 앱 타입·관련 린
 
 Navigation Bar와 Glass는 별도 문서로 안내하고 각 Item은 해당 상위 문서의 API에 포함해요. 상단 관련 링크는 표시하지 않아요. 긴 컴포넌트 이름은 우측 목차에서 한 줄로 표시해요. 목차 열은 가장 긴 항목에 맞춰 너비를 확보하고 글자 크기는 유지해요. 모바일 전용 컴포넌트에만 이름 옆 `Mobile` pill을 표시하고 `Web` 표시나 별도 플랫폼 문장은 넣지 않아요. `items` 필드별 타입·필수 여부 펼침은 유지해요. Drawer 등 구성 요소는 반복되는 사용 권장 대신 역할 요약·API·조립 시 주의사항과 동작으로 설명해요. 선택 기준은 상위 컴포넌트와 독립적으로 고르는 형태에 제공해요. 승인된 가이드 JSON·MCP·공개 API는 유지해요.
 
-Drawer 웹 문서에는 목표 명령인 `add navigation-drawer`만 선반영했어요. 현재 설치기에는 Category·Menu의 별도 설치가 필요하며, 루트 하나로 구성 요소를 받는 개선은 [후속 작업](../../../handbook/improvements.md#조립-컴포넌트의-기본-설치에-구성-요소를-포함해요)에 기록했어요.
+Drawer 웹 문서에는 목표 명령인 `add drawer`만 선반영했어요. 현재 설치기에는 Category·Menu의 별도 설치가 필요하며, 루트 하나로 구성 요소를 받는 개선은 [후속 작업](../../../handbook/improvements.md#조립-컴포넌트의-기본-설치에-구성-요소를-포함해요)에 기록했어요.
 
 통합 후 문서 검사 22개(모든 예시 타입·설치 의존성·구성 요소 분류·조립 제약 보존 포함), 문서 앱 타입·관련 린트를 확인했어요. Chromium·WebKit에서 Navigation·Drawer·FAB의 통합 표시·중복 안내 제거·API 주의사항·375px 화면과 Drawer 펼침, 분리했던 경로의 404를 확인했어요. 결과는 `.artifacts/docs-composition`에 남겼어요. UI 원본·CLI·설치 소스·승인된 가이드 등 400개 보호 파일은 유지했으며 전체 빌드·배포 검사는 반복하지 않았어요.
 
@@ -188,7 +191,7 @@ Chromium·WebKit·설치된 Chrome에서 25개 경로의 실제 prop 제목·20p
 
 ### 설치 안내 선반영 상태
 
-사용자 요청에 따라 FAB와 Drawer의 웹 설치 명령을 각각 `add fab`, `add navigation-drawer` 하나로 먼저 맞췄어요. 기본 예시의 `installStatus: planned`와 페이지 데이터의 `installationStatus`에 내부 진행 상태를 남기며 웹 설치 영역에는 기존처럼 명령만 표시해요. 실제 레지스트리·CLI·설치 기록은 변경하지 않았어요.
+사용자 요청에 따라 FAB와 Drawer의 웹 설치 명령을 각각 `add fab`, `add drawer` 하나로 먼저 맞췄어요. 기본 예시의 `installStatus: planned`와 페이지 데이터의 `installationStatus`에 내부 진행 상태를 남기며 웹 설치 영역에는 기존처럼 명령만 표시해요. 실제 레지스트리·CLI·설치 기록은 변경하지 않았어요.
 
 현재 안내 명령만으로 FAB의 Menu와 Drawer의 Category·Menu가 모두 제공되지는 않아요. 설치 import 검사는 이 두 문서의 알려진 누락을 정확히 확인하고 다른 누락은 계속 실패시키며, 실제 구성 요소 자동 설치 소비 검사는 TODO로 남겨요. 다음 설치 구현에서 의존성을 연결·검증한 뒤 예정 상태·알려진 누락·TODO를 함께 해제해야 해요. 웹 문서 선반영을 실제 설치 지원 완료로 해석하지 않아요.
 
@@ -210,3 +213,24 @@ Foundation 정리 후 문서 검사 24개 통과·기존 설치 소비 TODO 2개
 ### PR 준비 시 최종 검증
 
 2026-11-27 최종 변경에서 `pnpm check`, `pnpm build:docs`, `pnpm test:registry`와 문서 검사(24개 통과·실제 설치 소비 TODO 2개)를 확인했어요. Chromium·WebKit·설치된 Chrome에서 컴포넌트 25개 문서와 Foundation 네 화면, Chromium·WebKit에서 모바일 메뉴·검색·필터·포커스·모션을 확인했어요. Navigation Bar와 Glass의 검색 결과를 각각 정확한 이름으로 검사해요. 수정 Markdown 상대 링크 226개와 `git diff --check`도 확인했어요. 내부 UI tarball은 압축 142,712 B·해제 533,667 B·327개 파일이며 전체 설치 다운로드량과 구분해요. 실제 Safari·Edge·모바일 실기기, 색상 대비 전체 적합성과 공개 배포는 이번 결과에 포함하지 않아요. FAB·Drawer의 구성 요소 자동 설치는 별도 브랜치 작업이며 이 문서 PR의 TODO는 유지해요.
+
+
+### 2026-11-28 설치 이름·Chip 문서 동기화
+
+현재 문서 경로와 설치 명령은 `textarea`·`snackbar`·`indicator`·`spinner`·`drawer`를 사용해요. React 심벌은 각각 TextArea·SnackBar·ProgressIndicator·LoadingIndicator·NavigationDrawer로 유지해요. 이전 다섯 문서 URL은 서버에서 새 URL로 영구 리다이렉트하고, 메뉴·한글/이전 이름 검색·목차·핵심 코드·전체 실행 예시·복사 원문은 현재 경로를 사용해요.
+
+Chip 문서는 `variant`의 세 역할 비교를 Properties에 표시하고, 필터 모달·바텀시트와 태그 삭제 예시도 실제 `<Chip variant="filter">`·`<Chip variant="removable">`로 구성해요. 별도 FilterChip·RemovableChip API와 추가 설치 안내는 제거했어요. 아래의 과거 검증 수치와 보호 파일 유지 기록은 작성 당시 기준이며, 이번에는 사용자 요청에 따라 설치 소스와 기록을 의도적으로 이전했어요.
+
+FAB·Drawer의 구성 요소 자동 설치는 다른 미병합 후보의 범위이므로 이 브랜치의 예정 상태·소비 검사 TODO 2개는 유지해요. 폰트 기본 포함·CLI 실행 의존성 제거 후보 역시 이 작업에서 배포하거나 병합하지 않아요.
+
+
+이번 동기화에서는 문서 검사 27개 통과·기존 구성 설치 TODO 2개 유지, 루트/문서 앱 타입·린트·문서 앱 및 Storybook 프로덕션 빌드를 확인했어요. Chromium·WebKit에서 25개 문서의 설치/복사·Properties·실제 예시·SSR·375px 화면, 다섯 이전 URL의 서버 리다이렉트와 잘못된 경로의 404, Chip의 variant 비교·선택·삭제·필터 모달/바텀시트·Dim·포커스·모션을 확인했어요. 설치 기록의 145개 소유 파일과 로컬 레지스트리 SHA-256도 일치해요. 로그는 `.artifacts/docs-install-names`에 있고, 실제 Safari·Edge·모바일 실기기·색상 대비 전체 적합성·npm 게시와 공개 웹 배포는 이번 검증에 포함하지 않아요.
+
+공유 문서 목록을 Node 검사·Next.js·Storybook에서 함께 읽기 위해 명시적 `.ts` import를 사용해요. 루트 타입 검사의 `allowImportingTsExtensions`는 기존 `noEmit` 검사에만 적용하며 UI 배포 빌드의 import 규칙이나 출력 설정은 변경하지 않아요.
+
+
+
+Modal은 사용자 요청에 따라 Positive도 콜백 실행 후 기본으로 닫도록 바꿨어요. 기본·문구 예시에서 불필요한 수동 닫기 콜백을 제거하고 동작 예시는 작업만 처리해요. 비동기 완료를 기다릴 때는 preventDefault로 기본 닫힘을 취소하도록 안내해요. 실제 설치 소스·레지스트리 해시·기록도 같은 후보로 갱신했어요.
+
+
+Modal 기본 닫힘 변경은 독립 PR로 분리했고, 독스의 기본·문구·작업 예시가 수동 setOpen(false) 없이 동작하도록 맞췄어요. 커밋 전 Chromium·WebKit에서 Positive·Secondary 닫힘·작업 콜백·포커스 복귀를 최신 프로덕션 화면으로 확인했어요. 독스 PR은 Chip·설치 이름·Modal 선행 PR이 병합된 뒤 main을 동기화할 때까지 Draft로 유지해요. 기존 구성 요소·폰트 후보와 npm 게시를 이 PR에 포함하지 않아요.

@@ -1,7 +1,7 @@
 'use client';
 
 import type { MouseEvent } from 'react';
-import { useNavigationDrawerContext } from './navigation-drawer/NavigationDrawerContext';
+import { useNavigationDrawerContext } from './drawer/NavigationDrawerContext';
 import { NavigationDrawerItem } from './navigation-drawer-item';
 import type {
   NavigationDrawerMenuProps,

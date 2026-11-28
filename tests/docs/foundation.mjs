@@ -148,7 +148,7 @@ try {
         await expect(choices.locator('dl')).toHaveCSS('border-top-width', '1px');
         await expect(page.getByRole('navigation', { name: '이 페이지 목차' })).toBeVisible();
       }
-      await page.goto(`${url}/components/navigation-drawer`);
+      await page.goto(`${url}/components/drawer`);
       assert.ok(await page.locator('.docs-shell__toc').evaluate(element => element.scrollWidth <= element.clientWidth));
       assert.deepEqual(errors, []);
       console.log(`${name}: Foundation 4개 화면·SSR·탭 URL/키보드·Drawer 이동·375px 표 스크롤 통과`);

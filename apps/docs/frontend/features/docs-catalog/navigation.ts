@@ -1,4 +1,4 @@
-import { componentPages } from './catalog';
+import { componentPages } from './catalog.ts';
 
 export const componentLinks = componentPages.map(page => ({ label: page.label, value: `/components/${page.id}` }));
 

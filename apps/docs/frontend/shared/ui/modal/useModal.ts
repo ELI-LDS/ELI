@@ -7,10 +7,11 @@ interface UseModalOptions {
   defaultOpen: boolean;
   onOpenChange: ModalProps['onOpenChange'];
   onSecondaryAction: ModalProps['onSecondaryAction'];
+  onPositiveAction: ModalProps['onPositiveAction'];
 }
 
 /** 외부 제어 여부와 닫기 요청만 관리해 포커스·DOM 처리는 분리해요. */
-export function useModal({ open, defaultOpen, onOpenChange, onSecondaryAction }: UseModalOptions) {
+export function useModal({ open, defaultOpen, onOpenChange, onSecondaryAction, onPositiveAction }: UseModalOptions) {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const isOpen = open ?? internalOpen;
   const close = () => {
@@ -21,5 +22,9 @@ export function useModal({ open, defaultOpen, onOpenChange, onSecondaryAction }:
     onSecondaryAction?.(event);
     if (!event.defaultPrevented) close();
   };
-  return { close, handleSecondaryAction, isOpen };
+  const handlePositiveAction: MouseEventHandler<HTMLButtonElement> = event => {
+    onPositiveAction?.(event);
+    if (!event.defaultPrevented) close();
+  };
+  return { close, handlePositiveAction, handleSecondaryAction, isOpen };
 }

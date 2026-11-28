@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { TextArea } from '../../../../shared/ui/text-area';
+import { TextArea } from '../../../../shared/ui/textarea';
 
 export function TextAreaBasicPreview() {
   return (

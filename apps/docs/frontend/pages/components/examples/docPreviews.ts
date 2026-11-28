@@ -6,22 +6,22 @@ import { badgeDocPreviews } from './badge/BadgeDocPreviews';
 import { modalDocPreviews } from './modal/ModalDocPreviews';
 import { AlertBasicPreview, AlertStatusesPreview } from './alert/AlertDocPreviews';
 import { CheckboxBasicPreview, CheckboxControlledPreview, CheckboxDisabledPreview } from './checkbox/CheckboxDocPreviews';
-import { ChipBasicPreview, ChipMultiplePreview, ChipFilterPreview, ChipRemovePreview } from './chip/ChipDocPreviews';
+import { ChipBasicPreview, ChipVariantsPreview, ChipMultiplePreview, ChipFilterPreview, ChipRemovePreview } from './chip/ChipDocPreviews';
 import { DividerBasicPreview } from './divider/DividerDocPreviews';
 import { FabBasicPreview, FabIconPreview, FabMenuPreview } from './fab/FabDocPreviews';
 import { IconButtonBasicPreview, IconButtonVariantsPreview, IconButtonDisabledPreview } from './icon-button/IconButtonDocPreviews';
-import { LoadingIndicatorBasicPreview, LoadingIndicatorProgressPreview, LoadingIndicatorCyclePreview } from './loading-indicator/LoadingIndicatorDocPreviews';
+import { LoadingIndicatorBasicPreview, LoadingIndicatorProgressPreview, LoadingIndicatorCyclePreview } from './spinner/LoadingIndicatorDocPreviews';
 import { MenuItemBasicPreview, MenuItemShortcutPreview, MenuItemDisabledPreview } from './menu-item/MenuItemDocPreviews';
 import { NavigationBarBasicPreview, NavigationBarControlledPreview } from './navigation-bar/NavigationBarDocPreviews';
-import { NavigationDrawerBasicPreview, NavigationDrawerControlledPreview } from './navigation-drawer/NavigationDrawerDocPreviews';
-import { ProgressIndicatorBasicPreview, ProgressIndicatorIndeterminatePreview } from './progress-indicator/ProgressIndicatorDocPreviews';
+import { NavigationDrawerBasicPreview, NavigationDrawerControlledPreview } from './drawer/NavigationDrawerDocPreviews';
+import { ProgressIndicatorBasicPreview, ProgressIndicatorIndeterminatePreview } from './indicator/ProgressIndicatorDocPreviews';
 import { RadioBasicPreview, RadioControlledPreview } from './radio/RadioDocPreviews';
 import { SegmentControlBasicPreview, SegmentControlControlledPreview, SegmentControlDisabledPreview } from './segment-control/SegmentControlDocPreviews';
 import { SelectBasicPreview, SelectControlledPreview, SelectDisabledPreview } from './select/SelectDocPreviews';
 import { SliderBasicPreview, SliderRangePreview, SliderControlledPreview } from './slider/SliderDocPreviews';
-import { SnackBarBasicPreview, SnackBarOpenPreview } from './snack-bar/SnackBarDocPreviews';
+import { SnackBarBasicPreview, SnackBarOpenPreview } from './snackbar/SnackBarDocPreviews';
 import { TabBasicPreview, TabPanelsPreview } from './tab/TabDocPreviews';
-import { TextAreaBasicPreview, TextAreaControlledPreview, TextAreaDisabledPreview } from './text-area/TextAreaDocPreviews';
+import { TextAreaBasicPreview, TextAreaControlledPreview, TextAreaDisabledPreview } from './textarea/TextAreaDocPreviews';
 import { TextFieldBasicPreview, TextFieldControlledPreview, TextFieldStatesPreview } from './text-field/TextFieldDocPreviews';
 import { ToggleBasicPreview, ToggleControlledPreview, ToggleDisabledPreview } from './toggle/ToggleDocPreviews';
 import { TooltipBasicPreview, TooltipTriggerPreview } from './tooltip/TooltipDocPreviews';
@@ -44,6 +44,7 @@ export const docPreviews = {
   } satisfies Record<typeof docExamples['checkbox'][number]['id'], DocPreview>,
   'chip': {
     basic: ChipBasicPreview,
+    variants: ChipVariantsPreview,
     multiple: ChipMultiplePreview,
     filter: ChipFilterPreview,
     remove: ChipRemovePreview,
@@ -61,11 +62,11 @@ export const docPreviews = {
     variants: IconButtonVariantsPreview,
     disabled: IconButtonDisabledPreview,
   } satisfies Record<typeof docExamples['icon-button'][number]['id'], DocPreview>,
-  'loading-indicator': {
+  'spinner': {
     basic: LoadingIndicatorBasicPreview,
     progress: LoadingIndicatorProgressPreview,
     cycle: LoadingIndicatorCyclePreview,
-  } satisfies Record<typeof docExamples['loading-indicator'][number]['id'], DocPreview>,
+  } satisfies Record<typeof docExamples['spinner'][number]['id'], DocPreview>,
   'menu-item': {
     basic: MenuItemBasicPreview,
     shortcut: MenuItemShortcutPreview,
@@ -79,14 +80,14 @@ export const docPreviews = {
     basic: NavigationBarGlassBasicPreview,
     controlled: NavigationBarGlassControlledPreview,
   } satisfies Record<typeof docExamples['navigation-bar-glass'][number]['id'], DocPreview>,
-  'navigation-drawer': {
+  'drawer': {
     basic: NavigationDrawerBasicPreview,
     controlled: NavigationDrawerControlledPreview,
-  } satisfies Record<typeof docExamples['navigation-drawer'][number]['id'], DocPreview>,
-  'progress-indicator': {
+  } satisfies Record<typeof docExamples['drawer'][number]['id'], DocPreview>,
+  'indicator': {
     basic: ProgressIndicatorBasicPreview,
     indeterminate: ProgressIndicatorIndeterminatePreview,
-  } satisfies Record<typeof docExamples['progress-indicator'][number]['id'], DocPreview>,
+  } satisfies Record<typeof docExamples['indicator'][number]['id'], DocPreview>,
   'radio': {
     basic: RadioBasicPreview,
     controlled: RadioControlledPreview,
@@ -106,19 +107,19 @@ export const docPreviews = {
     range: SliderRangePreview,
     controlled: SliderControlledPreview,
   } satisfies Record<typeof docExamples['slider'][number]['id'], DocPreview>,
-  'snack-bar': {
+  'snackbar': {
     basic: SnackBarBasicPreview,
     open: SnackBarOpenPreview,
-  } satisfies Record<typeof docExamples['snack-bar'][number]['id'], DocPreview>,
+  } satisfies Record<typeof docExamples['snackbar'][number]['id'], DocPreview>,
   'tab': {
     basic: TabBasicPreview,
     panels: TabPanelsPreview,
   } satisfies Record<typeof docExamples['tab'][number]['id'], DocPreview>,
-  'text-area': {
+  'textarea': {
     basic: TextAreaBasicPreview,
     controlled: TextAreaControlledPreview,
     disabled: TextAreaDisabledPreview,
-  } satisfies Record<typeof docExamples['text-area'][number]['id'], DocPreview>,
+  } satisfies Record<typeof docExamples['textarea'][number]['id'], DocPreview>,
   'text-field': {
     basic: TextFieldBasicPreview,
     controlled: TextFieldControlledPreview,

@@ -1,10 +1,10 @@
 'use client';
 
 import { useMemo } from 'react';
-import './navigation-drawer/NavigationDrawer.css';
-import { NavigationDrawerContext } from './navigation-drawer/NavigationDrawerContext';
-import type { NavigationDrawerProps } from './navigation-drawer/NavigationDrawer.types';
-import { useNavigationDrawer } from './navigation-drawer/useNavigationDrawer';
+import './drawer/NavigationDrawer.css';
+import { NavigationDrawerContext } from './drawer/NavigationDrawerContext';
+import type { NavigationDrawerProps } from './drawer/NavigationDrawer.types';
+import { useNavigationDrawer } from './drawer/useNavigationDrawer';
 
 /**
  * 화면의 한쪽에서 주 메뉴와 하위 메뉴를 세로로 탐색해요.
