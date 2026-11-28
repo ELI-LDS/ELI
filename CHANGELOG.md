@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+### Modal Positive 기본 닫힘
+
+- Positive 버튼도 콜백 실행 후 자동으로 닫혀요. Secondary와 같이 event.preventDefault()로 취소할 수 있어요. 제어 상태는 onOpenChange(false)를 부모가 반영해요.
+- 비동기 작업 완료 후 닫으려면 await 전에 기본 닫힘을 취소하고 성공 시 open을 갱신해요. 이전 기본 동작과 달라지는 다음 UI 콘텐츠 MINOR 대상이며 실제 버전 증가·배포는 별도예요.
+
+
 ### UI 콘텐츠 · 설치 이름과 Chip API 정리
 
 - `Chip` 하나에서 `variant="selectable" | "filter" | "removable"`로 역할을 선택해요. 기본은 selectable이며 기존 스타일·동작을 유지해요. 별도 FilterChip·RemovableChip export와 설치 항목을 제거하고 옵션 타입은 ChipOption으로 제공해요.
