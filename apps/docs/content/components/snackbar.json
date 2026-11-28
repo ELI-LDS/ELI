@@ -1,7 +1,7 @@
 {
   "$schema": "../component-guide.schema.json",
   "schemaVersion": 1,
-  "id": "snack-bar",
+  "id": "snackbar",
   "name": "SnackBar",
   "group": "snackbar",
   "status": "stable",
@@ -83,7 +83,7 @@
   "examples": [
     {
       "title": "표시·자동 닫힘·다시 표시하기",
-      "code": "'use client';\n\nimport { SnackBar } from './components/ui/snack-bar';\nimport { useState } from 'react';\nexport default function Example() {\n  const [open, setOpen] = useState(false);\n  return <><button type=\"button\" onClick={() => setOpen(true)}>결과 보기</button><SnackBar open={open} onOpenChange={setOpen} duration={5000} action=\"닫기\" onAction={() => setOpen(false)}>저장했어요.</SnackBar></>;\n}"
+      "code": "'use client';\n\nimport { SnackBar } from './components/ui/snackbar';\nimport { useState } from 'react';\nexport default function Example() {\n  const [open, setOpen] = useState(false);\n  return <><button type=\"button\" onClick={() => setOpen(true)}>결과 보기</button><SnackBar open={open} onOpenChange={setOpen} duration={5000} action=\"닫기\" onAction={() => setOpen(false)}>저장했어요.</SnackBar></>;\n}"
     }
   ],
   "related": [

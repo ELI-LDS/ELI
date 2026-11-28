@@ -88,9 +88,9 @@ test('조합 컴포넌트와 타입·CSS·SVG 의존 파일을 함께 제공해�
   assert.ok(select.selected.has('menu-item'));
   const fab = await selectFiles(directory, ['fab-menu']);
   assert.ok(fab.selected.has('fab') && fab.selected.has('fab-menu-segment'));
-  const loading = await selectFiles(directory, ['loading-indicator']);
+  const loading = await selectFiles(directory, ['spinner']);
   assert.ok(loading.files.has('loading/loading.types.ts'));
-  assert.ok(loading.files.has('loading-indicator/indeterminate-track.svg'));
+  assert.ok(loading.files.has('spinner/indeterminate-track.svg'));
   const combined = await selectFiles(directory, ['button', 'modal', 'select']);
   assert.equal([...combined.selected.keys()].filter(id => id === 'tokens').length, 1);
 });
@@ -167,4 +167,31 @@ test('소비자는 상세 JSON의 변경과 버전 혼합을 감지할 수 있�
   descriptor.sha256 = sha256(text);
   await writeFile(indexPath, JSON.stringify(index));
   await assert.rejects(selectFiles(fixture, ['button']), /999\.0\.0/);
+});
+
+
+test('짧은 설치 ID가 진입 파일·의존 참조에 일관되게 적용돼요', async () => {
+  const index = JSON.parse(await readFile(join(directory, 'registry.json'), 'utf8'));
+  for (const [name, id, old] of [
+    ['TextArea', 'textarea', 'text-area'], ['SnackBar', 'snackbar', 'snack-bar'],
+    ['LoadingIndicator', 'spinner', 'loading-indicator'], ['ProgressIndicator', 'indicator', 'progress-indicator'],
+    ['NavigationDrawer', 'drawer', 'navigation-drawer'],
+  ]) {
+    assert.equal(index.items.find(item => item.name === name).id, id);
+    assert.ok(!index.items.some(item => item.id === old));
+    const selected = await selectFiles(directory, [id]);
+    assert.ok(selected.files.has(`${id}.tsx`));
+  }
+  const chip = await selectFiles(directory, ['chip']);
+  assert.ok(!index.items.some(item => ['FilterChip', 'RemovableChip'].includes(item.name)));
+  assert.ok([...chip.files.keys()].some(path => path.endsWith('FilterChip.tsx')));
+  assert.ok([...chip.files.keys()].some(path => path.endsWith('RemovableChip.tsx')));
+  assert.ok(chip.files.has('icon/CloseIcon.tsx'));
+  assert.ok(chip.files.has('icon/ExpandMoreIcon.tsx'));
+});
+
+test('없는 심벌·중복 설치 이름은 생성하지 않아요', async () => {
+  const catalog = JSON.parse(await readFile(join(root, 'packages/registry/catalog.json'), 'utf8'));
+  assert.throws(() => generateRegistry({ catalog: { ...catalog, componentIds: { Missing: 'missing' } } }), /공개 컴포넌트가 없어요/);
+  assert.throws(() => generateRegistry({ catalog: { ...catalog, componentIds: { TextArea: 'button' } } }), /중복 항목/);
 });

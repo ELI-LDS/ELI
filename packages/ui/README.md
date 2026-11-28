@@ -126,8 +126,8 @@ LoadingIndicator와 ProgressIndicator는 작업의 완료 비율을 알면 `prog
 LoadingIndicator의 `continuous`는 일정하게 회전하고, `cycle`은 Figma의 2초 가감속 모션을 반복해요.
 
 ```tsx
-import { LoadingIndicator } from './components/ui/loading-indicator';
-import { ProgressIndicator } from './components/ui/progress-indicator';
+import { LoadingIndicator } from './components/ui/spinner';
+import { ProgressIndicator } from './components/ui/indicator';
 
 <LoadingIndicator aria-label="프로필 불러오는 중" />
 <LoadingIndicator aria-label="동기화하는 중" variant="cycle" />
@@ -187,12 +187,10 @@ export function FloatingActions() {
 }
 ```
 
-Chip은 선택, 삭제, 필터 진입 목적에 맞는 독립 컴포넌트를 사용해요. 상태와 목록 데이터는 부모에서 관리해요.
+Chip은 `variant="selectable" | "filter" | "removable"`로 선택·필터 설정·삭제 역할을 골라요. 생략하면 `selectable`이에요. `add chip` 한 번으로 세 역할을 모두 설치해요. 상태와 목록 데이터는 부모에서 관리해요.
 
 ```tsx
 import { Chip } from './components/ui/chip';
-import { FilterChip } from './components/ui/filter-chip';
-import { RemovableChip } from './components/ui/removable-chip';
 
 const colorOptions = [
   { label: '블랙', value: 'black' },
@@ -203,8 +201,8 @@ export function Chips() {
   return (
     <>
       <Chip selected onSelectedChange={() => {}}>장르</Chip>
-      <RemovableChip onRemove={() => {}}>프론트엔드</RemovableChip>
-      <FilterChip
+      <Chip variant="removable" onRemove={() => {}}>프론트엔드</Chip>
+      <Chip variant="filter"
         label="컬러"
         options={colorOptions}
         selectedValues={['black', 'white']}
@@ -322,7 +320,7 @@ export function GlassNavigation() {
 NavigationDrawer는 카테고리, 주 메뉴와 하위 메뉴를 세로로 구성해요. `NavigationDrawerCategory`는 클릭 동작 없이 메뉴 묶음의 이름을 표시하며, `label`로 카테고리명을 바꿀 수 있어요. `NavigationDrawerMenu`가 하나의 주 메뉴와 연결된 하위 메뉴를 묶고, `NavigationDrawer`가 전체 선택값을 관리해요. 하위 메뉴가 없는 Main Menu는 선택·이동 대상으로 동작하고, 하위 메뉴가 있는 Main Menu는 전체 영역을 눌러 열고 닫아요. NavigationBar와 마찬가지로 Main Menu의 기본 상태에는 outlined 아이콘을 사용하고, 활성 메뉴에만 filled 아이콘을 사용해요.
 
 ```tsx
-import { NavigationDrawer } from './components/ui/navigation-drawer';
+import { NavigationDrawer } from './components/ui/drawer';
 import { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';
 import { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';
 import { Divider } from './components/ui/divider';
@@ -470,7 +468,7 @@ TextField·TextArea·Checkbox·Radio의 `ref`는 바깥 래퍼가 아닌 실제 
 TextArea는 아래 로컬 경로에서 가져와요. 라벨과 Placeholder 문구를 바꿀 수 있고 Hover·Focus·입력 완료·Disabled 상태는 네이티브 입력 동작에 따라 적용돼요.
 
 ```tsx
-import { TextArea } from './components/ui/text-area';
+import { TextArea } from './components/ui/textarea';
 
 export function IntroductionField() {
   return <TextArea label="소개" placeholder="소개를 입력하세요" />;
@@ -481,7 +479,7 @@ SnackBar는 짧은 작업 결과를 표시하고 기본 5초 후 닫혀요. `dur
 
 ```tsx
 import { useState } from 'react';
-import { SnackBar } from './components/ui/snack-bar';
+import { SnackBar } from './components/ui/snackbar';
 
 export function SaveFeedback() {
   const [open, setOpen] = useState(false);
@@ -498,3 +496,17 @@ export function SaveFeedback() {
 ```
 
 `open`을 지정하면 부모가 표시 상태를 관리해요. 비제어 방식은 `defaultOpen`으로 초기화하며 기본값은 `true`예요. 닫힌 뒤 다시 열거나 `duration`을 바꾸면 시간을 새로 계산해요. 액션은 `onAction`만 실행하므로 즉시 닫으려면 예시처럼 상태를 바꿔요. 액션이 필요하지 않다면 `action={null}`을 전달해요. Next.js에서 위처럼 상태를 사용하는 예시는 Client Component 안에 작성해요.
+
+## 다음 콘텐츠 릴리스의 설치 이름 변경
+
+현재 작업 중인 소스의 이름이며 npm·GitHub 콘텐츠 게시 완료를 뜻하지 않아요. 이미 설치한 파일과 기록은 자동으로 이동하지 않아요.
+
+| 이전 설치 이름 | 새 설치 이름 | React 이름 |
+| --- | --- | --- |
+| text-area | textarea | TextArea |
+| snack-bar | snackbar | SnackBar |
+| progress-indicator | indicator | ProgressIndicator |
+| loading-indicator | spinner | LoadingIndicator |
+| navigation-drawer | drawer | NavigationDrawer |
+
+`FilterChip`은 `<Chip variant="filter" ... />`, `RemovableChip`은 `<Chip variant="removable" ... />`로 옮겨요. 필터 옵션 타입은 `ChipOption`을 사용해요. `filter-chip`·`removable-chip` 별도 설치 항목은 제거해요. 기존 파일을 먼저 삭제하거나 설치 기록의 해시를 직접 고치지 말고, 다른 버전의 공통 파일을 섞지 않은 별도 환경에서 새 소스를 검토한 뒤 이전해요.

@@ -1,7 +1,7 @@
 {
   "$schema": "../component-guide.schema.json",
   "schemaVersion": 1,
-  "id": "text-area",
+  "id": "textarea",
   "name": "TextArea",
   "group": "text",
   "status": "stable",
@@ -75,7 +75,7 @@
   "examples": [
     {
       "title": "여러 줄의 내용 입력",
-      "code": "'use client';\n\nimport { TextArea } from './components/ui/text-area';\nimport { useState } from 'react';\nexport default function Example() {\n  const [message, setMessage] = useState('');\n  return <TextArea label=\"소개\" placeholder=\"소개를 입력하세요\" value={message} onChange={event => setMessage(event.currentTarget.value)} />;\n}"
+      "code": "'use client';\n\nimport { TextArea } from './components/ui/textarea';\nimport { useState } from 'react';\nexport default function Example() {\n  const [message, setMessage] = useState('');\n  return <TextArea label=\"소개\" placeholder=\"소개를 입력하세요\" value={message} onChange={event => setMessage(event.currentTarget.value)} />;\n}"
     }
   ],
   "related": [
