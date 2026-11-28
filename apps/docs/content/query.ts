@@ -24,7 +24,7 @@ function pick<T extends string>(values: readonly string[], allowed: readonly T[]
 
 function findComponent(name: string): Component | QueryError {
   const key = normalize(name);
-  const found = content.components.find(component => normalize(component.name) === key);
+  const found = content.components.find(component => normalize(component.name) === key || normalize(component.id) === key);
   if (found) return found;
   const names = content.components.map(component => component.name);
   const similar = names.filter(item => normalize(item).includes(key) || key.includes(normalize(item)) || (key.length >= 3 && normalize(item).startsWith(key.slice(0, 3))));

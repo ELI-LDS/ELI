@@ -90,7 +90,7 @@ await writeFile(
 
 import { useState } from 'react';
 import { Button } from '@eli-design/ui/button';
-import { RemovableChip } from '@eli-design/ui/chip';
+import { Chip } from '@eli-design/ui/chip';
 import { FabMenu } from '@eli-design/ui/fab';
 import { NavigationBarGlass } from '@eli-design/ui/navigation';
 import { Select } from '@eli-design/ui/select';
@@ -112,7 +112,7 @@ export function ClientExample() {
     <section>
       <h2>클라이언트 상호작용</h2>
       <Button onClick={() => setCount(current => current + 1)}>클릭 {count}</Button>
-      <RemovableChip onRemove={() => setCount(current => current + 1)}>삭제 칩</RemovableChip>
+      <Chip variant="removable" onRemove={() => setCount(current => current + 1)}>삭제 칩</Chip>
       <FabMenu
         items={[{ id: 'create', label: '클라이언트 FAB 액션', onClick: () => setCount(current => current + 1) }]}
         label="클라이언트 FAB"
@@ -148,7 +148,7 @@ await writeFile(
 import { Badge } from '@eli-design/ui/badge';
 import { Button, IconButton } from '@eli-design/ui/button';
 import { Checkbox } from '@eli-design/ui/checkbox';
-import { Chip, FilterChip } from '@eli-design/ui/chip';
+import { Chip } from '@eli-design/ui/chip';
 import { Divider } from '@eli-design/ui/divider';
 import { Fab } from '@eli-design/ui/fab';
 import { LoadingIndicator, ProgressIndicator } from '@eli-design/ui/loading';
@@ -176,7 +176,7 @@ export default function Page() {
       <IconButton aria-label="서버 아이콘 버튼" />
       <Checkbox aria-label="서버 체크박스" defaultChecked />
       <Chip selected>서버 선택 칩</Chip>
-      <FilterChip
+      <Chip variant="filter"
         label="서버 필터"
         options={[{ label: '전체', value: 'all' }]}
         selectedValues={['all']}

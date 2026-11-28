@@ -6,30 +6,62 @@
   "group": "chip",
   "status": "stable",
   "source": {
-    "markdown": "apps/docs/content/source/components/chip.md",
-    "sha256": "d7ff3c55ed48c06a6d1223110862e88628a2a6643e1e2df8d43113563d287fdf"
+    "markdown": "apps/docs/content/source/components/chip-variants.md",
+    "sha256": "0b6360006f2a4e49bca5a43408b4ccdff89cf2c2ef4b39e29877bb4453bddbb1"
   },
-  "summary": "짧은 라벨의 항목을 선택하거나 해제하는 칩이에요.",
+  "summary": "항목 선택·필터 설정·태그 삭제를 variant로 골라 사용하는 칩이에요.",
   "usage": {
     "recommended": [
-      "단순한 옵션을 선택하거나 해제하는 목록에 사용해요."
+      "단순한 옵션을 선택하거나 해제하는 목록에 사용해요.",
+      "바텀시트·모달 등 별도 화면에서 필터 조건을 설정하게 할 때 사용해요.",
+      "적용된 필터·검색 조건·태그를 나열하고 각 항목을 삭제하게 해요."
     ],
     "avoid": [
-      "필터 설정 화면을 열려면 FilterChip을, 적용된 조건·태그를 제거하려면 RemovableChip을 사용해요."
+      "filter는 내장 필터 설정 화면을 제공하지 않으므로 소비 앱의 모달·바텀시트와 연결해요.",
+      "filter의 selectedValues 순서로 표시 순서를 바꾸려고 하지 않아요.",
+      "removable에서 onRemove 없이 자동 삭제된다고 가정하지 않아요."
     ]
   },
-  "choices": [],
+  "choices": [
+    {
+      "props": {
+        "variant": "selectable"
+      },
+      "role": "항목 선택",
+      "when": "단순한 옵션을 선택하거나 해제할 때 사용해요. 기본값이에요."
+    },
+    {
+      "props": {
+        "variant": "filter"
+      },
+      "role": "필터 설정 진입",
+      "when": "별도 모달·바텀시트에서 필터를 설정할 때 사용해요."
+    },
+    {
+      "props": {
+        "variant": "removable"
+      },
+      "role": "조건·태그 삭제",
+      "when": "적용된 조건이나 태그를 개별 삭제할 때 사용해요."
+    }
+  ],
   "structure": {
-    "description": "aria-pressed를 가진 button 안에 한 줄 라벨이 있어요.",
+    "description": "선택·필터형은 button, 삭제형은 바깥 span 안에 라벨 영역과 독립적인 삭제 button을 배치해요.",
     "note": "현재 구현을 이해하기 위한 구조 설명이에요. 내부 DOM·선택자의 장기 호환성을 약속하지 않아요."
   },
   "content": {
     "text": [
-      "children에 선택할 항목의 라벨을 제공해요."
+      "selectable·removable은 children으로 라벨을 표시해요.",
+      "filter는 선택값이 없으면 label을, 있으면 options 순서상 첫 선택 라벨과 필요한 경우 외 N을 표시해요.",
+      "filter의 options에는 전체 옵션을 화면 순서대로, selectedValues에는 실제 적용한 value를 전달해요.",
+      "removable의 removeLabel에는 삭제할 대상을 설명해요."
     ],
-    "icon": null,
+    "icon": [
+      "filter는 우측 펼침 아이콘으로 별도 필터 화면으로 이어짐을 보조해요.",
+      "removable은 독립적인 삭제 버튼에 X 아이콘을 표시해요."
+    ],
     "limits": [
-      "최대 너비를 넘는 라벨은 한 줄 말줄임표로 표시해요."
+      "selectable 최대 너비는 160px, filter·removable은 180px이에요. 라벨은 한 줄 말줄임표로 표시해요."
     ]
   },
   "interaction": {
@@ -41,12 +73,18 @@
       "Disabled"
     ],
     "behavior": [
-      "selected와 onSelectedChange를 함께 연결해 부모가 선택 상태를 관리해요. 내부 비제어 선택 상태는 없어요.",
-      "클릭 시 onClick을 먼저 실행하고 preventDefault하지 않았다면 다음 선택 여부를 전달해요.",
-      "단일·복수 선택 규칙과 disabled 적용은 소비 앱이 지정해요."
+      "selectable은 selected·onSelectedChange를 함께 연결해 부모가 선택 상태를 관리해요. 단일·복수 선택 규칙도 소비 앱이 정해요.",
+      "selectable은 onClick을 먼저 실행하고 preventDefault하지 않았다면 다음 선택 여부를 onSelectedChange에 전달해요.",
+      "filter는 onClick에서 소비 앱의 필터 화면을 열어요. 부모가 적용한 selectedValues를 갱신해요.",
+      "filter는 options 순서상 첫 선택 라벨과 추가 선택 개수를 표시하고, 선택값이 있으면 aria-pressed와 활성 스타일을 적용해요.",
+      "removable의 라벨 클릭은 onClick, X 버튼은 필수 onRemove를 실행해요. 실제 항목 제거는 부모가 처리해요.",
+      "removable의 삭제 클릭은 전파를 막아 라벨이나 상위 클릭을 함께 실행하지 않아요.",
+      "disabled이면 해당 variant의 버튼 동작을 막아요."
     ],
     "limitations": [
-      "칩 목록의 선택 규칙을 자동 제공하지 않아요."
+      "selectable은 비제어 선택 상태나 목록의 선택 규칙을 자동 제공하지 않아요.",
+      "filter는 내장 드롭다운·바텀시트·필터 적용 로직을 제공하지 않아요.",
+      "removable은 선택 상태를 전환하거나 목록에서 자신을 자동 제거하지 않아요."
     ]
   },
   "composition": [
@@ -55,26 +93,57 @@
         "Chip"
       ],
       "purpose": "여러 항목 중 하나 또는 여러 항목을 선택해요.",
-      "guidance": "부모가 각 칩의 selected를 계산하고 선택 변경을 반영해요."
+      "guidance": "selectable에서 부모가 각 칩의 selected를 계산하고 선택 변경을 반영해요."
+    },
+    {
+      "components": [
+        "Chip",
+        "Modal"
+      ],
+      "purpose": "별도 모달에서 필터를 설정하고 칩에 결과를 요약해요.",
+      "guidance": "filter에서 부모가 모달 표시·필터 콘텐츠·적용을 연결해요. Modal의 공개 ReactNode 콘텐츠와 액션 API를 사용하며 임의의 children API를 만들지 않아요."
+    },
+    {
+      "components": [
+        "Chip"
+      ],
+      "purpose": "외부 바텀시트에서 필터를 설정해요.",
+      "guidance": "filter에서 BottomSheet라는 ELI 공개 컴포넌트는 없으므로 소비 앱이 제공할 화면을 뜻해요."
+    },
+    {
+      "components": [
+        "Chip"
+      ],
+      "purpose": "검색 조건·태그 목록을 관리해요.",
+      "guidance": "removable에서 부모가 onRemove에서 해당 항목을 제거하고 목록을 다시 렌더링해요."
     }
   ],
   "customization": [
-    "className·style은 루트 button에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 같은 속성의 일반 클래스보다 인라인 스타일이 우선해요."
+    "className·style은 selectable·filter의 루트 button, removable의 바깥 span에 적용해요. 내부 요소의 직접 선언까지 모두 덮어쓰는 계약은 아니에요. 일반 클래스보다 인라인 스타일이 우선해요."
   ],
   "accessibility": [
-    "네이티브 button의 Enter·Space 활성화와 키보드 포커스를 사용해요.",
-    "aria-pressed로 현재 선택 여부를 전달해요."
+    "각 variant의 네이티브 button으로 Enter·Space 활성화와 키보드 포커스를 제공해요.",
+    "selectable·filter는 aria-pressed로 현재 선택 여부를 전달해요.",
+    "filter가 여는 별도 화면의 포커스·닫기 동작은 소비 앱에서 연결해요.",
+    "removable은 removeLabel로 삭제 대상을 설명해요. 라벨 클릭과 삭제는 독립적인 버튼이에요."
   ],
   "examples": [
     {
       "title": "선택 상태를 부모에서 반영",
       "code": "'use client';\n\nimport { Chip } from './components/ui/chip';\nimport { useState } from 'react';\nexport default function Example() {\n  const [selected, setSelected] = useState(false);\n  return <Chip selected={selected} onSelectedChange={setSelected}>디자인</Chip>;\n}"
+    },
+    {
+      "title": "필터 설정과 적용은 소비 앱에서 제공",
+      "code": "'use client';\n\nimport { Chip } from './components/ui/chip';\nimport { useState } from 'react';\nexport default function Example() {\n  const [editing, setEditing] = useState(false);\n  const [pending, setPending] = useState(false);\n  const [selectedValues, setSelectedValues] = useState<string[]>([]);\n  const options = [{ value: 'design', label: '디자인' }];\n  return <><Chip variant=\"filter\" label=\"분야\" options={options} selectedValues={selectedValues} onClick={() => { setPending(selectedValues.includes('design')); setEditing(true); }} />{editing && <fieldset><legend>분야 필터</legend><label><input type=\"checkbox\" checked={pending} onChange={event => setPending(event.currentTarget.checked)} />디자인</label><button type=\"button\" onClick={() => { setSelectedValues(pending ? ['design'] : []); setEditing(false); }}>적용</button></fieldset>}</>;\n}"
+    },
+    {
+      "title": "부모 목록에서 항목 제거",
+      "code": "'use client';\n\nimport { Chip } from './components/ui/chip';\nimport { useState } from 'react';\nexport default function Example() {\n  const [tags, setTags] = useState(['프론트엔드', '디자인']);\n  return <>{tags.map(tag => <Chip variant=\"removable\" key={tag} removeLabel={tag + ' 태그 삭제'} onRemove={() => setTags(current => current.filter(value => value !== tag))}>{tag}</Chip>)}</>;\n}"
     }
   ],
   "related": [
-    "FilterChip",
-    "RemovableChip",
-    "Checkbox"
+    "Checkbox",
+    "Modal"
   ],
   "review": {
     "questions": [],

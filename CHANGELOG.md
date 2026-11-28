@@ -4,6 +4,13 @@
 
 ## Unreleased
 
+### UI 콘텐츠 · 설치 이름과 Chip API 정리
+
+- `Chip` 하나에서 `variant="selectable" | "filter" | "removable"`로 역할을 선택해요. 기본은 selectable이며 기존 스타일·동작을 유지해요. 별도 FilterChip·RemovableChip export와 설치 항목을 제거하고 옵션 타입은 ChipOption으로 제공해요.
+- 설치 ID를 `text-area` → `textarea`, `snack-bar` → `snackbar`, `progress-indicator` → `indicator`, `loading-indicator` → `spinner`, `navigation-drawer` → `drawer`로 줄여요. 이 다섯 컴포넌트의 React 심벌과 내부 CSS 이름은 유지해요.
+- 기존 설치 경로·공개 Chip API가 바뀌는 다음 UI 콘텐츠 MINOR 대상이에요. npm CLI·콘텐츠 버전은 이번에 올리거나 게시하지 않아요. 이미 설치한 파일·기록을 자동으로 이동하지 않아요. 이전 방법은 packages/ui/README.md를 참고해요.
+
+
 ### 컴포넌트 사용 가이드
 
 - 전달받은 Modal·Divider·Tab Markdown을 보존하고 공개 컴포넌트별 JSON·소스 설치 예시를 추가해요. Tab의 빈 원문은 최신 전달본으로 교체해요. 기존 stable 31개는 유지하고 새 3개는 draft로 검증한 뒤 사용자 승인에 따라 stable로 전환해요. 전체 34개 가이드의 내용과 예시를 조회할 수 있는 데이터로 준비하며, 공개 MCP 반영은 배포 후 확인해요.

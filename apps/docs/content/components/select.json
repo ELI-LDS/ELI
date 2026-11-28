@@ -86,7 +86,7 @@
     "Radio",
     "Checkbox",
     "TextField",
-    "FilterChip"
+    "Chip"
   ],
   "review": {
     "questions": [],

@@ -58,7 +58,7 @@ for (const selector of ['.eli-button', '.eli-modal', '.eli-select', '.eli-fab-me
 console.log(`선택 설치 소스 ${index.items.filter(item => item.kind === 'component').length}개 전체의 타입·Vite·CSS 연결 검증을 통과했어요.`);
 
 const next = join(work, 'next');
-await materialize(registry, join(next, 'ui'), ['modal', 'select', 'fab-menu', 'loading-indicator', 'text-field', 'text-area', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'progress-indicator', 'divider', 'snack-bar']);
+await materialize(registry, join(next, 'ui'), ['chip', 'modal', 'select', 'fab-menu', 'spinner', 'text-field', 'textarea', 'badge', 'slider', 'radio', 'checkbox', 'segment-control', 'navigation-bar', 'navigation-bar-glass', 'indicator', 'divider', 'snackbar']);
 await mkdir(join(next, 'app'), { recursive: true });
 await mkdir(join(next, 'node_modules'), { recursive: true });
 for (const dependency of ['react', 'react-dom', 'next']) await symlink(await realpath(join(root, 'node_modules', dependency)), join(next, 'node_modules', dependency), 'junction');
@@ -69,6 +69,7 @@ await writeFile(join(next, 'app/layout.tsx'), 'export const metadata = { title: 
 await writeFile(join(next, 'app/client.tsx'), `'use client';
 import { useCallback, useRef, useState, useEffect } from 'react';
 import { Modal } from '../ui/modal';
+import { Chip } from '../ui/chip';
 import { TextField } from '../ui/text-field';
 import { Button } from '../ui/button';
 import { Select } from '../ui/select';
@@ -76,14 +77,14 @@ import { FabMenu } from '../ui/fab-menu';
 import { Slider } from '../ui/slider';
 import { Checkbox } from '../ui/checkbox';
 import { Radio } from '../ui/radio';
-import { TextArea } from '../ui/text-area';
+import { TextArea } from '../ui/textarea';
 import { SegmentControl } from '../ui/segment-control';
 import { NavigationBar } from '../ui/navigation-bar';
 import { NavigationBarGlass } from '../ui/navigation-bar-glass';
-import { LoadingIndicator } from '../ui/loading-indicator';
-import { ProgressIndicator } from '../ui/progress-indicator';
+import { LoadingIndicator } from '../ui/spinner';
+import { ProgressIndicator } from '../ui/indicator';
 import { Divider } from '../ui/divider';
-import { SnackBar } from '../ui/snack-bar';
+import { SnackBar } from '../ui/snackbar';
 ${modalFixture}
 ${textFieldFixture}
 ${apiContractsFixture}
@@ -102,9 +103,10 @@ export function Client() {
 await writeFile(join(next, 'app/page.tsx'), `import { Client } from './client';
 import { Badge } from '../ui/badge';
 import { Modal } from '../ui/modal';
-import { LoadingIndicator } from '../ui/loading-indicator';
+import { Chip } from '../ui/chip';
+import { LoadingIndicator } from '../ui/spinner';
 import { TextField } from '../ui/text-field';
-import { TextArea } from '../ui/text-area';
+import { TextArea } from '../ui/textarea';
 import { Slider } from '../ui/slider';
 import { Radio } from '../ui/radio';
 export default function Page() { return <main><h1>ELI 소스 설치 검증</h1><Badge>서버 배지</Badge><Modal open={false} title="소스 모달" style={{ display: 'none' }} /><LoadingIndicator aria-label="소스 진행" /><TextField /><TextArea /><Slider aria-label="소스 값" /><Radio aria-label="소스 라디오" value="first" /><Client /></main>; }`);

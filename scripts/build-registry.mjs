@@ -113,7 +113,7 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
         const content = readFileSync(join(sourceRoot, path), 'utf8');
         const description = content.match(/\/\*\*\s*\n\s*\*\s*([^\n]+)/)?.[1]?.trim();
         assert.ok(description, `공개 설명이 없어요: ${name}`);
-        const id = kebab(name);
+        const id = catalog.componentIds?.[name] ?? kebab(name);
         makeItem(id, 'component', name, description, { path, export: name });
         assert.ok(!publicDirectories.has(dirname(path)), `같은 폴더의 컴포넌트 소유 범위를 분리해요: ${path}`);
         publicDirectories.set(dirname(path), id);
@@ -121,6 +121,9 @@ export function generateRegistry({ sourceRoot = defaultSource, manifest = defaul
         queue.push(path);
       }
     }
+  }
+  for (const name of Object.keys(catalog.componentIds ?? {})) {
+    assert.ok([...items.values()].some(item => item.name === name), `설치 이름을 지정한 공개 컴포넌트가 없어요: ${name}`);
   }
   assert.ok(items.size > 0, '공개 컴포넌트가 없어요.');
   for (const shared of catalog.shared) {

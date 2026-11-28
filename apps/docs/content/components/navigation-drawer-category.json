@@ -61,7 +61,7 @@
   "examples": [
     {
       "title": "탐색 메뉴 묶음에 이름 제공",
-      "code": "import { NavigationDrawer } from './components/ui/navigation-drawer';\nimport { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nexport default function Example() {\n  return <NavigationDrawer aria-label=\"학습 메뉴\"><NavigationDrawerCategory label=\"내 학습\" /><NavigationDrawerMenu value=\"courses\" label=\"내 강의\" /></NavigationDrawer>;\n}"
+      "code": "import { NavigationDrawer } from './components/ui/drawer';\nimport { NavigationDrawerCategory } from './components/ui/navigation-drawer-category';\nimport { NavigationDrawerMenu } from './components/ui/navigation-drawer-menu';\nexport default function Example() {\n  return <NavigationDrawer aria-label=\"학습 메뉴\"><NavigationDrawerCategory label=\"내 학습\" /><NavigationDrawerMenu value=\"courses\" label=\"내 강의\" /></NavigationDrawer>;\n}"
     }
   ],
   "related": [
